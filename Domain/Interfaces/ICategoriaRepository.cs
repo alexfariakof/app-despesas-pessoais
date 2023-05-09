@@ -1,5 +1,4 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.ViewModels;
 
 namespace despesas_backend_api_net_core.Domain.Interfaces
 {

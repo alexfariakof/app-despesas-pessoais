@@ -1,6 +1,5 @@
-﻿using despesas_backend_api_net_core.Interfaces;
-using despesas_backend_api_net_core.Services;
-using despesas_backend_api_net_core.ViewModels;
+﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,23 +9,23 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class CategoriaController : Controller
     {
-        private ICategoriaViewModelService _categoriaViewModelService;
-        public CategoriaController(ICategoriaViewModelService categoriaViewModelService)
-        {
-            _categoriaViewModelService = categoriaViewModelService;
-        }
+        private IBusiness<Categoria> _categoriaBusiness;
 
+        public CategoriaController(IBusiness<Categoria> categoriaBusiness)
+        {
+            _categoriaBusiness = categoriaBusiness;
+        }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_categoriaViewModelService.GetAll());
+            return Ok(_categoriaBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            CategoriaViewModel _categoria = _categoriaViewModelService.Get(id);
+            Categoria _categoria = _categoriaBusiness.FindById(id);
 
             if (_categoria == null)
                 return NotFound();
@@ -37,7 +36,7 @@ namespace despesas_backend_api_net_core.Controllers
         [HttpGet("byTipoCategoria/{idUsuario}/{idTipoCategoria}")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] int idTipoCategoria)
         {
-            var _categoria = _categoriaViewModelService.GetAll()
+            var _categoria = _categoriaBusiness.FindAll()
                 .FindAll(prop => prop.IdTipoCategoria.Equals(idTipoCategoria) &&
                                 (prop.IdUsuario.Equals(idUsuario) ||
                                  prop.IdUsuario == null ||
@@ -51,14 +50,14 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         //[Authorize("Bearer")]
-        public IActionResult Post([FromBody] CategoriaViewModel categoria)
+        public IActionResult Post([FromBody] Categoria categoria)
         {
             if (categoria == null)
                 return BadRequest();
 
             try
             {
-                return new ObjectResult(new { message = true, categoria = _categoriaViewModelService.Insert(categoria) });
+                return new ObjectResult(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
             }
             catch
             {
@@ -68,12 +67,12 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPut]
         //[Authorize("Bearer")]
-        public IActionResult Put([FromBody] CategoriaViewModel categoria)
+        public IActionResult Put([FromBody] Categoria categoria)
         {
             if (categoria == null)
                 return BadRequest();
 
-            CategoriaViewModel updateCategoria = _categoriaViewModelService.Update(categoria);
+            Categoria updateCategoria = _categoriaBusiness.Update(categoria);
             if (updateCategoria == null)
                 return NoContent();
 
@@ -84,7 +83,7 @@ namespace despesas_backend_api_net_core.Controllers
         //[Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
-            _categoriaViewModelService.Delete(id);
+            _categoriaBusiness.Delete(id);
             return NoContent();
         }
     }

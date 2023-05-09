@@ -1,6 +1,5 @@
-﻿using despesas_backend_api_net_core.Interfaces;
+﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Repositories.Generic;
-using despesas_backend_api_net_core.Services;
 
 namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
@@ -9,7 +8,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
 
-            services.AddScoped<ICategoriaViewModelService, CategoriaViewModelService>();
+            services.AddScoped(typeof(IBusiness<>), typeof(GenericBusiness<>));
 
 
             return services;
