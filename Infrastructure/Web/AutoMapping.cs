@@ -1,21 +1,18 @@
 ﻿using AutoMapper;
-using Cadastro.Domain.Entities;
-using Cadastro.ViewModels;
+using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Cadastro.Infrastructure.Web
+namespace despesas_backend_api_net_core.Infrastructure.Web
 {
     public class AutoMapping : Profile
     {
         public AutoMapping()
         {
-            CreateMap<Client, ClientViewModel>();
-            CreateMap<ClientViewModel, Client>();
-            CreateMap<Product, ProductViewModel>();
-            CreateMap<ProductViewModel, Product>();
+            CreateMap<Categoria, CategoriaViewModel>();
 
         }
     }

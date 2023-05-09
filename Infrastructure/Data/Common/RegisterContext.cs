@@ -1,8 +1,8 @@
-﻿using Cadastro.Domain.Entities;
-using Cadastro.Infrastructure.Data.EntityConfig;
+﻿using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cadastro.Infrastructure.Data.Common
+namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 {
     public class RegisterContext : DbContext
     {
@@ -12,16 +12,18 @@ namespace Cadastro.Infrastructure.Data.Common
 
         }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ControleAcesso> ControleAcessos { get; set; }
+        public DbSet<Usuario> Usuarios{ get; set; }
+        public DbSet<Despesa> Despesas { get; set; }
+        public DbSet<Receita> Receitas { get; set; }
+        public DbSet<Categoria> Categorias{ get; set; }
+        public DbSet<Lancamento> Lancamentos{ get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new CategoryMap());
-            modelBuilder.ApplyConfiguration(new ClientMap());
-            modelBuilder.ApplyConfiguration(new ProductMap());
+            modelBuilder.ApplyConfiguration(new CategoriaMap());
         }
     }
 }

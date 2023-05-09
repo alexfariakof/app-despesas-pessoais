@@ -1,9 +1,9 @@
-﻿using Cadastro.Domain.Entities;
+﻿using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cadastro.Infrastructure.Data.Common
+namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 {
     public class EfRepository<T> where T : BaseModel
     {

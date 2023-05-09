@@ -1,4 +1,4 @@
-﻿namespace Cadastro.Infrastructure.Data.Common
+﻿namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 {
     public class DbSettings
     {
