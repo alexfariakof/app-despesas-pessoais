@@ -12,12 +12,13 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 
         }
 
-        public DbSet<ControleAcesso> ControleAcessos { get; set; }
-        public DbSet<Usuario> Usuarios{ get; set; }
-        public DbSet<Despesa> Despesas { get; set; }
-        public DbSet<Receita> Receitas { get; set; }
-        public DbSet<Categoria> Categorias{ get; set; }
-        public DbSet<Lancamento> Lancamentos{ get; set; }
+        public DbSet<ControleAcesso> ControleAcesso { get; set; }
+        public DbSet<Usuario> Usuario{ get; set; }
+        public DbSet<Despesa> Despesa { get; set; }
+        public DbSet<Receita> Receita { get; set; }
+        public DbSet<Categoria> Categoria{ get; set; }
+        public DbSet<Lancamento> Lancamento{ get; set; }
+        
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,3 +28,4 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
         }
     }
 }
+

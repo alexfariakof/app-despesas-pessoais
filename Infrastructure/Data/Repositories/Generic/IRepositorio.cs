@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using System.Collections.Generic;
 
-namespace despesas_backend_api_net_core.Repositories.Generic
+namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
 {
     public interface IRepositorio<T> where T : BaseModel
     {

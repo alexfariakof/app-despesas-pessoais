@@ -1,34 +1,35 @@
-﻿
+﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
-namespace despesas_backend_api_net_core.Business.Generic
+namespace apiDespesasPessoais.Business.Implementations
 {
-    public class GenericBusiness<T> : IBusiness<T> where T : BaseModel
+    public class DespesaBusinessImpl : IBusiness<Despesa>
     {
-        private readonly IRepositorio<T> _repositorio;
+        private readonly IRepositorio<Despesa> _repositorio;
 
-        public GenericBusiness(IRepositorio<T> repositorio)
+        public DespesaBusinessImpl(IRepositorio<Despesa> repositorio)
         {
             _repositorio = repositorio;
         }
-        public T Create(T obj)
+        public Despesa Create(Despesa obj)
         {
             return _repositorio.Insert(obj);
         }
 
-        public List<T> FindAll()
+        public List<Despesa> FindAll()
         {
             return _repositorio.GetAll();
-        }
+        }      
 
-        public T FindById(int id)
+        public Despesa FindById(int id)
         {
             return _repositorio.Get(id);
         }
 
-        public T Update(T obj)
-        {
+        public Despesa Update(Despesa obj)
+        {           
+
             return _repositorio.Update(obj);
         }
 
@@ -36,5 +37,6 @@ namespace despesas_backend_api_net_core.Business.Generic
         {
             _repositorio.Delete(id);
         }
+
     }
 }

@@ -2,7 +2,7 @@
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace despesas_backend_api_net_core.Repositories.Generic
+namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
 {
     public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel
     {

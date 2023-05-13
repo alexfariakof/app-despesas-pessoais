@@ -1,6 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Repositories.Generic;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {

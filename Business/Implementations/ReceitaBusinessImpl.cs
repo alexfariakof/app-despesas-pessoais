@@ -1,34 +1,35 @@
-﻿
+﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
-namespace despesas_backend_api_net_core.Business.Generic
+namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class GenericBusiness<T> : IBusiness<T> where T : BaseModel
+    public class ReceitaBusinessImpl : IBusiness<Receita>
     {
-        private readonly IRepositorio<T> _repositorio;
+        private readonly IRepositorio<Receita> _repositorio;
 
-        public GenericBusiness(IRepositorio<T> repositorio)
+        public ReceitaBusinessImpl(IRepositorio<Receita> repositorio)
         {
             _repositorio = repositorio;
         }
-        public T Create(T obj)
+        public Receita Create(Receita obj)
         {
             return _repositorio.Insert(obj);
         }
 
-        public List<T> FindAll()
+        public List<Receita> FindAll()
         {
             return _repositorio.GetAll();
-        }
+        }      
 
-        public T FindById(int id)
+        public Receita FindById(int id)
         {
             return _repositorio.Get(id);
         }
 
-        public T Update(T obj)
-        {
+        public Receita Update(Receita obj)
+        {           
+
             return _repositorio.Update(obj);
         }
 
@@ -36,5 +37,6 @@ namespace despesas_backend_api_net_core.Business.Generic
         {
             _repositorio.Delete(id);
         }
+
     }
 }
