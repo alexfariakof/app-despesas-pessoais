@@ -17,12 +17,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_categoriaBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
+        [Authorize("Bearer")]
         public IActionResult Get(int id)
         {
             Categoria _categoria = _categoriaBusiness.FindById(id);
@@ -34,14 +36,99 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("byTipoCategoria/{idUsuario}/{idTipoCategoria}")]
-        public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] int idTipoCategoria)
+        [Authorize("Bearer")]
+        public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] TipoCategoria tipoCategoria)
         {
             var _categoria = _categoriaBusiness.FindAll()
-                .FindAll(prop => prop.IdTipoCategoria.Equals(idTipoCategoria) &&
+                .FindAll(prop => prop.IdTipoCategoria.Equals(tipoCategoria) &&
                                 (prop.IdUsuario.Equals(idUsuario) ||
                                  prop.IdUsuario == null ||
                                  prop.IdUsuario.Equals(0)));
 
+            if (tipoCategoria.Equals(1))
+            {
+                _categoria.Add(new Categoria
+                {
+                    Id = 1,
+                    Descricao = "Alimentação",
+                    IdTipoCategoria = 1                    
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 2,
+                    Descricao = "Casa",
+                    IdTipoCategoria = 1
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 3,
+                    Descricao = "Serviços",
+                    IdTipoCategoria = 1
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 4,
+                    Descricao = "Saúde",
+                    IdTipoCategoria = 1
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 5,
+                    Descricao = "Imposto",
+                    IdTipoCategoria = 1
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 6,
+                    Descricao = "Transporte",
+                    IdTipoCategoria = 1
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 7,
+                    Descricao = "Lazer",
+                    IdTipoCategoria = 1
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 8,
+                    Descricao = "Outros",
+                    IdTipoCategoria = 1
+                }); 
+            }
+            else
+            {
+                _categoria.Add(new Categoria
+                {
+                    Id = 1,
+                    Descricao = "Salário",
+                    IdTipoCategoria = 2
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 2,
+                    Descricao = "Prêmio",
+                    IdTipoCategoria = 2
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 3,
+                    Descricao = "Investimento",
+                    IdTipoCategoria = 2
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 4,
+                    Descricao = "Benefício",
+                    IdTipoCategoria = 2
+                });
+                _categoria.Add(new Categoria
+                {
+                    Id = 5,
+                    Descricao = "Outros",
+                    IdTipoCategoria = 2
+                });
+            }
             if (_categoria == null)
                 return NotFound();
 
@@ -49,7 +136,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] Categoria categoria)
         {
             if (categoria == null)
@@ -66,7 +153,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] Categoria categoria)
         {
             if (categoria == null)
@@ -80,7 +167,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _categoriaBusiness.Delete(id);

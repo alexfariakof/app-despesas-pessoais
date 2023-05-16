@@ -6,6 +6,7 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class LancamentoController : Controller
     {
         private ILancamentoBusiness _lancamentoBusiness;
@@ -27,7 +28,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("Saldo/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get(int idUsuario)
         {
             var saldo = _lancamentoBusiness.GetSaldo(idUsuario);

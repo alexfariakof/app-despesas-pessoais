@@ -37,6 +37,5 @@ namespace apiDespesasPessoais.Business.Implementations
         {
             _repositorio.Delete(id);
         }
-
     }
 }
