@@ -1,6 +1,7 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
 {
@@ -74,7 +75,21 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             try 
             {
                 if (result != null)
-                    _context.Remove(result);
+                { 
+                    if (result.Equals(typeof(Usuario)))
+                    {
+                        var dataSet = _context.Set<Usuario>();
+                        Usuario usaurio = new Usuario { 
+                            Id = id,
+                            StatusUsuario = StatusUsuario.Inativo
+                        };
+                        _context.Entry(result).CurrentValues.SetValues(usaurio);
+                    }
+                    else
+                    {
+                        _context.Remove(result);
+                    }
+                }                    
                 _context.SaveChanges();
             }
             catch (Exception ex)

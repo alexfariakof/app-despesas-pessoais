@@ -7,6 +7,6 @@ namespace despesas_backend_api_net_core.Business
     {
         object FindByLogin(ControleAcesso controleAcesso);
         bool Create(ControleAcesso controleAcesso);
-        bool RecoveryPassword(string email);
+        bool RecoveryPassword(string email);     
     }
 }

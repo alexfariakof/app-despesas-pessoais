@@ -19,8 +19,24 @@ namespace despesas_backend_api_net_core.Controllers
         
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Post([FromBody] ControleAcesso controleAcesso)
+        public IActionResult Post([FromBody] ControleAcessoVO controleAcessoVO)
         {
+
+            ControleAcesso controleAcesso = new ControleAcesso
+            {
+                Login = controleAcessoVO.Email,
+                Senha = controleAcessoVO.Senha,
+                Usuario = new Usuario
+                {
+                    Nome = controleAcessoVO.Nome,
+                    SobreNome = controleAcessoVO.SobreNome,
+                    Email = controleAcessoVO.Email,
+                    Telefone = controleAcessoVO.Telefone,
+                    StatusUsuario = StatusUsuario.Ativo
+
+                }
+            };
+
             if (controleAcesso == null)
                 return BadRequest();
 
@@ -34,8 +50,9 @@ namespace despesas_backend_api_net_core.Controllers
         
         [AllowAnonymous]
         [HttpPost("SignIn")]
-        public IActionResult SignIn([FromBody] ControleAcesso controleAcesso)
+        public IActionResult SignIn([FromBody] LoginVO login)
         {
+            var controleAcesso = new ControleAcesso { Login = login.Email , Senha = login.Senha };
             if (controleAcesso == null)
                 return BadRequest();
 

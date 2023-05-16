@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,16 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
            return Ok(_usuarioBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [Authorize("Bearer")]
+        [HttpPost("GetById")]
+        public IActionResult Post([FromBody] int id)
         {
             Usuario _usuario = _usuarioBusiness.FindById(id);
 
@@ -34,18 +38,40 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
-        public IActionResult Post([FromBody] Usuario usuario)
+        [Authorize("Bearer")]
+        public IActionResult Post([FromBody] UsuarioVO usuarioVO)
         {
+
+            var usuario = new Usuario
+            {
+                Id = usuarioVO.Id,
+                Nome = usuarioVO.Nome,
+                SobreNome = usuarioVO.SobreNome,
+                Email = usuarioVO.Email,
+                Telefone = usuarioVO.Telefone,
+                StatusUsuario = StatusUsuario.Ativo
+            };
+
             if (usuario == null)
                 return BadRequest();
             return new ObjectResult(_usuarioBusiness.Create(usuario));
         }
 
         [HttpPut]
-        //[Authorize("Bearer")]
-        public IActionResult Put([FromBody] Usuario usuario)
+        [Authorize("Bearer")]
+        public IActionResult Put([FromBody] UsuarioVO usuarioVO)
         {
+
+            var usuario = new Usuario
+            {
+                Id = usuarioVO.Id,
+                Nome = usuarioVO.Nome,
+                SobreNome = usuarioVO.SobreNome,
+                Email = usuarioVO.Email,
+                Telefone = usuarioVO.Telefone,
+                StatusUsuario = StatusUsuario.Ativo
+            };
+
             if (usuario == null)
                 return BadRequest();
 
@@ -57,7 +83,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _usuarioBusiness.Delete(id);

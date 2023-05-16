@@ -3,6 +3,9 @@ using despesas_backend_api_net_core.Domain.VO;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
+using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Net;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -17,29 +20,31 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
         public bool Create(ControleAcesso controleAcesso)
         {
-            DbSet<Usuario> dsUsuario = null;
+            //Como Esta utilizando dados em memoria BeginTransaction não é aceito 
+            DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
+            DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
 
             using (_context)
             {
-                using (var dbContextTransaction = _context.Database.BeginTransaction())
-                {
+                
+                //using (var dbContextTransaction = _context.Database.BeginTransaction())
+                //{
                     try
                     {
-                        dsUsuario.Add(controleAcesso.Usuario);
-
+                        dsUsuario.Add(controleAcesso.Usuario);                    
+                        dsControleACesso.Add(controleAcesso);
                         _context.SaveChanges();
 
-                        string sql = "INSERT INTO[dbo].[ControleAcesso] ([login], [senha], [idUsuario]) VALUES ({0}, {1}, {2})";
-                        _context.Database.ExecuteSqlRaw(sql, controleAcesso.Usuario.Email, controleAcesso.Senha, controleAcesso.IdUsuario);
-
+                    /*                                       
                         dbContextTransaction.Commit();
-                        return true;
+                    */
+                    return true;
                     }
                     catch (Exception)
                     {
-                        dbContextTransaction.Rollback();
+                        //dbContextTransaction.Rollback();
                     }
-                }
+                //}
 
             }
             return false;
@@ -50,19 +55,50 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             return _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
         }
 
-        public Usuario GetUsuarioByEmail(string login)
+        public Usuario GetUsuarioByEmail(string email)
         {
-            return _context.Usuario.SingleOrDefault(prop => prop.Email.Equals(login));
+            return _context.Usuario.SingleOrDefault(prop => prop.Email.Equals(email));
         }
 
         public bool RecoveryPassword(string email)
         {
-            Usuario usuario = GetUsuarioByEmail(email);
-            if (usuario == null)
+            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email});
+            controleAcesso.Usuario = GetUsuarioByEmail(email);
+
+            if (controleAcesso == null)
                 return false;
 
             using (_context)
             {
+                DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
+
+                var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
+                try
+                {
+                    var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
+                    controleAcesso.Senha = senhaNova;
+                    _context.Entry(result).CurrentValues.SetValues(controleAcesso);
+                    _context.SaveChanges();
+
+                    var resultUsuario = this.GetUsuarioByEmail(controleAcesso.Login);
+                    var dataSet = _context.Set<Usuario>();
+                    Usuario usaurio = new Usuario
+                    {
+                        Id = controleAcesso.IdUsuario,
+                        StatusUsuario = StatusUsuario.Ativo
+                    };
+                    _context.Entry(resultUsuario).CurrentValues.SetValues(usaurio);
+                    _context.SaveChanges();                    
+                    EnviarEmail(controleAcesso.Usuario, "<b>Nova senha:</b>" + senhaNova);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+
+                /*
                 using (var dbContextTransaction = _context.Database.BeginTransaction())
                 {
                     try
@@ -84,6 +120,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                         dbContextTransaction.Rollback();
                     }
                 }
+                */
             }
             return false;
         }
@@ -94,18 +131,20 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             client.Host = "smtp.gmail.com";
             client.Port = 587;
             client.EnableSsl = true;
-            client.Credentials = new System.Net.NetworkCredential("appdespesaspessoais@gmail.com", "roottoor");
+            client.Credentials = new NetworkCredential("appdespesaspessoais@gmail.com", "roottoor");
             MailMessage mail = new MailMessage();
             mail.Sender = new System.Net.Mail.MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
             mail.From = new MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
-            mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.sobreNome));
+            mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.SobreNome));
             mail.Subject = "Contato";
-            mail.Body = " Mensagem do site:<br/> Prezado(a)   " + usuario.Nome + " " + usuario.sobreNome + "<br/>Segue dados para acesso a conta cadastrada.<br><b>E-mail:</b> " + usuario.Email + " <br/> " + message;
+            mail.Body = " Mensagem do site:<br/> Prezado(a)   " + usuario.Nome + " " + usuario.SobreNome + "<br/>Segue dados para acesso a conta cadastrada.<br><b>E-mail:</b> " + usuario.Email + " <br/> " + message;
             mail.IsBodyHtml = true;
             mail.Priority = MailPriority.High;
+
             try
             {
-                //client.Send(mail);
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+                client.Send(mail);
             }
             catch (Exception erro)
             {

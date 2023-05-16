@@ -2,7 +2,7 @@
 {
     public class Receita : BaseModel
     {
-        public DateTime data { get; set; }
+        public DateTime Data { get; set; }
         public String Descricao { get; set; }
         public Decimal Valor { get; set; }
         public int IdUsuario { get; set; }

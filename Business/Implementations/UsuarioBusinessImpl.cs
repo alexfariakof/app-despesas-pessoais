@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
@@ -11,7 +12,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
         {
             _repositorio = repositorio;
-            
+
         }
         public Usuario Create(Usuario usuario)
         {
@@ -38,6 +39,5 @@ namespace despesas_backend_api_net_core.Business.Implementations
         {
             _repositorio.Delete(idUsuario);
         }
-
     }
 }

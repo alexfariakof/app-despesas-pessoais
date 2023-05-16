@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Common
@@ -17,15 +18,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
         public DbSet<Despesa> Despesa { get; set; }
         public DbSet<Receita> Receita { get; set; }
         public DbSet<Categoria> Categoria{ get; set; }
-        public DbSet<Lancamento> Lancamento{ get; set; }
-        
+        public DbSet<Lancamento> Lancamento{ get; set; }       
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfiguration(new CategoriaMap());
-        }
     }
 }
 
