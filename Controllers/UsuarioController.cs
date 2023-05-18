@@ -42,19 +42,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] UsuarioVO usuarioVO)
         {
 
-            var usuario = new Usuario
-            {
-                Id = usuarioVO.Id,
-                Nome = usuarioVO.Nome,
-                SobreNome = usuarioVO.SobreNome,
-                Email = usuarioVO.Email,
-                Telefone = usuarioVO.Telefone,
-                StatusUsuario = StatusUsuario.Ativo
-            };
-
-            if (usuario == null)
+            if (usuarioVO == null)
                 return BadRequest();
-            return new ObjectResult(_usuarioBusiness.Create(usuario));
+            return new ObjectResult(_usuarioBusiness.Create(usuarioVO));
         }
 
         [HttpPut]
@@ -62,20 +52,11 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Put([FromBody] UsuarioVO usuarioVO)
         {
 
-            var usuario = new Usuario
-            {
-                Id = usuarioVO.Id,
-                Nome = usuarioVO.Nome,
-                SobreNome = usuarioVO.SobreNome,
-                Email = usuarioVO.Email,
-                Telefone = usuarioVO.Telefone,
-                StatusUsuario = StatusUsuario.Ativo
-            };
-
-            if (usuario == null)
+   
+            if (usuarioVO == null)
                 return BadRequest();
 
-            Usuario updateUsuario = _usuarioBusiness.Update(usuario);
+            Usuario updateUsuario = _usuarioBusiness.Update(usuarioVO);
             if (updateUsuario == null)
                 return NoContent();
 

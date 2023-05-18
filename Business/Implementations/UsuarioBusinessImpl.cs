@@ -1,11 +1,12 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VO;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class UsuarioBusinessImpl : IBusiness<Usuario>
+    public class UsuarioBusinessImpl : IBusiness<UsuarioVO>
     {
         private IRepositorio<Usuario> _repositorio;
 
@@ -14,8 +15,18 @@ namespace despesas_backend_api_net_core.Business.Implementations
             _repositorio = repositorio;
 
         }
-        public Usuario Create(Usuario usuario)
+        public Usuario Create(UsuarioVO usuarioVO)
         {
+
+            var usuario = new Usuario
+            {
+                Id = usuarioVO.Id,
+                Nome = usuarioVO.Nome,
+                SobreNome = usuarioVO.SobreNome,
+                Email = usuarioVO.Email,
+                Telefone = usuarioVO.Telefone,
+                StatusUsuario = StatusUsuario.Ativo
+            };
             return _repositorio.Insert(usuario);
         }
 
@@ -29,8 +40,18 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _repositorio.Get(idUsuario);
         }
 
-        public Usuario Update(Usuario usuario)
-        {           
+        public Usuario Update(UsuarioVO usuarioVO)
+        {
+            var usuario = new Usuario
+            {
+                Id = usuarioVO.Id,
+                Nome = usuarioVO.Nome,
+                SobreNome = usuarioVO.SobreNome,
+                Email = usuarioVO.Email,
+                Telefone = usuarioVO.Telefone,
+                StatusUsuario = StatusUsuario.Ativo
+            };
+
 
             return _repositorio.Update(usuario);
         }
