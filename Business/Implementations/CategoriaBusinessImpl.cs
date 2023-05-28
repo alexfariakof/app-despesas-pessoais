@@ -1,36 +1,39 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class CategoriaBusinessImpl : IBusiness<Categoria>
+    public class CategoriaBusinessImpl : IBusiness<CategoriaVM>
     {
         private readonly IRepositorio<Categoria> _repositorio;
-
+        private readonly CategoriaMap _converter;
         public CategoriaBusinessImpl(IRepositorio<Categoria> repositorio)
         {
             _repositorio = repositorio;
         }
-        public Categoria Create(Categoria obj)
+        public CategoriaVM Create(CategoriaVM obj)
         {
-            return _repositorio.Insert(obj);
+            Categoria categoria = _converter.Parse(obj);
+            return _converter.Parse(_repositorio.Insert(categoria)); ;
         }
 
-        public List<Categoria> FindAll()
+        public List<CategoriaVM> FindAll()
         {
-            return _repositorio.GetAll();
+            return _converter.ParseList(_repositorio.GetAll());
         }      
 
-        public Categoria FindById(int id)
+        public CategoriaVM FindById(int id)
         {
-            return _repositorio.Get(id);
+            return _converter.Parse(_repositorio.Get(id));
         }
 
-        public Categoria Update(Categoria obj)
-        {           
-
-            return _repositorio.Update(obj);
+        public CategoriaVM Update(CategoriaVM obj)
+        {
+            Categoria categoria = _converter.Parse(obj);
+            return _converter.Parse(_repositorio.Update(categoria));
         }
 
         public void Delete(int id)

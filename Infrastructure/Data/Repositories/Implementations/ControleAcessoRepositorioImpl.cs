@@ -1,5 +1,5 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VO;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;

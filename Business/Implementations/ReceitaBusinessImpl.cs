@@ -1,36 +1,43 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class ReceitaBusinessImpl : IBusiness<Receita>
+    public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
     {
         private readonly IRepositorio<Receita> _repositorio;
+        private readonly ReceitaMap _converter;
 
         public ReceitaBusinessImpl(IRepositorio<Receita> repositorio)
         {
             _repositorio = repositorio;
+            _converter = new ReceitaMap();
         }
-        public Receita Create(Receita obj)
+        public ReceitaVM Create(ReceitaVM obj)
         {
-            return _repositorio.Insert(obj);
+            Receita receita = _repositorio.Insert(_converter.Parse(obj));
+            return _converter.Parse(receita);
         }
 
-        public List<Receita> FindAll()
+        public List<ReceitaVM> FindAll()
         {
-            return _repositorio.GetAll();
+            return _converter.ParseList(_repositorio.GetAll());
         }      
 
-        public Receita FindById(int id)
+        public ReceitaVM FindById(int id)
         {
-            return _repositorio.Get(id);
+            return _converter.Parse(_repositorio.Get(id));
         }
 
-        public Receita Update(Receita obj)
-        {           
+        public ReceitaVM Update(ReceitaVM obj)
+        {
 
-            return _repositorio.Update(obj);
+            Receita receita = _repositorio.Update(_converter.Parse(obj));
+            return _converter.Parse(receita);
+
         }
 
         public void Delete(int id)

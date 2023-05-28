@@ -1,5 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +9,9 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class CategoriaController : Controller
     {
-        private IBusiness<Categoria> _categoriaBusiness;
+        private IBusiness<CategoriaVM> _categoriaBusiness;
 
-        public CategoriaController(IBusiness<Categoria> categoriaBusiness)
+        public CategoriaController(IBusiness<CategoriaVM> categoriaBusiness)
         {
             _categoriaBusiness = categoriaBusiness;
         }
@@ -27,7 +27,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get(int id)
         {
-            Categoria _categoria = _categoriaBusiness.FindById(id);
+            CategoriaVM _categoria = _categoriaBusiness.FindById(id);
 
             if (_categoria == null)
                 return NotFound();
@@ -37,7 +37,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpGet("byTipoCategoria/{idUsuario}/{idTipoCategoria}")]
         [Authorize("Bearer")]
-        public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] TipoCategoria tipoCategoria)
+        public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {
             var _categoria = _categoriaBusiness.FindAll()
                 .FindAll(prop => prop.IdTipoCategoria.Equals(tipoCategoria) &&
@@ -47,49 +47,49 @@ namespace despesas_backend_api_net_core.Controllers
 
             if (tipoCategoria.Equals(1))
             {
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 1,
                     Descricao = "Alimentação",
                     IdTipoCategoria = 1                    
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 2,
                     Descricao = "Casa",
                     IdTipoCategoria = 1
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 3,
                     Descricao = "Serviços",
                     IdTipoCategoria = 1
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 4,
                     Descricao = "Saúde",
                     IdTipoCategoria = 1
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 5,
                     Descricao = "Imposto",
                     IdTipoCategoria = 1
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 6,
                     Descricao = "Transporte",
                     IdTipoCategoria = 1
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 7,
                     Descricao = "Lazer",
                     IdTipoCategoria = 1
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 8,
                     Descricao = "Outros",
@@ -98,31 +98,31 @@ namespace despesas_backend_api_net_core.Controllers
             }
             else
             {
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 1,
                     Descricao = "Salário",
                     IdTipoCategoria = 2
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 2,
                     Descricao = "Prêmio",
                     IdTipoCategoria = 2
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 3,
                     Descricao = "Investimento",
                     IdTipoCategoria = 2
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 4,
                     Descricao = "Benefício",
                     IdTipoCategoria = 2
                 });
-                _categoria.Add(new Categoria
+                _categoria.Add(new CategoriaVM
                 {
                     Id = 5,
                     Descricao = "Outros",
@@ -137,7 +137,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         [Authorize("Bearer")]
-        public IActionResult Post([FromBody] Categoria categoria)
+        public IActionResult Post([FromBody] CategoriaVM categoria)
         {
             if (categoria == null)
                 return BadRequest();
@@ -154,12 +154,12 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPut]
         [Authorize("Bearer")]
-        public IActionResult Put([FromBody] Categoria categoria)
+        public IActionResult Put([FromBody] CategoriaVM categoria)
         {
             if (categoria == null)
                 return BadRequest();
 
-            Categoria updateCategoria = _categoriaBusiness.Update(categoria);
+            CategoriaVM updateCategoria = _categoriaBusiness.Update(categoria);
             if (updateCategoria == null)
                 return NoContent();
 

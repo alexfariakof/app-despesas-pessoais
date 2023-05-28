@@ -1,5 +1,5 @@
-﻿namespace despesas_backend_api_net_core.Domain.VO
-{    public class ControleAcessoVO
+﻿namespace despesas_backend_api_net_core.Domain.VM
+{    public class ControleAcessoVM
     {
         public string Nome { get; set; }
         public string SobreNome { get; set; }

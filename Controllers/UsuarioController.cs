@@ -1,6 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VO;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +10,9 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
-        private IBusiness<Usuario> _usuarioBusiness;
+        private IBusiness<UsuarioVM> _usuarioBusiness;
 
-        public UsuarioController(IBusiness<Usuario> usuarioBusiness)
+        public UsuarioController(IBusiness<UsuarioVM> usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;            
         }
@@ -29,7 +29,7 @@ namespace despesas_backend_api_net_core.Controllers
         [HttpPost("GetById")]
         public IActionResult Post([FromBody] int id)
         {
-            Usuario _usuario = _usuarioBusiness.FindById(id);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(id);
 
             if (_usuario == null)
                 return NotFound();
@@ -39,7 +39,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         [Authorize("Bearer")]
-        public IActionResult Post([FromBody] UsuarioVO usuarioVO)
+        public IActionResult Post([FromBody] UsuarioVM usuarioVO)
         {
 
             if (usuarioVO == null)
@@ -49,14 +49,14 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPut]
         [Authorize("Bearer")]
-        public IActionResult Put([FromBody] UsuarioVO usuarioVO)
+        public IActionResult Put([FromBody] UsuarioVM usuarioVO)
         {
 
    
             if (usuarioVO == null)
                 return BadRequest();
 
-            Usuario updateUsuario = _usuarioBusiness.Update(usuarioVO);
+            UsuarioVM updateUsuario = _usuarioBusiness.Update(usuarioVO);
             if (updateUsuario == null)
                 return NoContent();
 

@@ -1,8 +1,8 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 
-namespace despesas_backend_api_net_core.Domain.VO
+namespace despesas_backend_api_net_core.Domain.VM
 {
-    public class UsuarioVO : BaseModel
+    public class UsuarioVM : BaseModel
     {
         public string Nome { get; set; }
         public string SobreNome { get; set; }

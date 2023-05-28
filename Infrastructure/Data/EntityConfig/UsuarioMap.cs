@@ -1,12 +1,12 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VO;
+using despesas_backend_api_net_core.Domain.VM;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
-    public class UsuarioMap : IParser<UsuarioVO, Usuario>, IParser<Usuario, UsuarioVO>
+    public class UsuarioMap : IParser<UsuarioVM, Usuario>, IParser<Usuario, UsuarioVM>
     {
 
-        public Usuario Parse(UsuarioVO origin)
+        public Usuario Parse(UsuarioVM origin)
         {
             if (origin == null) return new Usuario();
             return new Usuario
@@ -14,33 +14,33 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Id  = origin.Id,
                 Email = origin.Email,
                 Nome = origin.Nome,
-                sobreNome = origin.sobreNome,
-                telefone = origin.telefone                
+                SobreNome = origin.SobreNome,
+                Telefone = origin.Telefone                
             };
         }
 
-        public UsuarioVO Parse(Usuario origin)
+        public UsuarioVM Parse(Usuario origin)
         {
-            if (origin == null) return new UsuarioVO();
-            return new UsuarioVO
+            if (origin == null) return new UsuarioVM();
+            return new UsuarioVM
             {
                 Id = origin.Id,
                 Email = origin.Email,
                 Nome = origin.Nome,
-                sobreNome = origin.sobreNome,
-                telefone = origin.telefone
+                SobreNome = origin.SobreNome,
+                Telefone = origin.Telefone
             };
         }
 
-        public List<Usuario> ParseList(List<UsuarioVO> origin)
+        public List<Usuario> ParseList(List<UsuarioVM> origin)
         {
             if (origin == null) return new List<Usuario>();
             return origin.Select(item => Parse(item)).ToList();
         }
 
-        public List<UsuarioVO> ParseList(List<Usuario> origin)
+        public List<UsuarioVM> ParseList(List<Usuario> origin)
         {
-            if (origin == null) return new List<UsuarioVO>();
+            if (origin == null) return new List<UsuarioVM>();
             return origin.Select(item => Parse(item)).ToList();
         }
     }

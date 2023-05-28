@@ -1,7 +1,7 @@
 ﻿
-namespace despesas_backend_api_net_core.Domain.VO
+namespace despesas_backend_api_net_core.Domain.VM
 {
-    public class LancamentoVO
+    public class LancamentoVM
     {
         public int Id { get; set; }
         public int IdUsuario { get; set; }

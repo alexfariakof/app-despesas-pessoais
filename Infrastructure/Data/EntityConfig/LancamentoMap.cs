@@ -1,11 +1,11 @@
-﻿using despesas_backend_api_net_core.Domain.VO;
+﻿using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Domain.Entities;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
-    public class LancamentoMap : IParser<LancamentoVO, Lancamento>, IParser<Lancamento, LancamentoVO>
+    public class LancamentoMap : IParser<LancamentoVM, Lancamento>, IParser<Lancamento, LancamentoVM>
     {
-        public Lancamento Parse(LancamentoVO origin)
+        public Lancamento Parse(LancamentoVM origin)
         {
             if (origin == null) return new Lancamento();
             return new Lancamento
@@ -22,10 +22,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             };
         }
 
-        public LancamentoVO Parse(Lancamento origin)
+        public LancamentoVM Parse(Lancamento origin)
         {
-            if (origin == null) return new LancamentoVO();
-            return new LancamentoVO
+            if (origin == null) return new LancamentoVM();
+            return new LancamentoVM
             {
                 Id = origin.Id,
                 IdDespesa = origin.IdDespesa,
@@ -38,15 +38,15 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             };
         }
 
-        public List<Lancamento> ParseList(List<LancamentoVO> origin)
+        public List<Lancamento> ParseList(List<LancamentoVM> origin)
         {
             if (origin == null) return new List<Lancamento>();
             return origin.Select(item => Parse(item)).ToList();
         }
 
-        public List<LancamentoVO> ParseList(List<Lancamento> origin)
+        public List<LancamentoVM> ParseList(List<Lancamento> origin)
         {
-            if (origin == null) return new List<LancamentoVO>();
+            if (origin == null) return new List<LancamentoVM>();
             return origin.Select(item => Parse(item)).ToList();
         }
     }

@@ -1,5 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +9,9 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class DespesaController : Controller
     {
-        private IBusiness<Despesa> _despesaBusiness;
+        private IBusiness<DespesaVM> _despesaBusiness;
 
-        public DespesaController(IBusiness<Despesa> despesaBusiness)
+        public DespesaController(IBusiness<DespesaVM> despesaBusiness)
         {
             _despesaBusiness = despesaBusiness;
         }
@@ -29,7 +29,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                Despesa _despesa = _despesaBusiness.FindById(id);
+                var _despesa = _despesaBusiness.FindById(id);
 
                 if (_despesa == null)
                     return Ok( new { message = "Nenhuma despesa foi encontrada."});
@@ -44,7 +44,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         [Authorize("Bearer")]
-        public IActionResult Post([FromBody] Despesa despesa)
+        public IActionResult Post([FromBody] DespesaVM despesa)
         {
             if (despesa == null)
                 return BadRequest();
@@ -60,12 +60,12 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPut]
         [Authorize("Bearer")]
-        public IActionResult Put([FromBody] Despesa despesa)
+        public IActionResult Put([FromBody] DespesaVM despesa)
         {
             if (despesa == null)
                 return BadRequest();
 
-            Despesa updateDespesa = _despesaBusiness.Update(despesa);
+            var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
                 return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });
 

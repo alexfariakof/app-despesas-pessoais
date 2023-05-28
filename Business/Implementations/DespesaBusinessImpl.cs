@@ -1,36 +1,40 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace apiDespesasPessoais.Business.Implementations
 {
-    public class DespesaBusinessImpl : IBusiness<Despesa>
+    public class DespesaBusinessImpl : IBusiness<DespesaVM>
     {
         private readonly IRepositorio<Despesa> _repositorio;
-
+        private readonly DespesaMap _converter;
         public DespesaBusinessImpl(IRepositorio<Despesa> repositorio)
         {
             _repositorio = repositorio;
+            _converter = new DespesaMap();
         }
-        public Despesa Create(Despesa obj)
+        public DespesaVM Create(DespesaVM obj)
         {
-            return _repositorio.Insert(obj);
+            Despesa despesa = _repositorio.Insert(_converter.Parse(obj));
+            return _converter.Parse(despesa);
         }
 
-        public List<Despesa> FindAll()
+        public List<DespesaVM> FindAll()
         {
-            return _repositorio.GetAll();
+            return _converter.ParseList(_repositorio.GetAll());
         }      
 
-        public Despesa FindById(int id)
+        public DespesaVM FindById(int id)
         {
-            return _repositorio.Get(id);
+            return _converter.Parse(_repositorio.Get(id));
         }
 
-        public Despesa Update(Despesa obj)
-        {           
-
-            return _repositorio.Update(obj);
+        public DespesaVM Update(DespesaVM obj)
+        {
+            Despesa despesa = _repositorio.Update(_converter.Parse(obj));
+            return _converter.Parse(despesa);
         }
 
         public void Delete(int id)

@@ -1,5 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +9,9 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class ReceitaController : Controller
     {
-        private IBusiness<Receita> _receitaBusiness;
+        private IBusiness<ReceitaVM> _receitaBusiness;
 
-        public ReceitaController(IBusiness<Receita> receitaBusiness)
+        public ReceitaController(IBusiness<ReceitaVM> receitaBusiness)
         {
             _receitaBusiness = receitaBusiness;
         }
@@ -29,7 +29,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                Receita _receita = _receitaBusiness.FindById(id);
+                var _receita = _receitaBusiness.FindById(id);
 
                 if (_receita == null)
                     return Ok(new { message = "Nenhuma receita foi encontrada." });
@@ -44,7 +44,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         [Authorize("Bearer")]
-        public IActionResult Post([FromBody] Receita receita)
+        public IActionResult Post([FromBody] ReceitaVM receita)
         {
             if (receita == null)
                 return BadRequest();
@@ -61,12 +61,12 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPut]
         [Authorize("Bearer")]
-        public IActionResult Put([FromBody] Receita receita)
+        public IActionResult Put([FromBody] ReceitaVM receita)
         {
             if (receita == null)
                 return BadRequest();
 
-            Receita updateReceita = _receitaBusiness.Update(receita);
+            var updateReceita = _receitaBusiness.Update(receita);
 
             if (updateReceita == null)
                 return BadRequest(new { message = "Não foi possível atualizar o cadastro da receita." });

@@ -1,6 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VO;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ namespace despesas_backend_api_net_core.Controllers
         
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Post([FromBody] ControleAcessoVO controleAcessoVO)
+        public IActionResult Post([FromBody] ControleAcessoVM controleAcessoVO)
         {
 
             ControleAcesso controleAcesso = new ControleAcesso
@@ -50,7 +50,7 @@ namespace despesas_backend_api_net_core.Controllers
         
         [AllowAnonymous]
         [HttpPost("SignIn")]
-        public IActionResult SignIn([FromBody] LoginVO login)
+        public IActionResult SignIn([FromBody] LoginVM login)
         {
             var controleAcesso = new ControleAcesso { Login = login.Email , Senha = login.Senha };
             if (controleAcesso == null)
