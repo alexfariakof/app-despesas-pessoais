@@ -18,14 +18,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Get()
         {
            return Ok(_usuarioBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         [HttpPost("GetById")]
         public IActionResult Post([FromBody] int id)
         {
@@ -38,7 +38,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Post([FromBody] UsuarioVM usuarioVO)
         {
 
@@ -48,7 +48,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Put([FromBody] UsuarioVM usuarioVO)
         {
 
@@ -64,7 +64,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _usuarioBusiness.Delete(id);

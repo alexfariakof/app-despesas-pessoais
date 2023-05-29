@@ -6,7 +6,7 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")]
     public class LancamentoController : Controller
     {
         private ILancamentoBusiness _lancamentoBusiness;
@@ -16,7 +16,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("{mesAno}/{idUsuario}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Get(DateTime mesAno, int idUsuario)
         {
             var list = _lancamentoBusiness.FindByMesAno(mesAno, idUsuario);
@@ -28,7 +28,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("Saldo/{idUsuario}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Get(int idUsuario)
         {
             var saldo = _lancamentoBusiness.GetSaldo(idUsuario);

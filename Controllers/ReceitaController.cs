@@ -17,14 +17,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_receitaBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult GetById(int id)
         {
             try
@@ -43,7 +43,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Post([FromBody] ReceitaVM receita)
         {
             if (receita == null)
@@ -60,7 +60,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Put([FromBody] ReceitaVM receita)
         {
             if (receita == null)
@@ -75,7 +75,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _receitaBusiness.Delete(id);
