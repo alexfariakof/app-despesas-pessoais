@@ -1,10 +1,17 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
-    public class CategoriaMap : IParser<CategoriaVM, Categoria>, IParser<Categoria, CategoriaVM>
+    public class CategoriaMap : IParser<CategoriaVM, Categoria>, IParser<Categoria, CategoriaVM>, IEntityTypeConfiguration<Categoria>
     {
+
+        public void Configure(EntityTypeBuilder<Categoria> builder)
+        {
+            builder.HasKey(m => m.Id);
+        }
 
         public Categoria Parse(CategoriaVM origin)
         {
