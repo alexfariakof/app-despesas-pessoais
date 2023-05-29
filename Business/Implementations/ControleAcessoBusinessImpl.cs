@@ -31,8 +31,11 @@ namespace apiDespesasPessoais.Business.Implementations
         {
             bool credentialsValid = false;
 
-            if (_repositorio.GetUsuarioByEmail(controleAcesso.Login).StatusUsuario == StatusUsuario.Inativo)
-                return ExceptionObject();
+            var usuario  =_repositorio.GetUsuarioByEmail(controleAcesso.Login);
+            if (usuario == null)                
+                return new Exception("Usuário inexistente!");
+            else if(usuario.StatusUsuario == StatusUsuario.Inativo)
+                return new Exception("Usuário Inativo!");
 
             if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
             {
@@ -59,7 +62,7 @@ namespace apiDespesasPessoais.Business.Implementations
             }
             else
             {
-                return ExceptionObject();
+                return new Exception("Usuário inválido!");
             }            
         }
 
