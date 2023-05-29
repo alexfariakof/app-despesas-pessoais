@@ -21,30 +21,112 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         public bool Create(ControleAcesso controleAcesso)
         {
             //Como Esta utilizando dados em memoria BeginTransaction não é aceito 
+            DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
             DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
 
             using (_context)
             {
-                
-                //using (var dbContextTransaction = _context.Database.BeginTransaction())
-                //{
-                    try
-                    {
-                        dsUsuario.Add(controleAcesso.Usuario);                    
-                        dsControleACesso.Add(controleAcesso);
-                        _context.SaveChanges();
 
-                    /*                                       
-                        dbContextTransaction.Commit();
-                    */
-                    return true;
-                    }
-                    catch (Exception)
+                try
+                {
+                    dsUsuario.Add(controleAcesso.Usuario);
+                    dsControleACesso.Add(controleAcesso);
+
+                    List<Categoria> lstCategoria = new List<Categoria>();
+                    lstCategoria.Add(new Categoria
+                    {                        
+                        Descricao = "Alimentação",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
                     {
-                        //dbContextTransaction.Rollback();
+                        Descricao = "Casa",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Serviços",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Saúde",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Imposto",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Transporte",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Lazer",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Outros",
+                        IdTipoCategoria = 1,
+                        TipoCategoria = TipoCategoria.Despesa
+                    });
+
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Salário",
+                        IdTipoCategoria = 2,
+                        TipoCategoria = TipoCategoria.Receita
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Prêmio",
+                        IdTipoCategoria = 2,
+                        TipoCategoria = TipoCategoria.Receita
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Investimento",
+                        IdTipoCategoria = 2,
+                        TipoCategoria = TipoCategoria.Receita
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Benefício",
+                        IdTipoCategoria = 2,
+                        TipoCategoria = TipoCategoria.Receita
+                    });
+                    lstCategoria.Add(new Categoria
+                    {
+                        Descricao = "Outros",
+                        IdTipoCategoria = 2,
+                        TipoCategoria = TipoCategoria.Receita
+                    });
+                    foreach (Categoria categoria in lstCategoria)
+                    {
+                        categoria.IdUsuario = controleAcesso.Usuario.Id;
+                        categoria.Usuario = controleAcesso.Usuario;
+                        dsCategoria.Add(categoria);
                     }
-                //}
+                    _context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                
 
             }
             return false;
@@ -62,7 +144,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
         public bool RecoveryPassword(string email)
         {
-            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email});
+            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
             controleAcesso.Usuario = GetUsuarioByEmail(email);
 
             if (controleAcesso == null)
@@ -88,7 +170,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                         StatusUsuario = StatusUsuario.Ativo
                     };
                     _context.Entry(resultUsuario).CurrentValues.SetValues(usaurio);
-                    _context.SaveChanges();                    
+                    _context.SaveChanges();
                     EnviarEmail(controleAcesso.Usuario, "<b>Nova senha:</b>" + senhaNova);
                     return true;
                 }
@@ -125,6 +207,27 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             return false;
         }
 
+        public bool ChangePassword(int idUsuario, string password)
+        {
+            Usuario usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
+            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
+            DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
+
+            var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
+            try
+            {
+                controleAcesso.Senha = password;
+                _context.Entry(result).CurrentValues.SetValues(controleAcesso);
+                usuario.StatusUsuario = StatusUsuario.Ativo;
+                _context.Entry(usuario).CurrentValues.SetValues(usuario);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         private void EnviarEmail(Usuario usuario, String message)
         {
             System.Net.Mail.SmtpClient client = new SmtpClient();

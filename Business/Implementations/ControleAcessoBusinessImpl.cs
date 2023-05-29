@@ -68,6 +68,11 @@ namespace apiDespesasPessoais.Business.Implementations
             return _repositorio.RecoveryPassword(email);
         }
 
+        public bool ChangePassword(int idUsuario, string password)
+        {
+            return _repositorio.ChangePassword(idUsuario, password);
+        }
+
         private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler)
         {
             Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor

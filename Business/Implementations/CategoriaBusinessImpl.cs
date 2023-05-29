@@ -13,6 +13,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         public CategoriaBusinessImpl(IRepositorio<Categoria> repositorio)
         {
             _repositorio = repositorio;
+            _converter = new CategoriaMap();
         }
         public CategoriaVM Create(CategoriaVM obj)
         {
@@ -22,7 +23,8 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public List<CategoriaVM> FindAll()
         {
-            return _converter.ParseList(_repositorio.GetAll());
+            var lstCategoria = _repositorio.GetAll();
+            return _converter.ParseList(lstCategoria);
         }      
 
         public CategoriaVM FindById(int id)

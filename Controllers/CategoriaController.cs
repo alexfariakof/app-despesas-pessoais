@@ -35,100 +35,17 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_categoria);
         }
 
-        [HttpGet("byTipoCategoria/{idUsuario}/{idTipoCategoria}")]
+        [HttpGet("byTipoCategoria/{idUsuario}/{tipoCategoria}")]
         [Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {
             var _categoria = _categoriaBusiness.FindAll()
-                .FindAll(prop => prop.IdTipoCategoria.Equals(tipoCategoria) &&
+                .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)) &&
                                 (prop.IdUsuario.Equals(idUsuario) ||
                                  prop.IdUsuario == null ||
                                  prop.IdUsuario.Equals(0)));
 
-            if (tipoCategoria.Equals(1))
-            {
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 1,
-                    Descricao = "Alimentação",
-                    IdTipoCategoria = 1                    
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 2,
-                    Descricao = "Casa",
-                    IdTipoCategoria = 1
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 3,
-                    Descricao = "Serviços",
-                    IdTipoCategoria = 1
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 4,
-                    Descricao = "Saúde",
-                    IdTipoCategoria = 1
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 5,
-                    Descricao = "Imposto",
-                    IdTipoCategoria = 1
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 6,
-                    Descricao = "Transporte",
-                    IdTipoCategoria = 1
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 7,
-                    Descricao = "Lazer",
-                    IdTipoCategoria = 1
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 8,
-                    Descricao = "Outros",
-                    IdTipoCategoria = 1
-                }); 
-            }
-            else
-            {
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 1,
-                    Descricao = "Salário",
-                    IdTipoCategoria = 2
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 2,
-                    Descricao = "Prêmio",
-                    IdTipoCategoria = 2
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 3,
-                    Descricao = "Investimento",
-                    IdTipoCategoria = 2
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 4,
-                    Descricao = "Benefício",
-                    IdTipoCategoria = 2
-                });
-                _categoria.Add(new CategoriaVM
-                {
-                    Id = 5,
-                    Descricao = "Outros",
-                    IdTipoCategoria = 2
-                });
-            }
+  
             if (_categoria == null)
                 return NotFound();
 
