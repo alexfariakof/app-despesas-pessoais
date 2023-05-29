@@ -11,7 +11,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasKey(m => m.Id);
-            builder.HasIndex(m => m.Email).IsUnique();
+            builder.HasIndex(m => m.Email).IsUnique(true);
             builder.Property(m => m.Email)
             .IsRequired()
             .HasMaxLength(100);

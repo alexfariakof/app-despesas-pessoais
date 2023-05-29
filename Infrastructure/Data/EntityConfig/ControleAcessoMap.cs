@@ -10,7 +10,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public void Configure(EntityTypeBuilder<ControleAcesso> builder)
         {
             builder.HasKey(m => m.Id);
-            builder.HasIndex(m => m.Login).IsUnique();
+            builder.HasIndex(m => m.Login).IsUnique(true);
             builder.Property(m => m.Login)
             .IsRequired()
             .HasMaxLength(100);
