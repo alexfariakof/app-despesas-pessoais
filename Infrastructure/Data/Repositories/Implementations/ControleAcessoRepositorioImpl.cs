@@ -20,7 +20,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
         public bool Create(ControleAcesso controleAcesso)
         {
-            //Como Esta utilizando dados em memoria BeginTransaction não é aceito 
+            if (FindByEmail(controleAcesso) != null)
+                return false;
+            
             DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
             DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
@@ -179,30 +181,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     throw ex;
                 }
 
-
-                /*
-                using (var dbContextTransaction = _context.Database.BeginTransaction())
-                {
-                    try
-                    {
-
-                        string sql = "UPDATE ControleAcesso SET senha = {0} WHERE login = {1}";
-
-                        var senhaNova = Guid.NewGuid().ToString().Substring(0,8);
-
-                        _context.Database.ExecuteSqlRaw(sql, senhaNova, usuario.Email);
-
-                        EnviarEmail(usuario, "<b>Nova senha:</b>" + senhaNova);
-                        
-                        dbContextTransaction.Commit();
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        dbContextTransaction.Rollback();
-                    }
-                }
-                */
             }
             return false;
         }
