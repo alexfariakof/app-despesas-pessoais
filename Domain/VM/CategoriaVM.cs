@@ -6,8 +6,8 @@ namespace despesas_backend_api_net_core.Domain.VM
     {
         public string Descricao { get; set; }
         public int? IdUsuario { get; set; }
-        public virtual UsuarioVM Usuario { get; set; }
+        internal virtual UsuarioVM Usuario { get; set; }
         public int IdTipoCategoria { get; set; }
-        public virtual TipoCategoria TipoCategoria { get; set; }
+        internal virtual TipoCategoria TipoCategoria { get; set; }
     }
 }
