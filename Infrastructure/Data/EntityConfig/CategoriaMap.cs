@@ -11,6 +11,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public void Configure(EntityTypeBuilder<Categoria> builder)
         {
             builder.HasKey(m => m.Id);
+
+            builder.Property(m => m.Descricao)
+            .IsRequired(false)
+            .HasMaxLength(100);
         }
 
         public Categoria Parse(CategoriaVM origin)
@@ -22,7 +26,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Descricao = origin.Descricao,
                 IdTipoCategoria = origin.IdTipoCategoria,
                 TipoCategoria = origin.TipoCategoria,
-                IdUsuario = origin.IdUsuario,
+                UsuarioId = origin.IdUsuario,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)
             };
         }
@@ -36,7 +40,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Descricao = origin.Descricao,
                 IdTipoCategoria = origin.IdTipoCategoria,
                 TipoCategoria = origin.TipoCategoria,
-                IdUsuario = origin.IdUsuario,
+                IdUsuario = origin.UsuarioId,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)
                 
             };

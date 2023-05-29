@@ -5,7 +5,7 @@
         public DateTime Data { get; set; }
         public String Descricao { get; set; }
         public Decimal Valor { get; set; }
-        public int IdUsuario { get; set; }
+        public int UsuarioId { get; set; }
         public virtual Usuario  Usuario { get; set; }
         public int IdCategoria { get; set; }
         public virtual Categoria Categoria { get; set; }

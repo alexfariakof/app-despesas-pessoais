@@ -11,9 +11,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public void Configure(EntityTypeBuilder<ControleAcesso> builder)
         {
             builder.HasKey(m => m.Id);
-            builder.HasIndex(m => m.Login)
-                .HasDatabaseName("UX_IDTypes_Code")
+                
+            builder.HasIndex(m => m.Login)                
                 .IsUnique(true);
+
+            builder.Property(x => x.UsuarioId).IsRequired();
+
             builder.Property(m => m.Login)
             .IsRequired()
             .HasMaxLength(100) ;

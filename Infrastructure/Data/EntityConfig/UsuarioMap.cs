@@ -11,12 +11,26 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasKey(m => m.Id);
+
             builder.HasIndex(m => m.Email)
-                .HasDatabaseName("UX_IDTypes_Code")
                 .IsUnique(true);
             builder.Property(m => m.Email)
             .IsRequired()
             .HasMaxLength(100);
+
+            builder.Property(m => m.Nome)
+            .HasMaxLength(20)
+            .IsRequired();
+;
+            builder.Property(m => m.SobreNome)
+            .HasMaxLength(20)
+            .IsRequired();
+
+            builder.Property(m => m.Telefone)
+            .HasMaxLength(15)
+            .IsRequired(false)
+            ;
+
         }
         public Usuario Parse(UsuarioVM origin)
         {

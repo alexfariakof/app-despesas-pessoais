@@ -1,11 +1,29 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
-    public class ReceitaMap : IParser<ReceitaVM, Receita>, IParser<Receita, ReceitaVM>
+    public class ReceitaMap : IParser<ReceitaVM, Receita>, IParser<Receita, ReceitaVM>, IEntityTypeConfiguration<Receita>
     {
+        public void Configure(EntityTypeBuilder<Receita> builder)
+        {
+            builder.HasKey(m => m.Id);
 
+            builder.Property(m => m.Descricao)
+            .IsRequired(false)
+            .HasMaxLength(100);
+
+            builder.Property(m => m.Data)
+            .HasColumnType("timestamp")
+            .HasDefaultValue(DateTime.Now);
+            
+            builder.Property(m => m.Valor)
+                .HasColumnType("decimal(10, 2)")
+                .HasDefaultValue(0);
+
+        }
         public Receita Parse(ReceitaVM origin)
         {
             if (origin == null) return new Receita();
@@ -17,7 +35,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor,
                 IdCategoria =origin.IdCategoria,
                 Categoria = new CategoriaMap().Parse(origin.Categoria),
-                IdUsuario = origin.IdUsuario,
+                UsuarioId = origin.IdUsuario,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)
             };
         }
@@ -33,7 +51,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor,
                 IdCategoria = origin.IdCategoria,
                 Categoria = new CategoriaMap().Parse(origin.Categoria),
-                IdUsuario = origin.IdUsuario,
+                IdUsuario = origin.UsuarioId,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)
 
             };

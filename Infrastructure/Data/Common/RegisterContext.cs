@@ -26,6 +26,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
             modelBuilder.ApplyConfiguration(new CategoriaMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new ControleAcessoMap());
+            modelBuilder.ApplyConfiguration(new DespesaMap());
+            modelBuilder.ApplyConfiguration(new ReceitaMap());
+            modelBuilder.ApplyConfiguration(new LancamentoMap());
 
         }
 

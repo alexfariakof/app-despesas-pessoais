@@ -1,16 +1,11 @@
-﻿using apiDespesasPessoais.Business.Implementations;
-using despesas_backend_api_net_core.Business;
-using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Infrastructure.Data.Common;
+﻿using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Moq;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +16,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+/*builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+ConfigureAutorization(builder.Services, builder.Configuration);*/
+builder.Services.AddDbContext<RegisterContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
