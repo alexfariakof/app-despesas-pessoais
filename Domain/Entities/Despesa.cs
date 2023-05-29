@@ -6,9 +6,9 @@
         public string Descricao { get; set; }
         public Decimal Valor { get; set; }
         public DateTime DataVencimento { get; set; }
-        public int IdUsuario { get; set; }
+        public int UsuarioId { get; set; }
         public virtual Usuario Usuario { get; set; }
-        public int IdCategoria { get; set; }
+        public int CategoriaId { get; set; }
         public virtual Categoria Categoria { get; set; }
 
 

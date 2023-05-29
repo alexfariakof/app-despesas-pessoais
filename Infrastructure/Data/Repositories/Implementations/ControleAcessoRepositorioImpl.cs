@@ -117,7 +117,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     });
                     foreach (Categoria categoria in lstCategoria)
                     {
-                        categoria.IdUsuario = controleAcesso.Usuario.Id;
+                        categoria.UsuarioId = controleAcesso.Usuario.Id;
                         categoria.Usuario = controleAcesso.Usuario;
                         dsCategoria.Add(categoria);
                     }
@@ -168,7 +168,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     var dataSet = _context.Set<Usuario>();
                     Usuario usaurio = new Usuario
                     {
-                        Id = controleAcesso.IdUsuario,
+                        Id = controleAcesso.UsuarioId,
                         StatusUsuario = StatusUsuario.Ativo
                     };
                     _context.Entry(resultUsuario).CurrentValues.SetValues(usaurio);
