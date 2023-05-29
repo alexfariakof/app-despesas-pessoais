@@ -6,9 +6,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
       - 80:80
       - 8080:80
