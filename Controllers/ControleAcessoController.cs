@@ -59,6 +59,19 @@ namespace despesas_backend_api_net_core.Controllers
             return new ObjectResult(_controleAcessoBusiness.FindByLogin(controleAcesso));
         }
 
+
+        [HttpPost("ChangePassword")]
+        [Authorize("Bearer")]
+        
+        public IActionResult ChangePassword([FromBody] LoginVM login)
+        {
+            if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.ToInteger(), login.Senha))
+                    return Ok(new { message = true });
+
+            return BadRequest(new { message = "Erro ao trocar senha tente novamente mis tarde ou entre em contato com nosso suporte." });
+        }
+
+
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
         public IActionResult RecoveryPassword([FromBody]  string email)
