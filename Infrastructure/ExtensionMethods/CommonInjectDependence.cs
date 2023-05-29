@@ -28,6 +28,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
+            services.AddScoped(typeof(IRepositorio<Usuario>), typeof(UsuarioRepositorioImpl));
             services.AddScoped(typeof(IControleAcessoRepositorio), typeof(ControleAcessoRepositorioImpl));
             services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));
 
