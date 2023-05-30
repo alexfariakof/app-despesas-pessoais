@@ -86,18 +86,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 if (result != null)
                 {
-                    if (result.Equals(typeof(Usuario)))
-                    {
-                        var dataSet = _context.Set<Usuario>();
-                        Usuario usaurio = new Usuario
-                        {
-                            Id = id,
-                            StatusUsuario = StatusUsuario.Inativo
-                        };
-                        _context.Entry(result).CurrentValues.SetValues(usaurio);
-                    }
+                    result.StatusUsuario = StatusUsuario.Inativo;
+                    _context.Entry(result).CurrentValues.SetValues(result);
+                    _context.SaveChanges();
                 }
-                _context.SaveChanges();
+                
             }
             catch 
             {
