@@ -29,18 +29,13 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("IdTipoCategoria")
-                        .HasColumnType("int");
-
                     b.Property<ushort>("TipoCategoria")
                         .HasColumnType("smallint unsigned");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Categoria");
                 });
@@ -85,7 +80,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 30, 15, 4, 57, 941, DateTimeKind.Local).AddTicks(9683));
+                        .HasDefaultValue(new DateTime(2023, 5, 30, 20, 49, 37, 708, DateTimeKind.Local).AddTicks(4787));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -101,10 +96,6 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Despesa");
                 });
@@ -135,14 +126,6 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("DespesaId");
-
-                    b.HasIndex("ReceitaId");
-
-                    b.HasIndex("UsuarioId");
-
                     b.ToTable("Lancamento");
                 });
 
@@ -152,13 +135,10 @@ namespace despesas_backend_api_net_core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 30, 15, 4, 57, 942, DateTimeKind.Local).AddTicks(683));
+                        .HasDefaultValue(new DateTime(2023, 5, 30, 20, 49, 37, 708, DateTimeKind.Local).AddTicks(6902));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
@@ -176,10 +156,6 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasDefaultValue(0m);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoriaId");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Receita");
                 });
@@ -220,15 +196,6 @@ namespace despesas_backend_api_net_core.Migrations
                     b.ToTable("Usuario");
                 });
 
-            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Categoria", b =>
-                {
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.ControleAcesso", b =>
                 {
                     b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
@@ -236,75 +203,6 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Despesa", b =>
-                {
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Categoria");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Lancamento", b =>
-                {
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Despesa", "Despesa")
-                        .WithMany()
-                        .HasForeignKey("DespesaId");
-
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Receita", "Receita")
-                        .WithMany()
-                        .HasForeignKey("ReceitaId");
-
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Categoria");
-
-                    b.Navigation("Despesa");
-
-                    b.Navigation("Receita");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Receita", b =>
-                {
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
-                        .WithMany()
-                        .HasForeignKey("CategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Categoria");
 
                     b.Navigation("Usuario");
                 });

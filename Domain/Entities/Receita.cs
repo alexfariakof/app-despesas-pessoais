@@ -6,9 +6,9 @@
         public String Descricao { get; set; }
         public Decimal Valor { get; set; }
         public int UsuarioId { get; set; }
-        public virtual Usuario  Usuario { get; set; }
+        internal virtual Usuario  Usuario { get; set; }
         public int IdCategoria { get; set; }
-        public virtual Categoria Categoria { get; set; }
+        internal virtual Categoria Categoria { get; set; }
 
     }
 }

@@ -7,9 +7,9 @@
         public Decimal Valor { get; set; }
         public DateTime DataVencimento { get; set; }
         public int UsuarioId { get; set; }
-        public virtual Usuario Usuario { get; set; }
+        internal virtual Usuario Usuario { get; set; }
         public int CategoriaId { get; set; }
-        public virtual Categoria Categoria { get; set; }
+        internal virtual Categoria Categoria { get; set; }
 
 
     }
