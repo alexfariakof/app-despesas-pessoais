@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Arquivo contento chave de criptografia
+CRYPTO_KEY.txt
