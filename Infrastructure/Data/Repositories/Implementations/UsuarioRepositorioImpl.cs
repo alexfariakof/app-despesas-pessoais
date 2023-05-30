@@ -40,9 +40,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
                 _context.SaveChanges();
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                throw new Exception("Erro ao inserir um novo usuário!");
             }
             return item;
         }
@@ -52,9 +52,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 return dataSet.ToList();
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                throw new Exception("Erro ao gerar resgistros de todos os usuários!");
             }
         }
         Usuario IRepositorio<Usuario>.Get(int id)
@@ -77,9 +77,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 _context.Entry(usaurio).CurrentValues.SetValues(obj);
                 _context.SaveChanges();
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                throw new Exception("Erro ao atualizar usuário!");
             }
             return obj;
         }
@@ -102,16 +102,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                         };
                         _context.Entry(result).CurrentValues.SetValues(usaurio);
                     }
-                    else
-                    {
-                        _context.Remove(result);
-                    }
                 }
                 _context.SaveChanges();
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                throw new Exception("Erro ao deletar usuário!");
             }
         }
 
