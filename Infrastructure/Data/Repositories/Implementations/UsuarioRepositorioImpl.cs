@@ -1,13 +1,7 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using Microsoft.Data.SqlClient;
-using System.Data;
-using System.Net;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using System.Diagnostics;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
