@@ -62,7 +62,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 return null;
 
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
-            var controleAcesso = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+            var controleAcesso = dsControleACesso.SingleOrDefault(prop => prop.UsuarioId.Equals(obj.Id));
             try
             {
                 controleAcesso.Login = obj.Email;
