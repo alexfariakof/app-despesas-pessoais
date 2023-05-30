@@ -38,24 +38,24 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         //[Authorize("Bearer")]
-        public IActionResult Post([FromBody] UsuarioVM usuarioVO)
+        public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
 
-            if (usuarioVO == null)
+            if (usuarioVM == null)
                 return BadRequest();
-            return new ObjectResult(_usuarioBusiness.Create(usuarioVO));
+            return new ObjectResult(_usuarioBusiness.Create(usuarioVM));
         }
 
         [HttpPut]
         //[Authorize("Bearer")]
-        public IActionResult Put([FromBody] UsuarioVM usuarioVO)
+        public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
 
    
-            if (usuarioVO == null)
+            if (usuarioVM == null)
                 return BadRequest();
 
-            UsuarioVM updateUsuario = _usuarioBusiness.Update(usuarioVO);
+            UsuarioVM updateUsuario = _usuarioBusiness.Update(usuarioVM);
             if (updateUsuario == null)
                 return NoContent();
 

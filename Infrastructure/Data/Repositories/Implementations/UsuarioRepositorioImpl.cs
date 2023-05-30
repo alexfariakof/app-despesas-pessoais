@@ -81,8 +81,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 throw ex;
             }
-
-
             return obj;
         }
 
