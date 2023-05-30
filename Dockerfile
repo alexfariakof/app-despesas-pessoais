@@ -10,6 +10,8 @@ WORKDIR /src
 COPY ["despesas-backend-api-net-core.csproj", "."]
 RUN dotnet restore "./despesas-backend-api-net-core.csproj"
 COPY . .
+
+
 WORKDIR "/src/."
 RUN dotnet build "despesas-backend-api-net-core.csproj" -c Release -o /app/build
 
@@ -18,5 +20,6 @@ RUN dotnet publish "despesas-backend-api-net-core.csproj" -c Release -o /app/pub
 
 FROM base AS final
 WORKDIR /app
+COPY ./CRYPTO_KEY.txt .
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "despesas-backend-api-net-core.dll"]

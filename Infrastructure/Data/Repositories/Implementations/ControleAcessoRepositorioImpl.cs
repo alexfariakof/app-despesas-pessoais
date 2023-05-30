@@ -1,13 +1,8 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using Microsoft.Data.SqlClient;
-using System.Data;
 using System.Net;
-using System.Text;
-using System.Security.Cryptography;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
@@ -32,7 +27,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
             using (_context)
             {
-
                 try
                 {
                     controleAcesso.Senha = Crypto.Encrypt(controleAcesso.Senha);
@@ -132,8 +126,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 {
                     throw ex;
                 }
-                
-
             }
             return false;
         }
@@ -167,16 +159,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     controleAcesso.Senha = Crypto.Encrypt(senhaNova);
                     _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                     _context.SaveChanges();
-
-                    var resultUsuario = this.GetUsuarioByEmail(controleAcesso.Login);
-                    var dataSet = _context.Set<Usuario>();
-                    Usuario usaurio = new Usuario
-                    {
-                        Id = controleAcesso.UsuarioId,
-                        StatusUsuario = StatusUsuario.Ativo
-                    };
-                    _context.Entry(resultUsuario).CurrentValues.SetValues(usaurio);
-                    _context.SaveChanges();
                     EnviarEmail(controleAcesso.Usuario, "<b>Nova senha:</b>" + senhaNova);
                     return true;
                 }
@@ -184,7 +166,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 {
                     throw ex;
                 }
-
             }
             return false;
         }
@@ -231,9 +212,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.Send(mail);
             }
-            catch (Exception erro)
+            catch 
             {
-                throw erro;
+                throw new Exception("Erro ao enviar email!");
             }
             finally
             {
