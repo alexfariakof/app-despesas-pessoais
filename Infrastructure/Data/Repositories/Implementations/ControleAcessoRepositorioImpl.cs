@@ -6,6 +6,9 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Net;
+using System.Text;
+using System.Security.Cryptography;
+using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -32,6 +35,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
                 try
                 {
+                    controleAcesso.Senha = Crypto.Encrypt(controleAcesso.Senha);
                     dsUsuario.Add(controleAcesso.Usuario);
                     dsControleACesso.Add(controleAcesso);
 
@@ -160,7 +164,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 try
                 {
                     var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
-                    controleAcesso.Senha = senhaNova;
+                    controleAcesso.Senha = Crypto.Encrypt(senhaNova);
                     _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                     _context.SaveChanges();
 
@@ -194,7 +198,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
             try
             {
-                controleAcesso.Senha = password;
+                controleAcesso.Senha = Crypto.Encrypt(password);
                 _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                 usuario.StatusUsuario = StatusUsuario.Ativo;
                 _context.Entry(usuario).CurrentValues.SetValues(usuario);
@@ -235,6 +239,16 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 mail = null;
             }
+        }
+        public bool isValidPasssword(ControleAcesso controleAcesso)
+        {
+            ControleAcesso _controleAcesso = FindByEmail(controleAcesso);
+            
+            if (Crypto.Decrypt(_controleAcesso.Senha).Equals(controleAcesso.Senha))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

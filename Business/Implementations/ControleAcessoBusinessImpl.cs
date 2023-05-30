@@ -5,6 +5,7 @@ using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 
 namespace apiDespesasPessoais.Business.Implementations
 {
@@ -13,7 +14,8 @@ namespace apiDespesasPessoais.Business.Implementations
         private IControleAcessoRepositorio _repositorio;
 
         private SigningConfigurations _singingConfiguration;
-        private TokenConfiguration _tokenConfiguration; 
+        private TokenConfiguration _tokenConfiguration;
+        private readonly ControleAcessoMap _converter;
 
         public ControleAcessoBusinessImpl(IControleAcessoRepositorio repositorio, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration)
         {
@@ -40,7 +42,8 @@ namespace apiDespesasPessoais.Business.Implementations
             if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
             {
                 ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
-                credentialsValid = (baseLogin != null && controleAcesso.Login == baseLogin.Login && controleAcesso.Senha == baseLogin.Senha);
+
+                credentialsValid = (baseLogin != null && controleAcesso.Login == baseLogin.Login && _repositorio.isValidPasssword(controleAcesso));
             }
             if(credentialsValid)
             {

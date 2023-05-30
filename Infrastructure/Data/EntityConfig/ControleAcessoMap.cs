@@ -1,8 +1,6 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Metadata;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
@@ -15,13 +13,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.HasIndex(m => m.Login)                
                 .IsUnique(true);
 
+
             builder.Property(x => x.UsuarioId).IsRequired();
 
             builder.Property(m => m.Login)
             .IsRequired()
             .HasMaxLength(100) ;
         }
-  
-
     }
 }

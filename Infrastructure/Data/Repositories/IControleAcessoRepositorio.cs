@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories
 {
@@ -10,6 +11,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories
         Usuario GetUsuarioByEmail(string login);
         bool ChangePassword(int idUsuario, string password);
         bool RecoveryPassword(string email);
-
+        bool isValidPasssword(ControleAcesso controleAcesso);
     }
 }
