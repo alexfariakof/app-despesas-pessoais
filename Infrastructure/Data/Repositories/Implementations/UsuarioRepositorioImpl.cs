@@ -7,6 +7,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Net;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using System.Diagnostics;
+using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -25,6 +27,17 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             try
             {
                 dataSet.Add(item);
+                DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
+
+                var controleAcesso = new ControleAcesso
+                {
+                    Login = item.Email,
+                    UsuarioId = item.Id,
+                    Usuario = item,
+                    Senha = Crypto.Encrypt(Guid.NewGuid().ToString().Substring(0, 8))
+                };
+                dsControleACesso.Add(controleAcesso);               
+
                 _context.SaveChanges();
             }
             catch (Exception ex)
