@@ -24,12 +24,11 @@ namespace despesas_backend_api_net_core.Controllers
            return Ok(_usuarioBusiness.FindAll());
         }
 
-        [HttpGet("{id}")]
         //[Authorize("Bearer")]
         [HttpPost("GetById")]
-        public IActionResult Post([FromBody] int id)
+        public IActionResult Post([FromBody] int idUsuario)
         {
-            UsuarioVM _usuario = _usuarioBusiness.FindById(id);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario);
 
             if (_usuario == null)
                 return NotFound();
