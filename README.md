@@ -27,7 +27,7 @@
    <ul>
       <li>   
          <h6>Controle de Acesso/Senha de Usuários</h6>
-            <p>As Senhas estam cripitografadas e não são expostas em nenhuma requisição e por uma chave que não esta exposta no repositorio acessada pelo classe Crypto em um arquivo criado dentro do servidor. O ideal seria a acessar uma chave crida dentro do própio Azure ou AWS criando assim mais segurança.
+            <p>As Senhas estão cripitografadas e não são expostas em nenhuma requisição e por uma chave que não esta exposta no repositorio acessada pelo classe Crypto em um arquivo criado dentro do servidor. O ideal seria a acessar uma chave crida dentro do própio Azure ou AWS criando assim mais segurança.
          </p>
       </li>
       </li> 
