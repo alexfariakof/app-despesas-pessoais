@@ -23,9 +23,9 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_despesaBusiness.FindAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         //[Authorize("Bearer")]
-        public IActionResult Get(int id)
+        public IActionResult Get([FromRoute]int id)
         {
             try
             {
