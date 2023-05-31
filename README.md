@@ -11,7 +11,7 @@ Acesso documentação da API no Swagger <a href="http://api-despesas-pessoais-as
 </h2>
 
 <h2 align="left"> 
-Workspace para teste da API Público  <a href="https://www.postman.com/bold-eclipse-872793/workspace/api-despesas-pessoais-azure" target="_blank" >Postman</a>
+Workspace público para teste da API no <a href="https://www.postman.com/bold-eclipse-872793/workspace/api-despesas-pessoais-azure" target="_blank" >Postman</a>
 </h2>
 
 # Descrição 
