@@ -16,10 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-ConfigureAutorization(builder.Services, builder.Configuration);*/
-builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
