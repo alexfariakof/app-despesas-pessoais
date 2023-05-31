@@ -7,7 +7,7 @@
 </h2>
 
 <h2 align="left"> 
-Acesso ao protótipo <a href="http://api-despesas-pessoais-aspnetcore.bwg2czahbvgefufr.eastus.azurecontainer.io/swagger/index.html" target="_blank" >backend</a> de projeto
+Acesso documentação da API no Swagger <a href="http://api-despesas-pessoais-aspnetcore.bwg2czahbvgefufr.eastus.azurecontainer.io/swagger/index.html" target="_blank" >backend</a> de projeto
 </h2>
 
 <h2 align="left"> 
