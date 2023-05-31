@@ -16,7 +16,7 @@ Workspace para teste da API Público  <a href="https://www.postman.com/bold-ecli
 
 # Descrição 
 <h5> 
-   <p>API Rest dockerizada Despesas Pessoas usando .Net core 6 e TTD, banco de dados em memória. O objetivo é atualizir da versão .net core 2.2 para .net 6 adicioando novas funcinalidades como TTD e CI/CD na  implantação do projeto
+   <p>API Rest HATEOAS  dockerizada Despesas Pessoas usando .Net core 6 e TTD, banco de dados em memória. O objetivo é atualizir da versão .net core 2.2 para .net 6 adicioando novas funcinalidades como TTD e CI/CD na  implantação do projeto
    </p>
 </h5>
 
