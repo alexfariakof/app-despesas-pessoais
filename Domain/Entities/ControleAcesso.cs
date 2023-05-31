@@ -1,6 +1,4 @@
-﻿using Castle.Components.DictionaryAdapter;
-
-namespace despesas_backend_api_net_core.Domain.Entities
+﻿namespace despesas_backend_api_net_core.Domain.Entities
 {
     public class ControleAcesso : BaseModel
     {
