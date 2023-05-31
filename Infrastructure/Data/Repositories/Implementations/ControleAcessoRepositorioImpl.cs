@@ -17,7 +17,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         }
 
         public bool Create(ControleAcesso controleAcesso)
-        {           
+        {
+            if (FindByEmail(controleAcesso) != null)
+                throw new Exception("Email já cadastrado!");
+            
             DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
             DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
