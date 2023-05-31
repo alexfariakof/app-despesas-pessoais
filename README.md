@@ -40,3 +40,6 @@ Workspace para teste da API Público  <a href="https://www.postman.com/bold-ecli
       </li>
       </ul>
 </h5>
+<h6>
+<P>Obs.: Por enqunato na fase de desenvovlimento da API enquanto não foi adicionado os Teste Unitários os testes podem ser realizados pois a validação através de accessToken se encontra  desativada.</P>
+</h6>
