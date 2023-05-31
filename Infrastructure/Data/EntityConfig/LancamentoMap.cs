@@ -2,12 +2,12 @@
 using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
     public class LancamentoMap : IParser<LancamentoVM, Lancamento>, IParser<Lancamento, LancamentoVM>, IEntityTypeConfiguration<Lancamento>
     {
-
         public void Configure(EntityTypeBuilder<Lancamento> builder)
         {
             builder.HasKey(m => m.Id);
