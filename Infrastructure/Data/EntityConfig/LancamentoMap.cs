@@ -19,13 +19,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.Property(m => m.Valor)
             .HasColumnType("decimal(10, 2)");
 
-            builder.Property(m => m.DespesaId)
-            .IsRequired(false)
-            .HasDefaultValue(null);
-
-            builder.Property(m => m.ReceitaId)
-            .IsRequired(false)
-            .HasDefaultValue(null);
+            builder.Property(m => m.Descricao)
+            .HasMaxLength(20);
         }
 
         public Lancamento Parse(LancamentoVM origin)
@@ -51,13 +46,13 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             return new LancamentoVM
             {
                 Id = origin.Id,
-                IdDespesa = origin.DespesaId.Value,
-                IdReceita = origin.ReceitaId.Value,
+                IdDespesa = origin.DespesaId,
+                IdReceita = origin.ReceitaId,
                 IdUsuario = origin.UsuarioId,
                 Data = origin.Data.ToDateBr(),
                 Valor = origin.Valor.ToString("N2"),
-                Descricao = origin.DespesaId == 0 ? origin.Receita.Descricao : origin.Despesa.Descricao,
-                Categoria = origin.Categoria.Descricao
+                Descricao = origin.Descricao,
+                Categoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
             };
         }
 
