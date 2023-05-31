@@ -7,7 +7,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 
-namespace apiDespesasPessoais.Business.Implementations
+namespace despesas_backend_api_net_core.Business.Implementations
 {
     public class ControleAcessoBusinessImpl : IControleAcessoBusiness
     {
@@ -33,19 +33,19 @@ namespace apiDespesasPessoais.Business.Implementations
         {
             bool credentialsValid = false;
 
-            var usuario  =_repositorio.GetUsuarioByEmail(controleAcesso.Login);
-            if (usuario == null)                
+            var usuario = _repositorio.GetUsuarioByEmail(controleAcesso.Login);
+            if (usuario == null)
                 return new Exception("Usuário inexistente!");
-            else if(usuario.StatusUsuario == StatusUsuario.Inativo)
+            else if (usuario.StatusUsuario == StatusUsuario.Inativo)
                 return new Exception("Usuário Inativo!");
 
             if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
             {
                 ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
 
-                credentialsValid = (baseLogin != null && controleAcesso.Login == baseLogin.Login && _repositorio.isValidPasssword(controleAcesso));
+                credentialsValid = baseLogin != null && controleAcesso.Login == baseLogin.Login && _repositorio.isValidPasssword(controleAcesso);
             }
-            if(credentialsValid)
+            if (credentialsValid)
             {
                 ClaimsIdentity identity = new ClaimsIdentity(
                     new GenericIdentity(controleAcesso.Login, "Login"),
@@ -66,7 +66,7 @@ namespace apiDespesasPessoais.Business.Implementations
             else
             {
                 return new Exception("Usuário inválido!");
-            }            
+            }
         }
 
         public bool RecoveryPassword(string email)
