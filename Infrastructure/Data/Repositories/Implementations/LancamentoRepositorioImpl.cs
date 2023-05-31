@@ -1,6 +1,5 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.MySqlClient;
 using System.Data;
@@ -20,8 +19,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         {
             int mes = data.Month;
             int ano = data.Year;
-            //Mysql  CONV(SUBSTRING(uuid(), 4, 4), 16, 10) as id
-            //SqlServer ABS(Checksum(NewId()) %10000) as id
+
             string sql = "Select cast(CONV(SUBSTRING(uuid(), 4, 4), 16, 10) as UNSIGNED) as id, lancamentos.* From ( " +
                          "Select d.UsuarioId, data, d.CategoriaId, valor*-1 as valor, 'Despesas' as Tipo, d.id as DespesaId, 0 as ReceitaId, d.descricao, c.descricao as categoria " +
                          "  FROM Despesa d " +
