@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230530234937_InitialCreate")]
+    [Migration("20230531030804_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -83,14 +83,14 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 30, 20, 49, 37, 708, DateTimeKind.Local).AddTicks(4787));
+                        .HasDefaultValue(new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(5574));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -115,10 +115,15 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp");
 
-                    b.Property<int?>("DespesaId")
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<int>("DespesaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ReceitaId")
+                    b.Property<int>("ReceitaId")
                         .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
@@ -138,17 +143,17 @@ namespace despesas_backend_api_net_core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("CategoriaId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 30, 20, 49, 37, 708, DateTimeKind.Local).AddTicks(6902));
+                        .HasDefaultValue(new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(7498));
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<int>("IdCategoria")
-                        .HasColumnType("int");
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");

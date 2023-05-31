@@ -7,7 +7,7 @@
         public Decimal Valor { get; set; }
         public int UsuarioId { get; set; }
         internal virtual Usuario  Usuario { get; set; }
-        public int IdCategoria { get; set; }
+        public int CategoriaId { get; set; }
         internal virtual Categoria Categoria { get; set; }
 
     }

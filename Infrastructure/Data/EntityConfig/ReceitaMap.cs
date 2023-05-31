@@ -13,7 +13,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Descricao)
             .IsRequired(false)
-            .HasMaxLength(100);
+            .HasMaxLength(20);
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
@@ -33,7 +33,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Data = origin.Data,
                 Descricao = origin.Descricao,                
                 Valor = origin.Valor,
-                IdCategoria =origin.IdCategoria,
+                CategoriaId = origin.IdCategoria,
                 Categoria = new CategoriaMap().Parse(origin.Categoria),
                 UsuarioId = origin.IdUsuario,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)
@@ -49,7 +49,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Data = origin.Data,
                 Descricao = origin.Descricao,
                 Valor = origin.Valor,
-                IdCategoria = origin.IdCategoria,
+                IdCategoria = origin.CategoriaId,
                 Categoria = new CategoriaMap().Parse(origin.Categoria),
                 IdUsuario = origin.UsuarioId,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)
