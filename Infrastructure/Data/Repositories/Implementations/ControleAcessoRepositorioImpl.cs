@@ -37,86 +37,72 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     lstCategoria.Add(new Categoria
                     {                        
                         Descricao = "Alimentação",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Casa",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Serviços",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Saúde",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Imposto",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Transporte",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Lazer",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Outros",
-                        IdTipoCategoria = 1,
                         TipoCategoria = TipoCategoria.Despesa
                     });
 
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Salário",
-                        IdTipoCategoria = 2,
                         TipoCategoria = TipoCategoria.Receita
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Prêmio",
-                        IdTipoCategoria = 2,
                         TipoCategoria = TipoCategoria.Receita
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Investimento",
-                        IdTipoCategoria = 2,
                         TipoCategoria = TipoCategoria.Receita
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Benefício",
-                        IdTipoCategoria = 2,
                         TipoCategoria = TipoCategoria.Receita
                     });
                     lstCategoria.Add(new Categoria
                     {
                         Descricao = "Outros",
-                        IdTipoCategoria = 2,
                         TipoCategoria = TipoCategoria.Receita
                     });
                     foreach (Categoria categoria in lstCategoria)
                     {
                         categoria.UsuarioId = controleAcesso.Usuario.Id;
-                        categoria.Usuario = controleAcesso.Usuario;
                         dsCategoria.Add(categoria);
                     }
                     _context.SaveChanges();

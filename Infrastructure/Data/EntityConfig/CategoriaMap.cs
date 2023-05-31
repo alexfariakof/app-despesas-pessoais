@@ -15,6 +15,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.Property(m => m.Descricao)
             .IsRequired(false)
             .HasMaxLength(100);
+
+            builder.Property(m => m.UsuarioId)
+            .IsRequired();
+
+            builder.Property(m => m.TipoCategoria)
+            .IsRequired();
         }
 
         public Categoria Parse(CategoriaVM origin)
@@ -24,10 +30,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             {
                 Id = origin.Id,
                 Descricao = origin.Descricao,
-                IdTipoCategoria = origin.IdTipoCategoria,
-                TipoCategoria = origin.TipoCategoria,
-                UsuarioId = origin.IdUsuario,
-                Usuario = new UsuarioMap().Parse(origin.Usuario)
+                TipoCategoria = origin.IdTipoCategoria == 1 ? TipoCategoria.Despesa : TipoCategoria.Receita,
+                UsuarioId = origin.IdUsuario
             };
         }
 
@@ -38,11 +42,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             {
                 Id = origin.Id,
                 Descricao = origin.Descricao,
-                IdTipoCategoria = origin.IdTipoCategoria,
-                TipoCategoria = origin.TipoCategoria,
-                IdUsuario = origin.UsuarioId,
-                Usuario = new UsuarioMap().Parse(origin.Usuario)
-                
+                IdTipoCategoria = (int)origin.TipoCategoria,
+                IdUsuario = origin.UsuarioId                
             };
         }
 

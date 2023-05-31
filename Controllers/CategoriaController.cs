@@ -23,11 +23,11 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_categoriaBusiness.FindAll());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{idCategoria}")]
         //[Authorize("Bearer")]
-        public IActionResult Get(int id)
+        public IActionResult GetById([FromRoute] int idCategoria)
         {
-            CategoriaVM _categoria = _categoriaBusiness.FindById(id);
+            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria);
 
             if (_categoria == null)
                 return NotFound();
@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_categoria);
         }
 
-        [HttpGet("byTipoCategoria/{idUsuario}/{tipoCategoria}")]
+        [HttpGet("GetByTipoCategoria/{idUsuario}/{tipoCategoria}")]
         //[Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {

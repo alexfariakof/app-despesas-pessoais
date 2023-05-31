@@ -17,7 +17,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public CategoriaVM Create(CategoriaVM obj)
         {
-            Categoria categoria = _converter.Parse(obj);
+            Categoria categoria = _converter.Parse(obj);            
             return _converter.Parse(_repositorio.Insert(categoria)); ;
         }
 
