@@ -17,10 +17,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         }
 
         public bool Create(ControleAcesso controleAcesso)
-        {
-            if (FindByEmail(controleAcesso) != null)
-                return false;
-            
+        {           
             DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
             DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
