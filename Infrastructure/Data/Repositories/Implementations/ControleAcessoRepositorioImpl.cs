@@ -21,9 +21,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             if (FindByEmail(controleAcesso) != null)
                 return false;
             
-            DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
+            
             DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
+            DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
 
             using (_context)
             {
@@ -102,7 +103,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     });
                     foreach (Categoria categoria in lstCategoria)
                     {
-                        categoria.UsuarioId = controleAcesso.Usuario.Id;
+                        categoria.Usuario = controleAcesso.Usuario;
                         dsCategoria.Add(categoria);
                     }
                     _context.SaveChanges();

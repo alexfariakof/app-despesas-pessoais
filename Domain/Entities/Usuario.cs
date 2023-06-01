@@ -7,6 +7,5 @@
         public string Telefone { get; set; }
         public string Email { get; set; }
         public StatusUsuario StatusUsuario { get; set; }         
-        internal List<ControleAcesso> ListControleAcesso { get; set; }
     }
 }
