@@ -22,6 +22,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 dataSet.Add(item);
                 DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
+                DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
 
                 var controleAcesso = new ControleAcesso
                 {
@@ -30,7 +31,81 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     Usuario = item,
                     Senha = Crypto.Encrypt(Guid.NewGuid().ToString().Substring(0, 8))
                 };
-                dsControleACesso.Add(controleAcesso);               
+                dsControleACesso.Add(controleAcesso);
+
+
+                List<Categoria> lstCategoria = new List<Categoria>();
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Alimentação",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Casa",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Serviços",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Saúde",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Imposto",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Transporte",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Lazer",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Outros",
+                    TipoCategoria = TipoCategoria.Despesa
+                });
+
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Salário",
+                    TipoCategoria = TipoCategoria.Receita
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Prêmio",
+                    TipoCategoria = TipoCategoria.Receita
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Investimento",
+                    TipoCategoria = TipoCategoria.Receita
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Benefício",
+                    TipoCategoria = TipoCategoria.Receita
+                });
+                lstCategoria.Add(new Categoria
+                {
+                    Descricao = "Outros",
+                    TipoCategoria = TipoCategoria.Receita
+                });
+                foreach (Categoria categoria in lstCategoria)
+                {
+                    categoria.Usuario = controleAcesso.Usuario;
+                    dsCategoria.Add(categoria);
+                }
 
                 _context.SaveChanges();
             }
