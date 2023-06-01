@@ -7,7 +7,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
     public class UsuarioMap : IParser<UsuarioVM, Usuario>, IParser<Usuario, UsuarioVM>, IEntityTypeConfiguration<Usuario>
     {
-
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
             builder.HasKey(m => m.Id);
