@@ -38,6 +38,12 @@ Workspace público para teste da API no <a href="https://www.postman.com/bold-ec
             <p> Apenas Primeiro Acesso no caso cadastro de um novo usuário, Login do usuário e recuperação de senhas podem ser acessados sem a necessidade de realizar login com usuário e senhas validadas. O restante da API só pode ser acessada através de um accessToken gerado pela API. 
          </p>
       </li>
+      <li>
+         <h6>Arquivos de Configuração </h6>
+            <p> Arquivos contendo chaves de configuração com chave de cripitografia,  acesso ao banco de dados e amazon S3 estão protegidos pois não se encontram expostos no repositório GitHub assim como a imagem dockerizada está configurada como private evitando assim acesso aos arquivos de configuração. 
+         </p>
+      </li>
+      
       </ul>
 </h5>
 <h6>
