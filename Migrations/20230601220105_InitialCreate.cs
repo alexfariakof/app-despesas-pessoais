@@ -37,7 +37,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(5574)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 1, 19, 1, 4, 913, DateTimeKind.Local).AddTicks(7361)),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     DataVencimento = table.Column<DateTime>(type: "timestamp", nullable: false),
@@ -71,12 +71,29 @@ namespace despesas_backend_api_net_core.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "PerfilFile",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Url = table.Column<string>(type: "longtext", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Type = table.Column<string>(type: "varchar(4)", maxLength: 4, nullable: false),
+                    UsuarioId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PerfilFile", x => x.Id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Receita",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(7498)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 1, 19, 1, 4, 913, DateTimeKind.Local).AddTicks(8270)),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
@@ -160,6 +177,9 @@ namespace despesas_backend_api_net_core.Migrations
 
             migrationBuilder.DropTable(
                 name: "Lancamento");
+
+            migrationBuilder.DropTable(
+                name: "PerfilFile");
 
             migrationBuilder.DropTable(
                 name: "Receita");

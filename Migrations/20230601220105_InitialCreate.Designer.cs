@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230531030804_InitialCreate")]
+    [Migration("20230601220105_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -83,7 +83,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(5574));
+                        .HasDefaultValue(new DateTime(2023, 6, 1, 19, 1, 4, 913, DateTimeKind.Local).AddTicks(7361));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -137,6 +137,34 @@ namespace despesas_backend_api_net_core.Migrations
                     b.ToTable("Lancamento");
                 });
 
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.PerfilFile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PerfilFile");
+                });
+
             modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Receita", b =>
                 {
                     b.Property<int>("Id")
@@ -149,7 +177,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(7498));
+                        .HasDefaultValue(new DateTime(2023, 6, 1, 19, 1, 4, 913, DateTimeKind.Local).AddTicks(8270));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
