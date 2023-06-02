@@ -29,6 +29,7 @@ Workspace público para teste da API no <a href="https://www.postman.com/bold-ec
          </p>
       </li>
       </li> 
+      <li>
          <h6>Camada Model View da API</h6>
             <p>A Camada repositorio está idependente e não pode ser vista sua implementação pois o modelo   exposto nos endpoint são Objetos modelView que não espõem a implementação do banco.
          </p>
