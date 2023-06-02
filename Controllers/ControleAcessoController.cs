@@ -46,7 +46,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (result)
                 return  Ok(new { message = result });
             else
-                return BadRequest(new { message = "Não foi possível realizar o cadastro" });
+                return BadRequest(new { message = "Não foi possível realizar o cadastro.Usuário já deve estar cadastrado ou email já cadastrado!" });
         }
         
         [AllowAnonymous]
