@@ -35,6 +35,19 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_categoria);
         }
 
+        [HttpGet("GetByIdUsuario/{idUsuario}")]
+        //[Authorize("Bearer")]
+        public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
+        {
+            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll().FindAll(c => c.IdUsuario.Equals(idUsuario));
+
+            if (_categoria == null)
+                return NotFound();
+
+            return Ok(_categoria);
+        }
+
+
         [HttpGet("GetByTipoCategoria/{idUsuario}/{tipoCategoria}")]
         //[Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
