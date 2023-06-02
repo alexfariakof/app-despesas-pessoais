@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+CRYPTO_KEY.txt
+AMZOM_KEYS.json
