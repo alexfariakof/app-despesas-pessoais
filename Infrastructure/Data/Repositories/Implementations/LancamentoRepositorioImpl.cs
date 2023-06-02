@@ -131,7 +131,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
-                string sqlDespesa = $"CALL SomatorioDespesasPorAno({idUsuario}, {ano})"; ;
+                string sqlDespesa = $"CALL SomatorioDespesasPorAno({idUsuario}, {ano})";
                 string sqlReceita = $"CALL SomatorioReceitasPorAno({idUsuario}, {ano})";
 
                 _context.Database.OpenConnection();
@@ -170,7 +170,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     {
                         if (result.Read())
                         {
-                            somatorioDespesaPorAno = new Dictionary<string, decimal>
+                            somatorioReceitaProAno = new Dictionary<string, decimal>
                             {
                                 { "Janeiro", result.GetDecimal("Janeiro") },
                                 { "Fevereiro", result.GetDecimal("Fevereiro") },
