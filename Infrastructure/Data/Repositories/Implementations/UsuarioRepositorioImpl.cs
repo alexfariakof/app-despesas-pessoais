@@ -33,7 +33,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 };
                 dsControleACesso.Add(controleAcesso);
 
-
                 List<Categoria> lstCategoria = new List<Categoria>();
                 lstCategoria.Add(new Categoria
                 {
