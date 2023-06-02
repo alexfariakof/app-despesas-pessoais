@@ -18,6 +18,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.Property(m => m.UsuarioId)
            .IsRequired();
 
+            builder.Property(m => m.CategoriaId)
+            .IsRequired();
+
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
             .HasDefaultValue(DateTime.Now);
@@ -42,9 +45,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor,
                 DataVencimento = origin.DataVencimento,
                 CategoriaId =origin.IdCategoria,
-                Categoria = new CategoriaMap().Parse(origin.Categoria),
                 UsuarioId = origin.IdUsuario,
-                Usuario = new UsuarioMap().Parse(origin.Usuario)
             };
         }
 
@@ -59,9 +60,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor,
                 DataVencimento = origin.DataVencimento,
                 IdCategoria = origin.CategoriaId,
-                Categoria = new CategoriaMap().Parse(origin.Categoria),
                 IdUsuario = origin.UsuarioId,
-                Usuario = new UsuarioMap().Parse(origin.Usuario)
             };
         }
 

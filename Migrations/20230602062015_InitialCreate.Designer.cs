@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230602023011_InitialCreate")]
+    [Migration("20230602062015_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -85,7 +85,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 1, 23, 30, 11, 809, DateTimeKind.Local).AddTicks(189));
+                        .HasDefaultValue(new DateTime(2023, 6, 2, 3, 20, 15, 559, DateTimeKind.Local).AddTicks(9512));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -200,7 +200,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 1, 23, 30, 11, 809, DateTimeKind.Local).AddTicks(1759));
+                        .HasDefaultValue(new DateTime(2023, 6, 2, 3, 20, 15, 560, DateTimeKind.Local).AddTicks(3904));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)

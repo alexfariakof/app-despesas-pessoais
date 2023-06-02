@@ -17,7 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpGet("{mesAno}/{idUsuario}")]
         //[Authorize("Bearer")]
-        public IActionResult Get(DateTime mesAno, int idUsuario)
+        public IActionResult Get([FromRoute]DateTime mesAno, [FromRoute]int idUsuario)
         {
             var list = _lancamentoBusiness.FindByMesAno(mesAno, idUsuario);
 
@@ -29,11 +29,21 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpGet("Saldo/{idUsuario}")]
         //[Authorize("Bearer")]
-        public IActionResult Get(int idUsuario)
+        public IActionResult Get([FromRoute]int idUsuario)
         {
             var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
                         
             return Ok(saldo.ToString("N2")); 
         }
+
+        [HttpGet("DadosGraficoPorAno/{mesAno}/{idUsuario}")]
+        //[Authorize("Bearer")]
+        public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime mesAno, [FromRoute]int idUsuario)
+        {
+            var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAno(idUsuario, mesAno);
+
+            return Ok(dadosGrafico);
+        }
+
     }
 }

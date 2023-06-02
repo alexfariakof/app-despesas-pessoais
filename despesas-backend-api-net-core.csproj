@@ -23,6 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include=".documents\create-procedure-somatorio-por-ano-receitas.sql" />
+    <None Include=".documents\create-procedure-somatorio-por-ano-despesas.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.104.24" />

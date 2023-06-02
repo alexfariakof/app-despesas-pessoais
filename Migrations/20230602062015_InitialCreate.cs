@@ -106,7 +106,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 1, 23, 30, 11, 809, DateTimeKind.Local).AddTicks(189)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 2, 3, 20, 15, 559, DateTimeKind.Local).AddTicks(9512)),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     DataVencimento = table.Column<DateTime>(type: "timestamp", nullable: false),
@@ -137,7 +137,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 1, 23, 30, 11, 809, DateTimeKind.Local).AddTicks(1759)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 2, 3, 20, 15, 560, DateTimeKind.Local).AddTicks(3904)),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
