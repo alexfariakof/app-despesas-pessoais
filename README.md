@@ -28,7 +28,6 @@ Workspace público para teste da API no <a href="https://www.postman.com/bold-ec
             <p>As Senhas estão cripitografadas e não são expostas em nenhuma requisição e por uma chave que não esta exposta no repositorio acessada pelo classe Crypto em um arquivo criado dentro do servidor. O ideal seria a acessar uma chave crida dentro do própio Azure ou AWS criando assim mais segurança.
          </p>
       </li>
-      </li> 
       <li>
          <h6>Camada Model View da API</h6>
             <p>A Camada repositorio está idependente e não pode ser vista sua implementação pois o modelo   exposto nos endpoint são Objetos modelView que não espõem a implementação do banco.
@@ -44,8 +43,7 @@ Workspace público para teste da API no <a href="https://www.postman.com/bold-ec
             <p> Arquivos contendo chaves de configuração com chave de cripitografia,  acesso ao banco de dados e amazon S3 estão protegidos pois não se encontram expostos no repositório GitHub assim como a imagem dockerizada está configurada como private evitando assim acesso aos arquivos de configuração. 
          </p>
       </li>
-      
-      </ul>
+ </ul>
 </h5>
 <h6>
 <P>Obs.: Durante a fase de refatoração da API enquanto não foi adicionado os Testes Unitários, testes podem ser realizados sem a utilização de Autorization Beares pois a validação através de accessToken se encontra  desativada.</P>
