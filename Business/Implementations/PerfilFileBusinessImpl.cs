@@ -20,10 +20,18 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public PerfilUsuarioFileVM Create(PerfilUsuarioFileVM obj)
         {
-            string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
-            obj.Url = url;
-            PerfilFile perfilFile = _converter.Parse(obj);
-            return _converter.Parse(_repositorio.Insert(perfilFile));
+            try
+            {
+                string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
+                obj.Url = url;
+                PerfilFile perfilFile = _converter.Parse(obj);
+                return _converter.Parse(_repositorio.Insert(perfilFile));
+            }
+            catch
+            {
+                AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter();
+            }
+            return null; 
         }
         public List<PerfilUsuarioFileVM> FindAll()
         {
@@ -36,29 +44,29 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public PerfilUsuarioFileVM Update(PerfilUsuarioFileVM obj)
         {
-            var isPerfilValid = FindById(obj.Id);
+            var isPerfilValid = FindAll().Find(prop => prop.UsuarioId.Equals(obj.UsuarioId));
             if (isPerfilValid != null)
             {
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
                 if (result)
                 {
                     string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
-                    obj.Url = url;
-                    PerfilFile perfilFile = _converter.Parse(obj);
+                    isPerfilValid.Url = url;
+                    PerfilFile perfilFile = _converter.Parse(isPerfilValid);
                     return _converter.Parse(_repositorio.Update(perfilFile));
                 }
             }
-            return obj;            
+            return null;            
         }
-        public void Delete(int id)
+        public void Delete(int idUsaurio)
         {
-            var obj = FindById(id);
+            var obj = FindAll().Find(prop  => prop.UsuarioId.Equals(idUsaurio));
             if (obj != null)
             {
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
                 if (result)
                 {
-                    _repositorio.Delete(id);
+                    _repositorio.Delete(obj.Id);
                 }
             }
         }
