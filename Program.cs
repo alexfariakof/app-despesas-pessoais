@@ -9,6 +9,18 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Cors Configuration 
+builder.Services.AddCors(c =>
+{
+    c.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+
+    });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -32,14 +44,16 @@ var app = builder.Build();
 //{
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseCors();
 //}
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseStaticFiles();
+
 
 app.MapControllers();
-
 app.Run();
 
 
