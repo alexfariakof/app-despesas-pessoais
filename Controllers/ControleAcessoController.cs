@@ -20,26 +20,30 @@ namespace despesas_backend_api_net_core.Controllers
         
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Post([FromBody] ControleAcessoVM controleAcessoVO)
+        public IActionResult Post([FromBody] ControleAcessoVM controleAcessoVM)
         {
 
             ControleAcesso controleAcesso = new ControleAcesso
             {
-                Login = controleAcessoVO.Email,
-                Senha = controleAcessoVO.Senha,
+                Login = controleAcessoVM.Email,
+                Senha = controleAcessoVM.Senha,
                 Usuario = new Usuario
                 {
-                    Nome = controleAcessoVO.Nome,
-                    SobreNome = controleAcessoVO.SobreNome,
-                    Email = controleAcessoVO.Email,
-                    Telefone = controleAcessoVO.Telefone,
+                    Nome = controleAcessoVM.Nome,
+                    SobreNome = controleAcessoVM.SobreNome,
+                    Email = controleAcessoVM.Email,
+                    Telefone = controleAcessoVM.Telefone,
                     StatusUsuario = StatusUsuario.Ativo
 
                 }
             };
 
-            if (controleAcesso == null)
-                return BadRequest();
+            if (string.IsNullOrEmpty(controleAcesso.Usuario.Email) || string.IsNullOrWhiteSpace(controleAcesso.Usuario.Email))
+                return BadRequest("Email não pode ser nulo ou conter espaços em branco!");
+
+            if (string.IsNullOrEmpty(controleAcesso.Senha) || string.IsNullOrWhiteSpace(controleAcesso.Senha))
+                return BadRequest("Senha não pode ser nula ou conter espaços em branco!");
+
 
             var result = _controleAcessoBusiness.Create(controleAcesso);
 
@@ -54,8 +58,11 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult SignIn([FromBody] LoginVM login)
         {
             var controleAcesso = new ControleAcesso { Login = login.Email , Senha = login.Senha };
-            if (controleAcesso == null)
-                return BadRequest();
+            if (String.IsNullOrEmpty(controleAcesso.Login) || String.IsNullOrWhiteSpace(controleAcesso.Login))
+                return BadRequest("Campo Login não pode ser em branco");
+
+            if (String.IsNullOrEmpty(controleAcesso.Senha) || String.IsNullOrWhiteSpace(controleAcesso.Senha))
+                return BadRequest("Campo Senha não pode ser em branco");
 
             return new ObjectResult(_controleAcessoBusiness.FindByLogin(controleAcesso));
         }
