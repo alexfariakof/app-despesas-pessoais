@@ -11,8 +11,8 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         private static readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
         private static IAmazonS3 client;
-        
-        public  class AmazomKeys
+
+        public class AmazomKeys
         {
             public string AccessKey { get; set; }
             public string SecretAccessKey { get; set; }
@@ -27,14 +27,14 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
                 string json = File.ReadAllText(arquivoJson);
 
 
-                var amazomKeys = JsonConvert.DeserializeObject <AmazomKeys>(json);
+                var amazomKeys = JsonConvert.DeserializeObject<AmazomKeys>(json);
                 string bucketName = "bucket-usuario-perfil";
                 string fileContentType = perfilFile.ContentType;
                 AmazonS3Config config = new AmazonS3Config();
                 config.ServiceURL = amazomKeys.S3ServiceUrl;
 
                 client = new AmazonS3Client(amazomKeys.AccessKey, amazomKeys.SecretAccessKey, config);
-    
+
                 var putRquest = new PutObjectRequest
                 {
                     CannedACL = fileCannedACL,
@@ -55,6 +55,38 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+        public static async Task<bool> DeleteObjectNonVersionedBucketAsync(PerfilUsuarioFileVM perfilFile)
+        {
+            try
+            {
+                string arquivoJson = "AMZOM_KEYS.json";
+                string json = File.ReadAllText(arquivoJson);
+
+
+                var amazomKeys = JsonConvert.DeserializeObject<AmazomKeys>(json);
+                string bucketName = "bucket-usuario-perfil";
+                string fileContentType = perfilFile.ContentType;
+                AmazonS3Config config = new AmazonS3Config();
+                config.ServiceURL = amazomKeys.S3ServiceUrl;
+
+                client = new AmazonS3Client(amazomKeys.AccessKey, amazomKeys.SecretAccessKey, config);
+
+
+                var deleteObjectRequest = new DeleteObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = perfilFile.Name,
+                };
+
+                Console.WriteLine("Deleting an object");
+                await client.DeleteObjectAsync(deleteObjectRequest);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
     }

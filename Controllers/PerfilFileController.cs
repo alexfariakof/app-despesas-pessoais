@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
@@ -17,26 +18,32 @@ namespace despesas_backend_api_net_core.Controllers
             _perfilFileBusiness = perfilFileBusiness;
         }
 
-        [HttpPost("GetByIdUsuario")]
+        [HttpGet]
         //[Authorize("Bearer")]
-        public IActionResult GetByIdUsuario([FromBody]int idUsuario)
+        public IActionResult Get()
+        {
+            return Ok(_perfilFileBusiness.FindAll());
+        }
+
+        [HttpGet("GetByIdUsuario/{idUsuario}")]
+        //[Authorize("Bearer")]
+        public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
             var perfilFile = _perfilFileBusiness.FindAll()
                 .FindAll(prop => prop.UsuarioId.Equals(idUsuario));
-            
-            if (perfilFile != null)  
+
+            if (perfilFile != null)
                 return Ok(perfilFile);
 
             return BadRequest("Arquivo Inexistente!");
         }
 
-
-        [HttpPost("Upload")]
-        public async Task<IActionResult> Upload(int idUsuario, IFormFile file)
+        [HttpPost]
+        public async Task<IActionResult> Post(int idUsuario, IFormFile file)
         {
             try
             {
-                string fileName = "perfil-usuario-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMddMMHHmmssffffff");
+                string fileName = "perfil-usuarioId-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMdd");
                 string typeFile = "";
                 int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
                 if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
@@ -69,39 +76,50 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
 
-        [HttpPost("UploadFiles")]
-        public async Task<IActionResult> Upload(int idUsuario, int IdTipoLancamento, List<IFormFile> files)
+        [HttpPut]
+        public async Task<IActionResult> Put(int idUsuario, IFormFile file)
         {
-
             try
             {
-                long size = files.Sum(f => f.Length);
-
-                // full path to file in temp location
-                //var filePath = Path.GetTempFileName();
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "FilesDownload");
-
-                foreach (var formFile in files)
+                string fileName = "perfil-usuarioId-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMdd");
+                string typeFile = "";
+                int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
+                if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
                 {
-                    if (formFile.Length > 0)
-                    {
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await formFile.CopyToAsync(stream);
-                        }
-                    }
+                    typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
 
-                // process uploaded files
-                // Don't rely on or trust the FileName property without validation.
+                using (var memoryStream = new MemoryStream())
+                {
 
-                return Ok(new { count = files.Count, size, filePath });
+                    await file.CopyToAsync(memoryStream);
+
+                    PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
+                    {
+                        Arquivo = memoryStream.GetBuffer(),
+                        UsuarioId = idUsuario,
+                        Name = fileName,
+                        Type = typeFile,
+                        ContentType = file.ContentType
+                    };
+
+                    perfilUsuarioFile = _perfilFileBusiness.Update(perfilUsuarioFile);
+                    return Ok(perfilUsuarioFile);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
-            }            
+                return BadRequest(new { ex });
+            }
+
         }
- 
+
+        [HttpDelete("{id}")]
+        //[Authorize("Bearer")]
+        public IActionResult Delete(int id)
+        {
+            _perfilFileBusiness.Delete(id);
+            return NoContent();
+        }
     }
 }
