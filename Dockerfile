@@ -21,5 +21,6 @@ RUN dotnet publish "despesas-backend-api-net-core.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY ./CRYPTO_KEY.txt .
+COPY ./AMZOM_KEYS.json .
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "despesas-backend-api-net-core.dll"]
