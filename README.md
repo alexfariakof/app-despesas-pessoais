@@ -7,7 +7,7 @@
 </h2>
 
 <h6>
-<P>Obs.: Durante a fase de refatoração da API enquanto não foi adicionado os Testes Unitários, testes podem ser realizados pelo postman ou sawwger sem a utilização de Autorization Beares pois a validação através de accessToken se encontra desativada.</P>
+<P>Obs.: Durante a fase de refatoração da API enquanto não foi adicionado os Testes Unitários, testes podem ser realizados pelo postman ou sawgger sem a utilização de Autorization Beares pois a validação através de accessToken se encontra desativada.</P>
 </h6>
 
 <h2 align="left"> 
