@@ -6,6 +6,6 @@
         public string Name { get; set; }
         public string Type { get; set; }
         public int UsuarioId { get; set; }
-        internal virtual Usuario Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }        
     }
 }

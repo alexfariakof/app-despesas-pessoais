@@ -14,6 +14,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.Property(m => m.Descricao)
             .IsRequired(false)
             .HasMaxLength(20);
+            
+            builder.Property(m => m.UsuarioId)
+           .IsRequired();
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")

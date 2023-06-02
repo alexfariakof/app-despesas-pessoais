@@ -11,9 +11,18 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         {
             builder.HasKey(m => m.Id);
 
+            builder.Property(m => m.UsuarioId)
+           .IsRequired();
+
+            builder.HasIndex(m => m.Name)
+            .IsUnique(true);
+
             builder.Property(m => m.Name)
             .IsRequired()
             .HasMaxLength(50);
+
+            builder.HasIndex(m => m.Url)
+            .IsUnique(true);
 
             builder.Property(m => m.Url)
             .IsRequired();
@@ -21,6 +30,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.Property(m => m.Type)
             .IsRequired()
             .HasMaxLength(4);
+
+            builder.HasIndex(m => m.UsuarioId)
+                .IsUnique(true);
 
             builder.Property(m => m.UsuarioId)
             .IsRequired();
@@ -33,7 +45,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             {
                 Id = origin.Id,
                 Name = origin.Name,
-                Type = origin.Type,                
+                Type = origin.Type,          
+                Url = origin.Url,
                 UsuarioId = origin.UsuarioId,
             };
         }
@@ -45,6 +58,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Id = origin.Id,
                 Name = origin.Name,
                 Type = origin.Type,
+                Url = origin.Url,
                 UsuarioId = origin.UsuarioId,
             };
         }

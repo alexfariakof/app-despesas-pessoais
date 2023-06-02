@@ -11,6 +11,20 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public void Configure(EntityTypeBuilder<Lancamento> builder)
         {
             builder.HasKey(m => m.Id);
+            
+            builder.Property(m => m.UsuarioId)
+           .IsRequired();
+
+            builder.Property(m => m.DespesaId)
+           .IsRequired(false)
+           .HasDefaultValue(null);
+
+            builder.Property(m => m.ReceitaId)
+            .IsRequired(false)
+            .HasDefaultValue(null);
+
+            builder.Property(m => m.UsuarioId)
+           .IsRequired();
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
@@ -46,8 +60,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             return new LancamentoVM
             {
                 Id = origin.Id,
-                IdDespesa = origin.DespesaId,
-                IdReceita = origin.ReceitaId,
+                IdDespesa = origin.DespesaId.Value,
+                IdReceita = origin.ReceitaId.Value,
                 IdUsuario = origin.UsuarioId,
                 Data = origin.Data.ToDateBr(),
                 Valor = origin.Valor.ToString("N2"),

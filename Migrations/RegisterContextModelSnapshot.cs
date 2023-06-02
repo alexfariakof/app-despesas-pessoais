@@ -37,6 +37,8 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioId");
+
                     b.ToTable("Categoria");
                 });
 
@@ -80,7 +82,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 1, 19, 1, 4, 913, DateTimeKind.Local).AddTicks(7361));
+                        .HasDefaultValue(new DateTime(2023, 6, 1, 23, 30, 11, 809, DateTimeKind.Local).AddTicks(189));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -96,6 +98,10 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Despesa");
                 });
@@ -117,10 +123,10 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int>("DespesaId")
+                    b.Property<int?>("DespesaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReceitaId")
+                    b.Property<int?>("ReceitaId")
                         .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
@@ -130,6 +136,14 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("DespesaId");
+
+                    b.HasIndex("ReceitaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Lancamento");
                 });
@@ -152,12 +166,21 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("Url")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("PerfilFile");
                 });
@@ -174,7 +197,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 1, 19, 1, 4, 913, DateTimeKind.Local).AddTicks(8270));
+                        .HasDefaultValue(new DateTime(2023, 6, 1, 23, 30, 11, 809, DateTimeKind.Local).AddTicks(1759));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
@@ -189,6 +212,10 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasDefaultValue(0m);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Receita");
                 });
@@ -229,6 +256,17 @@ namespace despesas_backend_api_net_core.Migrations
                     b.ToTable("Usuario");
                 });
 
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Categoria", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.ControleAcesso", b =>
                 {
                     b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
@@ -236,6 +274,86 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Despesa", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Lancamento", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Despesa", "Despesa")
+                        .WithMany()
+                        .HasForeignKey("DespesaId");
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Receita", "Receita")
+                        .WithMany()
+                        .HasForeignKey("ReceitaId");
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Despesa");
+
+                    b.Navigation("Receita");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.PerfilFile", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Receita", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
 
                     b.Navigation("Usuario");
                 });

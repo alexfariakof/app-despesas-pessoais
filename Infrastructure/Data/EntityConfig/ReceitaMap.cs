@@ -11,6 +11,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         {
             builder.HasKey(m => m.Id);
 
+            builder.Property(m => m.UsuarioId)
+           .IsRequired();
+
             builder.Property(m => m.Descricao)
             .IsRequired(false)
             .HasMaxLength(20);
