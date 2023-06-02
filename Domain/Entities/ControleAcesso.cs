@@ -6,5 +6,6 @@
         public string Senha { get; set; }
         public int UsuarioId { get; set; }
         public virtual Usuario Usuario { get; set; }
+        internal ICollection<Usuario> Usuarios { get; }
     }
 }
