@@ -6,6 +6,10 @@
    API REST DESPESAS PESSOAIS 
 </h2>
 
+<h6>
+<P>Obs.: Durante a fase de refatoração da API enquanto não foi adicionado os Testes Unitários, testes podem ser realizados pelo postman ou sawwger sem a utilização de Autorization Beares pois a validação através de accessToken se encontra desativada.</P>
+</h6>
+
 <h2 align="left"> 
 Acesso documentação da API no Swagger <a href="http://api-despesas-pessoais-aspnetcore.bwg2czahbvgefufr.eastus.azurecontainer.io/swagger/index.html" target="_blank" >backend do projeto</a>
 </h2>
@@ -45,6 +49,3 @@ Workspace público para teste da API no <a href="https://www.postman.com/bold-ec
       </li>
  </ul>
 </h5>
-<h6>
-<P>Obs.: Durante a fase de refatoração da API enquanto não foi adicionado os Testes Unitários, testes podem ser realizados sem a utilização de Autorization Beares pois a validação através de accessToken se encontra  desativada.</P>
-</h6>
