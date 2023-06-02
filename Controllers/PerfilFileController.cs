@@ -34,8 +34,8 @@ namespace despesas_backend_api_net_core.Controllers
 
             if (perfilFile != null)
                 return Ok(perfilFile);
-
-            return BadRequest("Arquivo Inexistente!");
+            else
+                return BadRequest("Arquivo Inexistente!");
         }
 
         [HttpPost]
@@ -66,7 +66,10 @@ namespace despesas_backend_api_net_core.Controllers
                     };
 
                     perfilUsuarioFile =  _perfilFileBusiness.Create(perfilUsuarioFile);
-                    return Ok(perfilUsuarioFile);
+                    if (perfilUsuarioFile != null)
+                        return Ok(perfilUsuarioFile);
+                    else
+                        return BadRequest("Imagem de perfil não foi incluída!");
                 }
             }
             catch (Exception ex)
@@ -74,7 +77,6 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { ex });
             }
         }
-
 
         [HttpPut]
         public async Task<IActionResult> Put(int idUsuario, IFormFile file)
@@ -104,21 +106,23 @@ namespace despesas_backend_api_net_core.Controllers
                     };
 
                     perfilUsuarioFile = _perfilFileBusiness.Update(perfilUsuarioFile);
-                    return Ok(perfilUsuarioFile);
+                    if (perfilUsuarioFile != null)
+                        return Ok(perfilUsuarioFile);
+                    else
+                        return BadRequest("Imagem de perfil não foi atualizada!");
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(new { ex });
             }
-
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{idUsuario}")]
         //[Authorize("Bearer")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int idUsuario)
         {
-            _perfilFileBusiness.Delete(id);
+            _perfilFileBusiness.Delete(idUsuario);
             return NoContent();
         }
     }
