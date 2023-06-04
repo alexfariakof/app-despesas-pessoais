@@ -4,6 +4,7 @@ using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers
 {
@@ -22,6 +23,23 @@ namespace despesas_backend_api_net_core.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] ControleAcessoVM controleAcessoVM)
         {
+            if (String.IsNullOrEmpty(controleAcessoVM.Telefone) || String.IsNullOrWhiteSpace(controleAcessoVM.Telefone))
+                return BadRequest("Campo Telefone não pode ser em branco");
+
+            if (String.IsNullOrEmpty(controleAcessoVM.Email) || String.IsNullOrWhiteSpace(controleAcessoVM.Email))
+                return BadRequest("Campo Login não pode ser em branco");
+
+            if (!IsValidEmail(controleAcessoVM.Email))
+                return BadRequest(new { message = "Email inválido!" });
+
+            if (String.IsNullOrEmpty(controleAcessoVM.Senha) || String.IsNullOrWhiteSpace(controleAcessoVM.Senha))
+                return BadRequest("Campo Senha não pode ser em branco ou nulo");
+
+            if (String.IsNullOrEmpty(controleAcessoVM.ConfirmaSenha) | String.IsNullOrWhiteSpace(controleAcessoVM.ConfirmaSenha))
+                return BadRequest("Campo Confirma Senha não pode ser em branco ou nulo");
+
+            if (controleAcessoVM.Senha != controleAcessoVM.ConfirmaSenha)
+                return BadRequest("Senha e Confirma Senha são diferentes!");
 
             ControleAcesso controleAcesso = new ControleAcesso
             {
@@ -38,19 +56,12 @@ namespace despesas_backend_api_net_core.Controllers
                 }
             };
 
-            if (string.IsNullOrEmpty(controleAcesso.Usuario.Email) || string.IsNullOrWhiteSpace(controleAcesso.Usuario.Email))
-                return BadRequest("Email não pode ser nulo ou conter espaços em branco!");
-
-            if (string.IsNullOrEmpty(controleAcesso.Senha) || string.IsNullOrWhiteSpace(controleAcesso.Senha))
-                return BadRequest("Senha não pode ser nula ou conter espaços em branco!");
-
-
             var result = _controleAcessoBusiness.Create(controleAcesso);
 
             if (result)
                 return  Ok(new { message = result });
             else
-                return BadRequest(new { message = "Não foi possível realizar o cadastro.Usuário já deve estar cadastrado ou email já cadastrado!" });
+                return BadRequest(new { message = "Não foi possível realizar o cadastro." });
         }
         
         [AllowAnonymous]
@@ -58,41 +69,66 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult SignIn([FromBody] LoginVM login)
         {
             var controleAcesso = new ControleAcesso { Login = login.Email , Senha = login.Senha };
+
             if (String.IsNullOrEmpty(controleAcesso.Login) || String.IsNullOrWhiteSpace(controleAcesso.Login))
-                return BadRequest("Campo Login não pode ser em branco");
+                return BadRequest(new { message = "Campo Login não pode ser em branco ou nulo!" });
+
+            if (!IsValidEmail(login.Email))
+                return BadRequest(new { message = "Email inválido!" });
 
             if (String.IsNullOrEmpty(controleAcesso.Senha) || String.IsNullOrWhiteSpace(controleAcesso.Senha))
-                return BadRequest("Campo Senha não pode ser em branco");
+                return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
             return new ObjectResult(_controleAcessoBusiness.FindByLogin(controleAcesso));
         }
 
 
         [HttpPost("ChangePassword")]
-        //[Authorize("Bearer")]
-        
+        [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {
+
+            if (String.IsNullOrEmpty(login.Email) || String.IsNullOrWhiteSpace(login.Email))
+                return BadRequest("Campo Login não pode ser em branco ou nulo!");
+
+            if (!IsValidEmail(login.Email))
+                return BadRequest(new { message = "Email inválido!" });
+
+            if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
+                return BadRequest("Campo Senha não pode ser em branco ou nulo!");
+
+            if (String.IsNullOrEmpty(login.ConfirmaSenha) | String.IsNullOrWhiteSpace(login.ConfirmaSenha))
+                return BadRequest("Campo Confirma Senha não pode ser em branco ou nulo!");
+
             if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.ToInteger(), login.Senha))
                     return Ok(new { message = true });
 
             return BadRequest(new { message = "Erro ao trocar senha tente novamente mis tarde ou entre em contato com nosso suporte." });
         }
 
-
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
         public IActionResult RecoveryPassword([FromBody]  string email)
         {
-            if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrEmpty(email))
-                if (_controleAcessoBusiness.RecoveryPassword(email))
-                    return Ok(new { message = true });
-                else
-                    return Ok(new { message = "Email não pode ser enviado, tente novamente mais tarde."});
 
-            return BadRequest(new { message = "Não foi possível enviar o email, tente novamente mis tarde ou entre em contato com nosso suporte." });
+            if (String.IsNullOrEmpty(email) || String.IsNullOrWhiteSpace(email))
+                return BadRequest("Campo Login não pode ser em branco ou nulo!");
+
+            if (!IsValidEmail(email))
+                return BadRequest(new { message = "Email inválido!" });
+
+            if (_controleAcessoBusiness.RecoveryPassword(email))
+                return Ok(new { message = true });
+            else
+                return BadRequest(new { message = "Email não pode ser enviado, tente novamente mais tarde." });
         }
 
+        private bool IsValidEmail(string email)
+        {
+            string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(email);
+        }
     }
 }
 
