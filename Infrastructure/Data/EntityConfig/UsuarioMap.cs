@@ -30,6 +30,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .IsRequired(false)
             ;
 
+            builder.Property(m => m.PerfilUsuario)
+            .HasDefaultValue(PerfilUsuario.Usuario);
+
         }
         public Usuario Parse(UsuarioVM origin)
         {
@@ -40,7 +43,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Email = origin.Email,
                 Nome = origin.Nome,
                 SobreNome = origin.SobreNome,
-                Telefone = origin.Telefone                
+                Telefone = origin.Telefone,
+                PerfilUsuario = origin.PerfilUsuario                
             };
         }
 
@@ -53,7 +57,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Email = origin.Email,
                 Nome = origin.Nome,
                 SobreNome = origin.SobreNome,
-                Telefone = origin.Telefone
+                Telefone = origin.Telefone,
+                PerfilUsuario = origin.PerfilUsuario
             };
         }
 

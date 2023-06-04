@@ -122,7 +122,6 @@ namespace despesas_backend_api_net_core.Controllers
             else
                 return BadRequest(new { message = "Email não pode ser enviado, tente novamente mais tarde." });
         }
-
         private bool IsValidEmail(string email)
         {
             string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";

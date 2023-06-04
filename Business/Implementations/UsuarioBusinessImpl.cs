@@ -17,16 +17,15 @@ namespace despesas_backend_api_net_core.Business.Implementations
             _converter = new UsuarioMap();
 
         }
-        public UsuarioVM Create(UsuarioVM usuarioVO)
+        public UsuarioVM Create(UsuarioVM usuarioVM)
         {
-
             var usuario = new Usuario
             {
-                Id = usuarioVO.Id,
-                Nome = usuarioVO.Nome,
-                SobreNome = usuarioVO.SobreNome,
-                Email = usuarioVO.Email,
-                Telefone = usuarioVO.Telefone,
+                Id = usuarioVM.Id,
+                Nome = usuarioVM.Nome,
+                SobreNome = usuarioVM.SobreNome,
+                Email = usuarioVM.Email,
+                Telefone = usuarioVM.Telefone,
                 StatusUsuario = StatusUsuario.Ativo
             };
 
@@ -45,21 +44,21 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(usuario);
         }
 
-        public UsuarioVM Update(UsuarioVM usuarioVO)
+        public UsuarioVM Update(UsuarioVM usuarioVM)
         {
             var usuario = new Usuario
             {
-                Id = usuarioVO.Id,
-                Nome = usuarioVO.Nome,
-                SobreNome = usuarioVO.SobreNome,
-                Email = usuarioVO.Email,
-                Telefone = usuarioVO.Telefone,
+                Id = usuarioVM.Id,
+                Nome = usuarioVM.Nome,
+                SobreNome = usuarioVM.SobreNome,
+                Email = usuarioVM.Email,
+                Telefone = usuarioVM.Telefone,
                 StatusUsuario = StatusUsuario.Ativo
             };
 
-            usuarioVO = _converter.Parse(_repositorio.Update(usuario));
+            usuarioVM = _converter.Parse(_repositorio.Update(usuario));
 
-            return usuarioVO;
+            return usuarioVM;
         }
 
         public void Delete(int idUsuario)

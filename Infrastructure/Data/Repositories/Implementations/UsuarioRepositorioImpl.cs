@@ -152,7 +152,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             return obj;
         }
 
-
         void IRepositorio<Usuario>.Delete(int id)
         {
             var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));

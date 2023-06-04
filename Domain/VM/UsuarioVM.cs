@@ -8,5 +8,6 @@ namespace despesas_backend_api_net_core.Domain.VM
         public string SobreNome { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
+        internal PerfilUsuario PerfilUsuario  {get; set;} 
     }
 }

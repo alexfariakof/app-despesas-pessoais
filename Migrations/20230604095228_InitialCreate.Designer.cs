@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230604072630_InitialCreate")]
+    [Migration("20230604095228_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -85,7 +85,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 4, 4, 26, 30, 725, DateTimeKind.Local).AddTicks(2951));
+                        .HasDefaultValue(new DateTime(2023, 6, 4, 6, 52, 27, 954, DateTimeKind.Local).AddTicks(7796));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -200,7 +200,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 4, 4, 26, 30, 725, DateTimeKind.Local).AddTicks(5055));
+                        .HasDefaultValue(new DateTime(2023, 6, 4, 6, 52, 27, 955, DateTimeKind.Local).AddTicks(1390));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
@@ -231,8 +231,8 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -241,8 +241,8 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.Property<string>("SobreNome")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<ushort>("StatusUsuario")
                         .HasColumnType("smallint unsigned");
@@ -250,6 +250,11 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<string>("Telefone")
                         .HasMaxLength(15)
                         .HasColumnType("varchar(15)");
+
+                    b.Property<ushort>("perfilUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint unsigned")
+                        .HasDefaultValue((ushort)2);
 
                     b.HasKey("Id");
 

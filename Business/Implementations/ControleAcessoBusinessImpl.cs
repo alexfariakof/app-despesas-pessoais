@@ -59,7 +59,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                string token = CreateToken(identity, createDate, expirationDate, handler);
+                string token = CreateToken(identity, createDate, expirationDate, handler, usuario.Id);
 
                 return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
             }
@@ -79,7 +79,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _repositorio.ChangePassword(idUsuario, password);
         }
 
-        private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler)
+        private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler, int idUsuario)
         {
             Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
@@ -88,7 +88,8 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 SigningCredentials = _singingConfiguration.SigningCredentials,
                 Subject = identity,
                 NotBefore = createDate,
-                Expires = expirationDate
+                Expires = expirationDate,
+                Claims = new Dictionary<string, object> {{ "IdUsuario", idUsuario }}
             });
 
             string token = handler.WriteToken(securityToken);
