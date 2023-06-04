@@ -21,7 +21,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    Nome = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
                     SobreNome = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
                     Telefone = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: true),
                     Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
@@ -106,7 +106,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 2, 3, 20, 15, 559, DateTimeKind.Local).AddTicks(9512)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 4, 4, 26, 30, 725, DateTimeKind.Local).AddTicks(2951)),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     DataVencimento = table.Column<DateTime>(type: "timestamp", nullable: false),
@@ -137,7 +137,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 2, 3, 20, 15, 560, DateTimeKind.Local).AddTicks(3904)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 4, 4, 26, 30, 725, DateTimeKind.Local).AddTicks(5055)),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),

@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230602062015_InitialCreate")]
+    [Migration("20230604072630_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -85,7 +85,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 2, 3, 20, 15, 559, DateTimeKind.Local).AddTicks(9512));
+                        .HasDefaultValue(new DateTime(2023, 6, 4, 4, 26, 30, 725, DateTimeKind.Local).AddTicks(2951));
 
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -200,7 +200,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 2, 3, 20, 15, 560, DateTimeKind.Local).AddTicks(3904));
+                        .HasDefaultValue(new DateTime(2023, 6, 4, 4, 26, 30, 725, DateTimeKind.Local).AddTicks(5055));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
@@ -236,8 +236,8 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("SobreNome")
                         .IsRequired()

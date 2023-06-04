@@ -15,14 +15,14 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 .IsUnique(true);
             builder.Property(m => m.Email)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(50);
 
             builder.Property(m => m.Nome)
             .HasMaxLength(50)
             .IsRequired();
 ;
             builder.Property(m => m.SobreNome)
-            .HasMaxLength(20)
+            .HasMaxLength(50)
             .IsRequired();
 
             builder.Property(m => m.Telefone)
