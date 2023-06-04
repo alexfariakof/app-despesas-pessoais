@@ -57,5 +57,10 @@ Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais
             <p> Arquivos contendo chaves de configuração com chave de cripitografia,  acesso ao banco de dados e amazon S3 estão protegidos pois não se encontram expostos no repositório GitHub assim como a imagem dockerizada está configurada como private evitando assim acesso aos arquivos de configuração. 
          </p>
       </li>
+      <li>
+         <h6>Controle de Usuários </h6>
+            <p> Apenas usuários com perfil de administrador podem listar os usuários e efetuar a deleção de usuários. Por questões de segurança das informações dos usuários cadastrados todos os acessos ao Endpoint usuários estão com Auntenticação JWT Bearer Ativadas.
+         </p>
+      </li>       
  </ul>
 </h5>
