@@ -153,12 +153,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     return false;                   
                     
                 }
-                catch (Exception ex)
+                catch 
                 {
-                    throw ex;
+                    return false;
                 }
-            }
-            return false;
+            }            
         }
 
         public bool ChangePassword(int idUsuario, string password)
@@ -186,7 +185,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         {
             Usuario usuario = controleAcesso.Usuario;
 
-            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 465))
+            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
             {
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
@@ -206,7 +205,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                         client.Send(mail);
                         return true;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         return false;
                     }
