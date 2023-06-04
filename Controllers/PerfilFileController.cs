@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (perfilFile != null)
                 return Ok(perfilFile);
             else
-                return BadRequest("Arquivo Inexistente!");
+                return BadRequest(new { message = "Arquivo Inexistente!" });
         }
 
         [HttpPost]
@@ -50,10 +50,13 @@ namespace despesas_backend_api_net_core.Controllers
                 {
                     typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
+                
+                if (typeFile != "jpg" || typeFile != "png")
+                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos."});
 
-                    using (var memoryStream = new MemoryStream())
+
+                using (var memoryStream = new MemoryStream())
                 {
-
                     await file.CopyToAsync(memoryStream);
                     
                     PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
@@ -69,12 +72,12 @@ namespace despesas_backend_api_net_core.Controllers
                     if (perfilUsuarioFile != null)
                         return Ok(perfilUsuarioFile);
                     else
-                        return BadRequest("Imagem de perfil não foi incluída!");
+                        return BadRequest(new { message = "Imagem de perfil não foi incluída!" });
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex });
+                return BadRequest(new { message= "Erro ao incluir nova imagem de peefil!" });
             }
         }
 
@@ -90,6 +93,10 @@ namespace despesas_backend_api_net_core.Controllers
                 {
                     typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
+
+                if (typeFile != "jpg" || typeFile != "png")
+                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos." });
+
 
                 using (var memoryStream = new MemoryStream())
                 {
@@ -109,12 +116,12 @@ namespace despesas_backend_api_net_core.Controllers
                     if (perfilUsuarioFile != null)
                         return Ok(perfilUsuarioFile);
                     else
-                        return BadRequest("Imagem de perfil não foi atualizada!");
+                        return BadRequest(new { messsage = "Imagem de perfil não foi atualizada!"});
                 }
             }
             catch (Exception ex)
             {
-                return BadRequest(new { ex });
+                return BadRequest(new { message = "Erro ao Atualizar iamgem do perfil!" });
             }
         }
 
