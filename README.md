@@ -59,7 +59,7 @@ Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais
       </li>
       <li>
          <h6>Controle de Usuários </h6>
-            <p> Apenas usuários com perfil de administrador podem listar os usuários e efetuar a deleção de usuários. Por questões de segurança das informações dos usuários cadastrados todos os acessos ao COntroller usuários estão com Auntenticação JWT Bearer Ativadas.
+            <p> Apenas usuários com perfil de administrador podem listar os usuários e efetuar a deleção de usuários. Por questões de segurança das informações dos usuários cadastrados todos os acessos ao Endpoint usuários estão com Auntenticação JWT Bearer Ativadas.
          </p>
       </li>       
  </ul>
