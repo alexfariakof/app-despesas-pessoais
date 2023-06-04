@@ -18,7 +18,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .HasMaxLength(100);
 
             builder.Property(m => m.Nome)
-            .HasMaxLength(20)
+            .HasMaxLength(50)
             .IsRequired();
 ;
             builder.Property(m => m.SobreNome)
