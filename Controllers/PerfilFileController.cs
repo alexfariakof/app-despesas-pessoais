@@ -50,30 +50,33 @@ namespace despesas_backend_api_net_core.Controllers
                 {
                     typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
-                
-                if (typeFile != "jpg" || typeFile != "png")
-                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos."});
 
-
-                using (var memoryStream = new MemoryStream())
+                if (typeFile == "jpg" || typeFile == "png")
                 {
-                    await file.CopyToAsync(memoryStream);
-                    
-                    PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
-                    {
-                        Arquivo = memoryStream.GetBuffer(),
-                        UsuarioId = idUsuario,
-                        Name = fileName,
-                        Type = typeFile,
-                        ContentType = file.ContentType
-                    };
 
-                    perfilUsuarioFile =  _perfilFileBusiness.Create(perfilUsuarioFile);
-                    if (perfilUsuarioFile != null)
-                        return Ok(perfilUsuarioFile);
-                    else
-                        return BadRequest(new { message = "Imagem de perfil não foi incluída!" });
+
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+
+                        PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
+                        {
+                            Arquivo = memoryStream.GetBuffer(),
+                            UsuarioId = idUsuario,
+                            Name = fileName,
+                            Type = typeFile,
+                            ContentType = file.ContentType
+                        };
+
+                        perfilUsuarioFile = _perfilFileBusiness.Create(perfilUsuarioFile);
+                        if (perfilUsuarioFile != null)
+                            return Ok(perfilUsuarioFile);
+                        else
+                            return BadRequest(new { message = "Imagem de perfil não foi incluída!" });
+                    }
                 }
+                else
+                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos." });
             }
             catch (Exception ex)
             {
@@ -94,30 +97,33 @@ namespace despesas_backend_api_net_core.Controllers
                     typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
 
-                if (typeFile != "jpg" || typeFile != "png")
-                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos." });
-
-
-                using (var memoryStream = new MemoryStream())
+                if (typeFile == "jpg" || typeFile == "png")
                 {
 
-                    await file.CopyToAsync(memoryStream);
 
-                    PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
+                    using (var memoryStream = new MemoryStream())
                     {
-                        Arquivo = memoryStream.GetBuffer(),
-                        UsuarioId = idUsuario,
-                        Name = fileName,
-                        Type = typeFile,
-                        ContentType = file.ContentType
-                    };
 
-                    perfilUsuarioFile = _perfilFileBusiness.Update(perfilUsuarioFile);
-                    if (perfilUsuarioFile != null)
-                        return Ok(perfilUsuarioFile);
-                    else
-                        return BadRequest(new { messsage = "Imagem de perfil não foi atualizada!"});
+                        await file.CopyToAsync(memoryStream);
+
+                        PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
+                        {
+                            Arquivo = memoryStream.GetBuffer(),
+                            UsuarioId = idUsuario,
+                            Name = fileName,
+                            Type = typeFile,
+                            ContentType = file.ContentType
+                        };
+
+                        perfilUsuarioFile = _perfilFileBusiness.Update(perfilUsuarioFile);
+                        if (perfilUsuarioFile != null)
+                            return Ok(perfilUsuarioFile);
+                        else
+                            return BadRequest(new { messsage = "Imagem de perfil não foi atualizada!" });
+                    }
                 }
+                else
+                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos." });
             }
             catch (Exception ex)
             {
