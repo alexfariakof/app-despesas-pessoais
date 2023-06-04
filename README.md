@@ -27,6 +27,11 @@ Acesso ao protótipo <a href="https://despesas-pessoasis-aws.d26q19cgt5w2n4.ampl
 Acesso a aplicação atualizada em produção  <a href="hhtp://despesas-pessoais-azure.cdeefmd5a6fjfece.eastus.azurecontainer.io" target="_blank" >Despesas Pessoais</a> 
 </h2>
 
+<h2 align="left"> 
+Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais-azure.cdeefmd5a6fjfece.eastus.azurecontainer.io" target="_blank" >Despesas Pessoais</a> do projeto
+</h2>
+
+
 # Descrição 
 <h5> 
    <p>API Rest HATEOAS  dockerizada Despesas Pessoas usando .Net core 6 com banco de dados mysql server usando Entity Framework e Migrations. O objetivo é atualizar da versão .net core 2.2 para .net 6 adicioando novas funcinalidades como TTD e CI/CD na  implantação do projeto
