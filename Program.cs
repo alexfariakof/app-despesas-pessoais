@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +28,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-ConfigureAutorization(builder.Services, builder.Configuration);*/
+string MySqlConnectionString ="";
+string filePath = "MYSQL_ConnectioString.txt";
+if (File.Exists(filePath))
+{
+    MySqlConnectionString = File.ReadAllText(filePath);
+
+}
+else
+{
+    throw new FileNotFoundException($"Key file '{filePath}' not found.");
+}
+
 builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+    options.UseMySQL(builder.Configuration.GetConnectionString(MySqlConnectionString)));
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
