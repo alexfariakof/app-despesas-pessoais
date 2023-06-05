@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230605173643_InitialCreate")]
+    [Migration("20230605190655_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -85,7 +85,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 14, 36, 43, 665, DateTimeKind.Local).AddTicks(7654));
+                        .HasDefaultValue(new DateTime(2023, 6, 5, 16, 6, 55, 234, DateTimeKind.Local).AddTicks(9010));
 
                     b.Property<DateTime?>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -158,10 +158,8 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp");
 
-                    b.Property<DateTime?>("DataCriacao")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 14, 36, 43, 666, DateTimeKind.Local).AddTicks(3686));
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -205,7 +203,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 14, 36, 43, 666, DateTimeKind.Local).AddTicks(61));
+                        .HasDefaultValue(new DateTime(2023, 6, 5, 16, 6, 55, 235, DateTimeKind.Local).AddTicks(272));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
