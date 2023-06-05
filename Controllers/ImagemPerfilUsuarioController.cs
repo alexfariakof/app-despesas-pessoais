@@ -10,10 +10,10 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PerfilFileController : ControllerBase
+    public class ImagemPerfilUsuarioController : ControllerBase
     {
-        private IBusiness<PerfilUsuarioFileVM> _perfilFileBusiness;
-        public PerfilFileController(IBusiness<PerfilUsuarioFileVM> perfilFileBusiness)
+        private IBusiness<ImagemPerfilUsuarioVM> _perfilFileBusiness;
+        public ImagemPerfilUsuarioController(IBusiness<ImagemPerfilUsuarioVM> perfilFileBusiness)
         {
             _perfilFileBusiness = perfilFileBusiness;
         }
@@ -59,7 +59,7 @@ namespace despesas_backend_api_net_core.Controllers
                     {
                         await file.CopyToAsync(memoryStream);
 
-                        PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
+                        ImagemPerfilUsuarioVM perfilUsuarioFile = new ImagemPerfilUsuarioVM
                         {
                             Arquivo = memoryStream.GetBuffer(),
                             UsuarioId = idUsuario,
@@ -106,7 +106,7 @@ namespace despesas_backend_api_net_core.Controllers
 
                         await file.CopyToAsync(memoryStream);
 
-                        PerfilUsuarioFileVM perfilUsuarioFile = new PerfilUsuarioFileVM
+                        ImagemPerfilUsuarioVM perfilUsuarioFile = new ImagemPerfilUsuarioVM
                         {
                             Arquivo = memoryStream.GetBuffer(),
                             UsuarioId = idUsuario,

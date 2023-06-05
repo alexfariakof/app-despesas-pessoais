@@ -9,22 +9,22 @@ using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class PerfilFileBusinessImpl : IBusiness<PerfilUsuarioFileVM>
+    public class ImagemPerfilUsuarioBusinessImpl : IBusiness<ImagemPerfilUsuarioVM>
     {
-        private readonly IRepositorio<PerfilFile> _repositorio;
+        private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
         private readonly PerfilFileMap _converter;
-        public PerfilFileBusinessImpl(IRepositorio<PerfilFile> repositorio)
+        public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio)
         {
             _repositorio = repositorio;
             _converter = new PerfilFileMap();
         }
-        public PerfilUsuarioFileVM Create(PerfilUsuarioFileVM obj)
+        public ImagemPerfilUsuarioVM Create(ImagemPerfilUsuarioVM obj)
         {
             try
             {
                 string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
                 obj.Url = url;
-                PerfilFile perfilFile = _converter.Parse(obj);
+                ImagemPerfilUsuario perfilFile = _converter.Parse(obj);
                 return _converter.Parse(_repositorio.Insert(perfilFile));
             }
             catch
@@ -33,16 +33,16 @@ namespace despesas_backend_api_net_core.Business.Implementations
             }
             return null; 
         }
-        public List<PerfilUsuarioFileVM> FindAll()
+        public List<ImagemPerfilUsuarioVM> FindAll()
         {
             var lstPerfilFile = _repositorio.GetAll();
             return _converter.ParseList(lstPerfilFile);
         }
-        public PerfilUsuarioFileVM FindById(int id)
+        public ImagemPerfilUsuarioVM FindById(int id)
         {
             return _converter.Parse(_repositorio.Get(id));
         }
-        public PerfilUsuarioFileVM Update(PerfilUsuarioFileVM obj)
+        public ImagemPerfilUsuarioVM Update(ImagemPerfilUsuarioVM obj)
         {
             var isPerfilValid = FindAll().Find(prop => prop.UsuarioId.Equals(obj.UsuarioId));
             if (isPerfilValid != null)
@@ -52,7 +52,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 {
                     string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
                     isPerfilValid.Url = url;
-                    PerfilFile perfilFile = _converter.Parse(isPerfilValid);
+                    ImagemPerfilUsuario perfilFile = _converter.Parse(isPerfilValid);
                     return _converter.Parse(_repositorio.Update(perfilFile));
                 }
             }

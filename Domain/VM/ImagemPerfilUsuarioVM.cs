@@ -2,7 +2,7 @@
 
 namespace despesas_backend_api_net_core.Domain.VM
 {
-    public class PerfilUsuarioFileVM : BaseModel
+    public class ImagemPerfilUsuarioVM : BaseModel
     {
         public string Url { get; set; }
         public string Name { get; set; }
