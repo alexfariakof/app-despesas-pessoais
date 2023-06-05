@@ -63,7 +63,7 @@ Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais
          </p>
       </li>       
       <li>
-         <h6>Acesso ao Banco de Dados/h6>
+         <h6>Acesso ao Banco de Dados</h6>
             <p> Configurações de acesso ao banco de dados não se encontram mais no arquivo appsettings.json estam separados em um arquivo chamado MYSQL_ConnectionString.txt. Foi necessário pois o coódigo fonte esta estposto aqui no github e  aplicação se encontra dockerizada em uma imagem privada do dokcer hub e em produção no azure. Com isso é evitado acesso indevido a string de conexão de acesso ao banco de dados.    </p>
       </li>             
  </ul>
