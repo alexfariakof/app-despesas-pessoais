@@ -27,12 +27,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.DataVencimento)
             .HasColumnType("timestamp")
-            .HasDefaultValue(null);
+            .HasDefaultValueSql(null);
 
             builder.Property(m => m.Valor)
-                .HasColumnType("decimal(10, 2)");
-                
-                
+            .HasColumnType("decimal(10, 2)");                
         }
         public Despesa Parse(DespesaVM origin)
         {

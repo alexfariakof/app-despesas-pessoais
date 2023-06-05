@@ -12,11 +12,11 @@ namespace despesas_backend_api_net_core.Business.Implementations
     public class ImagemPerfilUsuarioBusinessImpl : IBusiness<ImagemPerfilUsuarioVM>
     {
         private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
-        private readonly PerfilFileMap _converter;
+        private readonly ImagemPerfilUsuarioMap _converter;
         public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio)
         {
             _repositorio = repositorio;
-            _converter = new PerfilFileMap();
+            _converter = new ImagemPerfilUsuarioMap();
         }
         public ImagemPerfilUsuarioVM Create(ImagemPerfilUsuarioVM obj)
         {

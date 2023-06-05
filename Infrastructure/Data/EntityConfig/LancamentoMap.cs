@@ -35,6 +35,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Descricao)
             .HasMaxLength(20);
+
+            builder.Property(m => m.DataCriacao)
+            .HasDefaultValue(DateTime.Now);
+
+
         }
 
         public Lancamento Parse(LancamentoVM origin)
