@@ -28,21 +28,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string MySqlConnectionString = "";
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-}
-else
-{
-    string filePath = "MYSQL_ConnectionString.txt";
-    if (File.Exists(filePath))
-    {
-        MySqlConnectionString = File.ReadAllText(filePath);
-        builder.Services.AddDbContext<RegisterContext>(options =>
-        options.UseMySQL(builder.Configuration.GetConnectionString(MySqlConnectionString)));
-    }
-}
+builder.Services.AddDbContext<RegisterContext>(options =>
+options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 
 ConfigureAutorization(builder.Services, builder.Configuration);
