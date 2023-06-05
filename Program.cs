@@ -28,33 +28,33 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 string MySqlConnectionString ="";
-string filePath = "MYSQL_ConnectioString.txt";
+string filePath = "MYSQL_ConnectionString.txt";
 if (File.Exists(filePath))
 {
     MySqlConnectionString = File.ReadAllText(filePath);
-
+    builder.Services.AddDbContext<RegisterContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString(MySqlConnectionString)));
 }
 else
 {
-    throw new FileNotFoundException($"Key file '{filePath}' not found.");
+    builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 }
 
-builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString(MySqlConnectionString)));
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-app.UseSwagger();
-app.UseSwaggerUI();
-app.UseCors();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseCors();
 //}
 
 app.UseHttpsRedirection();
