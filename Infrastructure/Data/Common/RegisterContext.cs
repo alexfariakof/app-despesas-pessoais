@@ -15,6 +15,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 
         public DbSet<ControleAcesso> ControleAcesso { get; set; }
         public DbSet<Usuario> Usuario{ get; set; }
+        public DbSet<ImagemPerfilUsuario> ImagemPerfilUsuario { get; set; }
         public DbSet<Despesa> Despesa { get; set; }
         public DbSet<Receita> Receita { get; set; }
         public DbSet<Categoria> Categoria{ get; set; }
@@ -25,11 +26,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new CategoriaMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new ImagemPerfilUsuarioMap());
             modelBuilder.ApplyConfiguration(new ControleAcessoMap());
             modelBuilder.ApplyConfiguration(new DespesaMap());
             modelBuilder.ApplyConfiguration(new ReceitaMap());
             modelBuilder.ApplyConfiguration(new LancamentoMap());
-
         }
 
     }

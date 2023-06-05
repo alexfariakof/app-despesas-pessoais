@@ -15,25 +15,35 @@ namespace despesas_backend_api_net_core.Controllers
             _lancamentoBusiness = lancamentoBusiness;
         }
 
-        [HttpGet("{mesAno}/{idUsuario}")]
+        [HttpGet("{anoMes}/{idUsuario}")]
         //[Authorize("Bearer")]
-        public IActionResult Get(DateTime mesAno, int idUsuario)
+        public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
-            var list = _lancamentoBusiness.FindByMesAno(mesAno, idUsuario);
+            var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
 
             if (list == null || list.Count == 0)
-                return NotFound();
+                return BadRequest("Nenhum Lançamento foi encontrado!");
 
             return Ok(list);
         }
 
         [HttpGet("Saldo/{idUsuario}")]
         //[Authorize("Bearer")]
-        public IActionResult Get(int idUsuario)
+        public IActionResult Get([FromRoute]int idUsuario)
         {
             var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
                         
             return Ok(saldo.ToString("N2")); 
         }
+
+        [HttpGet("DadosGraficoPorAno/{anoMes}/{idUsuario}")]
+        //[Authorize("Bearer")]
+        public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
+        {
+            var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAno(idUsuario, anoMes);
+
+            return Ok(dadosGrafico);
+        }
+
     }
 }

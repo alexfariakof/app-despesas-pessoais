@@ -11,7 +11,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Common;
 namespace despesas_backend_api_net_core.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    [Migration("20230531030804_InitialCreate")]
+    [Migration("20230605173643_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,6 +39,8 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Categoria");
                 });
@@ -83,9 +85,9 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(5574));
+                        .HasDefaultValue(new DateTime(2023, 6, 5, 14, 36, 43, 665, DateTimeKind.Local).AddTicks(7654));
 
-                    b.Property<DateTime>("DataVencimento")
+                    b.Property<DateTime?>("DataVencimento")
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Descricao")
@@ -100,7 +102,48 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("UsuarioId");
+
                     b.ToTable("Despesa");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.ImagemPerfilUsuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("varchar(4)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("Url")
+                        .IsUnique();
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
+
+                    b.ToTable("ImagemPerfilUsuario");
                 });
 
             modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Lancamento", b =>
@@ -115,15 +158,20 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp");
 
+                    b.Property<DateTime?>("DataCriacao")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(2023, 6, 5, 14, 36, 43, 666, DateTimeKind.Local).AddTicks(3686));
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int>("DespesaId")
+                    b.Property<int?>("DespesaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReceitaId")
+                    b.Property<int?>("ReceitaId")
                         .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
@@ -133,6 +181,14 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("decimal(10, 2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("DespesaId");
+
+                    b.HasIndex("ReceitaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Lancamento");
                 });
@@ -149,7 +205,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 5, 31, 0, 8, 4, 508, DateTimeKind.Local).AddTicks(7498));
+                        .HasDefaultValue(new DateTime(2023, 6, 5, 14, 36, 43, 666, DateTimeKind.Local).AddTicks(61));
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
@@ -165,6 +221,10 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoriaId");
+
+                    b.HasIndex("UsuarioId");
+
                     b.ToTable("Receita");
                 });
 
@@ -176,18 +236,23 @@ namespace despesas_backend_api_net_core.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<ushort>("PerfilUsuario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint unsigned")
+                        .HasDefaultValue((ushort)2);
 
                     b.Property<string>("SobreNome")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<ushort>("StatusUsuario")
                         .HasColumnType("smallint unsigned");
@@ -204,6 +269,17 @@ namespace despesas_backend_api_net_core.Migrations
                     b.ToTable("Usuario");
                 });
 
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Categoria", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.ControleAcesso", b =>
                 {
                     b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
@@ -211,6 +287,86 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Despesa", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.ImagemPerfilUsuario", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Lancamento", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Despesa", "Despesa")
+                        .WithMany()
+                        .HasForeignKey("DespesaId");
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Receita", "Receita")
+                        .WithMany()
+                        .HasForeignKey("ReceitaId");
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Despesa");
+
+                    b.Navigation("Receita");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("despesas_backend_api_net_core.Domain.Entities.Receita", b =>
+                {
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("despesas_backend_api_net_core.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Categoria");
 
                     b.Navigation("Usuario");
                 });

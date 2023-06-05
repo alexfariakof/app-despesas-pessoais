@@ -1,17 +1,11 @@
-﻿using apiDespesasPessoais.Business.Implementations;
-using despesas_backend_api_net_core.Business;
+﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations;
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-
-using System.Configuration;
 
 namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
@@ -20,12 +14,12 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped(typeof(IBusiness<UsuarioVM>), typeof(UsuarioBusinessImpl));
+            services.AddScoped(typeof(IBusiness<ImagemPerfilUsuarioVM>), typeof(ImagemPerfilUsuarioBusinessImpl));
             services.AddScoped(typeof(IBusiness<DespesaVM>), typeof(DespesaBusinessImpl));
             services.AddScoped(typeof(IBusiness<ReceitaVM>), typeof(ReceitaBusinessImpl));
             services.AddScoped(typeof(IBusiness<CategoriaVM>), typeof(CategoriaBusinessImpl));
             services.AddScoped(typeof(IControleAcessoBusiness), typeof(ControleAcessoBusinessImpl));
             services.AddScoped(typeof(ILancamentoBusiness), typeof(LancamentoBusinessImpl));
-
 
             return services;
         }

@@ -5,9 +5,21 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add Cors Configuration 
+builder.Services.AddCors(c =>
+{
+    c.AddDefaultPolicy(builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+
+    });
+});
 
 // Add services to the container.
 
@@ -16,8 +28,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-ConfigureAutorization(builder.Services, builder.Configuration);*/
 builder.Services.AddDbContext<RegisterContext>(options =>
     options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 ConfigureAutorization(builder.Services, builder.Configuration);
@@ -26,20 +36,21 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-app.UseSwagger();
-app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseCors();
 //}
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseStaticFiles();
+
 
 app.MapControllers();
-
 app.Run();
 
 

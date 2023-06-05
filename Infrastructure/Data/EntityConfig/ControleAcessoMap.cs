@@ -13,7 +13,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.HasIndex(m => m.Login)                
                 .IsUnique(true);
 
-
             builder.Property(x => x.UsuarioId).IsRequired();
 
             builder.Property(m => m.Login)

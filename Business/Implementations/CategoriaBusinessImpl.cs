@@ -10,11 +10,13 @@ namespace despesas_backend_api_net_core.Business.Implementations
     {
         private readonly IRepositorio<Categoria> _repositorio;
         private readonly CategoriaMap _converter;
+
         public CategoriaBusinessImpl(IRepositorio<Categoria> repositorio)
         {
             _repositorio = repositorio;
             _converter = new CategoriaMap();
         }
+
         public CategoriaVM Create(CategoriaVM obj)
         {
             Categoria categoria = _converter.Parse(obj);            

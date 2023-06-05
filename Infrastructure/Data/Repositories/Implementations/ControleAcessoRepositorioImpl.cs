@@ -21,9 +21,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             if (FindByEmail(controleAcesso) != null)
                 return false;
             
-            DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
+            
             DbSet<Usuario> dsUsuario = _context.Set<Usuario>();
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
+            DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
 
             using (_context)
             {
@@ -102,7 +103,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     });
                     foreach (Categoria categoria in lstCategoria)
                     {
-                        categoria.UsuarioId = controleAcesso.Usuario.Id;
+                        categoria.Usuario = controleAcesso.Usuario;
                         dsCategoria.Add(categoria);
                     }
                     _context.SaveChanges();
@@ -143,17 +144,20 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 {
                     var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
                     controleAcesso.Senha = Crypto.Encrypt(senhaNova);
-                    _context.Entry(result).CurrentValues.SetValues(controleAcesso);
-                    _context.SaveChanges();
-                    EnviarEmail(controleAcesso.Usuario, "<b>Nova senha:</b>" + senhaNova);
-                    return true;
+                    if (EnviarEmail(controleAcesso, "<b>Nova senha:</b>" + senhaNova))
+                    {
+                        _context.Entry(result).CurrentValues.SetValues(controleAcesso);
+                        _context.SaveChanges();
+                        return true;
+                    }
+                    return false;                   
+                    
                 }
-                catch (Exception ex)
+                catch 
                 {
-                    throw ex;
+                    return false;
                 }
-            }
-            return false;
+            }            
         }
 
         public bool ChangePassword(int idUsuario, string password)
@@ -177,36 +181,38 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 throw ex;
             }
         }
-        private void EnviarEmail(Usuario usuario, String message)
+        private bool EnviarEmail(ControleAcesso controleAcesso, string message)
         {
-            System.Net.Mail.SmtpClient client = new SmtpClient();
-            client.Host = "smtp.gmail.com";
-            client.Port = 587;
-            client.EnableSsl = true;
-            client.Credentials = new NetworkCredential("appdespesaspessoais@gmail.com", "roottoor");
-            MailMessage mail = new MailMessage();
-            mail.Sender = new System.Net.Mail.MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
-            mail.From = new MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
-            mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.SobreNome));
-            mail.Subject = "Contato";
-            mail.Body = " Mensagem do site:<br/> Prezado(a)   " + usuario.Nome + " " + usuario.SobreNome + "<br/>Segue dados para acesso a conta cadastrada.<br><b>E-mail:</b> " + usuario.Email + " <br/> " + message;
-            mail.IsBodyHtml = true;
-            mail.Priority = MailPriority.High;
+            Usuario usuario = controleAcesso.Usuario;
 
-            try
+            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
             {
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.Send(mail);
-            }
-            catch 
-            {
-                throw new Exception("Erro ao enviar email!");
-            }
-            finally
-            {
-                mail = null;
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential("appdespesaspessoais@gmail.com", "@Toor01!");
+
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
+                    mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.SobreNome));
+                    mail.Subject = "Contato";
+                    mail.Body = $"Mensagem do site:<br/> Prezado(a) {usuario.Nome} {usuario.SobreNome}<br/>Segue dados para acesso a conta cadastrada.<br><b>Nova Senha :</b> {controleAcesso.Senha}<br/>{message}";
+                    mail.IsBodyHtml = true;
+                    mail.Priority = MailPriority.High;
+
+                    try
+                    {
+                        client.Send(mail);
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
             }
         }
+
         public bool isValidPasssword(ControleAcesso controleAcesso)
         {
             ControleAcesso _controleAcesso = FindByEmail(controleAcesso);

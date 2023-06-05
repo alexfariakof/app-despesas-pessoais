@@ -11,6 +11,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         {
             builder.HasKey(m => m.Id);
 
+            builder.Property(m => m.UsuarioId)
+           .IsRequired();
+
             builder.Property(m => m.Descricao)
             .IsRequired(false)
             .HasMaxLength(20);
@@ -34,9 +37,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Descricao = origin.Descricao,                
                 Valor = origin.Valor,
                 CategoriaId = origin.IdCategoria,
-                Categoria = new CategoriaMap().Parse(origin.Categoria),
-                UsuarioId = origin.IdUsuario,
-                Usuario = new UsuarioMap().Parse(origin.Usuario)
+                UsuarioId = origin.IdUsuario
             };
         }
 
@@ -50,10 +51,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Descricao = origin.Descricao,
                 Valor = origin.Valor,
                 IdCategoria = origin.CategoriaId,
-                Categoria = new CategoriaMap().Parse(origin.Categoria),
-                IdUsuario = origin.UsuarioId,
-                Usuario = new UsuarioMap().Parse(origin.Usuario)
-
+                IdUsuario = origin.UsuarioId
             };
         }
 

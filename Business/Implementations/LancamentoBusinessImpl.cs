@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Domain.VM;
+﻿using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 
@@ -24,6 +25,11 @@ namespace despesas_backend_api_net_core.Business.Implementations
         public decimal GetSaldo(int idUsuario)
         {
             return _repositorio.GetSaldo(idUsuario);
+        }
+
+        Grafico ILancamentoBusiness.GetDadosGraficoByAno(int idUsuario, DateTime data)
+        {
+            return _repositorio.GetDadosGraficoByAno(idUsuario, data);
         }
     }
 }

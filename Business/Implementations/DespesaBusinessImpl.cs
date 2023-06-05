@@ -4,7 +4,7 @@ using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
-namespace apiDespesasPessoais.Business.Implementations
+namespace despesas_backend_api_net_core.Business.Implementations
 {
     public class DespesaBusinessImpl : IBusiness<DespesaVM>
     {
@@ -24,7 +24,7 @@ namespace apiDespesasPessoais.Business.Implementations
         public List<DespesaVM> FindAll()
         {
             return _converter.ParseList(_repositorio.GetAll());
-        }      
+        }
 
         public DespesaVM FindById(int id)
         {

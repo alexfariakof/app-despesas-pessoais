@@ -1,9 +1,8 @@
-﻿
-namespace despesas_backend_api_net_core
+﻿namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
     public static class Extension
     {
-        public static int ToInteger(this String strToConvert)
+        public static int ToInteger(this string strToConvert)
         {
             int strConvert;
             int.TryParse(strToConvert, out strConvert);
@@ -17,14 +16,14 @@ namespace despesas_backend_api_net_core
             return objConvert;
 
         }
-        public static String ToDateBr(this DateTime objToConvert)
+        public static string ToDateBr(this DateTime objToConvert)
         {
             var obj = DateTime.Parse(objToConvert.ToString()).ToString("dd/MM/yyyy");
 
             return obj;
 
         }
-        public static DateTime ToDateTime(this String objToConvert)
+        public static DateTime ToDateTime(this string objToConvert)
         {
             DateTime obj;
 
@@ -33,18 +32,14 @@ namespace despesas_backend_api_net_core
             return obj;
 
         }
-        public static Decimal ToDecimal(this String objToConvert)
+        public static decimal ToDecimal(this string objToConvert)
         {
-            Decimal obj;
+            decimal obj;
 
-            Decimal.TryParse(objToConvert, out obj);
+            decimal.TryParse(objToConvert, out obj);
 
             return obj;
 
         }
-
-
-
-
     }
 }
