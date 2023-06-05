@@ -14,7 +14,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped(typeof(IBusiness<UsuarioVM>), typeof(UsuarioBusinessImpl));
-            services.AddScoped(typeof(IBusiness<PerfilUsuarioFileVM>), typeof(PerfilFileBusinessImpl));
+            services.AddScoped(typeof(IBusiness<ImagemPerfilUsuarioVM>), typeof(ImagemPerfilUsuarioBusinessImpl));
             services.AddScoped(typeof(IBusiness<DespesaVM>), typeof(DespesaBusinessImpl));
             services.AddScoped(typeof(IBusiness<ReceitaVM>), typeof(ReceitaBusinessImpl));
             services.AddScoped(typeof(IBusiness<CategoriaVM>), typeof(CategoriaBusinessImpl));

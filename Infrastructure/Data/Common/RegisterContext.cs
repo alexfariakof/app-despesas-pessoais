@@ -15,7 +15,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 
         public DbSet<ControleAcesso> ControleAcesso { get; set; }
         public DbSet<Usuario> Usuario{ get; set; }
-        public DbSet<PerfilFile> PerfilFile { get; set; }
+        public DbSet<ImagemPerfilUsuario> PerfilFile { get; set; }
         public DbSet<Despesa> Despesa { get; set; }
         public DbSet<Receita> Receita { get; set; }
         public DbSet<Categoria> Categoria{ get; set; }

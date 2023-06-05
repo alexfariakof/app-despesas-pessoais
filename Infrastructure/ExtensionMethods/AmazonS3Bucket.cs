@@ -19,7 +19,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
             public string S3ServiceUrl { get; set; }
         }
 
-        public static async Task<string> WritingAnObjectAsync(PerfilUsuarioFileVM perfilFile)
+        public static async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
         {
             string arquivoJson = "AMZOM_KEYS.json";
             try
@@ -57,7 +57,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
                 throw ex;
             }
         }
-        public static async Task<bool> DeleteObjectNonVersionedBucketAsync(PerfilUsuarioFileVM perfilFile)
+        public static async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuarioVM perfilFile)
         {
             try
             {
