@@ -27,28 +27,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-string MySqlConnectionString = "";
-if (builder.Environment.IsDevelopment())
-{
-    MySqlConnectionString = builder.Configuration.GetConnectionString("MySqlConnectionString");
-    builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(builder.Configuration.GetConnectionString(MySqlConnectionString)));
 
-}
-else
-{    
-    string filePath = "MYSQL_ConnectionString.txt";
-    if (File.Exists(filePath))
-    {
-        MySqlConnectionString = File.ReadAllText(filePath);
-        builder.Services.AddDbContext<RegisterContext>(options =>
-        options.UseMySQL(builder.Configuration.GetConnectionString(MySqlConnectionString)));
-    }
-    else
-    {
-        builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-    }
-}
+builder.Services.AddDbContext<RegisterContext>(options =>
+    options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
