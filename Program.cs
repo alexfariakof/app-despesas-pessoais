@@ -29,6 +29,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/*Configuração Database Production*/
+/*
 string MySqlConnectionString = "";
 string filePath = "MYSQL_ConnectionString.txt";
 if (File.Exists(filePath))
@@ -39,14 +41,15 @@ if (File.Exists(filePath))
 }
 builder.Services.AddDbContext<RegisterContext>(options =>
 options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+*/
 
 /* Configuração Database in Memory */
 //builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 
 
 /*Configuração Database Mysql Server Local In Dokcer */
-//builder.Services.AddDbContext<RegisterContext>(options =>
-//options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+builder.Services.AddDbContext<RegisterContext>(options =>
+options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();

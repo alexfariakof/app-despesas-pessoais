@@ -69,7 +69,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
 
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
             try 
@@ -91,12 +91,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                     }
                 }                    
                 _context.SaveChanges();
+                return true;
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
-            }
-
+                return false;
+            }            
         }
         public bool Exists(int? id)
         {

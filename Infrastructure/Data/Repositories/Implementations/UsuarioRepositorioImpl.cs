@@ -152,7 +152,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             return obj;
         }
 
-        void IRepositorio<Usuario>.Delete(int id)
+        bool IRepositorio<Usuario>.Delete(int id)
         {
             var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
             try
@@ -162,8 +162,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     result.StatusUsuario = StatusUsuario.Inativo;
                     _context.Entry(result).CurrentValues.SetValues(result);
                     _context.SaveChanges();
+                    return true;
                 }
-                
+                return false;                
             }
             catch 
             {
