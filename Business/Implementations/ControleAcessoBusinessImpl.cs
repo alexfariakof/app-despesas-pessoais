@@ -6,6 +6,7 @@ using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
@@ -31,41 +32,49 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public object FindByLogin(ControleAcesso controleAcesso)
         {
-            bool credentialsValid = false;
-
-            var usuario = _repositorio.GetUsuarioByEmail(controleAcesso.Login);
-            if (usuario == null)
-                return new Exception("Usuário inexistente!");
-            else if (usuario.StatusUsuario == StatusUsuario.Inativo)
-                return new Exception("Usuário Inativo!");
-
-            if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
+            try
             {
-                ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
+                bool credentialsValid = false;
 
-                credentialsValid = baseLogin != null && controleAcesso.Login == baseLogin.Login && _repositorio.isValidPasssword(controleAcesso);
-            }
-            if (credentialsValid)
-            {
-                ClaimsIdentity identity = new ClaimsIdentity(
-                    new GenericIdentity(controleAcesso.Login, "Login"),
-                    new[]
-                    {
+                var usuario = _repositorio.GetUsuarioByEmail(controleAcesso.Login);
+                if (usuario == null)
+                    return new Exception("Usuário inexistente!");
+                else if (usuario.StatusUsuario == StatusUsuario.Inativo)
+                    return new Exception("Usuário Inativo!");
+
+                if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
+                {
+                    ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
+                    if (baseLogin == null)
+                        return new Exception("Email inexistente!");
+                    if (!_repositorio.isValidPasssword(controleAcesso))
+                        return new Exception("Senha inválida!");
+
+                    credentialsValid = baseLogin != null && controleAcesso.Login == baseLogin.Login;
+                }
+                if (credentialsValid)
+                {
+                    ClaimsIdentity identity = new ClaimsIdentity(
+                        new GenericIdentity(controleAcesso.Login, "Login"),
+                        new[]
+                        {
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
                         new Claim(JwtRegisteredClaimNames.UniqueName, controleAcesso.Login)
-                    });
+                        });
 
-                DateTime createDate = DateTime.Now;
-                DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);
+                    DateTime createDate = DateTime.Now;
+                    DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);
 
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                string token = CreateToken(identity, createDate, expirationDate, handler, usuario.Id);
+                    JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                    string token = CreateToken(identity, createDate, expirationDate, handler, usuario.Id);
 
-                return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
+                    return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
+                }
+                return null;
             }
-            else
+            catch (Exception ex)
             {
-                return new Exception("Usuário inválido!");
+                throw (ex);
             }
         }
 
