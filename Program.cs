@@ -37,7 +37,14 @@ if (File.Exists(filePath))
     options.UseMySQL(MySqlConnectionString));
 }
 
+/* Configuração Database in Memory */
 //builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+
+
+/*Configuração Database Mysql Server Local In Dokcer */
+//builder.Services.AddDbContext<RegisterContext>(options =>
+//options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
