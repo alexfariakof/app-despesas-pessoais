@@ -9,6 +9,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Add services to the container.
+
 // Add Cors Configuration 
 builder.Services.AddCors(c =>
 {
@@ -20,8 +23,6 @@ builder.Services.AddCors(c =>
 
     });
 });
-
-// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,6 +37,8 @@ if (File.Exists(filePath))
     builder.Services.AddDbContext<RegisterContext>(options =>
     options.UseMySQL(MySqlConnectionString));
 }
+builder.Services.AddDbContext<RegisterContext>(options =>
+options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 /* Configuração Database in Memory */
 //builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
