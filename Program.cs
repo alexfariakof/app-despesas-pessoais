@@ -37,6 +37,7 @@ if (File.Exists(filePath))
     options.UseMySQL(MySqlConnectionString));
 }
 
+//builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
