@@ -37,9 +37,14 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(despesa);
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-            _repositorio.Delete(id);
+            return _repositorio.Delete(id);
+        }
+
+        public List<DespesaVM> FindByIdUsuario(int idUsuario)
+        {
+            return _converter.ParseList(_repositorio.GetAll().FindAll(p => p.UsuarioId.Equals(idUsuario)));
         }
     }
 }

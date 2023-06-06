@@ -58,7 +58,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             }
             return null;            
         }
-        public void Delete(int idUsaurio)
+        public bool Delete(int idUsaurio)
         {
             var obj = FindAll().Find(prop  => prop.UsuarioId.Equals(idUsaurio));
             if (obj != null)
@@ -66,9 +66,16 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
                 if (result)
                 {
-                    _repositorio.Delete(obj.Id);
+                   return _repositorio.Delete(obj.Id);
                 }
             }
+            return false;
+        }
+
+        public List<ImagemPerfilUsuarioVM> FindByIdUsuario(int idUsuario)
+        {
+            var lstPerfilFile = _repositorio.GetAll().FindAll(p => p.UsuarioId.Equals(idUsuario));
+            return _converter.ParseList(lstPerfilFile);
         }
     }
 }

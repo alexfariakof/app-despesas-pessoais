@@ -78,8 +78,11 @@ namespace despesas_backend_api_net_core.Controllers
         //[Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
-            _receitaBusiness.Delete(id);
-            return NoContent();
+            if (_receitaBusiness.Delete(id))
+                return new ObjectResult(new { message = true });
+            else
+                return BadRequest(new { message = "Erro ao excluir Receita!" });            
+            
         }
     }
 }

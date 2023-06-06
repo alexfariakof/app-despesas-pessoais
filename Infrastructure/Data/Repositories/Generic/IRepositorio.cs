@@ -9,7 +9,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
         List<T> GetAll();
         T Insert(T item);
         T Update(T item);
-        void Delete(int id);
+        bool Delete(int id);
         bool Exists(int? id);
     }
 }
