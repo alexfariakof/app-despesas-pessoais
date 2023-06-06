@@ -50,7 +50,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
                     if (!_repositorio.isValidPasssword(controleAcesso))
                         return new Exception("Senha inválida!");
 
-                    credentialsValid = baseLogin != null && controleAcesso.Login == baseLogin.Login;
+                    credentialsValid = baseLogin != null && controleAcesso.Login == baseLogin.Login && _repositorio.isValidPasssword(controleAcesso);
                 }
                 if (credentialsValid)
                 {
@@ -70,7 +70,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
                     return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
                 }
-                return null;
+                return credentialsValid;
             }
             catch (Exception ex)
             {
