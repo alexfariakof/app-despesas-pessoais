@@ -61,9 +61,15 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return usuarioVM;
         }
 
-        public void Delete(int idUsuario)
+        public bool Delete(int idUsuario)
         {
-            _repositorio.Delete(idUsuario);
+            return _repositorio.Delete(idUsuario);
+        }
+
+        public List<UsuarioVM> FindByIdUsuario(int idUsuario)
+        {
+            List<Usuario> lstUsuario = _repositorio.GetAll().FindAll(p => p.Id.Equals(idUsuario));
+            return _converter.ParseList(lstUsuario);
         }
     }
 }

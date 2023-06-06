@@ -22,27 +22,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             int mes = data.Month;
             int ano = data.Year;
 
-            string sql = "Select cast(CONV(SUBSTRING(uuid(), 4, 4), 16, 10) as UNSIGNED) as id, lancamentos.* From ( " +
-                         "Select d.UsuarioId, data, d.CategoriaId, valor*-1 as valor, 'Despesas' as Tipo, d.id as DespesaId, 0 as ReceitaId, d.descricao, c.descricao as categoria " +
-                         "  FROM Despesa d " +
-                         " Inner Join Categoria c on d.CategoriaId = c.id " +
-                         " where d.UsuarioId = @UsuarioId " +
-                         "   and Month(data) = @mes " +
-                         "   and  Year(data) = @ano " +
-                         " union " +
-                         "Select r.UsuarioId, data, r.CategoriaId, valor, 'Receitas' as Tipo, 0 as DespesaId, r.id as ReceitaId, r.descricao, cr.descricao as categoria " +
-                         "  FROM Receita r " +
-                         " Inner Join Categoria cr on r.CategoriaId = cr.id " +
-                         " where r.UsuarioId = @UsuarioId " +
-                         "   and Month(data) = @mes " +
-                         "   and  Year(data) = @ano " +
-                         ") lancamentos ";
-
+            string sql = $"CALL LancamentosPorMesAno({idUsuario},{mes}, {ano})";
             using (_context)
             {
                 try
                 {
-                    var list = _context.Lancamento.FromSqlRaw<Lancamento>(sql, new MySqlParameter("@UsuarioId", idUsuario), new MySqlParameter("@mes", data.Month), new MySqlParameter("@ano", data.Year)).ToList();
+                    var list = _context.Lancamento.FromSqlRaw<Lancamento>(sql).ToList();
                     return list.OrderBy(item => item.Data).ThenBy(item => item.Categoria).ToList();
                 }
                 catch
