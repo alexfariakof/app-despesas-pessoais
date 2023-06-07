@@ -56,7 +56,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor.ToDecimal(),
                 Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
                 Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao },
-                Categoria = new Categoria { Descricao = origin.Categoria }
+                Categoria = origin.Categria
             };
         }
 
@@ -72,7 +72,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Data = origin.Data.ToDateBr(),
                 Valor = origin.Valor.ToString("N2"),
                 Descricao = origin.Descricao,
-                Categoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
+                TipoCategoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
             };
         }
 
