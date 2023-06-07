@@ -20,7 +20,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("{IdUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int IdUsuario)
         {
             var usuario = _usuarioBusiness.FindById(IdUsuario);
@@ -30,7 +30,7 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_usuarioBusiness.FindAll());
         }
 
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         [HttpPost("GetById")]
         public IActionResult Post([FromBody] int idUsuario)
         {
@@ -43,7 +43,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
             if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
@@ -59,7 +59,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
             if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
@@ -79,7 +79,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             UsuarioVM _usuario = _usuarioBusiness.FindById(id);
