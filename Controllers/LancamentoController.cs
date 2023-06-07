@@ -1,4 +1,6 @@
-﻿using despesas_backend_api_net_core.Business;
+﻿using Amazon.S3.Model;
+using despesas_backend_api_net_core.Business;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +8,7 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize("Bearer")]
+    [Authorize("Bearer")]
     public class LancamentoController : Controller
     {
         private ILancamentoBusiness _lancamentoBusiness;
@@ -16,33 +18,55 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("{anoMes}/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
-            var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
+            try
+            {
+                var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
 
-            if (list == null || list.Count == 0)
-                return BadRequest("Nenhum Lançamento foi encontrado!");
+                if (list == null || list.Count == 0)
+                    return BadRequest(new { message = "Nenhum Lançamento foi encontrado!" });
 
-            return Ok(list);
+                return Ok(list);
+            }
+            catch
+            {
+                return Ok(new List<LancamentoVM>());
+            }
         }
 
         [HttpGet("Saldo/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int idUsuario)
         {
-            var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
-                        
-            return Ok(saldo.ToString("N2")); 
+            try
+            {
+                var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
+
+                return Ok(saldo.ToString("N2"));
+            }
+            catch
+            {
+                return BadRequest(new { message = "Erro ao gerar saldo!" });
+            }
+
         }
 
         [HttpGet("DadosGraficoPorAno/{anoMes}/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
-            var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAno(idUsuario, anoMes);
+            try
+            {
+                var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAno(idUsuario, anoMes);
 
-            return Ok(dadosGrafico);
+                return Ok(dadosGrafico);
+            }
+            catch
+            {
+                return BadRequest(new { message = "Erro ao gerar dados do Graáfico!" });
+            }
         }
 
     }
