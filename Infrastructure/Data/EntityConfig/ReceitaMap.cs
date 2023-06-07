@@ -20,7 +20,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
-            .HasDefaultValue(DateTime.Now);
+            .IsRequired();
             
             builder.Property(m => m.Valor)
                 .HasColumnType("decimal(10, 2)")
