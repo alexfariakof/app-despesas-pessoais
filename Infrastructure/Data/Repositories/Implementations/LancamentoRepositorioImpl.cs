@@ -27,7 +27,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 try
                 {
-                    var list = _context.Lancamento.FromSqlRaw<Lancamento>(sql).ToList();
+                    var list = _context.Lancamento.FromSqlRaw(sql).ToList();
                     return list.OrderBy(item => item.Data).ThenBy(item => item.Categoria).ToList();
                 }
                 catch
