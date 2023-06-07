@@ -19,14 +19,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_perfilFileBusiness.FindAll());
         }
 
         [HttpGet("GetByIdUsuario/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
             var perfilFile = _perfilFileBusiness.FindAll()
@@ -39,7 +39,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(int idUsuario, IFormFile file)
+        public async Task<IActionResult> Post([FromRoute]int idUsuario, IFormFile file)
         {
             try
             {
@@ -127,16 +127,20 @@ namespace despesas_backend_api_net_core.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Erro ao Atualizar iamgem do perfil!" });
+                return BadRequest(new { message = "Erro ao Atualizar imagem do perfil!" });
             }
         }
 
         [HttpDelete("{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int idUsuario)
         {
-            _perfilFileBusiness.Delete(idUsuario);
-            return NoContent();
+
+            if (_perfilFileBusiness.Delete(idUsuario))
+                return Ok(new { message = "Imagem perfil excluida com sucesso!" });
+            else
+                return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
+
         }
     }
 }

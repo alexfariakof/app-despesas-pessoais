@@ -17,14 +17,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_despesaBusiness.FindAll());
         }
 
         [HttpGet("GetById/{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int id)
         {
             try
@@ -42,8 +42,19 @@ namespace despesas_backend_api_net_core.Controllers
             }
         }
 
+        [HttpGet("GetByIdUsuario/{idUsuario}")]
+        [Authorize("Bearer")]
+        public IActionResult Post([FromRoute] int idUsuario)
+        {
+            if (idUsuario == 0)
+                return BadRequest(new { message = "Usuário inexistente!" });
+            else
+                return Ok(_despesaBusiness.FindByIdUsuario(idUsuario));           
+
+        }
+
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
             if (despesa == null)
@@ -59,7 +70,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
             if (despesa == null)
@@ -73,7 +84,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             if (_despesaBusiness.Delete(id))

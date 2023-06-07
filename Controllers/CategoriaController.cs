@@ -17,14 +17,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_categoriaBusiness.FindAll());
         }
 
         [HttpGet("GetById/{idCategoria}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetById([FromRoute] int idCategoria)
         {
             CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria);
@@ -36,7 +36,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("GetByIdUsuario/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
             List<CategoriaVM> _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
@@ -50,7 +50,7 @@ namespace despesas_backend_api_net_core.Controllers
 
 
         [HttpGet("GetByTipoCategoria/{idUsuario}/{tipoCategoria}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {
             if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
@@ -68,7 +68,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] CategoriaVM categoria)
         {
             if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
@@ -85,7 +85,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] CategoriaVM categoria)
         {
             if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
@@ -100,7 +100,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _categoriaBusiness.Delete(id);
