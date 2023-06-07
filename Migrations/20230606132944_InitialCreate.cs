@@ -107,7 +107,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 5, 14, 36, 43, 665, DateTimeKind.Local).AddTicks(7654)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     DataVencimento = table.Column<DateTime>(type: "timestamp", nullable: true),
@@ -138,7 +138,7 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 5, 14, 36, 43, 666, DateTimeKind.Local).AddTicks(61)),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false),
                     Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
@@ -175,7 +175,7 @@ namespace despesas_backend_api_net_core.Migrations
                     DespesaId = table.Column<int>(type: "int", nullable: true),
                     ReceitaId = table.Column<int>(type: "int", nullable: true),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: true, defaultValue: new DateTime(2023, 6, 5, 14, 36, 43, 666, DateTimeKind.Local).AddTicks(3686))
+                    DataCriacao = table.Column<DateTime>(type: "timestamp", nullable: true)
                 },
                 constraints: table =>
                 {

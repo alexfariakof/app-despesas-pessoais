@@ -23,7 +23,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
-            .HasDefaultValue(DateTime.Now);
+            .IsRequired();
+            
 
             builder.Property(m => m.DataVencimento)
             .HasColumnType("timestamp")

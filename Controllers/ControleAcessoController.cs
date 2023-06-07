@@ -24,22 +24,22 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] ControleAcessoVM controleAcessoVM)
         {
             if (String.IsNullOrEmpty(controleAcessoVM.Telefone) || String.IsNullOrWhiteSpace(controleAcessoVM.Telefone))
-                return BadRequest("Campo Telefone não pode ser em branco");
+                return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
             if (String.IsNullOrEmpty(controleAcessoVM.Email) || String.IsNullOrWhiteSpace(controleAcessoVM.Email))
-                return BadRequest("Campo Login não pode ser em branco");
+                return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
             if (!IsValidEmail(controleAcessoVM.Email))
                 return BadRequest(new { message = "Email inválido!" });
 
             if (String.IsNullOrEmpty(controleAcessoVM.Senha) || String.IsNullOrWhiteSpace(controleAcessoVM.Senha))
-                return BadRequest("Campo Senha não pode ser em branco ou nulo");
+                return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo" });
 
             if (String.IsNullOrEmpty(controleAcessoVM.ConfirmaSenha) | String.IsNullOrWhiteSpace(controleAcessoVM.ConfirmaSenha))
-                return BadRequest("Campo Confirma Senha não pode ser em branco ou nulo");
+                return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo" });
 
             if (controleAcessoVM.Senha != controleAcessoVM.ConfirmaSenha)
-                return BadRequest("Senha e Confirma Senha são diferentes!");
+                return BadRequest(new { message = "Senha e Confirma Senha são diferentes!" });
 
             ControleAcesso controleAcesso = new ControleAcesso
             {
@@ -84,21 +84,21 @@ namespace despesas_backend_api_net_core.Controllers
 
 
         [HttpPost("ChangePassword")]
-        [Authorize("Bearer")]        
+        //[Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {
 
             if (String.IsNullOrEmpty(login.Email) || String.IsNullOrWhiteSpace(login.Email))
-                return BadRequest("Campo Login não pode ser em branco ou nulo!");
+                return BadRequest(new { message = "Campo Login não pode ser em branco ou nulo!" });
 
             if (!IsValidEmail(login.Email))
                 return BadRequest(new { message = "Email inválido!" });
 
             if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
-                return BadRequest("Campo Senha não pode ser em branco ou nulo!");
+                return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
             if (String.IsNullOrEmpty(login.ConfirmaSenha) | String.IsNullOrWhiteSpace(login.ConfirmaSenha))
-                return BadRequest("Campo Confirma Senha não pode ser em branco ou nulo!");
+                return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
 
             if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.ToInteger(), login.Senha))
                     return Ok(new { message = true });
@@ -112,7 +112,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
 
             if (String.IsNullOrEmpty(email) || String.IsNullOrWhiteSpace(email))
-                return BadRequest("Campo Login não pode ser em branco ou nulo!");
+                return BadRequest(new { message = "Campo Login não pode ser em branco ou nulo!" });
 
             if (!IsValidEmail(email))
                 return BadRequest(new { message = "Email inválido!" });

@@ -8,8 +8,9 @@ namespace despesas_backend_api_net_core.Business.Generic
     {
         T Create(T obj);
         T FindById(int id);
+        List<T> FindByIdUsuario(int idUsuario);
         List<T> FindAll();
         T Update(T obj);
-        void Delete(int id);
+        bool Delete(int id);
     }
 }

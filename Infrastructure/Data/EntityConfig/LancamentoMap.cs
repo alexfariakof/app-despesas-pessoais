@@ -3,6 +3,7 @@ using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+using Google.Protobuf.WellKnownTypes;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
@@ -28,7 +29,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
-            .HasDefaultValue(null);
+            .IsRequired();
 
             builder.Property(m => m.Valor)
             .HasColumnType("decimal(10, 2)");
@@ -37,9 +38,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .HasMaxLength(20);
 
             builder.Property(m => m.DataCriacao)
-            .HasDefaultValue(DateTime.Now);
-
-
+            .HasColumnType("timestamp");
+            
         }
 
         public Lancamento Parse(LancamentoVM origin)
@@ -52,10 +52,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 ReceitaId = origin.IdReceita,
                 UsuarioId = origin.IdUsuario,
                 Data = origin.Data.ToDateTime(),
+                DataCriacao = DateTime.Now,
                 Valor = origin.Valor.ToDecimal(),
                 Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
                 Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao },
-                Categoria = new Categoria { Descricao = origin.Categoria }
+                Categoria = origin.Categria
             };
         }
 
@@ -71,7 +72,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Data = origin.Data.ToDateBr(),
                 Valor = origin.Valor.ToString("N2"),
                 Descricao = origin.Descricao,
-                Categoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
+                TipoCategoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
             };
         }
 
