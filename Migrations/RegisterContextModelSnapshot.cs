@@ -80,9 +80,7 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 16, 6, 55, 234, DateTimeKind.Local).AddTicks(9010));
+                        .HasColumnType("timestamp");
 
                     b.Property<DateTime?>("DataVencimento")
                         .HasColumnType("timestamp");
@@ -155,7 +153,7 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("timestamp");
 
-                    b.Property<DateTime>("DataCriacao")
+                    b.Property<DateTime?>("DataCriacao")
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Descricao")
@@ -198,9 +196,7 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 16, 6, 55, 235, DateTimeKind.Local).AddTicks(272));
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(20)
