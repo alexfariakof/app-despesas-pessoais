@@ -82,20 +82,22 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 16, 6, 55, 234, DateTimeKind.Local).AddTicks(9010));
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<DateTime?>("DataVencimento")
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Valor")
-                        .HasColumnType("decimal(10, 2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(10, 2)")
+                        .HasDefaultValue(0m);
 
                     b.HasKey("Id");
 
@@ -156,7 +158,9 @@ namespace despesas_backend_api_net_core.Migrations
                         .HasColumnType("timestamp");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("timestamp");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -200,11 +204,11 @@ namespace despesas_backend_api_net_core.Migrations
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp")
-                        .HasDefaultValue(new DateTime(2023, 6, 5, 16, 6, 55, 235, DateTimeKind.Local).AddTicks(272));
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Descricao")
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");

@@ -20,7 +20,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("{IdUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int IdUsuario)
         {
             var usuario = _usuarioBusiness.FindById(IdUsuario);

@@ -6,6 +6,7 @@ using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
@@ -35,13 +36,17 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
             var usuario = _repositorio.GetUsuarioByEmail(controleAcesso.Login);
             if (usuario == null)
-                return new Exception("Usuário inexistente!");
+                return ExceptionObject("Usuário inexistente!");
             else if (usuario.StatusUsuario == StatusUsuario.Inativo)
-                return new Exception("Usuário Inativo!");
+                return ExceptionObject("Usuário Inativo!");
 
             if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
             {
                 ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
+                if (baseLogin == null)
+                    return ExceptionObject("Email inexistente!");
+                if (!_repositorio.isValidPasssword(controleAcesso))
+                    return ExceptionObject("Senha inválida!");
 
                 credentialsValid = baseLogin != null && controleAcesso.Login == baseLogin.Login && _repositorio.isValidPasssword(controleAcesso);
             }
@@ -60,13 +65,9 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 string token = CreateToken(identity, createDate, expirationDate, handler, usuario.Id);
-
                 return SuccessObject(createDate, expirationDate, token, controleAcesso.Login);
             }
-            else
-            {
-                return new Exception("Usuário inválido!");
-            }
+            return ExceptionObject("Falha durante a autenticação");
         }
 
         public bool RecoveryPassword(string email)
@@ -89,7 +90,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 Subject = identity,
                 NotBefore = createDate,
                 Expires = expirationDate,
-                Claims = new Dictionary<string, object> {{ "IdUsuario", idUsuario }}
+                Claims = new Dictionary<string, object> { { "IdUsuario", idUsuario } }
             });
 
             string token = handler.WriteToken(securityToken);
@@ -97,12 +98,12 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return token;
         }
 
-        private object ExceptionObject()
+        private object ExceptionObject(string message)
         {
             return new
             {
                 authenticated = false,
-                message = "Falha durante a autenticação"
+                message = message
             };
         }
 
@@ -111,7 +112,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             Usuario usuario = _repositorio.GetUsuarioByEmail(login);
             return new
             {
-                autenticated = true,
+                authenticated = true,
                 created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 accessToken = token,

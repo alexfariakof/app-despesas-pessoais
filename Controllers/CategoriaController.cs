@@ -17,14 +17,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_categoriaBusiness.FindAll());
         }
 
         [HttpGet("GetById/{idCategoria}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetById([FromRoute] int idCategoria)
         {
             CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria);
@@ -36,10 +36,11 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet("GetByIdUsuario/{idUsuario}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
-            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll().FindAll(c => c.IdUsuario.Equals(idUsuario));
+            List<CategoriaVM> _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
+                                           .FindAll(c => c.IdUsuario.Equals(idUsuario));
 
             if (_categoria == null)
                 return NotFound();
@@ -49,28 +50,29 @@ namespace despesas_backend_api_net_core.Controllers
 
 
         [HttpGet("GetByTipoCategoria/{idUsuario}/{tipoCategoria}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {
-            var _categoria = _categoriaBusiness.FindAll()
-                .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)) &&
-                                (prop.IdUsuario.Equals(idUsuario) ||
-                                 prop.IdUsuario == null ||
-                                 prop.IdUsuario.Equals(0)));
-
-  
-            if (_categoria == null)
-                return NotFound();
-
-            return Ok(_categoria);
+            if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
+            {
+                var _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
+                                 .FindAll(prop => prop.IdUsuario.Equals(idUsuario));
+                return Ok(_categoria);
+            }
+            else
+            {
+                var _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
+                                .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
+                return Ok(_categoria);
+            }           
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] CategoriaVM categoria)
         {
-            if (categoria == null)
-                return BadRequest();
+            if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
+                return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!"});
 
             try
             {
@@ -83,21 +85,22 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] CategoriaVM categoria)
         {
-            if (categoria == null)
-                return BadRequest();
+            if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
+                return BadRequest(new { messsage = "Nenhum tipo de Categoria foi selecionado!" });
 
             CategoriaVM updateCategoria = _categoriaBusiness.Update(categoria);
+
             if (updateCategoria == null)
-                return NoContent();
+                return BadRequest(new { messsage = "Erro ao atualizar categoria!" });
 
             return new ObjectResult(updateCategoria);
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             _categoriaBusiness.Delete(id);

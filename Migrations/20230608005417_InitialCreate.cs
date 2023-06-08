@@ -107,9 +107,9 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 5, 16, 6, 55, 234, DateTimeKind.Local).AddTicks(9010)),
-                    Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
-                    Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "NOW()"),
+                    Descricao = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
                     DataVencimento = table.Column<DateTime>(type: "timestamp", nullable: true),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false)
@@ -138,8 +138,8 @@ namespace despesas_backend_api_net_core.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValue: new DateTime(2023, 6, 5, 16, 6, 55, 235, DateTimeKind.Local).AddTicks(272)),
-                    Descricao = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true),
+                    Data = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "NOW()"),
+                    Descricao = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Valor = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     CategoriaId = table.Column<int>(type: "int", nullable: false)
@@ -175,7 +175,7 @@ namespace despesas_backend_api_net_core.Migrations
                     DespesaId = table.Column<int>(type: "int", nullable: true),
                     ReceitaId = table.Column<int>(type: "int", nullable: true),
                     CategoriaId = table.Column<int>(type: "int", nullable: false),
-                    DataCriacao = table.Column<DateTime>(type: "timestamp", nullable: false)
+                    DataCriacao = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "NOW()")
                 },
                 constraints: table =>
                 {
