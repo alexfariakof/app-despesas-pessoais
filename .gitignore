@@ -397,6 +397,9 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
+#Exclude Migrations
+*Migrations/
+
 # Arquivo contento chave de criptografia
 CRYPTO_KEY.txt
 AMZOM_KEYS.json
