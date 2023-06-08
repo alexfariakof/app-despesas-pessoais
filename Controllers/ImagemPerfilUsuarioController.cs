@@ -29,13 +29,13 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
-            var perfilFile = _perfilFileBusiness.FindAll()
+            var imagemPerfilUsuario = _perfilFileBusiness.FindAll()
                 .Find(prop => prop.IdUsuario.Equals(idUsuario));
 
-            if (perfilFile != null)
-                return Ok(perfilFile);
+            if (imagemPerfilUsuario != null)
+                return Ok(new { message = true, imagemPerfilUsuario= imagemPerfilUsuario });
             else
-                return BadRequest(new { message = "Arquivo Inexistente!" });
+                return Ok(new { message = false });
         }
 
         [HttpPost]
