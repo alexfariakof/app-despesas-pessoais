@@ -1,6 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -29,27 +30,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*Configuração Database Production*/
-/*
-string MySqlConnectionString = "";
-string filePath = "MYSQL_ConnectionString.txt";
-if (File.Exists(filePath))
-{
-    MySqlConnectionString = File.ReadAllText(filePath);
-    builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(MySqlConnectionString));
-}
-builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
-*/
-
-/* Configuração Database in Memory */
-//builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 
 
-/*Configuração Database Mysql Server Local In Dokcer */
-builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
