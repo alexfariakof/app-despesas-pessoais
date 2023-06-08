@@ -399,6 +399,7 @@ FodyWeavers.xsd
 
 #Exclude Migrations
 *Migrations/
+Migrations/*
 
 # Arquivo contento chave de criptografia
 CRYPTO_KEY.txt
