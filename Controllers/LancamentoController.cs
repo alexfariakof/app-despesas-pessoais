@@ -44,7 +44,7 @@ namespace despesas_backend_api_net_core.Controllers
             {
                 var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
 
-                return Ok(saldo.ToString("N2"));
+                return Ok(saldo);
             }
             catch
             {
