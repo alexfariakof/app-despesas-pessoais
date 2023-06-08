@@ -404,6 +404,8 @@ MYSQL_ConnectionString.txt
 appsettings.json
 appsettings.Development.json
 
+Program.cs
+
 #Exclude Migrations
 *Migrations/
 Migrations/*
