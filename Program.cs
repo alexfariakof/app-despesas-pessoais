@@ -63,8 +63,6 @@ app.UseStaticFiles();
 
 app.MapControllers();
 app.Run();
-
-
 static void ConfigureAutorization(IServiceCollection services, IConfiguration configuration)
 {
     SigningConfigurations signingConfigurations = new SigningConfigurations();
@@ -112,6 +110,3 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .RequireAuthenticatedUser().Build());
     });
 }
-
-
-
