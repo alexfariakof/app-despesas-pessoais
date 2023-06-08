@@ -84,7 +84,7 @@ namespace despesas_backend_api_net_core.Controllers
 
 
         [HttpPost("ChangePassword")]
-        //[Authorize("Bearer")]        
+        [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {
 

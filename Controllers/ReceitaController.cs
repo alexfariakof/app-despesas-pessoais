@@ -17,14 +17,14 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpGet]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Get()
         {
             return Ok(_receitaBusiness.FindAll());
         }
 
         [HttpGet("GetById/{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult GetById([FromRoute]int id)
         {
             try
@@ -43,7 +43,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Post([FromBody] ReceitaVM receita)
         {
             if (receita == null)
@@ -59,8 +59,19 @@ namespace despesas_backend_api_net_core.Controllers
             }            
         }
 
+        [HttpGet("GetByIdUsuario/{idUsuario}")]
+        [Authorize("Bearer")]
+        public IActionResult Post([FromRoute] int idUsuario)
+        {
+            if (idUsuario == 0)
+                return BadRequest(new { message = "Usuário inexistente!" });
+            else
+                return Ok(_receitaBusiness.FindByIdUsuario(idUsuario));
+
+        }
+
         [HttpPut]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Put([FromBody] ReceitaVM receita)
         {
             if (receita == null)
@@ -75,7 +86,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         public IActionResult Delete(int id)
         {
             if (_receitaBusiness.Delete(id))

@@ -16,10 +16,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Descricao)
             .IsRequired(false)
-            .HasMaxLength(20);
+            .HasMaxLength(100);
 
             builder.Property(m => m.Data)
             .HasColumnType("timestamp")
+            .HasDefaultValueSql<DateTime>("NOW()")
             .IsRequired();
             
             builder.Property(m => m.Valor)
