@@ -28,7 +28,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
            .IsRequired();
 
             builder.Property(m => m.Data)
-            .HasColumnType("timestamp")
             .IsRequired();
 
             builder.Property(m => m.Valor)
