@@ -38,8 +38,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .HasMaxLength(20);
 
             builder.Property(m => m.DataCriacao)
-            .HasColumnType("timestamp");
-            
+            .HasColumnType("timestamp")
+            .HasDefaultValueSql<DateTime>("NOW()")
+            .IsRequired();
+            ;
+
         }
 
         public Lancamento Parse(LancamentoVM origin)
