@@ -38,7 +38,15 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+/*Configuração Database Production*/
+string MySqlConnectionString = "";
+string filePath = "MYSQL_ConnectionString.txt";
+if (File.Exists(filePath))
+{
+    MySqlConnectionString = File.ReadAllText(filePath);
+    builder.Services.AddDbContext<RegisterContext>(options =>
+    options.UseMySQL(MySqlConnectionString));
+}
 
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
