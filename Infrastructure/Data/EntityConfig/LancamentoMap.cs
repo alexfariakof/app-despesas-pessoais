@@ -35,8 +35,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .HasColumnType("decimal(10, 2)");
 
             builder.Property(m => m.Descricao)
-            .HasMaxLength(100);
-            
+            .HasMaxLength(100);            
         }
 
         public Lancamento Parse(LancamentoVM origin)
