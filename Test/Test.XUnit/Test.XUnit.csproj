@@ -28,7 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controlellers\" />
+    <Folder Include="Infrastructure\Data\Repositories\Generic\" />
+    <Folder Include="Infrastructure\Data\Repositories\Implementations\" />
+    <Folder Include="Infrastructure\ExtensionMethods\" />
+    <Folder Include="Infrastructure\Infrastructure\" />
+    <Folder Include="Infrastructure\Security\Configuration\" />
   </ItemGroup>
 
 </Project>
