@@ -1,11 +1,11 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,29 +27,18 @@ builder.Services.AddCors(c =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-/*Configuração Database Production*/
-/*
-string MySqlConnectionString = "";
-string filePath = "MYSQL_ConnectionString.txt";
-if (File.Exists(filePath))
+builder.Services.AddSwaggerGen(c =>
 {
-    MySqlConnectionString = File.ReadAllText(filePath);
-    builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(MySqlConnectionString));
-}
-builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
-*/
-
-/* Configuração Database in Memory */
-//builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+    c.SwaggerDoc("v1",
+        new Microsoft.OpenApi.Models.OpenApiInfo
+        {
+            Title = "API REST Despesas Pessoais",
+            Version = "v1"
+        });
+});
 
 
-/*Configuração Database Mysql Server Local In Dokcer */
-builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
@@ -60,11 +49,21 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseCors();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "API Despesas Pessoais V1");
+});
+
+app.UseSwaggerUI(c =>
+{
+    string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "API Despesas Pessoais V1");
+});
 //}
 
+app.UseCors(); 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -73,7 +72,6 @@ app.UseStaticFiles();
 
 app.MapControllers();
 app.Run();
-
 
 static void ConfigureAutorization(IServiceCollection services, IConfiguration configuration)
 {
@@ -122,6 +120,3 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .RequireAuthenticatedUser().Build());
     });
 }
-
-
-

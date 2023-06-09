@@ -42,9 +42,9 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var saldo = _lancamentoBusiness.GetSaldo(idUsuario);
+                decimal saldo = _lancamentoBusiness.GetSaldo(idUsuario);
 
-                return Ok(saldo);
+                return Ok(saldo.ToString("N2"));
             }
             catch
             {

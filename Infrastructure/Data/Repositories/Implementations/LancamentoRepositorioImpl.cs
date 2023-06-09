@@ -41,28 +41,18 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         {
             using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
-                decimal saldoReceita = 0;
-                decimal saldoDespesa = 0;
+                decimal saldo = 0;                
                 _context.Database.OpenConnection();
                 try
                 {
-                    command.CommandText = @"SELECT CASE WHEN sum(valor) >= 0 THEN sum(valor) ELSE 0 END as Saldo FROM Receita Where UsuarioId = @UsuarioId";
+                    command.CommandText = $"CALL GetSaldoByIdUsuario({idUsuario})";
                     command.CommandType = CommandType.Text;
-                    command.Parameters.Add(new MySqlParameter("@UsuarioId", idUsuario));
 
                     using (var result = command.ExecuteReader())
                     {
                         if (result.Read())
                         {
-                            saldoReceita = result.GetDecimal(0);
-                        }
-                    }
-                    command.CommandText = @"SELECT CASE WHEN sum(valor) >= 0 THEN sum(valor) ELSE 0 END as Saldo FROM Despesa Where UsuarioId = @UsuarioId";
-                    using (var result = command.ExecuteReader())
-                    {
-                        if (result.Read())
-                        {
-                            saldoDespesa = result.GetDecimal(0);
+                            decimal.TryParse(result.GetString(0), out saldo);
                         }
                     }
                 }
@@ -75,7 +65,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     _context.Database.CloseConnection();
                 }
                 
-                return saldoReceita - saldoDespesa;
+                return saldo;
             }
         }
 

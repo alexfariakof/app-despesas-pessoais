@@ -28,20 +28,14 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
            .IsRequired();
 
             builder.Property(m => m.Data)
+            .HasColumnType("timestamp")
             .IsRequired();
 
             builder.Property(m => m.Valor)
             .HasColumnType("decimal(10, 2)");
 
             builder.Property(m => m.Descricao)
-            .HasMaxLength(20);
-
-            builder.Property(m => m.DataCriacao)
-            .HasColumnType("timestamp")
-            .HasDefaultValueSql<DateTime>("NOW()")
-            .IsRequired();
-            ;
-
+            .HasMaxLength(100);            
         }
 
         public Lancamento Parse(LancamentoVM origin)
