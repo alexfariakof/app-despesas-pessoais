@@ -29,17 +29,18 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
-            var perfilFile = _perfilFileBusiness.FindAll()
-                .FindAll(prop => prop.UsuarioId.Equals(idUsuario));
+            var imagemPerfilUsuario = _perfilFileBusiness.FindAll()
+                .Find(prop => prop.IdUsuario.Equals(idUsuario));
 
-            if (perfilFile != null)
-                return Ok(perfilFile);
+            if (imagemPerfilUsuario != null)
+                return Ok(new { message = true, imagemPerfilUsuario= imagemPerfilUsuario });
             else
-                return BadRequest(new { message = "Arquivo Inexistente!" });
+                return Ok(new { message = false });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromRoute]int idUsuario, IFormFile file)
+        [Authorize("Bearer")]
+        public async Task<IActionResult> Post(int idUsuario, IFormFile file)
         {
             try
             {
@@ -59,18 +60,18 @@ namespace despesas_backend_api_net_core.Controllers
                     {
                         await file.CopyToAsync(memoryStream);
 
-                        ImagemPerfilUsuarioVM perfilUsuarioFile = new ImagemPerfilUsuarioVM
+                        ImagemPerfilUsuarioVM imagemPerfilUsuario = new ImagemPerfilUsuarioVM
                         {
                             Arquivo = memoryStream.GetBuffer(),
-                            UsuarioId = idUsuario,
+                            IdUsuario = idUsuario,
                             Name = fileName,
                             Type = typeFile,
                             ContentType = file.ContentType
                         };
 
-                        perfilUsuarioFile = _perfilFileBusiness.Create(perfilUsuarioFile);
-                        if (perfilUsuarioFile != null)
-                            return Ok(perfilUsuarioFile);
+                        var _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
+                        if (_imagemPerfilUsuario != null)
+                            return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
                         else
                             return BadRequest(new { message = "Imagem de perfil não foi incluída!" });
                     }
@@ -85,6 +86,7 @@ namespace despesas_backend_api_net_core.Controllers
         }
 
         [HttpPut]
+        [Authorize("Bearer")]
         public async Task<IActionResult> Put(int idUsuario, IFormFile file)
         {
             try
@@ -106,18 +108,18 @@ namespace despesas_backend_api_net_core.Controllers
 
                         await file.CopyToAsync(memoryStream);
 
-                        ImagemPerfilUsuarioVM perfilUsuarioFile = new ImagemPerfilUsuarioVM
+                        ImagemPerfilUsuarioVM imagemPerfilUsuario = new ImagemPerfilUsuarioVM
                         {
                             Arquivo = memoryStream.GetBuffer(),
-                            UsuarioId = idUsuario,
+                            IdUsuario = idUsuario,
                             Name = fileName,
                             Type = typeFile,
                             ContentType = file.ContentType
                         };
 
-                        perfilUsuarioFile = _perfilFileBusiness.Update(perfilUsuarioFile);
-                        if (perfilUsuarioFile != null)
-                            return Ok(perfilUsuarioFile);
+                        imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
+                        if (imagemPerfilUsuario != null)
+                            return Ok(new { messsage = true, imagemPerfilUsuario = imagemPerfilUsuario });
                         else
                             return BadRequest(new { messsage = "Imagem de perfil não foi atualizada!" });
                     }

@@ -44,7 +44,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public ImagemPerfilUsuarioVM Update(ImagemPerfilUsuarioVM obj)
         {
-            var isPerfilValid = FindAll().Find(prop => prop.UsuarioId.Equals(obj.UsuarioId));
+            var isPerfilValid = FindAll().Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
             if (isPerfilValid != null)
             {
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
@@ -60,7 +60,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public bool Delete(int idUsaurio)
         {
-            var obj = FindAll().Find(prop  => prop.UsuarioId.Equals(idUsaurio));
+            var obj = FindAll().Find(prop  => prop.IdUsuario.Equals(idUsaurio));
             if (obj != null)
             {
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
