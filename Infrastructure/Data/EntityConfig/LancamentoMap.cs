@@ -36,15 +36,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Descricao)
             .HasMaxLength(100);
-
-            builder.Property(m => m.DataCriacao)
-            .HasColumnType("timestamp");
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
-            ;
-
+            
         }
 
         public Lancamento Parse(LancamentoVM origin)

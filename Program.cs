@@ -61,9 +61,15 @@ app.UseSwaggerUI(c =>
     string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
     c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "API Despesas Pessoais V1");
 });
-app.UseCors();
+
+app.UseSwaggerUI(c =>
+{
+    string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v1/swagger.json", "API Despesas Pessoais V1");
+});
 //}
 
+app.UseCors(); 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -72,6 +78,7 @@ app.UseStaticFiles();
 
 app.MapControllers();
 app.Run();
+
 static void ConfigureAutorization(IServiceCollection services, IConfiguration configuration)
 {
     SigningConfigurations signingConfigurations = new SigningConfigurations();
