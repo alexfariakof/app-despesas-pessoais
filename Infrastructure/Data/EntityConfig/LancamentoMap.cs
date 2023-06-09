@@ -39,6 +39,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.DataCriacao)
             .HasColumnType("timestamp");
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             ;
 
         }

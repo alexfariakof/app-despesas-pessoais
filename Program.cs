@@ -45,8 +45,6 @@ if (File.Exists(filePath))
     builder.Services.AddDbContext<RegisterContext>(options =>
     options.UseMySQL(MySqlConnectionString));
 }
-builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
