@@ -86,14 +86,7 @@ namespace despesas_backend_api_net_core.Controllers
         [HttpPost("ChangePassword")]
         [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
-        {
-
-            if (String.IsNullOrEmpty(login.Email) || String.IsNullOrWhiteSpace(login.Email))
-                return BadRequest(new { message = "Campo Login não pode ser em branco ou nulo!" });
-
-            if (!IsValidEmail(login.Email))
-                return BadRequest(new { message = "Email inválido!" });
-
+        {                        
             if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
                 return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
@@ -103,7 +96,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.ToInteger(), login.Senha))
                     return Ok(new { message = true });
 
-            return BadRequest(new { message = "Erro ao trocar senha tente novamente mis tarde ou entre em contato com nosso suporte." });
+            return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
         }
 
         [AllowAnonymous]

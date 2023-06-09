@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include=".documents\create-procedure-get-saldo-by-idUsuario.sql" />
     <None Include=".documents\create-procedure-lancamento-por-mes-ano.sql" />
     <None Include=".documents\create-procedure-somatorio-por-ano-receitas.sql" />
     <None Include=".documents\create-procedure-somatorio-por-ano-despesas.sql" />
@@ -47,7 +48,7 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <PrivateAssets>all</PrivateAssets>
