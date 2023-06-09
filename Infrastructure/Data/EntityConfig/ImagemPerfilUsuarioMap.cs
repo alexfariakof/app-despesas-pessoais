@@ -47,7 +47,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Name = origin.Name,
                 Type = origin.Type,          
                 Url = origin.Url,
-                UsuarioId = origin.UsuarioId,
+                UsuarioId = origin.IdUsuario,
             };
         }
         public ImagemPerfilUsuarioVM Parse(ImagemPerfilUsuario origin)
@@ -59,7 +59,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Name = origin.Name,
                 Type = origin.Type,
                 Url = origin.Url,
-                UsuarioId = origin.UsuarioId,
+                IdUsuario = origin.UsuarioId,
             };
         }
 
