@@ -11,7 +11,7 @@
 </h6>
 
 <h2 align="left"> 
-Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais-azure.cdeefmd5a6fjfece.eastus.azurecontainer.io" target="_blank" >Despesas Pessoais</a> do projeto
+Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais-azure.cdeefmd5a6fjfece.eastus.azurecontainer.io" target="_blank" >Despesas Pessoais</a> 
 </h2>
 
 <h2 align="left"> 
