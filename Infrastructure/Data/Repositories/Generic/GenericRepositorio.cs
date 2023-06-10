@@ -59,14 +59,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             {
                 _context.Entry(result).CurrentValues.SetValues(obj);
                 _context.SaveChanges();
+                return obj;
             }
-            catch (Exception ex)
+            catch 
             {
-                throw ex;
+                return obj;
             }
-
-            return obj;
-
         }
 
         public bool Delete(int id)
@@ -89,9 +87,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                     {
                         _context.Remove(result);
                     }
-                }                    
-                _context.SaveChanges();
-                return true;
+                    _context.SaveChanges();
+                    return true;
+                }
+                return false;
             }
             catch 
             {
