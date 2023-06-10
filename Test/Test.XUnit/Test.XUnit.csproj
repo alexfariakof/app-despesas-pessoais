@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Data\Repositories\Implementations\" />
     <Folder Include="Infrastructure\ExtensionMethods\" />
     <Folder Include="Infrastructure\Infrastructure\" />
     <Folder Include="Infrastructure\Security\Configuration\" />

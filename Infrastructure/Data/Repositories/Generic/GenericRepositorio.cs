@@ -61,9 +61,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                 _context.SaveChanges();
                 return obj;
             }
-            catch 
+            catch (Exception ex)
             {
-                return obj;
+                throw ex;
             }
         }
 
