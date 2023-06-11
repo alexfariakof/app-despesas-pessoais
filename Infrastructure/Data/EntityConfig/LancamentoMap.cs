@@ -31,6 +31,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .HasColumnType("timestamp")
             .IsRequired();
 
+            builder.Property(m => m.DataCriacao)
+            .HasColumnType("timestamp");            
+
             builder.Property(m => m.Valor)
             .HasColumnType("decimal(10, 2)");
 
