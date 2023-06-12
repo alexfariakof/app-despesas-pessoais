@@ -15,6 +15,10 @@ Acesso documentação da API no Swagger <a href="http://api-despesas-pessoais-as
 </h6>
 
 <h2 align="left"> 
+Acesso ao protótipo <a href="https://despesas-pessoasis-aws.d26q19cgt5w2n4.amplifyapp.com/" target="_blank" >frontend</a> do projeto
+</h2>
+
+<h2 align="left"> 
 Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais-azure.cdeefmd5a6fjfece.eastus.azurecontainer.io" target="_blank" >Despesas Pessoais</a> 
 </h2>
 
@@ -22,9 +26,6 @@ Acesso a aplicação atualizada em produção  <a href="http://despesas-pessoais
 Workspace público para teste da API no <a href="https://www.postman.com/bold-eclipse-872793/workspace/api-despesas-pessoais-azure" target="_blank" >Postman</a>
 </h2>
 
-<h2 align="left"> 
-Acesso ao protótipo <a href="https://despesas-pessoasis-aws.d26q19cgt5w2n4.amplifyapp.com/" target="_blank" >frontend</a> do projeto
-</h2>
 
 # Descrição 
 <h5> 
