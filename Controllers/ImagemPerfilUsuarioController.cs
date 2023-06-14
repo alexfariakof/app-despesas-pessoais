@@ -119,7 +119,7 @@ namespace despesas_backend_api_net_core.Controllers
 
                         imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
                         if (imagemPerfilUsuario != null)
-                            return Ok(new { messsage = true, imagemPerfilUsuario = imagemPerfilUsuario });
+                            return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
                         else
                             return BadRequest(new { messsage = "Imagem de perfil não foi atualizada!" });
                     }
