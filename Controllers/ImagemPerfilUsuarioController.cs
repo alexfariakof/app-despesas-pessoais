@@ -69,11 +69,11 @@ namespace despesas_backend_api_net_core.Controllers
                             ContentType = file.ContentType
                         };
 
-                        var _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
+                        ImagemPerfilUsuarioVM? _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
                         if (_imagemPerfilUsuario != null)
                             return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
                         else
-                            return BadRequest(new { message = "Imagem de perfil não foi incluída!" });
+                            return Ok(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
                     }
                 }
                 else
@@ -121,7 +121,7 @@ namespace despesas_backend_api_net_core.Controllers
                         if (imagemPerfilUsuario != null)
                             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
                         else
-                            return BadRequest(new { messsage = "Imagem de perfil não foi atualizada!" });
+                            return Ok(new { messsage = false, imagemPerfilUsuario = imagemPerfilUsuario });
                     }
                 }
                 else
@@ -137,11 +137,17 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idUsuario)
         {
-
-            if (_perfilFileBusiness.Delete(idUsuario))
-                return Ok(new { message = "Imagem perfil excluida com sucesso!" });
-            else
+            try
+            {
+                if (_perfilFileBusiness.Delete(idUsuario))
+                    return Ok(new { message = true });
+                else
+                    return Ok(new { message = false });
+            }
+            catch
+            {
                 return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
+            }
 
         }
     }
