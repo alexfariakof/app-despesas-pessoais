@@ -13,15 +13,13 @@
         {
             int objConvert;
             int.TryParse(objToConvert.ToString(), out objConvert);
-            return objConvert;
-
+            return objConvert;            
         }
         public static string ToDateBr(this DateTime objToConvert)
         {
             var obj = DateTime.Parse(objToConvert.ToString()).ToString("dd/MM/yyyy");
 
             return obj;
-
         }
         public static DateTime ToDateTime(this string objToConvert)
         {
@@ -30,7 +28,6 @@
             DateTime.TryParse(objToConvert, out obj);
 
             return obj;
-
         }
         public static decimal ToDecimal(this string objToConvert)
         {
@@ -39,7 +36,6 @@
             decimal.TryParse(objToConvert, out obj);
 
             return obj;
-
         }
     }
 }

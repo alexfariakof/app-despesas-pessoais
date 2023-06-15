@@ -10,11 +10,17 @@ namespace despesas_backend_api_net_core.Business.Implementations
     {
         private readonly IRepositorio<Categoria> _repositorio;
         private readonly CategoriaMap _converter;
+        private IRepositorio<CategoriaVM> @object;
 
         public CategoriaBusinessImpl(IRepositorio<Categoria> repositorio)
         {
             _repositorio = repositorio;
             _converter = new CategoriaMap();
+        }
+
+        public CategoriaBusinessImpl(IRepositorio<CategoriaVM> @object)
+        {
+            this.@object = @object;
         }
 
         public CategoriaVM Create(CategoriaVM obj)
@@ -49,8 +55,6 @@ namespace despesas_backend_api_net_core.Business.Implementations
         {
             var lstCategoria = _repositorio.GetAll().FindAll(p => p.UsuarioId.Equals(idUsuario));
             return _converter.ParseList(lstCategoria);
-
-
         }
     }
 }
