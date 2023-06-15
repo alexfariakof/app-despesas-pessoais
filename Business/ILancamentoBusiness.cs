@@ -7,6 +7,6 @@ namespace despesas_backend_api_net_core.Business
     {
         List<LancamentoVM> FindByMesAno(DateTime data, int idUsuario);
         decimal GetSaldo(int idUsuario);
-        Grafico GetDadosGraficoByAno(int idUsuario, DateTime data);
+        Grafico GetDadosGraficoByAnoByIdUsuario(int idUsuario, DateTime data);
     }
 }

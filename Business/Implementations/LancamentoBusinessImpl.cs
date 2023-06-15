@@ -27,7 +27,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _repositorio.GetSaldo(idUsuario);
         }
 
-        Grafico ILancamentoBusiness.GetDadosGraficoByAno(int idUsuario, DateTime data)
+        public Grafico GetDadosGraficoByAnoByIdUsuario(int idUsuario, DateTime data)
         {
             return _repositorio.GetDadosGraficoByAno(idUsuario, data);
         }
