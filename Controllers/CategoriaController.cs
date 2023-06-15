@@ -42,7 +42,7 @@ namespace despesas_backend_api_net_core.Controllers
             List<CategoriaVM> _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
                                            .FindAll(c => c.IdUsuario.Equals(idUsuario));
 
-            if (_categoria == null)
+            if (_categoria.Count == 0)
                 return NotFound();
 
             return Ok(_categoria);

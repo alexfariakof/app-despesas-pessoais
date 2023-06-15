@@ -28,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controlellers\" />
+    <Folder Include="Infrastructure\ExtensionMethods\" />
+    <Folder Include="Infrastructure\Infrastructure\" />
+    <Folder Include="Infrastructure\Security\Configuration\" />
   </ItemGroup>
 
 </Project>
