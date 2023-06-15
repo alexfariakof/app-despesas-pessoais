@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "despesas-backend-api-net-core", "despesas-backend-api-net-core.csproj", "{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.XUnit", "Test\Test.XUnit\Test.XUnit.csproj", "{B0FA2FE8-5E2B-49A7-A9AB-280E3215FC0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.XUnit", "Test\Test.XUnit\Test.XUnit.csproj", "{B0FA2FE8-5E2B-49A7-A9AB-280E3215FC0F}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6} = {B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}
 	EndProjectSection

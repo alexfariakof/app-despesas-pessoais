@@ -3,6 +3,7 @@ using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace despesas_backend_api_net_core.Controllers
 {
@@ -12,6 +13,9 @@ namespace despesas_backend_api_net_core.Controllers
     public class LancamentoController : Controller
     {
         private ILancamentoBusiness _lancamentoBusiness;
+        private object labels;
+        private object datasets;
+
         public LancamentoController(ILancamentoBusiness lancamentoBusiness)
         {
             _lancamentoBusiness = lancamentoBusiness;
@@ -53,15 +57,21 @@ namespace despesas_backend_api_net_core.Controllers
 
         }
 
-        [HttpGet("DadosGraficoPorAno/{anoMes}/{idUsuario}")]
+        [HttpGet("GetDadosGraficoByAnoByIdUsuario/{anoMes}/{idUsuario}")]
         [Authorize("Bearer")]
         public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
             try
             {
-                var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAno(idUsuario, anoMes);
+                var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAnoByIdUsuario(idUsuario, anoMes);
 
-                return Ok(dadosGrafico);
+                datasets = new List<object> {
+                    new { label = "Despesas", Data = dadosGrafico.SomatorioDespesasPorAno.Values.ToArray(), borderColor = "rgb(255, 99, 132)", backgroundColor = "rgba(255, 99, 132, 0.5)"  },
+                    new { label = "Receitas", Data = dadosGrafico.SomatorioReceitasPorAno.Values.ToArray(), borderColor = "rgb(53, 162, 235)", backgroundColor = "rgba(53, 162, 235, 0.5)"  },
+                };
+
+                labels = new List<string> { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+                return Ok(new { datasets = datasets, labels = labels });
             }
             catch
             {

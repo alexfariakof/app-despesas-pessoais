@@ -413,3 +413,5 @@ Program.cs
 #Exclude Migrations
 *Migrations/
 Migrations/*
+Solution Items/
+Solution Items/*
