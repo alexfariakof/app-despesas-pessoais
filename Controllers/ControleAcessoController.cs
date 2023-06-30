@@ -87,6 +87,9 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {                        
+            if (login.IdUsuario.Equals(2) || login.Email.Equals("teste@teste.com"))
+                return BadRequest(new { message = "A senha deste usuário não pode ser atualizada!" });
+
             if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
                 return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
