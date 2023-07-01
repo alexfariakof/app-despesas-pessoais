@@ -29,11 +29,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1",
+    c.SwaggerDoc("V2",
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API REST Despesas Pessoais",
-            Version = "v1"
+            Version = "2.0.0"
         });
 });
 
