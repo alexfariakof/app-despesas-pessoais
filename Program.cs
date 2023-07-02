@@ -1,10 +1,13 @@
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,24 +31,27 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1",
+    c.SwaggerDoc("V2",
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API REST Despesas Pessoais",
-            Version = "v1"
+            Version = "2.0.1"
         });
 });
+
 
 
 builder.Services.AddDbContext<RegisterContext>(options =>
 options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
-
 ConfigureAutorization(builder.Services, builder.Configuration);
+ConfigureCrypto(builder.Services, builder.Configuration);
+ConfigureAmazonS3Access(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -64,7 +70,7 @@ app.UseSwaggerUI(c =>
 });
 //}
 
-app.UseCors(); 
+app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -120,4 +126,17 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
             .RequireAuthenticatedUser().Build());
     });
+}
+static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
+{
+    var key = Convert.FromBase64String(configuration.GetSection("Crypto:Key").Value);
+    new Crypto(key);
+}
+static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration configuration)
+{
+    var accessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
+    var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
+    var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
+    var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
+    new AmazonS3Bucket(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
 }

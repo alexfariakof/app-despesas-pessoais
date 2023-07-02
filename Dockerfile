@@ -3,7 +3,8 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 
-EXPOSE 80
+EXPOSE 42535
+ENV ASPNETCORE_URLS=http://+:42535
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -20,8 +21,5 @@ RUN dotnet publish "despesas-backend-api-net-core.csproj" -c Release -o /app/pub
 
 FROM base AS final
 WORKDIR /app
-COPY ./CRYPTO_KEY.txt .
-COPY ./AMZOM_KEYS.json .
-COPY ./MYSQL_ConnectionString.txt .
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "despesas-backend-api-net-core.dll"]

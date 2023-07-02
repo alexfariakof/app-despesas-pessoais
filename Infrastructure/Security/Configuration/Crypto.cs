@@ -8,23 +8,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
     {   
         private static byte[] Key; // Chave fixa de 256 bits
 
-        static Crypto()
+        public Crypto(byte[] _key)
         {
-            Key = ReadKeyFromFile();
-        }
-
-        private static byte[] ReadKeyFromFile()
-        {
-            string filePath = "CRYPTO_KEY.txt";
-            if (File.Exists(filePath))
-            {
-                string key = File.ReadAllText(filePath);
-                return Encoding.UTF8.GetBytes(key);
-            }
-            else
-            {
-                throw new FileNotFoundException($"Key file '{filePath}' not found.");
-            }
+            Key = _key;
         }
         public static string Encrypt(string password)
         {
