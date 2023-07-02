@@ -5,7 +5,9 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,21 +40,18 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-/*Configuração Database Production*/
-string MySqlConnectionString = "";
-string filePath = "MYSQL_ConnectionString.txt";
-if (File.Exists(filePath))
-{
-    MySqlConnectionString = File.ReadAllText(filePath);
-    builder.Services.AddDbContext<RegisterContext>(options =>
-    options.UseMySQL(MySqlConnectionString));
-}
+
+builder.Services.AddDbContext<RegisterContext>(options =>
+options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
+ConfigureCrypto(builder.Services, builder.Configuration);
+ConfigureAmazonS3Access(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -127,4 +126,17 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
             .RequireAuthenticatedUser().Build());
     });
+}
+static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
+{
+    var key = Convert.FromBase64String(configuration.GetSection("Crypto:Key").Value);
+    new Crypto(key);
+}
+static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration configuration)
+{
+    var accessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
+    var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
+    var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
+    var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
+    new AmazonS3Bucket(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
 }

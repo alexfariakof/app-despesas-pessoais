@@ -11,40 +11,38 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         private static readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
         private static IAmazonS3 client;
+        private static string AccessKey;
+        private static string SecretAccessKey;
+        private static string S3ServiceUrl;
+        private static string BucketName;
 
-        public class AmazomKeys
+        public AmazonS3Bucket(string accessKey, string secretAccessKey, string s3ServiceUrl, String bucketName)
         {
-            public string AccessKey { get; set; }
-            public string SecretAccessKey { get; set; }
-            public string S3ServiceUrl { get; set; }
+            AccessKey = accessKey;
+            SecretAccessKey = secretAccessKey;
+            S3ServiceUrl = s3ServiceUrl;
+            BucketName = bucketName;
         }
 
         public static async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
         {
-            string arquivoJson = "AMZOM_KEYS.json";
             try
             {
-                string json = File.ReadAllText(arquivoJson);
-
-
-                var amazomKeys = JsonConvert.DeserializeObject<AmazomKeys>(json);
-                string bucketName = "bucket-usuario-perfil";
                 string fileContentType = perfilFile.ContentType;
                 AmazonS3Config config = new AmazonS3Config();
-                config.ServiceURL = amazomKeys.S3ServiceUrl;
+                config.ServiceURL = S3ServiceUrl;
 
-                client = new AmazonS3Client(amazomKeys.AccessKey, amazomKeys.SecretAccessKey, config);
+                client = new AmazonS3Client(AccessKey, SecretAccessKey, config);
 
                 var putRquest = new PutObjectRequest
                 {
                     CannedACL = fileCannedACL,
-                    BucketName = bucketName,
                     Key = perfilFile.Name,
                     ContentType = perfilFile.ContentType,
                     InputStream = new System.IO.MemoryStream(perfilFile.Arquivo)
                 };
                 PutObjectResponse response = await client.PutObjectAsync(putRquest);
-                var url = $"https://{bucketName}.s3.amazonaws.com/{perfilFile.Name}";
+                var url = $"https://{BucketName}.s3.amazonaws.com/{perfilFile.Name}";
                 return url;
 
             }
@@ -61,22 +59,15 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         {
             try
             {
-                string arquivoJson = "AMZOM_KEYS.json";
-                string json = File.ReadAllText(arquivoJson);
-
-
-                var amazomKeys = JsonConvert.DeserializeObject<AmazomKeys>(json);
-                string bucketName = "bucket-usuario-perfil";
-                string fileContentType = perfilFile.ContentType;
                 AmazonS3Config config = new AmazonS3Config();
-                config.ServiceURL = amazomKeys.S3ServiceUrl;
+                config.ServiceURL = S3ServiceUrl;
 
-                client = new AmazonS3Client(amazomKeys.AccessKey, amazomKeys.SecretAccessKey, config);
+                client = new AmazonS3Client(AccessKey, SecretAccessKey, config);
 
 
                 var deleteObjectRequest = new DeleteObjectRequest
                 {
-                    BucketName = bucketName,
+                    BucketName = BucketName,
                     Key = perfilFile.Name,
                 };
 
