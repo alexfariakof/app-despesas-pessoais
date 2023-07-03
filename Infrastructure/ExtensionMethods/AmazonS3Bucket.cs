@@ -37,6 +37,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
                 var putRquest = new PutObjectRequest
                 {
                     CannedACL = fileCannedACL,
+                    BucketName = BucketName,
                     Key = perfilFile.Name,
                     ContentType = perfilFile.ContentType,
                     InputStream = new System.IO.MemoryStream(perfilFile.Arquivo)
