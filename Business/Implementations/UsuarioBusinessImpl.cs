@@ -32,15 +32,17 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(_repositorio.Insert(usuario));
         }
 
-        public List<UsuarioVM> FindAll()
+        public List<UsuarioVM> FindAll(int idUsuario)
         {
-            List<Usuario> lstUsuario = _repositorio.GetAll();
-            return _converter.ParseList(lstUsuario) ;
+            var usuario = FindById(idUsuario, idUsuario);
+            if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
+                return _converter.ParseList(_repositorio.GetAll());
+            return null;
         }      
 
-        public UsuarioVM FindById(int idUsuario)
+        public UsuarioVM FindById(int id, int idUsuario)
         {
-            var usuario = _repositorio.Get(idUsuario);
+            var usuario = _repositorio.Get(id);
             return _converter.Parse(usuario);
         }
 

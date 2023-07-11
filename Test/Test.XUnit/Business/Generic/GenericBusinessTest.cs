@@ -29,13 +29,14 @@ namespace Test.XUnit.Business.Generic
         public void FindAll_ShouldReturnAllObjects()
         {
             // Arrange
+            int idUsuario = 1;
             var objects = new List<BaseModel> { new BaseModel(), new BaseModel() };
             var repositoryMock = new Mock<IRepositorio<BaseModel>>();
             repositoryMock.Setup(repo => repo.GetAll()).Returns(objects);
             var business = new GenericBusiness<BaseModel>(repositoryMock.Object);
 
             // Act
-            var result = business.FindAll();
+            var result = business.FindAll(idUsuario);
 
             // Assert
             Assert.Equal(objects, result);
@@ -45,6 +46,7 @@ namespace Test.XUnit.Business.Generic
         public void FindById_ShouldReturnObjectWithMatchingId()
         {
             // Arrange
+            int idUsuario = 1;
             var id = 1;
             var obj = new BaseModel { Id = id };
             var repositoryMock = new Mock<IRepositorio<BaseModel>>();
@@ -52,7 +54,7 @@ namespace Test.XUnit.Business.Generic
             var business = new GenericBusiness<BaseModel>(repositoryMock.Object);
 
             // Act
-            var result = business.FindById(id);
+            var result = business.FindById(id, idUsuario);
 
             // Assert
             Assert.Equal(obj, result);

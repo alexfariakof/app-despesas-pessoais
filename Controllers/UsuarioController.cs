@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class UsuarioController : Controller
     {
         private IBusiness<UsuarioVM> _usuarioBusiness;
-
+        private string bearerToken;
         public UsuarioController(IBusiness<UsuarioVM> usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;
@@ -21,21 +22,36 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpGet("{IdUsuario}")]
         [Authorize("Bearer")]
-        public IActionResult Get([FromRoute]int IdUsuario)
+        public IActionResult Get([FromRoute]int idUsuario)
         {
-            var usuario = _usuarioBusiness.FindById(IdUsuario);
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+            var usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario.Value);
             if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return Ok(new List<UsuarioVM>());
 
-            return Ok(_usuarioBusiness.FindAll());
+            return Ok(_usuarioBusiness.FindAll(_idUsuario.Value));
         }
 
         [Authorize("Bearer")]
         [HttpPost("GetById")]
         public IActionResult Post([FromBody] int idUsuario)
         {
-            
-            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario);
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario.Value);
             if (_usuario == null)
                 return BadRequest(new { message ="Usuário não encontrado!" });
 
@@ -46,6 +62,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != usuarioVM.Id)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
                 return BadRequest("Campo Telefone não pode ser em branco");
 
@@ -62,6 +86,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != usuarioVM.Id)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
                 return BadRequest("Campo Telefone não pode ser em branco");
 
@@ -78,15 +110,24 @@ namespace despesas_backend_api_net_core.Controllers
             return new ObjectResult(updateUsuario);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize("Bearer")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromBody] UsuarioVM usuarioVM)
         {
-            UsuarioVM _usuario = _usuarioBusiness.FindById(id);
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != usuarioVM.Id)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+
+            UsuarioVM _usuario = _usuarioBusiness.FindById(usuarioVM.Id, _idUsuario.Value);
             if (_usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return BadRequest(new { message = "Usuário não possui permissão para exectar deleção!" });
                 
-            _usuarioBusiness.Delete(id);
+            _usuarioBusiness.Delete(usuarioVM.Id);
             return NoContent();
         }
         private bool IsValidEmail(string email)

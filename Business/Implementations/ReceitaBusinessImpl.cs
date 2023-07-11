@@ -22,14 +22,17 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(receita);
         }
 
-        public List<ReceitaVM> FindAll()
+        public List<ReceitaVM> FindAll(int idUsuario)
         {
-            return _converter.ParseList(_repositorio.GetAll());
+            return _converter.ParseList(_repositorio.GetAll().FindAll(r => r.UsuarioId == idUsuario));
         }      
 
-        public ReceitaVM FindById(int id)
+        public ReceitaVM FindById(int id, int idUsuario)
         {
-            return _converter.Parse(_repositorio.Get(id));
+            var receita = _converter.Parse(_repositorio.Get(id));
+            if (receita.IdUsuario == idUsuario)
+                return receita;
+            return null;
         }
 
         public ReceitaVM Update(ReceitaVM obj)

@@ -1,10 +1,9 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 
 namespace despesas_backend_api_net_core.Controllers
 {
@@ -13,6 +12,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class ImagemPerfilUsuarioController : ControllerBase
     {
         private IBusiness<ImagemPerfilUsuarioVM> _perfilFileBusiness;
+        private string bearerToken;
         public ImagemPerfilUsuarioController(IBusiness<ImagemPerfilUsuarioVM> perfilFileBusiness)
         {
             _perfilFileBusiness = perfilFileBusiness;
@@ -22,14 +22,25 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            return Ok(_perfilFileBusiness.FindAll());
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            return Ok(_perfilFileBusiness.FindAll(_idUsuario.Value));
         }
 
         [HttpGet("GetByIdUsuario/{idUsuario}")]
         [Authorize("Bearer")]
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
-            var imagemPerfilUsuario = _perfilFileBusiness.FindAll()
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+            var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario.Value)
                 .Find(prop => prop.IdUsuario.Equals(idUsuario));
 
             if (imagemPerfilUsuario != null)
@@ -42,6 +53,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public async Task<IActionResult> Post(int idUsuario, IFormFile file)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             try
             {
                 string fileName = "perfil-usuarioId-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMdd");
@@ -89,6 +108,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public async Task<IActionResult> Put(int idUsuario, IFormFile file)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             try
             {
                 string fileName = "perfil-usuarioId-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMdd");
@@ -137,6 +164,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idUsuario)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             try
             {
                 if (_perfilFileBusiness.Delete(idUsuario))
