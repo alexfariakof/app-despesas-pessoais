@@ -1,4 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Business.Implementations;
+using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class DespesaController : Controller
     {
         private IBusiness<DespesaVM> _despesaBusiness;
+        private string bearerToken;
 
         public DespesaController(IBusiness<DespesaVM> despesaBusiness)
         {
@@ -20,16 +23,22 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            return Ok(_despesaBusiness.FindAll());
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            return Ok(_despesaBusiness.FindAll(_idUsuario.Value));
         }
 
         [HttpGet("GetById/{id}")]
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int id)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
             try
             {
-                var _despesa = _despesaBusiness.FindById(id);
+                var _despesa = _despesaBusiness.FindById(id, _idUsuario.Value);
 
                 if (_despesa == null)
                     return Ok( new { message = "Nenhuma despesa foi encontrada."});
@@ -46,6 +55,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromRoute] int idUsuario)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             if (idUsuario == 0)
                 return BadRequest(new { message = "Usuário inexistente!" });
             else
@@ -57,6 +74,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != despesa.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             if (despesa == null)
                 return BadRequest();
             try
@@ -73,6 +98,15 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != despesa.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+
             if (despesa == null)
                 return BadRequest();
 
@@ -83,11 +117,19 @@ namespace despesas_backend_api_net_core.Controllers
             return new ObjectResult(new { message = true, despesa = updateDespesa });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize("Bearer")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromBody] DespesaVM despesa)
         {
-            if (_despesaBusiness.Delete(id))
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != despesa.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+            if (_despesaBusiness.Delete(despesa.Id))
                 return new ObjectResult(new { message = true });
             else
                 return BadRequest(new { message = "Erro ao excluir Despesa!" });

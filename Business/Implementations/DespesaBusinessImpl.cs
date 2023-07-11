@@ -21,14 +21,18 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(despesa);
         }
 
-        public List<DespesaVM> FindAll()
+        public List<DespesaVM> FindAll(int idUsuario)
         {
-            return _converter.ParseList(_repositorio.GetAll());
+            return _converter.ParseList(_repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario));
         }
 
-        public DespesaVM FindById(int id)
+        public DespesaVM FindById(int id, int idUsuario)
         {
-            return _converter.Parse(_repositorio.Get(id));
+            var despesa = _converter.Parse(_repositorio.Get(id));
+
+            if (despesa.IdUsuario == idUsuario)
+                return despesa;
+            return null;
         }
 
         public DespesaVM Update(DespesaVM obj)

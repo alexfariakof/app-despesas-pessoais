@@ -18,12 +18,12 @@ namespace despesas_backend_api_net_core.Business.Generic
             return _repositorio.Insert(obj);
         }
 
-        public List<T> FindAll()
+        public List<T> FindAll(int idUsuario)
         {
             return _repositorio.GetAll();
         }
 
-        public T FindById(int id)
+        public T FindById(int id, int idUsuario)
         {
             return _repositorio.Get(id);
         }

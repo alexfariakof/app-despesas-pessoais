@@ -58,10 +58,11 @@ namespace Test.XUnit.Business.Implementations
         public void FindAll_ReturnsListOfCategoriaVM()
         {
             // Arrange         
+            int idUsuario  = 1;
             _repositorioMock.Setup(repo => repo.GetAll()).Returns(categorias);
 
             // Act
-            var result = _categoriaBusiness.FindAll();
+            var result = _categoriaBusiness.FindAll(idUsuario);
 
             // Assert
             Assert.Equal(categorias.Count, result.Count);
@@ -78,7 +79,7 @@ namespace Test.XUnit.Business.Implementations
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(categoria);
 
             // Act
-            var result = _categoriaBusiness.FindById(id);
+            var result = _categoriaBusiness.FindById(id, categoria.UsuarioId);
 
             // Assert
             Assert.Equal(categoria.Id, result.Id);

@@ -5,7 +5,7 @@ using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
@@ -33,18 +33,22 @@ namespace despesas_backend_api_net_core.Business.Implementations
             }
             return null; 
         }
-        public List<ImagemPerfilUsuarioVM> FindAll()
+        public List<ImagemPerfilUsuarioVM> FindAll(int idUsuario)
         {
             var lstPerfilFile = _repositorio.GetAll();
             return _converter.ParseList(lstPerfilFile);
         }
-        public ImagemPerfilUsuarioVM FindById(int id)
+        public ImagemPerfilUsuarioVM FindById(int id, int idUsuario)
         {
-            return _converter.Parse(_repositorio.Get(id));
+            var imagemPerfilUsuario = _converter.Parse(_repositorio.Get(id));
+            if (imagemPerfilUsuario.IdUsuario != idUsuario)
+                return null;
+
+            return imagemPerfilUsuario;
         }
         public ImagemPerfilUsuarioVM Update(ImagemPerfilUsuarioVM obj)
         {
-            var isPerfilValid = FindAll().Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
+            var isPerfilValid = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
             if (isPerfilValid != null)
             {
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
@@ -60,7 +64,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public bool Delete(int idUsaurio)
         {
-            var obj = FindAll().Find(prop  => prop.IdUsuario.Equals(idUsaurio));
+            var obj = FindAll(idUsaurio).Find(prop  => prop.IdUsuario.Equals(idUsaurio));
             if (obj != null)
             {
                 var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();

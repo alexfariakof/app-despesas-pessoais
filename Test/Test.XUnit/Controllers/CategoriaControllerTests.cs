@@ -42,7 +42,7 @@ namespace Test.XUnit.Controllers
         public void Get_ReturnsOkResult()
         {
 
-            _mockCategoriaBusiness.Setup(b => b.FindAll()).Returns(categorias);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(1)).Returns(categorias);
 
             // Act
             var result = _categoriaController.Get();
@@ -63,7 +63,7 @@ namespace Test.XUnit.Controllers
                 IdTipoCategoria = idCategoria,
                 IdUsuario = 1,
             };
-            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria)).Returns(categoria);
+            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, categoria.IdUsuario)).Returns(categoria);
 
             // Act
             var result = _categoriaController.GetById(idCategoria);
@@ -77,8 +77,8 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var idCategoria = 1;
-            CategoriaVM _categoria = null;
-            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria)).Returns(_categoria);
+            CategoriaVM _categoria = new CategoriaVM { IdUsuario = 1 };
+            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, _categoria.IdUsuario)).Returns(_categoria);
 
             // Act
             var result = _categoriaController.GetById(idCategoria);
@@ -238,10 +238,15 @@ namespace Test.XUnit.Controllers
         public void Delete_WithValidId_ReturnsNoContentResult()
         {
             // Arrange
-            var idCategoria = 1;
-
+            var categoria = new CategoriaVM
+            {
+                Id = 1,
+                Descricao = "Salário",
+                IdTipoCategoria = 1,
+                IdUsuario = 1
+            };
             // Act
-            var result = _categoriaController.Delete(idCategoria);
+            var result = _categoriaController.Delete(categoria);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
