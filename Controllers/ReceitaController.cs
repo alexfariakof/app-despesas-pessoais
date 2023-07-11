@@ -1,4 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
+using despesas_backend_api_net_core.Business.Implementations;
+using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +12,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class ReceitaController : Controller
     {
         private IBusiness<ReceitaVM> _receitaBusiness;
-
+        private string bearerToken;
         public ReceitaController(IBusiness<ReceitaVM> receitaBusiness)
         {
             _receitaBusiness = receitaBusiness;
@@ -20,16 +22,22 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            return Ok(_receitaBusiness.FindAll());
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            return Ok(_receitaBusiness.FindAll(_idUsuario.Value));
         }
 
         [HttpGet("GetById/{id}")]
         [Authorize("Bearer")]
         public IActionResult GetById([FromRoute]int id)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
             try
             {
-                var _receita = _receitaBusiness.FindById(id);
+                var _receita = _receitaBusiness.FindById(id, _idUsuario.Value);
 
                 if (_receita == null)
                     return Ok(new { message = "Nenhuma receita foi encontrada." });
@@ -46,8 +54,13 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] ReceitaVM receita)
         {
-            if (receita == null)
-                return BadRequest();
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != receita.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
 
             try
             {
@@ -63,6 +76,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromRoute] int idUsuario)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             if (idUsuario == 0)
                 return BadRequest(new { message = "Usuário inexistente!" });
             else
@@ -74,8 +95,13 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] ReceitaVM receita)
         {
-            if (receita == null)
-                return BadRequest();
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != receita.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
 
             var updateReceita = _receitaBusiness.Update(receita);
 
@@ -85,11 +111,19 @@ namespace despesas_backend_api_net_core.Controllers
             return new ObjectResult(new { message = true, receita = updateReceita });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         [Authorize("Bearer")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete([FromBody] ReceitaVM receita)
         {
-            if (_receitaBusiness.Delete(id))
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != receita.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+            if (_receitaBusiness.Delete(receita.Id))
                 return new ObjectResult(new { message = true });
             else
                 return BadRequest(new { message = "Erro ao excluir Receita!" });            

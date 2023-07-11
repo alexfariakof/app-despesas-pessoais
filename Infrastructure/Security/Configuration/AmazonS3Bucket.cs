@@ -2,9 +2,8 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using despesas_backend_api_net_core.Domain.VM;
-using Newtonsoft.Json;
 
-namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
+namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
 {
     public class AmazonS3Bucket
     {
@@ -16,7 +15,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         private static string S3ServiceUrl;
         private static string BucketName;
 
-        public AmazonS3Bucket(string accessKey, string secretAccessKey, string s3ServiceUrl, String bucketName)
+        public AmazonS3Bucket(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName)
         {
             AccessKey = accessKey;
             SecretAccessKey = secretAccessKey;
@@ -40,7 +39,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
                     BucketName = BucketName,
                     Key = perfilFile.Name,
                     ContentType = perfilFile.ContentType,
-                    InputStream = new System.IO.MemoryStream(perfilFile.Arquivo)
+                    InputStream = new MemoryStream(perfilFile.Arquivo)
                 };
                 PutObjectResponse response = await client.PutObjectAsync(putRquest);
                 var url = $"https://{BucketName}.s3.amazonaws.com/{perfilFile.Name}";

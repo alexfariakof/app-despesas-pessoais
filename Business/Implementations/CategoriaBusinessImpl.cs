@@ -24,15 +24,18 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(_repositorio.Insert(categoria)); ;
         }
 
-        public List<CategoriaVM> FindAll()
+        public List<CategoriaVM> FindAll(int idUsaurio)
         {
-            var lstCategoria = _repositorio.GetAll();
+            var lstCategoria = _repositorio.GetAll().FindAll(c => c.UsuarioId == idUsaurio);
             return _converter.ParseList(lstCategoria);
         }      
 
-        public CategoriaVM FindById(int id)
+        public CategoriaVM FindById(int id, int idUsuario)
         {
-            return _converter.Parse(_repositorio.Get(id));
+            var categoria = _converter.Parse(_repositorio.Get(id));
+            if (idUsuario == categoria.IdUsuario)
+                return categoria;
+            return null;
         }
 
         public CategoriaVM Update(CategoriaVM obj)

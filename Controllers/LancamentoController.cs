@@ -1,5 +1,6 @@
 ﻿using Amazon.S3.Model;
 using despesas_backend_api_net_core.Business;
+using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace despesas_backend_api_net_core.Controllers
         private ILancamentoBusiness _lancamentoBusiness;
         private object labels;
         private object datasets;
+        private string bearerToken;
 
         public LancamentoController(ILancamentoBusiness lancamentoBusiness)
         {
@@ -25,6 +27,15 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+
             try
             {
                 var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
@@ -44,6 +55,15 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int idUsuario)
         {
+
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             try
             {
                 var saldo = _lancamentoBusiness.GetSaldo(idUsuario).ToString("N2");
@@ -61,6 +81,14 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+
+            if (_idUsuario.Value != idUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
             try
             {
                 var dadosGrafico = _lancamentoBusiness.GetDadosGraficoByAnoByIdUsuario(idUsuario, anoMes);
