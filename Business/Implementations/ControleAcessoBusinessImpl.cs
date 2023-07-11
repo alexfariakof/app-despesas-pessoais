@@ -119,7 +119,8 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 AccessToken = token,
-                Message = "OK"
+                Message = "OK",
+                Usuario = usuario
             };
         }
         public static int? getIdUsuarioFromToken(string token)
