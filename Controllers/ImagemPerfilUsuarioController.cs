@@ -2,6 +2,7 @@
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,9 +24,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            return Ok(_perfilFileBusiness.FindAll(_idUsuario.Value));
+            return Ok(_perfilFileBusiness.FindAll(_idUsuario));
         }
 
         [HttpGet("GetByIdUsuario/{idUsuario}")]
@@ -33,14 +34,14 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario.Value)
+            var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario)
                 .Find(prop => prop.IdUsuario.Equals(idUsuario));
 
             if (imagemPerfilUsuario != null)
@@ -54,9 +55,9 @@ namespace despesas_backend_api_net_core.Controllers
         public async Task<IActionResult> Post(int idUsuario, IFormFile file)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -109,9 +110,9 @@ namespace despesas_backend_api_net_core.Controllers
         public async Task<IActionResult> Put(int idUsuario, IFormFile file)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -165,9 +166,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete(int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

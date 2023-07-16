@@ -2,6 +2,7 @@
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,9 +25,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            return Ok(_despesaBusiness.FindAll(_idUsuario.Value));
+            return Ok(_despesaBusiness.FindAll(_idUsuario));
         }
 
         [HttpGet("GetById/{id}")]
@@ -34,11 +35,11 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get([FromRoute]int id)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
             try
             {
-                var _despesa = _despesaBusiness.FindById(id, _idUsuario.Value);
+                var _despesa = _despesaBusiness.FindById(id, _idUsuario);
 
                 if (_despesa == null)
                     return Ok( new { message = "Nenhuma despesa foi encontrada."});
@@ -56,9 +57,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromRoute] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -75,9 +76,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != despesa.IdUsuario)
+            if (_idUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -99,13 +100,12 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != despesa.IdUsuario)
+            if (_idUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
-
 
             if (despesa == null)
                 return BadRequest();
@@ -122,9 +122,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete([FromBody] DespesaVM despesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != despesa.IdUsuario)
+            if (_idUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
