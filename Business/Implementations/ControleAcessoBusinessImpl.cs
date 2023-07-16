@@ -123,13 +123,5 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 Usuario = usuario
             };
         }
-        public static int? getIdUsuarioFromToken(string token)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
-
-            var idUsuario = jwtToken.Claims.FirstOrDefault(c => c.Type == "IdUsuario").Value.ToInteger();
-            return idUsuario;
-        }
     }
 }

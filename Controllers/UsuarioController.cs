@@ -2,9 +2,11 @@
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlX.XDevAPI;
+using Org.BouncyCastle.Asn1;
 using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers
@@ -25,18 +27,17 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get([FromRoute]int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
-
-            if (_idUsuario.Value != idUsuario)
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            var usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario.Value);
+            var usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario);
             if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return Ok(new List<UsuarioVM>());
 
-            return Ok(_usuarioBusiness.FindAll(_idUsuario.Value));
+            return Ok(_usuarioBusiness.FindAll(_idUsuario));
         }
 
         [Authorize("Bearer")]
@@ -44,14 +45,14 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario.Value);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario);
             if (_usuario == null)
                 return BadRequest(new { message ="Usuário não encontrado!" });
 
@@ -63,9 +64,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != usuarioVM.Id)
+            if (_idUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -87,9 +88,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != usuarioVM.Id)
+            if (_idUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -115,15 +116,15 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete([FromBody] UsuarioVM usuarioVM)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != usuarioVM.Id)
+            if (_idUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
 
-            UsuarioVM _usuario = _usuarioBusiness.FindById(usuarioVM.Id, _idUsuario.Value);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(usuarioVM.Id, _idUsuario);
             if (_usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return BadRequest(new { message = "Usuário não possui permissão para exectar deleção!" });
                 

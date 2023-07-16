@@ -2,6 +2,7 @@
 using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -28,9 +29,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -57,9 +58,9 @@ namespace despesas_backend_api_net_core.Controllers
         {
 
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -82,9 +83,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = ControleAcessoBusinessImpl.getIdUsuarioFromToken(bearerToken);
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
 
-            if (_idUsuario.Value != idUsuario)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

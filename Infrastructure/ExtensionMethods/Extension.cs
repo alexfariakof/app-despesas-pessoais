@@ -1,4 +1,6 @@
-﻿namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
+﻿using System.IdentityModel.Tokens.Jwt;
+
+namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
     public static class Extension
     {
@@ -37,5 +39,15 @@
 
             return obj;
         }
+
+        public static int? getIdUsuarioFromToken(this string token)
+        {            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
+            var idUsuario = jwtToken.Claims.FirstOrDefault(c => c.Type == "IdUsuario").Value.ToInteger();
+            return idUsuario.Equals(null) ? 0 : idUsuario;
+        }
+
+
     }
 }
