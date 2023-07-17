@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Despesas Pessoais V3",
-            Version = "3.0.0"
+            Version = "3.0.2"
         });
 });
 
