@@ -88,7 +88,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (idUsuario == 0)
                 return BadRequest(new { message = "Usuário inexistente!" });
             else
-                return Ok(_receitaBusiness.FindByIdUsuario(idUsuario));
+                return Ok(_receitaBusiness.FindAll(idUsuario));
 
         }
 

@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Business.Generic;
+﻿using despesas_backend_api_net_core.Business;
+using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
@@ -15,9 +16,9 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class UsuarioController : Controller
     {
-        private IBusiness<UsuarioVM> _usuarioBusiness;
+        private IUsuarioBusiness _usuarioBusiness;
         private string bearerToken;
-        public UsuarioController(IBusiness<UsuarioVM> usuarioBusiness)
+        public UsuarioController(IUsuarioBusiness usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;
         }
@@ -33,7 +34,7 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            var usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario);
+            var usuario = _usuarioBusiness.FindById(_idUsuario);
             if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return Ok(new List<UsuarioVM>());
 
@@ -52,7 +53,7 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario, _idUsuario);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario);
             if (_usuario == null)
                 return BadRequest(new { message ="Usuário não encontrado!" });
 
@@ -124,7 +125,7 @@ namespace despesas_backend_api_net_core.Controllers
             }
 
 
-            UsuarioVM _usuario = _usuarioBusiness.FindById(usuarioVM.Id, _idUsuario);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(_idUsuario);
             if (_usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return BadRequest(new { message = "Usuário não possui permissão para exectar deleção!" });
                 

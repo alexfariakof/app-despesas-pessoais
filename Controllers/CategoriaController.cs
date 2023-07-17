@@ -56,8 +56,7 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            List<CategoriaVM> _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
-                                           .FindAll(c => c.IdUsuario.Equals(idUsuario));
+            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(idUsuario);
 
             if (_categoria.Count == 0)
                 return NotFound();
@@ -80,13 +79,13 @@ namespace despesas_backend_api_net_core.Controllers
 
             if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
             {
-                var _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
+                var _categoria = _categoriaBusiness.FindAll(idUsuario)
                                  .FindAll(prop => prop.IdUsuario.Equals(idUsuario));
                 return Ok(_categoria);
             }
             else
             {
-                var _categoria = _categoriaBusiness.FindByIdUsuario(idUsuario)
+                var _categoria = _categoriaBusiness.FindAll(idUsuario)
                                 .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
                 return Ok(_categoria);
             }           
