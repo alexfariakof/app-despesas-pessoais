@@ -47,10 +47,5 @@ namespace despesas_backend_api_net_core.Business.Implementations
         {
             return  _repositorio.Delete(id);
         }
-
-        public List<ReceitaVM> FindByIdUsuario(int idUsuario)
-        {
-            return _converter.ParseList(_repositorio.GetAll().FindAll(p => p.UsuarioId.Equals(idUsuario)));
-        }
     }
 }

@@ -126,7 +126,7 @@ namespace Test.XUnit.Business.Implementations
                 .Returns(lstCategoria.FindAll(p => p.UsuarioId.Equals(idUsuario)));
 
             // Act
-            var result = _categoriaBusiness.FindByIdUsuario(idUsuario);
+            var result = _categoriaBusiness.FindAll(idUsuario);
 
             // Assert
             Assert.Equal(lstCategoria.Count, result.Count);

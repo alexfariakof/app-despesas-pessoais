@@ -6,7 +6,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class UsuarioBusinessImpl : IBusiness<UsuarioVM>
+    public class UsuarioBusinessImpl : IUsuarioBusiness
     {
         private IRepositorio<Usuario> _repositorio;
         private readonly UsuarioMap _converter;
@@ -34,13 +34,13 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public List<UsuarioVM> FindAll(int idUsuario)
         {
-            var usuario = FindById(idUsuario, idUsuario);
+            var usuario = FindById(idUsuario);
             if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
                 return _converter.ParseList(_repositorio.GetAll());
             return null;
         }      
 
-        public UsuarioVM FindById(int id, int idUsuario)
+        public UsuarioVM FindById(int id)
         {
             var usuario = _repositorio.Get(id);
             return _converter.Parse(usuario);
@@ -66,12 +66,6 @@ namespace despesas_backend_api_net_core.Business.Implementations
         public bool Delete(int idUsuario)
         {
             return _repositorio.Delete(idUsuario);
-        }
-
-        public List<UsuarioVM> FindByIdUsuario(int idUsuario)
-        {
-            List<Usuario> lstUsuario = _repositorio.GetAll().FindAll(p => p.Id.Equals(idUsuario));
-            return _converter.ParseList(lstUsuario);
         }
     }
 }

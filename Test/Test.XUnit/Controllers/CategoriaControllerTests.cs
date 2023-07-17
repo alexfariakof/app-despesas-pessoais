@@ -92,7 +92,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var idUsuario = 1;
-            _mockCategoriaBusiness.Setup(b => b.FindByIdUsuario(idUsuario)).Returns(categorias);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(categorias);
 
             // Act
             var result = _categoriaController.GetByIdUsuario(idUsuario);
@@ -107,7 +107,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var idUsuario = 10;            
 
-            Mock.Get(_mockCategoriaBusiness.Object).Setup(b => b.FindByIdUsuario(idUsuario)).Returns(categorias);
+            Mock.Get(_mockCategoriaBusiness.Object).Setup(b => b.FindAll(idUsuario)).Returns(categorias);
 
             // Act
             var result = _categoriaController.GetByIdUsuario(idUsuario);
@@ -122,7 +122,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var idUsuario = 1;
             var tipoCategoria = despesas_backend_api_net_core.Domain.Entities.TipoCategoria.Todas;
-            _mockCategoriaBusiness.Setup(b => b.FindByIdUsuario(idUsuario)).Returns(categorias);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(categorias);
 
             // Act
             var result = _categoriaController.GetByTipoCategoria(idUsuario, tipoCategoria);
