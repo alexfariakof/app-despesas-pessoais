@@ -35,7 +35,7 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Despesas Pessoais V3",
-            Version = "3.0.0"
+            Version = "3.0.4"
         });
 });
 
@@ -132,5 +132,5 @@ static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration 
     var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
     var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
     var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
-    new AmazonS3Bucket(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
+    AmazonS3Bucket.GetInstance.SetConfiguration(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
 }
