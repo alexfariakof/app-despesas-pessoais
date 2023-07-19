@@ -123,8 +123,7 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
 }
 static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
 {
-    var key = Convert.FromBase64String(configuration.GetSection("Crypto:Key").Value);
-    new Crypto(key);
+    Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
 }
 static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration configuration)
 {

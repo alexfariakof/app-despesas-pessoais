@@ -1,18 +1,27 @@
-﻿using System.Configuration;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
 {
     public class Crypto
-    {   
+    {
         private static byte[] Key; // Chave fixa de 256 bits
-
-        public Crypto(byte[] _key)
+        private static Crypto? Instance;
+        private Crypto() { }
+        public static Crypto GetInstance 
         {
-            Key = _key;
+            get
+            {
+                return Instance == null ? new() : Instance;
+            }
+        
         }
-        public static string Encrypt(string password)
+
+        public void SetCryptoKey(string _key)
+        {
+            Key = Convert.FromBase64String(_key);
+        }
+        public string Encrypt(string password)
         {
             byte[] iv = GenerateIV();
 
@@ -32,7 +41,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
             }
         }
 
-        public static string Decrypt(string encryptedText)
+        public string Decrypt(string encryptedText)
         {
             byte[] encryptedData = Convert.FromBase64String(encryptedText);
             byte[] iv = new byte[16];
