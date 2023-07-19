@@ -13,7 +13,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class ControleAcessoController : Controller
     {
         private IControleAcessoBusiness _controleAcessoBusiness;
-
+        private string bearerToken;
         public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
         {
             _controleAcessoBusiness = controleAcessoBusiness;
@@ -86,8 +86,16 @@ namespace despesas_backend_api_net_core.Controllers
         [HttpPost("ChangePassword")]
         [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
-        {                        
-            if (login.IdUsuario.Equals(2) || login.Email.Equals("teste@teste.com"))
+        {
+            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+
+            if (_idUsuario != login.IdUsuario)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
+
+            if (login.IdUsuario.Equals(2))
                 return BadRequest(new { message = "A senha deste usuário não pode ser atualizada!" });
 
             if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
