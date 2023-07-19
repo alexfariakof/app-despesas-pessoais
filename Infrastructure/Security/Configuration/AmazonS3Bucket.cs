@@ -27,15 +27,13 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
                 return Instance == null ? new() : Instance;
             }
         }
-        public AmazonS3Bucket(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName)
+        public void SetConfiguration(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName) 
         {
-            Instance  = Instance == null ? new() : Instance;
             AccessKey = accessKey;
             SecretAccessKey = secretAccessKey;
             S3ServiceUrl = s3ServiceUrl;
             BucketName = bucketName;
         }
-
         public async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
         {
             try
