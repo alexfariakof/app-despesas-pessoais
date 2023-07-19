@@ -1,6 +1,4 @@
-﻿
-
-using despesas_backend_api_net_core.Business.Generic;
+﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
@@ -13,23 +11,25 @@ namespace despesas_backend_api_net_core.Business.Implementations
     {
         private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
         private readonly ImagemPerfilUsuarioMap _converter;
-        public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio)
+        private readonly AmazonS3Bucket _amazonS3Bucket;
+            public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio)
         {
             _repositorio = repositorio;
             _converter = new ImagemPerfilUsuarioMap();
+            _amazonS3Bucket = AmazonS3Bucket.GetInstance; 
         }
         public ImagemPerfilUsuarioVM Create(ImagemPerfilUsuarioVM obj)
         {
             try
             {
-                string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
+                string url = _amazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
                 obj.Url = url;
                 ImagemPerfilUsuario perfilFile = _converter.Parse(obj);
                 return _converter.Parse(_repositorio.Insert(perfilFile));
             }
             catch
             {
-                AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter();
+                _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter();
             }
             return null; 
         }
@@ -51,10 +51,10 @@ namespace despesas_backend_api_net_core.Business.Implementations
             var isPerfilValid = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
             if (isPerfilValid != null)
             {
-                var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
+                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
                 if (result)
                 {
-                    string url = AmazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
+                    string url = _amazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
                     isPerfilValid.Url = url;
                     ImagemPerfilUsuario perfilFile = _converter.Parse(isPerfilValid);
                     return _converter.Parse(_repositorio.Update(perfilFile));
@@ -67,7 +67,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             var obj = FindAll(idUsaurio).Find(prop  => prop.IdUsuario.Equals(idUsaurio));
             if (obj != null)
             {
-                var result = AmazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
+                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
                 if (result)
                 {
                    return _repositorio.Delete(obj.Id);

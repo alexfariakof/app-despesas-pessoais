@@ -7,6 +7,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
 {
     public class AmazonS3Bucket
     {
+        private static AmazonS3Bucket? Instance;
         private static readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
         private static IAmazonS3 client;
@@ -15,15 +16,27 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
         private static string S3ServiceUrl;
         private static string BucketName;
 
+        private AmazonS3Bucket()
+        {
+
+        }
+        public static AmazonS3Bucket GetInstance
+        {
+            get
+            {
+                return Instance == null ? new() : Instance;
+            }
+        }
         public AmazonS3Bucket(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName)
         {
+            Instance  = Instance == null ? new() : Instance;
             AccessKey = accessKey;
             SecretAccessKey = secretAccessKey;
             S3ServiceUrl = s3ServiceUrl;
             BucketName = bucketName;
         }
 
-        public static async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
+        public async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
         {
             try
             {
@@ -55,7 +68,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
                 throw ex;
             }
         }
-        public static async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuarioVM perfilFile)
+        public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuarioVM perfilFile)
         {
             try
             {
