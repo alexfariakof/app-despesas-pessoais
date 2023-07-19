@@ -29,7 +29,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     Login = item.Email,
                     UsuarioId = item.Id,
                     Usuario = item,
-                    Senha = Crypto.Encrypt(Guid.NewGuid().ToString().Substring(0, 8))
+                    Senha = Crypto.GetInstance.Encrypt(Guid.NewGuid().ToString().Substring(0, 8))
                 };
                 dsControleACesso.Add(controleAcesso);
 
