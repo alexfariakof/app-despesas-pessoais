@@ -10,12 +10,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
     public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
     {
         private readonly RegisterContext _context;
-
+        private readonly Crypto _crypto = Crypto.GetInstance;
         public ControleAcessoRepositorioImpl(RegisterContext context)
         {
             _context = context;
         }
-
         public bool Create(ControleAcesso controleAcesso)
         {
             if (FindByEmail(controleAcesso) != null)
@@ -30,7 +29,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 try
                 {
-                    controleAcesso.Senha = Crypto.Encrypt(controleAcesso.Senha);
+                    controleAcesso.Senha = _crypto.Encrypt(controleAcesso.Senha);
                     dsUsuario.Add(controleAcesso.Usuario);
                     dsControleACesso.Add(controleAcesso);
 
@@ -116,17 +115,14 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             }
             return false;
         }
-
         public ControleAcesso FindByEmail(ControleAcesso controleAcesso)
         {
             return _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
         }
-
         public Usuario GetUsuarioByEmail(string email)
         {
             return _context.Usuario.SingleOrDefault(prop => prop.Email.Equals(email));
         }
-
         public bool RecoveryPassword(string email)
         {
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
@@ -143,7 +139,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 try
                 {
                     var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
-                    controleAcesso.Senha = Crypto.Encrypt(senhaNova);
+                    controleAcesso.Senha = _crypto.Encrypt(senhaNova);
                     if (EnviarEmail(controleAcesso, "<b>Nova senha:</b>" + senhaNova))
                     {
                         _context.Entry(result).CurrentValues.SetValues(controleAcesso);
@@ -159,7 +155,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 }
             }            
         }
-
         public bool ChangePassword(int idUsuario, string password)
         {
             Usuario usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
@@ -169,7 +164,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
             try
             {
-                controleAcesso.Senha = Crypto.Encrypt(password);
+                controleAcesso.Senha = _crypto.Encrypt(password);
                 _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                 usuario.StatusUsuario = StatusUsuario.Ativo;
                 _context.Entry(usuario).CurrentValues.SetValues(usuario);
@@ -212,12 +207,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 }
             }
         }
-
         public bool isValidPasssword(ControleAcesso controleAcesso)
         {
             ControleAcesso _controleAcesso = FindByEmail(controleAcesso);
             
-            if (Crypto.Decrypt(_controleAcesso.Senha).Equals(controleAcesso.Senha))
+            if (_crypto.Decrypt(_controleAcesso.Senha).Equals(controleAcesso.Senha))
             {
                 return true;
             }

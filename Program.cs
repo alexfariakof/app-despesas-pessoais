@@ -1,18 +1,12 @@
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-// Add services to the container.
 
 // Add Cors Configuration 
 builder.Services.AddCors(c =>
@@ -35,11 +29,9 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Despesas Pessoais V3",
-            Version = "3.0.2"
+            Version = "3.0.5"
         });
 });
-
-
 
 builder.Services.AddDbContext<RegisterContext>(options =>
 options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
@@ -51,7 +43,6 @@ builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -123,8 +114,7 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
 }
 static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
 {
-    var key = Convert.FromBase64String(configuration.GetSection("Crypto:Key").Value);
-    new Crypto(key);
+    Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
 }
 static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration configuration)
 {
@@ -132,5 +122,5 @@ static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration 
     var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
     var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
     var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
-    new AmazonS3Bucket(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
+    AmazonS3Bucket.GetInstance.SetConfiguration(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
 }
