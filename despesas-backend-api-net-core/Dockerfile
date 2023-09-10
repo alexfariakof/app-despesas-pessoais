@@ -8,16 +8,15 @@ ENV ASPNETCORE_URLS=http://+:42535
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["despesas-backend-api-net-core.csproj", "."]
-RUN dotnet restore "./despesas-backend-api-net-core.csproj"
+COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "."]
+RUN dotnet restore "despesas-backend-api-net-core.csproj"
 COPY . .
 
-
 WORKDIR "/src/."
-RUN dotnet build "despesas-backend-api-net-core.csproj" -c Release -o /app/build
+RUN dotnet build "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "despesas-backend-api-net-core.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
