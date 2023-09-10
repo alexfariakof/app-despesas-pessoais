@@ -5,6 +5,11 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "despesas-backend-api-net-core", "despesas-backend-api-net-core.csproj", "{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XUnit.Teste", "XUnit.Teste\XUnit.Teste.csproj", "{7BE80FB8-A427-4358-B252-9F17F1D70115}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6} = {B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +20,10 @@ Global
 		{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B72C023D-4AF5-43DB-AC24-CECAE2B7B8C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE80FB8-A427-4358-B252-9F17F1D70115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE80FB8-A427-4358-B252-9F17F1D70115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE80FB8-A427-4358-B252-9F17F1D70115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE80FB8-A427-4358-B252-9F17F1D70115}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
