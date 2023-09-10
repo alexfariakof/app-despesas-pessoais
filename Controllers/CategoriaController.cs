@@ -17,6 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
         public CategoriaController(IBusiness<CategoriaVM> categoriaBusiness)
         {
             _categoriaBusiness = categoriaBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet]

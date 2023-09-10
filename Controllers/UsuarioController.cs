@@ -21,6 +21,7 @@ namespace despesas_backend_api_net_core.Controllers
         public UsuarioController(IUsuarioBusiness usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet("{IdUsuario}")]

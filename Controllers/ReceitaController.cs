@@ -17,6 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
         public ReceitaController(IBusiness<ReceitaVM> receitaBusiness)
         {
             _receitaBusiness = receitaBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet]

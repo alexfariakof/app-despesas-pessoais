@@ -17,6 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
         public ImagemPerfilUsuarioController(IBusiness<ImagemPerfilUsuarioVM> perfilFileBusiness)
         {
             _perfilFileBusiness = perfilFileBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet]

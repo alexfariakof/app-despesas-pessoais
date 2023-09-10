@@ -18,6 +18,7 @@ namespace despesas_backend_api_net_core.Controllers
         public DespesaController(IBusiness<DespesaVM> despesaBusiness)
         {
             _despesaBusiness = despesaBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet]

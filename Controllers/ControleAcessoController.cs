@@ -17,6 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
         public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
         {
             _controleAcessoBusiness = controleAcessoBusiness;
+            bearerToken = String.Empty;
         }
         
         [AllowAnonymous]

@@ -15,13 +15,14 @@ namespace despesas_backend_api_net_core.Controllers
     public class LancamentoController : Controller
     {
         private ILancamentoBusiness _lancamentoBusiness;
-        private object labels;
-        private object datasets;
+        private object labels = null;
+        private object datasets = null;
         private string bearerToken;
 
         public LancamentoController(ILancamentoBusiness lancamentoBusiness)
         {
             _lancamentoBusiness = lancamentoBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet("{anoMes}/{idUsuario}")]
