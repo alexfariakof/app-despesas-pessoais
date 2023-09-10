@@ -1,0 +1,53 @@
+name: Publish Project Production In AWS
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        env:
+           DOCKER_CLI_AGGREGATE: 1  
+        run: |          
+          docker-compose build          
+      
+      - name: Push Docker image to Docker Hub
+        env:
+           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+           DOCKER_CLI_AGGREGATE: 1  
+        run: |
+            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
+            docker push ${{ secrets.DOCKER_IMAGE }}
+
+      - name: Execute SSH Commands into EC2 
+        env:
+           EC2_HOST: ${{ secrets.EC2_HOST }}
+           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+           AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 22
+          script: |            
+            IMAGEM="${{ secrets.DOCKER_IMAGE }}"
+            container_id=$(docker ps -a -q --filter "ancestor=$IMAGEM")
+            image_id=$(docker images --format "{{.ID}}" "$IMAGEM")
+            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
+            docker rm --force $container_id
+            docker rmi --force $image_id
+            docker pull $IMAGEM            
+            docker run -d -p 42535:42535 $IMAGEM
+            container_id=$(docker ps -q --filter "ancestor=$IMAGEM")
+            docker cp ${{ secrets.PATH_APPSETTINGS_PROD }} $container_id:/app
+            docker restart $container_id
