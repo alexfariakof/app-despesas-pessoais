@@ -39,7 +39,7 @@
             var result = repository.Insert(item);
 
             // Assert
-            Assert.Equal(1, dataSet.Count);
+            Assert.Equal(1, dataSet?.Count);
             Assert.Contains(item, dataSet);
             contextMock.Verify(c => c.SaveChanges(), Times.Once);
             Assert.Equal(item, result);

@@ -25,7 +25,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             return Ok(_despesaBusiness.FindAll(_idUsuario));
         }
@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get([FromRoute]int id)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             try
             {
@@ -57,7 +57,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromRoute] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -76,7 +76,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != despesa.IdUsuario)
             {
@@ -100,7 +100,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != despesa.IdUsuario)
             {
@@ -122,7 +122,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete([FromBody] DespesaVM despesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != despesa.IdUsuario)
             {

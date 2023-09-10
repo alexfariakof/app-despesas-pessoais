@@ -30,23 +30,23 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
 
                 // Assert
                 var entity = builder.Metadata;
-                var idProperty = entity.FindPrimaryKey().Properties.First();
-                var descricaoProperty = entity.FindProperty(nameof(Categoria.Descricao));
-                var usuarioIdProperty = entity.FindProperty(nameof(Categoria.UsuarioId));
-                var tipoCategoriaProperty = entity.FindProperty(nameof(Categoria.TipoCategoria));
-                var usuarioProperty = entity.FindNavigation(nameof(Categoria.Usuario));
+                var idProperty = entity?.FindPrimaryKey()?.Properties.First();
+                var descricaoProperty = entity?.FindProperty(nameof(Categoria.Descricao));
+                var usuarioIdProperty = entity?.FindProperty(nameof(Categoria.UsuarioId));
+                var tipoCategoriaProperty = entity?.FindProperty(nameof(Categoria.TipoCategoria));
+                var usuarioProperty = entity?.FindNavigation(nameof(Categoria.Usuario));
 
-                Assert.Equal(nameof(Categoria), entity.Name);
-                Assert.False(entity.IsOwned());
-                Assert.NotNull(entity.FindPrimaryKey());
-                Assert.Equal(nameof(Categoria.Id), idProperty.Name);
-                Assert.Equal(nameof(Categoria.Descricao), descricaoProperty.Name);
-                Assert.Equal(nameof(Categoria.UsuarioId), usuarioIdProperty.Name);
-                Assert.Equal(nameof(Categoria.TipoCategoria), tipoCategoriaProperty.Name);
-                Assert.False(descricaoProperty.IsNullable);
-                Assert.False(usuarioIdProperty.IsNullable);
-                Assert.False(tipoCategoriaProperty.IsNullable);
-                Assert.Equal(100, descricaoProperty.GetMaxLength());
+                Assert.Equal(nameof(Categoria), entity?.Name);
+                Assert.False(entity?.IsOwned());
+                Assert.NotNull(entity?.FindPrimaryKey());
+                Assert.Equal(nameof(Categoria.Id), idProperty?.Name);
+                Assert.Equal(nameof(Categoria.Descricao), descricaoProperty?.Name);
+                Assert.Equal(nameof(Categoria.UsuarioId), usuarioIdProperty?.Name);
+                Assert.Equal(nameof(Categoria.TipoCategoria), tipoCategoriaProperty?.Name);
+                Assert.False(descricaoProperty?.IsNullable);
+                Assert.False(usuarioIdProperty?.IsNullable);
+                Assert.False(tipoCategoriaProperty?.IsNullable);
+                Assert.Equal(100, descricaoProperty?.GetMaxLength());
 
 
                 Assert.NotNull(usuarioProperty);

@@ -29,7 +29,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -58,7 +58,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
 
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -83,7 +83,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetDadosGraficoPorAno([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {

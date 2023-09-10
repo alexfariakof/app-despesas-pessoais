@@ -59,7 +59,7 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"    
-        continue-on-error: true
+        continue-on-error: false
         
   deploy:
     needs: job_test_code_in_sonar
