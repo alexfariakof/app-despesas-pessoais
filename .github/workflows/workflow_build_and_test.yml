@@ -5,6 +5,7 @@ on:
       - dev
       - feature/*
       - FE*
+      - BG-FIX*
 jobs:
   job_build_and_test_unit:   
     runs-on: ubuntu-latest
