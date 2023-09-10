@@ -1,0 +1,97 @@
+name: Build, Test and Publish Project Production In AWS
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  job_test_code_in_sonar:
+    name: Build and analyze in SONAR Cloud
+    runs-on: windows-latest
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu' # Alternative distribution options are available.
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache SonarCloud scanner
+        id: cache-sonar-scanner
+        uses: actions/cache@v3
+        with:
+          path: .\.sonar\scanner
+          key: ${{ runner.os }}-sonar-scanner
+          restore-keys: ${{ runner.os }}-sonar-scanner
+      - name: Install SonarCloud scanner
+        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path .\.sonar\scanner -ItemType Directory
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: powershell
+        run: |
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          dotnet test --collect:"XPlat Code Coverage;Format=opencover"    
+          .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        continue-on-error: false
+        
+  deploy:
+    needs: job_test_code_in_sonar
+    name: Docker Build and Publish in Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        env:
+           DOCKER_CLI_AGGREGATE: 1  
+        run: |          
+          docker-compose build          
+        continue-on-error: false
+
+      - name: Push Docker image to Docker Hub
+        env:
+           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+           DOCKER_CLI_AGGREGATE: 1  
+        run: |
+            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
+            docker push ${{ secrets.DOCKER_IMAGE }}
+        continue-on-error: false
+        
+      - name: Execute SSH Commands into EC2 
+        env:
+           EC2_HOST: ${{ secrets.EC2_HOST }}
+           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+           AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 22
+          script: |            
+            IMAGEM="${{ secrets.DOCKER_IMAGE }}"
+            container_id=$(docker ps -a -q --filter "ancestor=$IMAGEM")
+            image_id=$(docker images --format "{{.ID}}" "$IMAGEM")
+            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
+            docker rm --force $container_id
+            docker rmi --force $image_id
+            docker pull $IMAGEM            
+            docker run -d -p 42535:42535 $IMAGEM
+            container_id=$(docker ps -q --filter "ancestor=$IMAGEM")
+            docker cp ${{ secrets.PATH_APPSETTINGS_PROD }} $container_id:/app
+            docker restart $container_id

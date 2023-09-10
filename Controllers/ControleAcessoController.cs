@@ -17,6 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
         public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
         {
             _controleAcessoBusiness = controleAcessoBusiness;
+            bearerToken = String.Empty;
         }
         
         [AllowAnonymous]
@@ -88,7 +89,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != login.IdUsuario)
             {

@@ -21,6 +21,7 @@ namespace despesas_backend_api_net_core.Controllers
         public UsuarioController(IUsuarioBusiness usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet("{IdUsuario}")]
@@ -28,7 +29,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get([FromRoute]int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
             if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -46,7 +47,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -65,7 +66,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != usuarioVM.Id)
             {
@@ -89,7 +90,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != usuarioVM.Id)
             {
@@ -117,7 +118,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete([FromBody] UsuarioVM usuarioVM)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != usuarioVM.Id)
             {

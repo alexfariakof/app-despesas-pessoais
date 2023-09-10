@@ -17,6 +17,7 @@ namespace despesas_backend_api_net_core.Controllers
         public ImagemPerfilUsuarioController(IBusiness<ImagemPerfilUsuarioVM> perfilFileBusiness)
         {
             _perfilFileBusiness = perfilFileBusiness;
+            bearerToken = String.Empty;
         }
 
         [HttpGet]
@@ -24,7 +25,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             return Ok(_perfilFileBusiness.FindAll(_idUsuario));
         }
@@ -34,7 +35,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -55,7 +56,7 @@ namespace despesas_backend_api_net_core.Controllers
         public async Task<IActionResult> Post(int idUsuario, IFormFile file)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -110,7 +111,7 @@ namespace despesas_backend_api_net_core.Controllers
         public async Task<IActionResult> Put(int idUsuario, IFormFile file)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -166,7 +167,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete(int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken().Value;
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
