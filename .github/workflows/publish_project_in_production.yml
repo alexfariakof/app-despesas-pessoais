@@ -3,8 +3,7 @@ on:
   push:
     branches: [ "main" ]
 jobs:
-  job_test_code_in_sonar:
- build:
+    job_test_code_in_sonar:
     name: Build and analyze in SONAR Cloud
     runs-on: windows-latest
     steps:
@@ -41,11 +40,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-<<<<<<< Updated upstream
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
-=======
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
->>>>>>> Stashed changes
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"    
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
         continue-on-error: false
