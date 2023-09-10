@@ -3,24 +3,7 @@ on:
   push:
     branches: [ "main" ]
 jobs:
-  job_build_and_test_unit:   
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Restore dependencies
-      run: dotnet restore despesas-backend-api-net-core.csproj
-    - name: Build
-      run: dotnet build despesas-backend-api-net-core.csproj --no-restore
-    #- name: Test
-      #run: dotnet test --no-build --verbosity normal
-    continue-on-error: false
-    
   job_test_code_in_sonar:
-    needs: job_build_and_test_unit
     name: Build and analyze code on SONAR Cloud
     runs-on: windows-latest
     steps:
@@ -73,7 +56,8 @@ jobs:
            DOCKER_CLI_AGGREGATE: 1  
         run: |          
           docker-compose build          
-      
+        continue-on-error: false
+
       - name: Push Docker image to Docker Hub
         env:
            DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
@@ -82,7 +66,8 @@ jobs:
         run: |
             docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
             docker push ${{ secrets.DOCKER_IMAGE }}
-
+        continue-on-error: false
+        
       - name: Execute SSH Commands into EC2 
         env:
            EC2_HOST: ${{ secrets.EC2_HOST }}
