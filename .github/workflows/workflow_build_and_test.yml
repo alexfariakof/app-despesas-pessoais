@@ -21,7 +21,7 @@ jobs:
     - name: Build
       run: dotnet build despesas-backend-api-net-core.csproj --no-restore
     - name: Test
-      run: dotnet test XUnit.Teste/XUnit.Teste.csproj --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal
     continue-on-error: false
     
   job_test_code_in_sonar:
