@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "main" ]
 jobs:
-    job_test_code_in_sonar:
+  job_test_code_in_sonar:
     name: Build and analyze in SONAR Cloud
     runs-on: windows-latest
     steps:
