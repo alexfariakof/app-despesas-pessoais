@@ -3,6 +3,7 @@ on:
   push:
     branches: 
       - dev
+      - pre-release
       - feature/*
       - FE*
       - BG-FIX*
