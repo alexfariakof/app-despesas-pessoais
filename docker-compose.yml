@@ -5,7 +5,7 @@ services:
     image: alexfariakof/api-despesas-backend-netcore-img
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: despesas-backend-api-net-core/Dockerfile
     ports:
       - 42535:42535
       
