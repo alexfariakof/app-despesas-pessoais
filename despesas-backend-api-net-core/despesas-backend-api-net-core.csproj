@@ -8,25 +8,16 @@
     <UserSecretsId>ddd43c69-e4cc-4604-86df-99f1037aee37</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
-    <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove=".documents\**" />
     <Compile Remove="Test\**" />
-    <Content Remove="Test\**" />
+    <Content Remove=".documents\**" />
+    <EmbeddedResource Remove=".documents\**" />
     <EmbeddedResource Remove="Test\**" />
+    <None Remove=".documents\**" />
     <None Remove="Test\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include=".documents\configureMigrations.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include=".documents\create-procedure-get-saldo-by-idUsuario.sql" />
-    <None Include=".documents\create-procedure-lancamento-por-mes-ano.sql" />
-    <None Include=".documents\create-procedure-somatorio-por-ano-receitas.sql" />
-    <None Include=".documents\create-procedure-somatorio-por-ano-despesas.sql" />
   </ItemGroup>
 
   <ItemGroup>

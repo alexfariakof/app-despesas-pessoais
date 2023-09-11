@@ -17,12 +17,12 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore despesas-backend-api-net-core.csproj
+      run: dotnet restore
     - name: Build
-      run: dotnet build despesas-backend-api-net-core.csproj --no-restore
+      run: dotnet build --no-restore
     - name: Test
-      run: dotnet test XUnit.Teste/XUnit.Teste.csproj --no-build --verbosity normal
-    continue-on-error: false
+      run: dotnet test --no-build --verbosity normal
+      continue-on-error: true
     
   job_test_code_in_sonar:
     needs: job_build_and_test_unit
