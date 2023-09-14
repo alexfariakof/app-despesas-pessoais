@@ -10,7 +10,15 @@ on:
       - FE*
       - BG-FIX*
       - bugfix/*
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - dev
+      - release/*
+      - pre-release
 
+permissions:
+    contents: read 
 jobs:
   build_and_test_unit:   
     runs-on: ubuntu-latest
