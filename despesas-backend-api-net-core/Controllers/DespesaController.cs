@@ -106,9 +106,6 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            if (despesa == null)
-                return BadRequest();
-
             var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
                 return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });
