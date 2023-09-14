@@ -9,7 +9,7 @@ on:
       - feature/*
       - FE*
       - BG-FIX*
-      - bg-fix*
+      - bgfix/*
 
 jobs:
   build_and_test_unit:   
