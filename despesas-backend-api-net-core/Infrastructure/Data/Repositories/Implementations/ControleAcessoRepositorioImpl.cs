@@ -156,7 +156,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         {
             Usuario? usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
             
-            if (usuario is not null) 
+            if (usuario is null) 
                 return false;
 
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
