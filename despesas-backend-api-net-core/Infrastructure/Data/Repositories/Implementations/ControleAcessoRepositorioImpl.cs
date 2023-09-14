@@ -128,9 +128,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
             controleAcesso.Usuario = GetUsuarioByEmail(email);
 
-            if (controleAcesso == null)
-                return false;
-
             using (_context)
             {
                 DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
@@ -157,7 +154,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         }
         public bool ChangePassword(int idUsuario, string password)
         {
-            Usuario usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
+            Usuario? usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
+            
+            if (usuario is not null) 
+                return false;
+
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
 
