@@ -10,7 +10,7 @@ on:
       - feature/*
       - FE*
       - BG-FIX*
-      - bgfix*
+      - bugfix/*
 
 permissions:
     contents: read    
