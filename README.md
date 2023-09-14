@@ -67,4 +67,4 @@ Workspace para teste da API Público  <a href="https://www.postman.com/bold-ecli
  </ul>
 </h5>
 
-https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=vulnerabilities
+![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=vulnerabilities)
