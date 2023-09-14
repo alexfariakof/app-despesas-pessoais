@@ -1,5 +1,4 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
@@ -25,9 +24,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
-            return Ok(_categoriaBusiness.FindAll(_idUsuario.Value));
+            return Ok(_categoriaBusiness.FindAll(_idUsuario));
         }
 
         [HttpGet("GetById/{idCategoria}")]
@@ -35,9 +34,9 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetById([FromRoute] int idCategoria)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
-            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario.Value);
+            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario);
 
             if (_categoria == null)
                 return NotFound();
@@ -50,7 +49,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -65,13 +64,12 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_categoria);
         }
 
-
         [HttpGet("GetByTipoCategoria/{idUsuario}/{tipoCategoria}")]
         [Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] int idUsuario, [FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != idUsuario)
             {
@@ -98,7 +96,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
 
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != categoria.IdUsuario)
             {
@@ -123,7 +121,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Put([FromBody] CategoriaVM categoria)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != categoria.IdUsuario)
             {
@@ -146,7 +144,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Delete([FromBody] CategoriaVM categoria)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken?.getIdUsuarioFromToken();
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
             if (_idUsuario != categoria.IdUsuario)
             {
