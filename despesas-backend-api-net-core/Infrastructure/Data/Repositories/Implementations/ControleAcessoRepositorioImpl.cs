@@ -128,9 +128,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
             controleAcesso.Usuario = GetUsuarioByEmail(email);
 
-            if (controleAcesso == null)
-                return false;
-
             using (_context)
             {
                 DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
