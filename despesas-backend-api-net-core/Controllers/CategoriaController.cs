@@ -12,7 +12,6 @@ namespace despesas_backend_api_net_core.Controllers
     {
         private IBusiness<CategoriaVM> _categoriaBusiness;
         private string bearerToken;
-
         public CategoriaController(IBusiness<CategoriaVM> categoriaBusiness)
         {
             _categoriaBusiness = categoriaBusiness;
