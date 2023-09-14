@@ -28,7 +28,7 @@ Workspace para teste da API Público  <a href="https://www.postman.com/bold-ecli
 
 # Descrição 
 <h5> 
-   <p>API Rest HATEOAS  dockerizada Despesas Pessoas usando .Net core 6 com banco de dados mysql server usando Entity Framework e Migrations. O objetivo é atualizar da versão .net core 2.2 para .net 6 adicioando novas funcinalidades como TTD e CI/CD na  implantação do projeto
+   <p>API Rest HATEOAS  dockerizada Despesas Pessoas usando .Net core 6 com banco de dados mysql server, Entity Framework e Migrations. O objetivo é atualizar da versão .net core 2.2 para .net 6 adicioando novas funcinalidades como TTD e CI/CD na  implantação do projeto
    </p>
 </h5>
 

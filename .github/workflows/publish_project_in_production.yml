@@ -3,8 +3,31 @@ on:
   push:
     branches: [ "main" ]
 jobs:
-  job_test_code_in_sonar:
-    name: Build and analyze in SONAR Cloud
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+      continue-on-error: false
+
+    - name: Build
+      run: dotnet build  --no-restore
+      continue-on-error: false
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      continue-on-error: false
+
+  build_analyze_code_in_sonar:
+    needs: build_and_test
+    name: Build and Analyze in SONAR Cloud
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
@@ -40,18 +63,19 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
           dotnet test --collect:"XPlat Code Coverage;Format=opencover"    
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
         continue-on-error: false
         
   deploy:
-    needs: job_test_code_in_sonar
+    needs: build_analyze_code_in_sonar
     name: Docker Build and Publish in Production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      
       - name: Build Docker image
         env:
            DOCKER_CLI_AGGREGATE: 1  
