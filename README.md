@@ -20,11 +20,9 @@ Acesso a aplicação atualizada em produção  <a href="http://alexfariakof.com:
 Workspace para teste da API Público  <a href="https://www.postman.com/bold-eclipse-872793/workspace/api-despesas-pessoais" target="_blank" >Postman</a>
 </h2>
 
-
-
 # Descrição 
 <h5> 
-   <p>API Rest HATEOAS  dockerizada Despesas Pessoas usando .Net core 6 com banco de dados mysql server, Entity Framework e Migrations. O objetivo é atualizar da versão .net core 2.2 para .net 6 adicioando novas funcinalidades como TTD e CI/CD na  implantação do projeto
+   <p>API Rest HATEOAS CI/CD Dockerizada usando .Net core 7.0 com banco de dados mysql server,  Entity Framework e Migrations. Novas funcinalidades como TTD e CI/CD estam em processo de   implantação juntamento com verficação Coverage através do Cloud Sonar.
    </p>
 </h5>
 
@@ -48,18 +46,14 @@ Workspace para teste da API Público  <a href="https://www.postman.com/bold-ecli
       </li>
       <li>
          <h6>Arquivos de Configuração </h6>
-            <p> Arquivos contendo chaves de configuração com chave de cripitografia,  acesso ao banco de dados e amazon S3 estão protegidos pois não se encontram expostos no repositório GitHub assim como a imagem dockerizada está configurada como private evitando assim acesso aos arquivos de configuração. 
+            <p> Arquivos contendo chaves de configuração com chave de cripitografia,  acesso ao banco de dados e amazon S3 estão protegidos pois não se encontram expostos no repositório GitHub . 
          </p>
       </li>
       <li>
          <h6>Controle de Usuários </h6>
             <p> Apenas usuários com perfil de administrador podem listar os usuários e efetuar a deleção de usuários. Por questões de segurança das informações dos usuários cadastrados todos os acessos ao Endpoint usuários estão com Auntenticação JWT Bearer Ativadas.
          </p>
-      </li>       
-      <li>
-         <h6>Acesso ao Banco de Dados</h6>
-            <p> Configurações de acesso ao banco de dados não se encontram mais no arquivo appsettings.json estam separados em um arquivo chamado MYSQL_ConnectionString.txt. Foi necessário pois o coódigo fonte esta estposto aqui no github e  aplicação se encontra dockerizada em uma imagem privada do dokcer hub e em produção no azure. Com isso é evitado acesso indevido a string de conexão de acesso ao banco de dados.    </p>
-      </li>             
+      </li>                 
  </ul>
 </h5>
 
