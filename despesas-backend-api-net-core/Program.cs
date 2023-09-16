@@ -25,11 +25,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v3",
+    c.SwaggerDoc("v4",
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Despesas Pessoais V4",
-            Version = "4.0.0"
+            Version = "4.0.7"
         });
 });
 
@@ -51,7 +51,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
-    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v3/swagger.json", "API Despesas Pessoais V4");
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v4/swagger.json", "API Despesas Pessoais V4");
 });
 //}
 
