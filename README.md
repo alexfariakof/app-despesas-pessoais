@@ -10,7 +10,7 @@ Acesso documentação da API no Swagger <a target="_blank" href="http://alexfari
 </h2>
 
 <h2 align="left"> 
-Acesso a aplicação atualizada em produção  <a href="http://alexfariakof.com:3000/" target="_parent" >Despesas Pessoais</a> 
+Acesso a aplicação atualizada em produção  <a href="http://alexfariakof.com" target="_parent" >Despesas Pessoais</a> 
     <h6 align="justify">
     Obs.: Existe um usuário teste já criado para acessar aplicação "login=teste@teste.com/senha=teste"
     </h6>        
