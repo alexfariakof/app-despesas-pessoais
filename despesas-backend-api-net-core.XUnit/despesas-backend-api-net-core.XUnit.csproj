@@ -31,5 +31,4 @@
   <ItemGroup>
     <ProjectReference Include="..\despesas-backend-api-net-core\despesas-backend-api-net-core.csproj" />
   </ItemGroup>
-
 </Project>
