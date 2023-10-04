@@ -8,9 +8,7 @@ on:
       - pre-release
       - hotfix/*
       - feature/*
-      - FE*
-      - BG-FIX*
-      - bg-fix*
+      - bugfix/*
 
 permissions:
     contents: read    

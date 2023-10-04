@@ -12,13 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove=".documents\**" />
     <Compile Remove="Test\**" />
-    <Content Remove=".documents\**" />
-    <EmbeddedResource Remove=".documents\**" />
     <EmbeddedResource Remove="Test\**" />
-    <None Remove=".documents\**" />
     <None Remove="Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".documents\configureMigrations.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +41,26 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".documents\dump\DespesasPessoaisDB_Categoria.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_ControleAcesso.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_Despesa.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_ImagemPerfilUsuario.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_Lancamento.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_Receita.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_routines.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB_Usuario.sql" />
+    <None Include=".documents\dump\DespesasPessoaisDB___EFMigrationsHistory.sql" />
+    <None Include=".documents\dump_script.sql" />
+    <None Include=".documents\IISExpress-Local-Configuration\config\applicationhost.config" />
+    <None Include=".documents\IISExpress-Local-Configuration\config\aspnet.config" />
+    <None Include=".documents\IISExpress-Local-Configuration\config\redirection.config" />
   </ItemGroup>
 
 </Project>

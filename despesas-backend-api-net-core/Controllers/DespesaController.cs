@@ -84,8 +84,6 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            if (despesa == null)
-                return BadRequest();
             try
             {
                 return new ObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
@@ -107,9 +105,6 @@ namespace despesas_backend_api_net_core.Controllers
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
-
-            if (despesa == null)
-                return BadRequest();
 
             var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
