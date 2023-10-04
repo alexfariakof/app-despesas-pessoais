@@ -29,8 +29,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\despesas-backend-api-net-core\despesas-backend-api-net-core.csproj" />
-    <ExcludeFromCodeCoverage Include="..\despesas-backend-api-net-core**\Database-local\**" />
-    <ExcludeFromCodeCoverage Include="..\despesas-backend-api-net-core\**\.documents\**" />
+    <ExcludeFromCodeCoverage Include="..\despesas-backend-api-net-core\Database-local\**" />
+    <ExcludeFromCodeCoverage Include="..\despesas-backend-api-net-core\.documents\**" />
   </ItemGroup>
 
 </Project>
