@@ -397,21 +397,11 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-#Exclude Migrations
+#Exclude Migration
 *Migrations/
 Migrations/*
 
 # Arquivo contento chave de criptografia
-CRYPTO_KEY.txt
-AMZOM_KEYS.json
-MYSQL_ConnectionString.txt
 appsettings.json
 appsettings.Development.json
-
-Program.cs
-
-#Exclude Migrations
-*Migrations/
-Migrations/*
-Solution Items/
-Solution Items/*
+.vscode/
