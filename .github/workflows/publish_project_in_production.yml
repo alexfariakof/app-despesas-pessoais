@@ -116,6 +116,6 @@ jobs:
             docker rmi --force $image_id
             docker pull $IMAGEM            
             docker run -d -p 42535:42535 $IMAGEM
-            container_id=$(docker ps -q --filter "ancestor=$IMAGEM")
+            container_id=$(docker ps -a -q --filter "ancestor=$IMAGEM")
             docker cp ${{ secrets.PATH_APPSETTINGS_PROD }} $container_id:/app
             docker restart $container_id
