@@ -8,8 +8,6 @@ on:
       - pre-release
       - hotfix/*
       - feature/*
-      - FE*
-      - BG-FIX*
       - bugfix/*
 
 permissions:

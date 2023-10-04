@@ -2,15 +2,13 @@ name: Build and Test Unit/Test and Analysis Code In Sonar Cloud
 on:
   push:
     branches: 
-      - dev
-      - release/*
+      - main
+      - dev      
       - pre-release
       - hotfix/*
       - feature/*
-      - FE*
-      - BG-FIX*
-      - bugfix/*
-  
+      - bugfix/*  
+
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
