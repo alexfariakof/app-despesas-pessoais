@@ -25,12 +25,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <ExcludeFromCodeCoverage Include="**/Database-local/**" />
-    <ExcludeFromCodeCoverage Include="**/.documents/**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\despesas-backend-api-net-core\despesas-backend-api-net-core.csproj" />
+    <ExcludeFromCodeCoverage Include="**/Database-local/**" />
+    <ExcludeFromCodeCoverage Include="**/.documents/**" />
   </ItemGroup>
 
 </Project>
