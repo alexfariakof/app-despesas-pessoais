@@ -1,7 +1,9 @@
 name: Build, Test and Publish Project Production In AWS
 on:
   push:
-    branches: [ "main" ]
+    branches: 
+      - release/*
+
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
