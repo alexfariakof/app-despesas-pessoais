@@ -15,8 +15,6 @@
     <Compile Remove="Test\**" />
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Test\**" />
-    <ExcludeFromCodeCoverage Include="**/Database-local/**" />
-    <ExcludeFromCodeCoverage Include="**/.documents/**" />
   </ItemGroup>
 
   <ItemGroup>
