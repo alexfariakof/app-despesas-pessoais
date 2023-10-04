@@ -398,7 +398,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 #Exclude Migration
-*Migrations/
 Migrations/*
 
 # Arquivo contento chave de criptografia
