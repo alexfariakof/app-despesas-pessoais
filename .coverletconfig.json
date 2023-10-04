@@ -1,8 +1,5 @@
 {
   "filters": {
-    "include": [
-      "AssemblyName*"
-    ],
     "exclude": [
       "**/Database-local/**",
       "**/.documents/**"
