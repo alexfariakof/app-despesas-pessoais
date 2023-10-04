@@ -1,9 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using Moq;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -73,8 +69,14 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var id = 1;
-            var categoria = new Mock<Categoria>().Object;
-            categoria.Id = 1;
+            var categoria = new Categoria 
+            {                
+                Id = 1, 
+                Descricao = "Teste Find By Id ", 
+                TipoCategoria = TipoCategoria.Despesa, 
+                UsuarioId = 1  
+            };
+
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(categoria);
 
             // Act

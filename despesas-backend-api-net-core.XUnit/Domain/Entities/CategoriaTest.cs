@@ -1,27 +1,28 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-using Xunit;
-
-namespace Test.XUnit.Domain.Entities
+﻿namespace Test.XUnit.Domain.Entities
 {
     public class CategoriaTest
     {
-        [Fact]
-        public void Categoria_ShouldSetPropertiesCorrectly()
+        [Theory]
+        [InlineData(1, "Test Description 1", 1, TipoCategoria.Todas)]
+        [InlineData(2, "Test Description 2", 2, TipoCategoria.Despesa)]
+        [InlineData(3, "Test Description 3", 3, TipoCategoria.Receita)]
+        public void Categoria_ShouldSetPropertiesCorrectly(int idCatgeoria, string descricao, int idUsuario, TipoCategoria tipoCategoria)
         {
             // Arrange
             var categoria = new Categoria();
 
             // Act
-            categoria.Descricao = "Test Description";
-            categoria.UsuarioId = 1;
-            var usuario = new Usuario();
+            categoria.Id = idCatgeoria;
+            categoria.Descricao = descricao;
+            categoria.UsuarioId = idUsuario;
+            var usuario = new Usuario { Id = idUsuario };
             categoria.Usuario = usuario;
-            var tipoCategoria = new TipoCategoria();
             categoria.TipoCategoria = tipoCategoria;
 
             // Assert
-            Assert.Equal("Test Description", categoria.Descricao);
-            Assert.Equal(1, categoria.UsuarioId);
+            Assert.Equal(idCatgeoria, categoria.Id);
+            Assert.Equal(descricao, categoria.Descricao);
+            Assert.Equal(idUsuario, categoria.UsuarioId);
             Assert.Equal(usuario, categoria.Usuario);
             Assert.Equal(tipoCategoria, categoria.TipoCategoria);
         }

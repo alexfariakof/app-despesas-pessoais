@@ -1,9 +1,4 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
-using System;
-using Xunit;
-
-namespace Test.XUnit.Domain.VM
+﻿namespace Test.XUnit.Domain.VM
 {
     public class CategoriaVMTest
     {

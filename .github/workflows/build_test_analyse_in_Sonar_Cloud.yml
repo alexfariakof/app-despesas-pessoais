@@ -11,10 +11,6 @@ on:
 
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:
-      - dev
-      - release/*
-      - pre-release
 
 permissions:
     contents: read 
