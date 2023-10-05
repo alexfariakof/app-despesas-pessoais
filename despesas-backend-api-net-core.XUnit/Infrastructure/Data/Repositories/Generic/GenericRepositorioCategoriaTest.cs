@@ -87,7 +87,7 @@
             // Arrange
             var existingItem = new Categoria
             {
-                Id = 99,
+                Id = 1,
                 Descricao = "Alimentação",
                 UsuarioId = 1,
                 TipoCategoria = TipoCategoria.Despesa

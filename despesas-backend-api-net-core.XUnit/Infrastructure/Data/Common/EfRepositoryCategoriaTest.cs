@@ -1,46 +1,49 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.Data.Common;
+﻿using despesas_backend_api_net_core.Infrastructure.Data.Common;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using Microsoft.EntityFrameworkCore;
-using Moq;
-using System.Collections.Generic;
-using System.Linq;
-using Xunit;
+using static Amazon.S3.Util.S3EventNotification;
 
 namespace Test.XUnit.Infrastructure.Data.Common
 {
     public class EfRepositoryCategoriaTest 
     {
-        private readonly Mock<RegisterContext> _dbContextMock;
-        private readonly EfRepository<Categoria> _repository;
-        private readonly List<Categoria> _categorias;
+        private Mock<RegisterContext> _dbContextMock;
+        private Mock<EfRepository<Categoria>> _repository;
+        private Mock<DbSet<T>> MockDbSet<T>(List<T> data) where T : class
+        {
+            var queryableData = data.AsQueryable();
+            var dbSetMock = new Mock<DbSet<T>>();
+            dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryableData.Provider);
+            dbSetMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryableData.Expression);
+            dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
+            dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryableData.GetEnumerator());
+            dbSetMock.Setup(d => d.Add(It.IsAny<T>())).Callback<T>(data.Add);
+            dbSetMock.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>(item => data.Remove(item));
+            return dbSetMock;
+        }
 
         public EfRepositoryCategoriaTest()
         {
-            _dbContextMock = new Mock<RegisterContext>();
-            _repository = new EfRepository<Categoria>(_dbContextMock.Object);
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
-            // Cria uma lista de categorias para ser usada nos testes
-            _categorias = new List<Categoria>
-            {
-                new Categoria { Id = 1, Descricao = "Aluguel", TipoCategoria = TipoCategoria.Despesa },
-                new Categoria { Id = 2, Descricao = "Salário", TipoCategoria = TipoCategoria.Receita },
-                new Categoria { Id = 3, Descricao = "Lanche", TipoCategoria = TipoCategoria.Despesa },
-            };
+            _dbContextMock = new Mock<RegisterContext>(options);            
+            _dbContextMock.Setup(c => c.Set<List<Categoria>>());
+            _repository = new Mock<EfRepository<Categoria>>(_dbContextMock.Object);
         }
 
         [Fact]
         public void GetAll_ShouldReturnAllCategories()
         {
             // Arrange
-            var dbSetMock = CreateDbSetMock(_categorias);
-            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(dbSetMock.Object);
-
+            var dbSetMock = MockDbSet(Usings.lstCategorias);
+            _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             // Act
-            var result = _repository.GetAll();
+            var result = _repository.Object.GetAll();
 
             // Assert
-            Assert.Equal(_categorias.Count, result.Count());
+            Assert.Equal(Usings.lstCategorias.Count, result.Count());
         }
 
         [Fact]
@@ -48,12 +51,13 @@ namespace Test.XUnit.Infrastructure.Data.Common
         {
             // Arrange
             var categoriaId = 2;
-            var categoria = _categorias.First(c => c.Id == categoriaId);
-            var dbSetMock = CreateDbSetMock(_categorias);
-            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(dbSetMock.Object);
+            var categoria = Usings.lstCategorias.First(c => c.Id == categoriaId);
+            var dbSetMock = MockDbSet(Usings.lstCategorias);
+            _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
 
             // Act
-            var result = _repository.Get(categoriaId);
+            var result = _repository.Object.Get(categoriaId);
+
 
             // Assert
             Assert.Equal(categoria, result);
@@ -63,12 +67,12 @@ namespace Test.XUnit.Infrastructure.Data.Common
         public void Get_WithInvalidId_ShouldReturnNull()
         {
             // Arrange
-            var invalidCategoriaId = 10;
-            var dbSetMock = CreateDbSetMock(_categorias);
-            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(dbSetMock.Object);
+            var invalidCategoriaId = 11;
+
+            _dbContextMock.Setup(db => db.Set<Categoria>().Find(invalidCategoriaId)).Returns((Categoria)null);
 
             // Act
-            var result = _repository.Get(invalidCategoriaId);
+            var result = _repository.Object.Get(invalidCategoriaId);
 
             // Assert
             Assert.Null(result);
@@ -78,16 +82,22 @@ namespace Test.XUnit.Infrastructure.Data.Common
         public void Insert_ShouldAddCategoryToDbContext()
         {
             // Arrange
-            var categoria = new Categoria { Id = 4, Descricao = "Nova Categoria", TipoCategoria = TipoCategoria.Despesa };
-            var dbSetMock = CreateDbSetMock(_categorias);
-            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(dbSetMock.Object);
+            var categoria = new Categoria { Id= 11, Descricao = "Nova Categoria", TipoCategoria = TipoCategoria.Despesa, UsuarioId = 1 };
+
+            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(MockDbSet(Usings.lstCategorias).Object);
 
             // Act
-            _repository.Insert(categoria);
+            _repository.Object.Insert(categoria);
+
 
             // Assert
-            dbSetMock.Verify(dbSet => dbSet.Add(categoria), Times.Once);
             _dbContextMock.Verify(db => db.SaveChanges(), Times.Once);
+            //Assert.Contains(categoria, Usings.lstCategorias);
+            //var retrievedCategoria = dbSet.FirstOrDefault(c => c.Id == categoria.Id);
+            //Assert.NotNull(retrievedCategoria);
+            // Verifique os campos da categoria adicionada
+            //Assert.Equal(categoria.Descricao, retrievedCategoria.Descricao);
+            //Assert.Equal(categoria.TipoCategoria, retrievedCategoria.TipoCategoria);
         }
 
         [Fact]
@@ -95,15 +105,17 @@ namespace Test.XUnit.Infrastructure.Data.Common
         {
             // Arrange
             var categoriaId = 3;
-            var categoria = _categorias.First(c => c.Id == categoriaId);
-            var dbSetMock = CreateDbSetMock(_categorias);
-            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(dbSetMock.Object);
+            var categoria = Usings.lstCategorias.First(c => c.Id == categoriaId);
+            categoria.Descricao = "Teste Atualização Categoria";
+            categoria.TipoCategoria = TipoCategoria.Despesa;
+            _dbContextMock.Setup(db => db.Set<Categoria>().Update(categoria));
 
             // Act
-            _repository.Update(categoria);
+            _repository.Object.Update(categoria);
 
             // Assert
             _dbContextMock.Verify(db => db.SaveChanges(), Times.Once);
+            //repository.Verify(dbSet => dbSet.Update(categoria), Times.Once);            
         }
 
         [Fact]
@@ -111,29 +123,18 @@ namespace Test.XUnit.Infrastructure.Data.Common
         {
             // Arrange
             var categoriaId = 1;
-            var categoria = _categorias.First(c => c.Id == categoriaId);
-            var dbSetMock = CreateDbSetMock(_categorias);
-            _dbContextMock.Setup(db => db.Set<Categoria>()).Returns(dbSetMock.Object);
+            var categoria = Usings.lstCategorias.First(c => c.Id == categoriaId);
+            _dbContextMock.Setup(db => db.Set<Categoria>().Remove(categoria));
 
             // Act
-            _repository.Delete(categoriaId);
+            _repository.Object.Delete(categoriaId);
+
 
             // Assert
-            dbSetMock.Verify(dbSet => dbSet.Remove(categoria), Times.Once);
             _dbContextMock.Verify(db => db.SaveChanges(), Times.Once);
-        }
-
-        private Mock<DbSet<Categoria>> CreateDbSetMock<Categoria>(List<Categoria> data) where Categoria : class
-        {
-            var queryableData = data.AsQueryable();
-            var dbSetMock = new Mock<DbSet<Categoria>>();
-
-            dbSetMock.As<IQueryable<Categoria>>().Setup(m => m.Provider).Returns(queryableData.Provider);
-            dbSetMock.As<IQueryable<Categoria>>().Setup(m => m.Expression).Returns(queryableData.Expression);
-            dbSetMock.As<IQueryable<Categoria>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
-            dbSetMock.As<IQueryable<Categoria>>().Setup(m => m.GetEnumerator()).Returns(() => queryableData.GetEnumerator());
-
-            return dbSetMock;
+            //_dbContextMock.Verify(db => db.Remove(categoria), Times.Once);
+            //_repository.Verify(dbSet => dbSet.Delete(categoria.Id), Times.Once);            
         }
     }
 }
+

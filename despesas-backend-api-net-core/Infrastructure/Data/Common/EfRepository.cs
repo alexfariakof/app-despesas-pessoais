@@ -1,7 +1,5 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Common
 {
