@@ -1,14 +1,17 @@
 name: .NET Build and Test Unit
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
+  push:
+    branches: 
+      - main
       - dev
       - release/*
       - pre-release
       - hotfix/*
       - feature/*
       - bugfix/*
+
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
     contents: read    
@@ -18,7 +21,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
+    - name: Cache .NET packages    
+      uses: actions/cache@v2
+      id: dotnet-cache
+      with:
+        path: ~/.nuget/packages
+        key: dotnet-packages-${{ github.repository }}
+        restore-keys: dotnet-packages-${{ github.repository }}
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
@@ -29,7 +40,7 @@ jobs:
       continue-on-error: false
 
     - name: Build
-      run: dotnet build  --no-restore
+      run: dotnet build --no-restore
       continue-on-error: false
 
     - name: Test
