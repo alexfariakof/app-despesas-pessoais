@@ -1,8 +1,7 @@
 name: .NET Build and Test Unit
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
+  push:
+    branches: 
       - main
       - dev
       - release/*
@@ -10,6 +9,9 @@ on:
       - hotfix/*
       - feature/*
       - bugfix/*
+
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
     contents: read    
@@ -21,7 +23,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Cache .NET packages
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
