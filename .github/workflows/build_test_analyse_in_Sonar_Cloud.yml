@@ -18,15 +18,20 @@ jobs:
   build_and_test_unit:   
     runs-on: ubuntu-latest
     steps:
+    - name: Set Cache Key
+      run: | 
+        echo "::set-env name=CACHE_KEY::dotnet-packages-"        
+
     - uses: actions/checkout@v3
-    
-    - name: Cache .NET packages
+
+    - name: Cache .NET packages    
       uses: actions/cache@v2
       id: dotnet-cache
       with:
         path: ~/.nuget/packages
-        key: ${{ secrets.CACHE_KEY }}
+        key: ${{ env.CACHE_KEY }}
         restore-keys: dotnet-packages-
+
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
