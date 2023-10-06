@@ -25,7 +25,7 @@ jobs:
       id: dotnet-cache
       with:
         path: ~/.nuget/packages
-        key: dotnet-packages-${{ runner.os }}
+        key: ${{ secrets.CACHE_KEY }}
         restore-keys: dotnet-packages-
     
     - name: Setup .NET

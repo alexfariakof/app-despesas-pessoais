@@ -22,12 +22,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    - name: Set Cache Key
+      run: echo "::set-env name=CACHE_KEY::dotnet-packages"
+
     - name: Cache .NET packages    
       uses: actions/cache@v2
       id: dotnet-cache
       with:
         path: ~/.nuget/packages
-        key: dotnet-packages-${{ runner.os }}
+        key: ${{ secrets.CACHE_KEY }}
         restore-keys: dotnet-packages-
 
     - name: Setup .NET
