@@ -21,9 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Set Cache Key
-      run: echo "::set-env name=CACHE_KEY::dotnet-packages"
 
     - name: Cache .NET packages    
       uses: actions/cache@v2
