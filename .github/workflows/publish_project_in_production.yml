@@ -9,13 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Cache .NET packages
+
+    - name: Cache .NET packages    
       uses: actions/cache@v2
+      id: dotnet-cache
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
-        restore-keys: ${{ runner.os }}-dotnet-
+        key: dotnet-packages-${{ github.repository }}
+        restore-keys: dotnet-packages-${{ github.repository }}
+
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
