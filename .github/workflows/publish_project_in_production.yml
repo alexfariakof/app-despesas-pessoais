@@ -16,7 +16,7 @@ jobs:
       with:
         path: ~/.nuget/packages
         key: dotnet-packages-${{ github.repository }}
-        restore-keys: dotnet-packages-
+        restore-keys: dotnet-packages-${{ github.repository }}
 
     
     - name: Setup .NET
