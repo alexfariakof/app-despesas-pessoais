@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Cache .NET packages    
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: dotnet-cache
       with:
         path: ~/.nuget/packages
@@ -58,15 +58,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v2
-        with:
-          path: ~/sonar/cache
-          key: ${{ runner.os }}-sonar-${{ hashFiles('**/sonar-project.properties') }}
-          restore-keys: ${{ runner.os }}-sonar-
-
       - name: Cache SonarCloud scanner
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./.sonar/scanner
           key: ${{ runner.os }}-sonar-scanner-${{ hashFiles('**/sonar-project.properties') }}
