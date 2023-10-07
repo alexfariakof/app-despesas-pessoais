@@ -51,7 +51,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 DespesaId = origin.IdDespesa,
                 ReceitaId = origin.IdReceita,
                 UsuarioId = origin.IdUsuario,
-                Data = origin.Data.ToDateTime(),
+                Data = DateTime.Parse(origin.Data),
                 DataCriacao = DateTime.Now,
                 Valor = origin.Valor.ToDecimal(),
                 Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
