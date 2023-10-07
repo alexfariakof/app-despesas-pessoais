@@ -3,7 +3,7 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:
 
 # Encontra o diretório mais recente na pasta TestResults
 $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-
+$sourceDirs = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core"
 # Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
 if ($latestDir -ne $null) {
     $guid = $latestDir.Name
@@ -13,7 +13,7 @@ if ($latestDir -ne $null) {
     $coverageXmlPath = Join-Path -Path (Join-Path -Path $baseDirectory -ChildPath "TestResults") -ChildPath $guid
 
     # Gera o relatório de cobertura usando o GUID capturado
-    reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;"
+    reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs
 }
 else {
     Write-Host "Nenhum diretório de resultados encontrado."
