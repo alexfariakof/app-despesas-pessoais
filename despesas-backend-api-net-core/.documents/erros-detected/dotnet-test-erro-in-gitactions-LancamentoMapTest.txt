@@ -19,3 +19,11 @@ Actual:   "10/07/2023"
      at Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoVM_To_Lancamento() in /home/runner/work/despesas-backend-api-net-core/despesas-backend-api-net-core/despesas-backend-api-net-core.XUnit/Infrastructure/Data/EntityConfig/LancamentoMapTest.cs:line 35
    at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
    at System.Reflection.MethodInvoker.Invoke(Object obj, IntPtr* args, BindingFlags invokeAttr) 
+
+Solução para correção do erro :
+
+Alteração durante a conversão do Tipo String para Datetime na Classe LancamentoMap aonde foi adicionado configurações de Geolocalização para conversão de Data 
+de acordo com o padrão utilizado que é o formato pt-br "dd/MM/yyyy". Desta forma o erro não ocorre em ambos os ambientes.
+
+using System.Globalization;
+DateTime.Parse(origin.Data, new CultureInfo("pt-BR"));
