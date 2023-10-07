@@ -17,7 +17,6 @@ jobs:
         path: ~/.nuget/packages
         key: dotnet-packages-${{ github.repository }}
         restore-keys: dotnet-packages-${{ github.repository }}
-
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -32,7 +31,7 @@ jobs:
       run: dotnet build --no-restore
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --no-restore
       continue-on-error: false
 
   build_analyze_code_in_sonar:
@@ -58,7 +57,13 @@ jobs:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-          
+
+      - name: Create if not Exist Cache Sonar Packages
+        if: steps.cache-sonar.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path ~\sonar\cache -ItemType Directory    
+            
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v3

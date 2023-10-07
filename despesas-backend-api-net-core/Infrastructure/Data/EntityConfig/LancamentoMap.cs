@@ -56,7 +56,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor.ToDecimal(),
                 Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
                 Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao },
-                Categoria = origin.Categria
+                Categoria = origin.Categoria
             };
         }
 
