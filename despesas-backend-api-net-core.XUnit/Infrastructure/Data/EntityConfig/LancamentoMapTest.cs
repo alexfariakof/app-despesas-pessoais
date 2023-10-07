@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 
 namespace Test.XUnit.Infrastructure.Data.EntityConfig
 {
@@ -16,7 +17,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 IdDespesa = 1,
                 IdReceita  = 0,
                 Valor = "2000",
-                Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                Data = DateTime.Now.ToDateBr(),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>(),                
@@ -31,7 +32,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
             Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
             Assert.Equal(lancamentoVM.Valor, lancamento.Valor.ToString());
-            Assert.Equal(lancamentoVM.Data, lancamento.Data.ToString("dd/MM/yyyy"));
+            Assert.Equal(lancamentoVM.Data, lancamento.Data.ToDateBr());
         }
 
         [Fact]
