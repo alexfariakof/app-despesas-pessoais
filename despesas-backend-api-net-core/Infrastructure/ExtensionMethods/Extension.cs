@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
@@ -19,9 +20,9 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         }
         public static string ToDateBr(this DateTime objToConvert)
         {
-            var obj = DateTime.Parse(objToConvert.ToString()).ToString("dd/MM/yyyy");
-
-            return obj;
+            CultureInfo cultureInfo = new CultureInfo("pt-BR");
+            string formattedDate = objToConvert.ToString("dd/MM/yyyy", cultureInfo);
+            return formattedDate;
         }
         public static DateTime ToDateTime(this string objToConvert)
         {
