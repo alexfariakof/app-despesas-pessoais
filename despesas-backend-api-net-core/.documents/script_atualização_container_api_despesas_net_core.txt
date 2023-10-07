@@ -1,0 +1,22 @@
+# Nome da imagem Docker
+IMAGEM="alexfariakof/api-despesas-backend-netcore-img"
+container_id=$(docker ps -q --filter "ancestor=$IMAGEM")
+image_id=$(docker images --format "{{.ID}}" "$IMAGEM")
+
+
+docker rm --force $container_id
+docker rmi --force $image_id
+
+docker login -u alexfariakof -p dckr_pat_M5df46D9xrIpdQKo6q9hDIgQSGk
+# Fazer pull da nova imagem
+echo "Fazendo pull da nova imagem: $IMAGEM"
+docker pull $IMAGEM
+
+
+# Iniciar um novo contêiner com a nova imagem
+echo "Iniciando um novo contêiner com a nova imagem..."
+docker run -d -p 42535:42535 $IMAGEM
+#Copiando arquivo appsettings.json para dentro do container
+container_id=$(docker ps -a -q --filter "ancestor=$IMAGEM")
+docker cp /home/ec2-user/appsettings.json $container_id:/app
+docker restart $container_id
