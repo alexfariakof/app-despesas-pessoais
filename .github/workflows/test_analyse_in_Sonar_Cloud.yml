@@ -2,9 +2,6 @@ name: Test and Analysis Code In Sonar Cloud
 on:
   push:
     branches: 
-      - main
-      - dev      
-      - pre-release
       - hotfix/*
       - feature/*
       - bugfix/*  
