@@ -73,15 +73,15 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+          dotnet tool install -g dotnet-reportgenerator-globaltool
          
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
-        run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="./despesas-backend-api-net-core.XUnit/**, **/Database-local/**,**/.documents/**, *.sql, **/Program.cs" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
+        run: |          
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="despesas-backend-api-net-core.XUnit/**, **/Database-local/**,**/.documents/**, *.sql, **/Program.cs" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
           .\generate_coverage_report.ps1
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
         continue-on-error: false
