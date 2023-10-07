@@ -32,7 +32,7 @@ jobs:
       run: dotnet build --no-restore
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --no-restore
       continue-on-error: false
 
   build_analyze_code_in_sonar:
