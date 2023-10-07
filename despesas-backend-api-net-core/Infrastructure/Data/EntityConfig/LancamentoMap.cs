@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Google.Protobuf.WellKnownTypes;
+using System.Globalization;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
@@ -51,12 +52,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 DespesaId = origin.IdDespesa,
                 ReceitaId = origin.IdReceita,
                 UsuarioId = origin.IdUsuario,
-                Data = origin.Data.ToDateTime(),
+                Data = DateTime.Parse(origin.Data, new CultureInfo("pt-BR")),
                 DataCriacao = DateTime.Now,
                 Valor = origin.Valor.ToDecimal(),
                 Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
                 Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao },
-                Categoria = origin.Categria
+                Categoria = origin.Categoria
             };
         }
 

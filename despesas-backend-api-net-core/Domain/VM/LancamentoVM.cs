@@ -11,6 +11,6 @@ namespace despesas_backend_api_net_core.Domain.VM
         public String Data { get; set; }
         public String Descricao { get; set; }
         public String TipoCategoria { get; set; }
-        public virtual Categoria? Categria { get; set; }
+        public virtual Categoria? Categoria { get; set; }
     }
 }

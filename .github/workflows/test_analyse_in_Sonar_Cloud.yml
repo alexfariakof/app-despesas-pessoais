@@ -1,10 +1,10 @@
-name: Build and Test Unit/Test and Analysis Code In Sonar Cloud
+name: Test and Analysis Code In Sonar Cloud
 on:
   push:
     branches: 
-      - main
-      - dev      
-      - pre-release
+      - hotfix/*
+      - feature/*
+      - bugfix/*  
 
   pull_request:
     types: [opened, synchronize, reopened]
@@ -12,38 +12,7 @@ on:
 permissions:
     contents: read 
 jobs:
-  build_and_test_unit:   
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Cache .NET packages    
-      uses: actions/cache@v3
-      id: dotnet-cache
-      with:
-        path: ~/.nuget/packages
-        key: dotnet-packages-${{ github.repository }}
-        restore-keys: dotnet-packages-${{ github.repository }}
-
-    
-    - name: Setup .NET    
-      uses: actions/setup-dotnet@v3
-      if: steps.dotnet-cache.outputs.cache-hit != 'true'
-      with:
-        dotnet-version: 7.0.x
-
-    - name: Restore dependencies
-      run: dotnet restore
-  
-    - name: Build
-      run: dotnet build --no-restore
-    
-    - name: Test
-      run: dotnet test --no-build --no-restore
-      continue-on-error: true
-    
   job_test_code_in_sonar:
-    needs: build_and_test_unit
     name: Test and Analysis Code In Sonar Cloud
     runs-on: windows-latest
     steps:
@@ -89,31 +58,31 @@ jobs:
       
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/despesas-backend-api-net-core*XUnit/**,  **/Database-local/**,**/.documents/**, *.sql, **/Program.cs" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
-          
+              
           # Executa o teste e coleta o GUID gerado
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-            
+                
             # Encontra o diretório mais recente na pasta TestResults
             $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
             $sourceDirs = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core"
-            
+                
             # Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
             if ($latestDir -ne $null) {
               $guid = $latestDir.Name
-          
+              
               # Constrói os caminhos dinamicamente
               $baseDirectory = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core.XUnit"
               $coverageXmlPath = Join-Path -Path (Join-Path -Path $baseDirectory -ChildPath "TestResults") -ChildPath $guid
-              
+                  
               # Gera o relatório de cobertura usando o GUID capturado
-              
+                  
               dotnet tool install -g dotnet-reportgenerator-globaltool 
               reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"lcov;" -sourcedirs:$sourceDirs
             }
-          
-          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+              
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"  
