@@ -73,15 +73,15 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-         
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
-        run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/Database-local/**,**/.documents/**, *.sql, **/Program.cs" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
+        run: |          
+          dotnet tool install -g dotnet-reportgenerator-globaltool 
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="*/despesas-backend-api-net-core.XUnit/**, **/Database-local/**,**/.documents/**, *.sql, **/Program.cs" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
           .\generate_coverage_report.ps1
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
         continue-on-error: false
@@ -96,16 +96,16 @@ jobs:
       
       - name: Build Docker image
         env:
-           DOCKER_CLI_AGGREGATE: 1  
+          DOCKER_CLI_AGGREGATE: 1  
         run: |          
           docker-compose build          
         continue-on-error: false
 
       - name: Push Docker image to Docker Hub
         env:
-           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-           DOCKER_CLI_AGGREGATE: 1  
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_CLI_AGGREGATE: 1  
         run: |
             docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
             docker push ${{ secrets.DOCKER_IMAGE }}
@@ -113,11 +113,11 @@ jobs:
         
       - name: Execute SSH Commands into EC2 
         env:
-           EC2_HOST: ${{ secrets.EC2_HOST }}
-           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-           AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
-           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+          AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
         uses: appleboy/ssh-action@master
         with:
