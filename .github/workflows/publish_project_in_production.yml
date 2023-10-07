@@ -17,7 +17,6 @@ jobs:
         path: ~/.nuget/packages
         key: dotnet-packages-${{ github.repository }}
         restore-keys: dotnet-packages-${{ github.repository }}
-
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -58,7 +57,13 @@ jobs:
           path: ~\sonar\cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
-          
+
+      - name: Create if not Exist Cache Sonar Packages
+        if: steps.cache-sonar.outputs.cache-hit != 'true'
+        shell: powershell
+        run: |
+          New-Item -Path ~\sonar\cache -ItemType Directory    
+            
       - name: Cache SonarCloud scanner
         id: cache-sonar-scanner
         uses: actions/cache@v3
@@ -72,8 +77,8 @@ jobs:
         shell: powershell
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner          
-         
+          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
@@ -96,16 +101,16 @@ jobs:
       
       - name: Build Docker image
         env:
-           DOCKER_CLI_AGGREGATE: 1  
+          DOCKER_CLI_AGGREGATE: 1  
         run: |          
           docker-compose build          
         continue-on-error: false
 
       - name: Push Docker image to Docker Hub
         env:
-           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-           DOCKER_CLI_AGGREGATE: 1  
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_CLI_AGGREGATE: 1  
         run: |
             docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
             docker push ${{ secrets.DOCKER_IMAGE }}
@@ -113,11 +118,11 @@ jobs:
         
       - name: Execute SSH Commands into EC2 
         env:
-           EC2_HOST: ${{ secrets.EC2_HOST }}
-           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
-           AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
-           DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
-           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+          AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
         uses: appleboy/ssh-action@master
         with:
