@@ -11,56 +11,6 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
     public class CategoriaMapTest
     {
         [Fact]
-        public void CategoriaMap_Should_Configure_EntityTypeBuilder()
-        {
-            /*
-            // Arrange
-            var options = new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "test_database")
-                .Options;
-
-            using (var context = new RegisterContext(options))
-            {
-                var modelBuilder = new ModelBuilder(new ConventionSet());
-                var builder = modelBuilder.Entity<Categoria>();
-
-                var categoriaMap = new CategoriaMap();
-
-                // Act
-                categoriaMap.Configure(builder);
-
-                // Assert
-                var entity = builder.Metadata;
-                var idProperty = entity.FindPrimaryKey().Properties.First();
-                var descricaoProperty = entity.FindProperty(nameof(Categoria.Descricao));
-                var usuarioIdProperty = entity.FindProperty(nameof(Categoria.UsuarioId));
-                var tipoCategoriaProperty = entity.FindProperty(nameof(Categoria.TipoCategoria));
-                var usuarioProperty = entity.FindNavigation(nameof(Categoria.Usuario));
-
-                Assert.Equal(nameof(Categoria), entity.Name);
-                Assert.False(entity.IsOwned());
-                Assert.NotNull(entity.FindPrimaryKey());
-                Assert.Equal(nameof(Categoria.Id), idProperty.Name);
-                Assert.Equal(nameof(Categoria.Descricao), descricaoProperty.Name);
-                Assert.Equal(nameof(Categoria.UsuarioId), usuarioIdProperty.Name);
-                Assert.Equal(nameof(Categoria.TipoCategoria), tipoCategoriaProperty.Name);
-                Assert.False(descricaoProperty.IsNullable);
-                Assert.False(usuarioIdProperty.IsNullable);
-                Assert.False(tipoCategoriaProperty.IsNullable);
-                Assert.Equal(100, descricaoProperty.GetMaxLength());
-
-
-                Assert.NotNull(usuarioProperty);
-                Assert.NotNull(tipoCategoriaProperty);
-                Assert.Equal(nameof(Categoria.Usuario), usuarioProperty.Name);
-                Assert.Equal(nameof(Categoria.TipoCategoria), tipoCategoriaProperty.Name);
-                Assert.Equal(typeof(Usuario), usuarioProperty.TargetEntityType.ClrType);
-                Assert.True(usuarioProperty.ForeignKey.IsRequired);
-            }
-            */
-        }
-
-        [Fact]
         public void CategoriaMap_Should_Parse_CategoriaVM_To_Categoria()
         {
             // Arrange
