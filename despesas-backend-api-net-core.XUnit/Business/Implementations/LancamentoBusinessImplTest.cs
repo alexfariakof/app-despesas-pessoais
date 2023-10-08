@@ -35,8 +35,7 @@ namespace Test.XUnit.Business.Implementations
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<List<LancamentoVM>>(result);
-            
+            Assert.IsType<List<LancamentoVM>>(result);            
             Assert.Equal(lancamentos.FindAll(l => l.UsuarioId == idUsuario).Count, result.Count);
         }
 
