@@ -7,8 +7,8 @@ namespace Test.XUnit.Business.Implementations
     {
         private readonly Mock<IRepositorio<Categoria>> _repositorioMock;
         private readonly CategoriaBusinessImpl _categoriaBusiness;
-        
-       
+
+
         private List<Categoria> categorias = new List<Categoria>
         {
             new Categoria { Id = 1, Descricao = "Alimentação", UsuarioId = 1, TipoCategoria = TipoCategoria.Despesa, Usuario = new Mock<Usuario>().Object  },
@@ -34,7 +34,7 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var categoria = new CategoriaVM
-            { 
+            {
                 Id = 1,
                 Descricao = "Alimentação",
                 IdUsuario = 1,
@@ -47,7 +47,7 @@ namespace Test.XUnit.Business.Implementations
             var result = _categoriaBusiness.Create(categoria);
 
             // Assert
-            Assert.Equal(categoria.Id, result.Id);            
+            Assert.Equal(categoria.Id, result.Id);
         }
 
         [Fact]
@@ -69,12 +69,12 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var id = 1;
-            var categoria = new Categoria 
-            {                
-                Id = 1, 
-                Descricao = "Teste Find By Id ", 
-                TipoCategoria = TipoCategoria.Despesa, 
-                UsuarioId = 1  
+            var categoria = new Categoria
+            {
+                Id = 1,
+                Descricao = "Teste Find By Id ",
+                TipoCategoria = TipoCategoria.Despesa,
+                UsuarioId = 1
             };
 
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(categoria);
