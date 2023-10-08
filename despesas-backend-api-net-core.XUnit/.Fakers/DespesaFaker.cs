@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return despesaFaker.Generate();
         }
 
-        public static List<DespesaVM> DespesasVM()
+        public static List<DespesaVM> DespesasVMs()
         {
             var listDespesaVM = new List<DespesaVM>();
             var usuario = UsuarioFaker.GetNewFaker();

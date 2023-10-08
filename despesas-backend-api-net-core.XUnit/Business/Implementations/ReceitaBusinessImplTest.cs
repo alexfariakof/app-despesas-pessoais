@@ -14,8 +14,8 @@ namespace Test.XUnit.Business.Implementations
         {
             _repositorioMock = new Mock<IRepositorio<Receita>>();
             _receitaBusiness = new ReceitaBusinessImpl(_repositorioMock.Object);
-            _receitaList = Usings.lstRecaitas;
-            _receitaListVM = Usings.lstRecaitaVM;
+            _receitaList = ReceitaFaker.Receitas();
+            _receitaListVM = ReceitaFaker.ReceitasVMs();
         }
 
         [Fact]
@@ -30,6 +30,8 @@ namespace Test.XUnit.Business.Implementations
             var result = _receitaBusiness.Create(receitaVM);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<ReceitaVM>(result);
             Assert.Equal(receitaVM.Id, result.Id);
         }
 
@@ -46,8 +48,9 @@ namespace Test.XUnit.Business.Implementations
             var result = _receitaBusiness.FindAll(idUsuario);
 
             // Assert
-            Assert.Equal(lstReceitas.Count, result.Count);
-            // Assert other properties as needed
+            Assert.NotNull(result);
+            Assert.IsType<List<ReceitaVM>>(result);
+            Assert.Equal(lstReceitas.Count, result.Count);            
         }
 
         [Fact]
@@ -63,8 +66,9 @@ namespace Test.XUnit.Business.Implementations
             var result = _receitaBusiness.FindById(id, receita.UsuarioId);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<ReceitaVM>(result);
             Assert.Equal(receita.Id, result.Id);
-            // Assert other properties as needed
         }
 
         [Fact]
@@ -80,8 +84,7 @@ namespace Test.XUnit.Business.Implementations
             var result = _receitaBusiness.FindById(id, 0);
 
             // Assert
-            Assert.Equal(result, null);
-            // Assert other properties as needed
+            Assert.Null(result);
         }
 
 
@@ -98,8 +101,9 @@ namespace Test.XUnit.Business.Implementations
             var result = _receitaBusiness.Update(receitaVM);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<ReceitaVM>(result);
             Assert.Equal(receita.Id, result.Id);
-            // Assert other properties as needed
         }
 
         [Fact]

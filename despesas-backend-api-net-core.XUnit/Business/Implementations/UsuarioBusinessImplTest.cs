@@ -71,7 +71,7 @@ namespace Test.XUnit.Business.Implementations
             var result = _usuarioBusiness.FindAll(idUsuario);
 
             // Assert
-            Assert.Equal(result, null);
+            Assert.Null(result);
         }
 
         [Fact]

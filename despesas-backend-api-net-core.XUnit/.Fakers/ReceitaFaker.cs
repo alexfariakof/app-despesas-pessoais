@@ -33,7 +33,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return receitaFaker.Generate();
         }
 
-        public static List<ReceitaVM> ReceitasVM()
+        public static List<ReceitaVM> ReceitasVMs()
         {
             var listReceitaVM = new List<ReceitaVM>();
             var usuario = UsuarioFaker.GetNewFaker();
