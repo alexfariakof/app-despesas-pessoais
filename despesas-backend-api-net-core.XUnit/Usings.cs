@@ -15,6 +15,11 @@ public static class Usings
     
     public static List<Categoria> lstCategorias = CategoriaFaker.Categorias();
 
+    public static List<ReceitaVM> lstRecaitaVM = ReceitaFaker.ReceitasVM();
+
+    public static List<Receita> lstRecaitas= ReceitaFaker.Receitas();
+
+
     public static List<Despesa> lstDespesas = new List<Despesa>
     {
             new Despesa { Id = 1, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 1", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
