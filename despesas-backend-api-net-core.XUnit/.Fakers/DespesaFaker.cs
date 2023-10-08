@@ -2,13 +2,14 @@
 
 namespace despesas_backend_api_net_core.XUnit.Fakers
 {
-    public static class ReceitaFaker
+    public static class DespesaFaker
     {
-        public static Receita GetNewFaker(Usuario usuario, Categoria categoria)
+        public static Despesa GetNewFaker(Usuario usuario, Categoria categoria)
         {
-            var receitaFaker = new Faker<Receita>()
+            var despesaFaker = new Faker<Despesa>()
                 .RuleFor(r => r.Id, f => f.Random.Number(1, 100))
                 .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(r => r.DataVencimento, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.UsuarioId, usuario.Id)
@@ -16,50 +17,51 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                 .RuleFor(r => r.CategoriaId, categoria.Id)
                 .RuleFor(r => r.Categoria, categoria);
 
-            return receitaFaker.Generate();
+            return despesaFaker.Generate();
         }
 
-        public static ReceitaVM GetNewFakerVM(int idUsuario, int idCategoria)
+        public static DespesaVM GetNewFakerVM(int idUsuario, int idCategoria)
         {
-            var receitaFaker = new Faker<ReceitaVM>()
+            var despesaFaker = new Faker<DespesaVM>()
                 .RuleFor(r => r.Id, f => f.Random.Number(1, 100))
                 .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(r => r.DataVencimento, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.IdUsuario, idUsuario)
                 .RuleFor(r => r.IdCategoria, idCategoria);
 
 
-            return receitaFaker.Generate();
+            return despesaFaker.Generate();
         }
 
-        public static List<ReceitaVM> ReceitasVM()
+        public static List<DespesaVM> DespesasVM()
         {
-            var listReceitaVM = new List<ReceitaVM>();
+            var listDespesaVM = new List<DespesaVM>();
             var usuario = UsuarioFaker.GetNewFaker();
             
             for (int i = 0; i < 10; i++)
             {
                 var categoriaVM = CategoriaFaker.GetNewFakerVM(usuario.Id);
-                var receitaVM = GetNewFakerVM(usuario.Id, categoriaVM.Id);
-                listReceitaVM.Add(receitaVM);
+                var despesaVM = GetNewFakerVM(usuario.Id, categoriaVM.Id);
+                listDespesaVM.Add(despesaVM);
                 usuario = UsuarioFaker.GetNewFaker();                
             }
-            return listReceitaVM;
+            return listDespesaVM;
         }
-        public static List<Receita> Receitas()
+        public static List<Despesa> Despesas()
         {
-            var listReceita = new List<Receita>();
+            var listDespesa = new List<Despesa>();
             var usuario = UsuarioFaker.GetNewFaker();
             
             for (int i = 0; i < 10; i++)
             {
                 var categoria = CategoriaFaker.GetNewFaker(usuario);
-                var receita = GetNewFaker(usuario, categoria);
-                listReceita.Add(receita);
+                var despesa = GetNewFaker(usuario, categoria);
+                listDespesa.Add(despesa);
                 usuario = UsuarioFaker.GetNewFaker();
             }
-            return listReceita;
+            return listDespesa;
         }
     }
 }
