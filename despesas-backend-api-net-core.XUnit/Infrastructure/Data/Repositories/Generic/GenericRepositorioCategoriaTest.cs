@@ -125,8 +125,9 @@
         public void Delete_WithExistingItem_ShouldRemoveItemAndSaveChanges()
         {
             // Arrange
-            var itemId = 2;
-            var dataSet = Usings.lstCategorias;
+            var lstCategorias = Usings.lstCategorias;
+            var itemId = lstCategorias.First().Id;
+            var dataSet = lstCategorias;
 
             var dbSetMock = MockDbSet(dataSet);
             contextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
