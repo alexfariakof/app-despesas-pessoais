@@ -1,11 +1,7 @@
-﻿using despesas_backend_api_net_core.Business;
-using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using Microsoft.Extensions.Configuration;
-using Moq;
-using Newtonsoft.Json.Linq;
 
 namespace Test.XUnit.Business.Implementations
 {
