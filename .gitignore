@@ -401,6 +401,6 @@ FodyWeavers.xsd
 Migrations/*
 
 # Arquivo contento chave de criptografia
-appsettings.json
-appsettings.Development.json
+/despesas-backend-api-net-core/appsettings.json
+/despesas-backend-api-net-core/appsettings.Development.json
 .vscode/
