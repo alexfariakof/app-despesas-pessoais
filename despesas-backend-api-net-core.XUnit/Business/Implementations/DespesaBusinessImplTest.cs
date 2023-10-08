@@ -7,7 +7,7 @@ namespace Test.XUnit.Business.Implementations
     {
         private readonly Mock<IRepositorio<Despesa>> _repositorioMock;
         private readonly DespesaBusinessImpl _despesaBusiness;
-        
+
         public DespesaBusinessImplTest()
         {
             _repositorioMock = new Mock<IRepositorio<Despesa>>();
@@ -24,7 +24,7 @@ namespace Test.XUnit.Business.Implementations
                 Data = DateTime.Now.AddDays(new Random().Next(200)),
                 Descricao = "Teste Despesas 2",
                 Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(),
-            DataVencimento = DateTime.Now.AddDays(new Random().Next(200)),
+                DataVencimento = DateTime.Now.AddDays(new Random().Next(200)),
                 IdUsuario = 1,
                 IdCategoria = 25
             };
@@ -35,7 +35,7 @@ namespace Test.XUnit.Business.Implementations
             var result = _despesaBusiness.Create(despesaVM);
 
             // Assert
-            Assert.Equal(despesaVM.Id, result.Id);            
+            Assert.Equal(despesaVM.Id, result.Id);
         }
 
         [Fact]
