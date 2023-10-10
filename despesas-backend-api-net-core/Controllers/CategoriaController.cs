@@ -27,7 +27,6 @@ namespace despesas_backend_api_net_core.Controllers
 
             return Ok(_categoriaBusiness.FindAll(_idUsuario));
         }
-        /*
 
         [HttpGet("GetById/{idCategoria}")]
         [Authorize("Bearer")]
@@ -158,6 +157,6 @@ namespace despesas_backend_api_net_core.Controllers
 
             return new ObjectResult(new { Message = false });
         }
-        */
+        
     }
 }
