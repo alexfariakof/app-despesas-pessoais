@@ -6,10 +6,12 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public static class LancamentoFaker
     {
+        static int counter = 1;
         public static Lancamento GetNewFaker(Usuario usuario, Despesa despesa, Receita receita, Categoria categoria)
         {
+            
             var LancamentoFaker = new Faker<Lancamento>()
-                .RuleFor(l => l.Id, f => f.Random.Number(1, 100))
+                .RuleFor(l => l.Id, f => counter++)
                 .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
                 .RuleFor(l => l.Data, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
@@ -28,7 +30,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         public static LancamentoVM GetNewFakerVM(int idusuario, int idDespesa, int idReceita, Categoria categoria)
         {
             var lancamentoVMFaker = new Faker<LancamentoVM>()
-                .RuleFor(l => l.Id, f => f.Random.Number(1, 100))
+                .RuleFor(l => l.Id, f => counter++)
                 .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000).ToString("N2"))
                 .RuleFor(l => l.Data, DateTime.Now.AddDays(new Random().Next(99)).ToDateBr())
                 .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
@@ -43,6 +45,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 
         public static List<LancamentoVM> LancamentoVMs()
         {
+            counter = 1;
             var listLancamentoVM = new List<LancamentoVM>();
             var usuario = UsuarioFaker.GetNewFaker();
             var categoria = CategoriaFaker.GetNewFaker(usuario);
@@ -63,6 +66,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         }
         public static List<Lancamento> Lancamentos()
         {
+            counter = 1;
             var listLancamento = new List<Lancamento>();
             var usuario = UsuarioFaker.GetNewFaker();
             var categoria = CategoriaFaker.GetNewFaker(usuario);

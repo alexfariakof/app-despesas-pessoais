@@ -4,10 +4,11 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public static class UsuarioFaker    
     {
+        static int counter = 0;
         public static Usuario GetNewFaker()
         {
             var usuarioFaker = new Faker<Usuario>()
-                .RuleFor(u => u.Id, f => f.Random.Number(1, 100))
+                .RuleFor(u => u.Id, f => counter++)
                 .RuleFor(u => u.Nome, f => f.Name.FullName())
                 .RuleFor(u => u.SobreNome, f => f.Name.LastName())
                 .RuleFor(u => u.Telefone, f => f.Phone.PhoneNumber())
@@ -20,7 +21,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         public static UsuarioVM GetNewFakerVM()
         {
             var usuarioFaker = new Faker<UsuarioVM>()
-                .RuleFor(u => u.Id, f => f.Random.Number(1, 100))
+                .RuleFor(u => u.Id, f =>counter++)
                 .RuleFor(u => u.Nome, f => f.Name.FullName())
                 .RuleFor(u => u.SobreNome, f => f.Name.LastName())
                 .RuleFor(u => u.Telefone, f => f.Phone.PhoneNumber())

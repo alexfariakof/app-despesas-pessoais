@@ -7,7 +7,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         public static Receita GetNewFaker(Usuario usuario, Categoria categoria)
         {
             var receitaFaker = new Faker<Receita>()
-                .RuleFor(r => r.Id, f => f.Random.Number(1, 100))
+                .RuleFor(r => r.Id, f => f.Random.Number(1, 1000000))
                 .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))

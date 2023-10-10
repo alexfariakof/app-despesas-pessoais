@@ -4,11 +4,12 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public static class CategoriaFaker
     {
+        static int counter = 0;
         public static Categoria GetNewFaker(Usuario usuario)
         {
             var categoriaFaker = new Faker<Categoria>()
-                .RuleFor(c => c.Id, f => f.Random.Number(1, 100))
-                .RuleFor(c => c.Descricao, f => f.Commerce.ProductName())
+                .RuleFor(c => c.Id, counter++)
+                .RuleFor(c => c.Descricao, f => f.Commerce.Categories(10)[1])
                 .RuleFor(c => c.UsuarioId, usuario.Id)
                 .RuleFor(c => c.Usuario, usuario)
                 .RuleFor(c => c.TipoCategoria, f => f.PickRandom<TipoCategoria>());
@@ -19,7 +20,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         public static CategoriaVM GetNewFakerVM(int Idusuario)
         {
             var categoriaFaker = new Faker<CategoriaVM>()
-                .RuleFor(c => c.Id, f => f.Random.Number(1, 100))
+                .RuleFor(c => c.Id, counter++)
                 .RuleFor(c => c.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(c => c.IdUsuario, Idusuario)
                 .RuleFor(c => c.IdTipoCategoria, f => (int)f.PickRandom<TipoCategoria>());
