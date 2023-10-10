@@ -79,13 +79,13 @@ namespace Test.XUnit.Business.Generic
         {
             // Arrange
             var objects = UsuarioFaker.Usuarios();
-            var id = objects.First().Id;
+            var obj = objects.First();
             var repositoryMock = Usings.MockRepositorio(objects);
-            repositoryMock.Setup(repo => repo.Delete( new BaseModel { Id = id })).Returns(true);
+            repositoryMock.Setup(repo => repo.Delete(obj)).Returns(true);
             var business = new GenericBusiness<Usuario>(repositoryMock.Object);
 
             // Act
-            var result = business.Delete(id);
+            var result = business.Delete(obj);
 
             // Assert
             Assert.True(result);

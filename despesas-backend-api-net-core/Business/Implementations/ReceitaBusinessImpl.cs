@@ -43,9 +43,10 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         }
 
-        public bool Delete(int id)
+        public bool Delete(ReceitaVM obj)
         {
-            return  _repositorio.Delete(new Receita { Id = id } );
+            Receita receita = _repositorio.Update(_converter.Parse(obj));
+            return  _repositorio.Delete(receita);
         }
     }
 }

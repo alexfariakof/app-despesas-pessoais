@@ -110,7 +110,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         {
             // Arrange
             var lstCategorias = CategoriaFaker.Categorias();
-            var itemId = lstCategorias.First().Id;
+            var item = lstCategorias.First();
             var dataSet = lstCategorias;
 
             var dbSetMock = Usings.MockDbSet(dataSet);
@@ -118,7 +118,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
             // Act
-            var result = repository.Delete(new BaseModel { Id = itemId });
+            var result = repository.Delete(item);
 
             // Assert
             Assert.True(result);
@@ -131,13 +131,13 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
             // Arrange
             
             var dataSet = CategoriaFaker.Categorias();
-            var itemId = 0;
+            var item = new Categoria { Id  = 0};
             var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
             // Act
-            var result = repository.Delete(new BaseModel { Id = itemId });
+            var result = repository.Delete(item);
 
             // Assert            
             Assert.False(result);

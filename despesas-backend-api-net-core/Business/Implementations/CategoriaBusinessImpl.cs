@@ -44,9 +44,10 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(_repositorio.Update(categoria));
         }
 
-        public bool Delete(int id)
+        public bool Delete(CategoriaVM obj)
         {
-            return _repositorio.Delete(new BaseModel { Id = id } );
+            Categoria categoria = _converter.Parse(obj);
+            return _repositorio.Delete(categoria);
         }
     }
 }

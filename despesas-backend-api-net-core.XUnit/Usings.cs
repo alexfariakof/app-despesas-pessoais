@@ -47,7 +47,7 @@ public static class Usings
             }
             return updatedItem;
         });
-        _mock.Setup(repo => repo.Delete(It.IsAny<BaseModel>())).Returns((int id) =>
+        _mock.Setup(repo => repo.Delete(It.IsAny<T>())).Returns((int id) =>
         {
             var itemToRemove = _dataSet.FirstOrDefault(item => item.Id == id);
             if (itemToRemove != null)

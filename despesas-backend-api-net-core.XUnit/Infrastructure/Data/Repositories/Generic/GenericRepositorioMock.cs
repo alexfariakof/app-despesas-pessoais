@@ -33,7 +33,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
                 }
                 return updatedItem;
             });
-            _mock.Setup(repo => repo.Delete(It.IsAny<BaseModel>())).Returns((int id) =>
+            _mock.Setup(repo => repo.Delete(It.IsAny<T>())).Returns((int id) =>
             {
                 var itemToRemove = _dataSet.Object.FirstOrDefault(item => item.Id == id);
                 if (itemToRemove != null)
@@ -75,9 +75,9 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
             return result;
         }
 
-        public bool Delete(BaseModel item)
+        public bool Delete(T item)
         {
-            var result = _mock.Object.Delete(new BaseModel { Id = item.Id });
+            var result = _mock.Object.Delete(item);
             _context.Remove(result);
             _context.SaveChanges();
             return result;

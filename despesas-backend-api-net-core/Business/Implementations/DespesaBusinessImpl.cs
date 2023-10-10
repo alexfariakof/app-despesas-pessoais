@@ -41,9 +41,10 @@ namespace despesas_backend_api_net_core.Business.Implementations
             return _converter.Parse(despesa);
         }
 
-        public bool Delete(int id)
+        public bool Delete(DespesaVM obj)
         {
-            return _repositorio.Delete(new BaseModel { Id = id });
+            Despesa despesa = _repositorio.Update(_converter.Parse(obj));
+            return _repositorio.Delete(despesa);
         }
     }
 }

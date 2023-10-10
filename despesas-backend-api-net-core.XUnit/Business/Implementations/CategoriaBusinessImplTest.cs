@@ -92,11 +92,12 @@ namespace Test.XUnit.Business.Implementations
         public void Delete_ReturnsTrue()
         {
             // Arrange
-            var id = 1;
-            _repositorioMock.Setup(repo => repo.Delete(new BaseModel { Id = id } )).Returns(true);
-
+            var obj = CategoriaFaker.CategoriasVMs().First();
+            var categoria = new CategoriaMap().Parse(obj);
+            _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>())).Returns(true);
+            
             // Act
-            var result = _categoriaBusiness.Delete(id);
+            var result = _categoriaBusiness.Delete(obj);
 
             // Assert
             Assert.True(result);

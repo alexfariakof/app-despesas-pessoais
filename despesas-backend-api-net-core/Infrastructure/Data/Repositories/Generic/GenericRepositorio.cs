@@ -67,7 +67,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             }
         }
 
-        public bool Delete(BaseModel obj)
+        public bool Delete(T obj)
         {
             T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try 

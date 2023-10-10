@@ -111,11 +111,12 @@ namespace Test.XUnit.Business.Implementations
         public void Delete_ReturnsTrue()
         {
             // Arrange
-            var id = 1;
-            _repositorioMock.Setup(repo => repo.Delete(new BaseModel { Id = id } )).Returns(true);
+            var receita = _receitaList.First();
+            _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Receita>())).Returns(true);
 
+            var receitaVM = new ReceitaMap().Parse(receita);
             // Act
-            var result = _receitaBusiness.Delete(id);
+            var result = _receitaBusiness.Delete(receitaVM);
 
             // Assert
             Assert.True(result);

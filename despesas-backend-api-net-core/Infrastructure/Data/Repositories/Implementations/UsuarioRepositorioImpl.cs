@@ -156,7 +156,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             return obj;
         }
 
-        bool IRepositorio<Usuario>.Delete(BaseModel obj)
+        bool IRepositorio<Usuario>.Delete(Usuario obj)
         {
             var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try
