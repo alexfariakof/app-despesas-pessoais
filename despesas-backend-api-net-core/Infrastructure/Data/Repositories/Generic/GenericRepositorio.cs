@@ -67,9 +67,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             }
         }
 
-        public bool Delete(int id)
+        public bool Delete(T obj)
         {
-            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
+            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try 
             {
                 if (result != null)
@@ -78,7 +78,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                     {
                         var dataSet = _context.Set<Usuario>();
                         Usuario usaurio = new Usuario { 
-                            Id = id,
+                            Id = obj.Id,
                             StatusUsuario = StatusUsuario.Inativo
                         };
                         _context.Entry(result).CurrentValues.SetValues(usaurio);

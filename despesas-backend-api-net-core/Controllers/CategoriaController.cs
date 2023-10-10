@@ -150,12 +150,13 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            if (_categoriaBusiness.Delete(categoria.IdUsuario))
+            if (_categoriaBusiness.Delete(categoria))
             {
                 return new ObjectResult(new { Message = true });
             }
 
             return new ObjectResult(new { Message = false });
         }
+        
     }
 }

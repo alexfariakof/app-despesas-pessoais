@@ -15,6 +15,10 @@
 
   <ItemGroup>
     <Compile Include=".Fakers\CategoriaFaker.cs" />
+    <Compile Include=".Fakers\DespesaFaker.cs" />
+    <Compile Include=".Fakers\GraficoFaker.cs" />
+    <Compile Include=".Fakers\LancamentoFaker.cs" />
+    <Compile Include=".Fakers\ReceitaFaker.cs" />
     <Compile Include=".Fakers\UsuarioFaker.cs" />
   </ItemGroup>
 

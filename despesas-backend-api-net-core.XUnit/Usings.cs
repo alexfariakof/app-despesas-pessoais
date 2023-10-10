@@ -3,45 +3,62 @@ global using Moq;
 global using despesas_backend_api_net_core.Domain.Entities;
 global using despesas_backend_api_net_core.Domain.VM;
 global using despesas_backend_api_net_core.Infrastructure.Data.Common;
-global using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 global using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations;
 global using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using despesas_backend_api_net_core.XUnit.Fakers;
+global using despesas_backend_api_net_core.XUnit.Fakers;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 public static class Usings
 {
-    public static List<CategoriaVM> lstCategoriasVM = CategoriaFaker.CategoriasVM();
-    
-    public static List<Categoria> lstCategorias = CategoriaFaker.Categorias();
-
-    public static List<Despesa> lstDespesas = new List<Despesa>
+    public static Mock<DbSet<T>> MockDbSet<T>(List<T> data) where T : class
     {
-            new Despesa { Id = 1, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 1", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 2, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 2", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 3, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 3", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 4, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 4", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 5, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 5", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 6, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 6", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 7, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 7", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 8, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 8", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 9, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 9", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-            new Despesa { Id = 10, Data = DateTime.Now.AddDays(new Random().Next(99)) , Descricao = "Teste Despesas 10", Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(), DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),  UsuarioId = 1, Usuario = new Mock<Usuario>().Object, CategoriaId = 1, Categoria = Mock.Of<Categoria>() },
-    };
+        var queryableData = data.AsQueryable();
+        var dbSetMock = new Mock<DbSet<T>>();
+        dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryableData.Provider);
+        dbSetMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryableData.Expression);
+        dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
+        dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryableData.GetEnumerator());
+        dbSetMock.Setup(d => d.Add(It.IsAny<T>())).Callback<T>(data.Add);
+        dbSetMock.Setup(d => d.Update(It.IsAny<T>())).Callback<T>(item =>
+        {
+            var index = data.IndexOf(item);
+            if (index != -1)
+            {
+                data[index] = item;
+            }
+        });
+        dbSetMock.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>(item => data.Remove(item));
+        return dbSetMock;
+    }
 
-
-    public static List<ControleAcesso> lstControleAcessos = new List<ControleAcesso>
+    public static Mock<IRepositorio<T>> MockRepositorio<T>(List<T> _dataSet) where T : BaseModel
     {
-        new ControleAcesso { Login = "teste1@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste2@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste3@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste4@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste5@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste6@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste7@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste8@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste9@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
-        new ControleAcesso { Login = "teste10@teste.com", Senha = "teste1", Usuario = Mock.Of<Usuario>()  },
+        var _mock = new Mock<IRepositorio<T>>();
+        _mock.Setup(repo => repo.Get(It.IsAny<int>())).Returns((int id) => { return _dataSet.SingleOrDefault(item => item.Id == id); });
+        _mock.Setup(repo => repo.GetAll()).Returns(() => _dataSet.ToList());
+        _mock.Setup(repo => repo.Insert(It.IsAny<T>())).Returns((T item) => item);
+        _mock.Setup(repo => repo.Update(It.IsAny<T>())).Returns((T updatedItem) =>
+        {
+            var existingItem = _dataSet.FirstOrDefault(item => item.Id == updatedItem.Id);
+            if (existingItem != null)
+            {
+                existingItem = updatedItem;
 
-    };    
+            }
+            return updatedItem;
+        });
+        _mock.Setup(repo => repo.Delete(It.IsAny<T>())).Returns((int id) =>
+        {
+            var itemToRemove = _dataSet.FirstOrDefault(item => item.Id == id);
+            if (itemToRemove != null)
+            {
+                _dataSet.Remove(itemToRemove);
+                return true;
+            }
+
+            return false;
+        });
+        return _mock;
+    }
+
 }

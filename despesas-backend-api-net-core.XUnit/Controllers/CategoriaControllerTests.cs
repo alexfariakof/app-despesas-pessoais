@@ -1,9 +1,15 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
 using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Text;
 
 namespace Test.XUnit.Controllers
 {
@@ -11,244 +17,267 @@ namespace Test.XUnit.Controllers
     {
         private readonly Mock<IBusiness<CategoriaVM>> _mockCategoriaBusiness;
         private readonly CategoriaController _categoriaController;
-        protected enum TipoCategoria : ushort
+        private readonly List<CategoriaVM> _categoriaVMs;
+
+        public static string GenerateJwtToken(int userId)
         {
-            Todas = 0,
-            Despesa = 1,
-            Receita = 2,
-            Outro = 3
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var signingConfigurations = new SigningConfigurations();
+            configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
+
+            var tokenConfigurations = new TokenConfiguration();
+            configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString()));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim("IdUsuario", userId.ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: tokenConfigurations.Issuer,
+                audience: tokenConfigurations.Audience,
+                claims: claims,
+                expires: DateTime.Now.AddHours(tokenConfigurations.Seconds),
+                signingCredentials: credentials
+            );
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            return tokenHandler.WriteToken(token);
+        }
+        private void SetupBearerToken(int userId)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+            };
+            var identity = new ClaimsIdentity(claims, "IdUsuario");
+            var claimsPrincipal = new ClaimsPrincipal(identity);
+
+
+            var httpContext = new DefaultHttpContext
+            {
+                User = claimsPrincipal
+            };
+            httpContext.Request.Headers["Authorization"] = "Bearer " + GenerateJwtToken(userId);
+
+
+            _categoriaController.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
         }
 
-        private List<CategoriaVM> categorias = new List<CategoriaVM>
-        {
-            new CategoriaVM { Id = 1, IdUsuario = 1, Descricao = "Alimentação", IdTipoCategoria = 1 },
-            new CategoriaVM { Id = 2,  IdUsuario = 1, Descricao = "Transporte", IdTipoCategoria = 1 },
-            new CategoriaVM { Id = 3, IdUsuario = 1, Descricao = "Salário", IdTipoCategoria = 2 },
-            new CategoriaVM { Id = 4,  IdUsuario = 1, Descricao = "Lazer", IdTipoCategoria = 1 },
-            new CategoriaVM { Id = 5, IdUsuario = 1, Descricao = "Moradia", IdTipoCategoria = 1 },
-            new CategoriaVM { Id = 6, IdUsuario = 1, Descricao = "Investimentos", IdTipoCategoria = 2 },
-            new CategoriaVM { Id = 7, IdUsuario = 1, Descricao = "Presentes", IdTipoCategoria = 1 },
-            new CategoriaVM { Id = 8, IdUsuario = 1, Descricao = "Educação", IdTipoCategoria = 1 },
-            new CategoriaVM { Id = 9, IdUsuario = 1, Descricao = "Prêmios", IdTipoCategoria = 2 },
-            new CategoriaVM { Id = 10, IdUsuario = 1, Descricao = "Saúde", IdTipoCategoria = 1 }
-        };
         public CategoriaControllerTests()
         {
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
+            _categoriaVMs = CategoriaFaker.CategoriasVMs();
         }
 
         [Fact]
-        public void Get_ReturnsOkResult()
-        {
-
-            /*
-            _mockCategoriaBusiness.Setup(b => b.FindAll(1)).Returns(categorias);
-
-            // Act
-            var result = _categoriaController.Get();
-
-            // Assert
-            Assert.IsType<OkObjectResult>(result);
-            */
-        }
-
-        /*
-
-        [Fact]
-        public void GetById_WithValidId_ReturnsOkResult()
+        public void Get_Returns_Ok_Result()
         {
             // Arrange
-            var idCategoria = 1;
-            var categoria = new CategoriaVM
-            {
-                Id  = 1,
-                Descricao = "Teste Categoria",
-                IdTipoCategoria = idCategoria,
-                IdUsuario = 1,
-            };
-            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, 1)).Returns(categoria);
+            var categoriaVM = _categoriaVMs.First();
+            SetupBearerToken(categoriaVM.IdUsuario);
+
+            _mockCategoriaBusiness.Setup(b => b.FindAll(categoriaVM.IdUsuario)).Returns(_categoriaVMs);
 
             // Act
-            var result = _categoriaController.GetById(idCategoria);
+            var result = _categoriaController.Get() as OkObjectResult;
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(result);
+            Assert.IsType<List<CategoriaVM>>(result.Value);
+            var returnedResults = result.Value as List<CategoriaVM>;
+            Assert.Equal(_categoriaVMs.Count, returnedResults.Count);
+        }
+
+
+        [Fact]
+        public void GetById_Returns_OkResult()
+        {
+            // Arrange            
+            var categoriaVM = _categoriaVMs.First();
+            var idCategoria = categoriaVM.IdUsuario;
+            SetupBearerToken(idCategoria);
+
+            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, categoriaVM.IdUsuario)).Returns(categoriaVM);
+
+            // Act
+            var result = _categoriaController.GetById(idCategoria) as OkObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<CategoriaVM>(result.Value);
+            Assert.Equal(categoriaVM, result.Value);
         }
 
         [Fact]
-        public void GetById_WithInvalidId_ReturnsNotFoundResult()
+        public void GetById_ReturnsNotFound()
         {
             // Arrange
-            var idCategoria = 1;
-            CategoriaVM _categoria = null;
-            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, 1)).Returns(_categoria);
+            var idCategoria = 0; // Assume a non-existent category ID
+            var categoriaVM = _categoriaVMs.First();
+            SetupBearerToken(idCategoria);
+            _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, categoriaVM.IdUsuario)).Returns((CategoriaVM)null);
 
             // Act
-            var result = _categoriaController.GetById(idCategoria);
+            var result = _categoriaController.GetById(idCategoria) as NotFoundResult;
 
             // Assert
-            Assert.IsType<NotFoundResult>(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
-        public void GetByIdUsuario_ReturnsOkResult()
+        public void GetByIdUsuario_Returns_OkResult()
         {
             // Arrange
-            var idUsuario = 1;
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(categorias);
+            var idUsuario = _categoriaVMs.First().Id;
+            SetupBearerToken(idUsuario);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(_categoriaVMs.FindAll(c => c.IdUsuario == idUsuario));
+
 
             // Act
-            var result = _categoriaController.GetByIdUsuario(idUsuario);
+            var result = _categoriaController.GetByIdUsuario(idUsuario) as OkObjectResult;
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(result);
+            Assert.IsType<List<CategoriaVM>>(result.Value);
+            var returnedResults = result.Value as List<CategoriaVM>;
+            Assert.Equal(_categoriaVMs.Count, returnedResults.Count);
         }
 
         [Fact]
-        public async Task GetByIdUsuario_WithInvalidId_ReturnsNotFoundResult()
-        {
-            // Arrange
-            var idUsuario = 10;            
-
-            Mock.Get(_mockCategoriaBusiness.Object).Setup(b => b.FindAll(idUsuario)).Returns(categorias);
-
-            // Act
-            var result = _categoriaController.GetByIdUsuario(idUsuario);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-        }
-
-        [Fact]
-        public void GetByTipoCategoria_WithTodas_ReturnsOkResult()
+        public void GetByIdUsuario_ReturnsBadRequest()
         {
             // Arrange
             var idUsuario = 1;
-            var tipoCategoria = despesas_backend_api_net_core.Domain.Entities.TipoCategoria.Todas;
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(categorias);
+            var categoriaVM = _categoriaVMs.First();
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(new List<CategoriaVM>());
 
             // Act
-            var result = _categoriaController.GetByTipoCategoria(idUsuario, tipoCategoria);
+            var result = _categoriaController.GetByIdUsuario(idUsuario) as NotFoundResult;
 
             // Assert
-            Assert.IsType<OkObjectResult>(result);
-        }
-
-                
-        [Fact]
-        public void Post_WithValidData_ReturnsOkResult()
-        {
-            // Arrange
-            var categoria = new CategoriaVM
-            {
-                Id = 1,
-                Descricao = "Teste Categoria",
-                IdTipoCategoria = 1,
-                IdUsuario = 1,
-            };
-
-            _mockCategoriaBusiness.Setup(b => b.Create(categoria)).Returns(categoria);
-
-            // Act
-            var result = _categoriaController.Post(categoria);
-            
-            // Assert
-            Assert.IsType<ObjectResult>(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
-        public void Post_WithInvalidData_ReturnsBadRequestResult()
+        public void GetByTipoCategoria_ReturnsOkResult()
         {
             // Arrange
-            var categoria = new CategoriaVM { };
-
+            var idUsuario = 1;
+            var tipoCategoria = TipoCategoria.Todas;
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(_categoriaVMs);
 
             // Act
-            var result = _categoriaController.Post(categoria);
+            var result = _categoriaController.GetByTipoCategoria(idUsuario, tipoCategoria) as OkObjectResult;
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(result);
+            Assert.IsType<List<CategoriaVM>>(result.Value);
+            var returnedResults = result.Value as List<CategoriaVM>;
+            Assert.Equal(_categoriaVMs.Count, returnedResults.Count);
         }
 
         [Fact]
-        public void Post_WithData_TipoCategotia_Todas_ReturnsBadRequestResult()
+        public void Post_ReturnsOkResult()
         {
             // Arrange
-            var categoria = new CategoriaVM { IdTipoCategoria = 0 };
-
-
-            // Act
-            var result = _categoriaController.Post(categoria);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
-        }
-
-
-        [Fact]
-        public void Put_WithValidData_ReturnsOkResult()
-        {
-            // Arrange
-            var categoria = new CategoriaVM
-            {
-                Id = 1,
-                Descricao = "Alimentação",
-                IdTipoCategoria = 1,
-                IdUsuario = 1
-            };
-
-            var resultCategoria = new CategoriaVM
-            {
-                Id = 1,
-                Descricao = "Alteração Alimentação",
-                IdTipoCategoria = 2,
-                IdUsuario = 1
-            };
-
-            _mockCategoriaBusiness.Setup(b => b.Update(categoria)).Returns(resultCategoria);
+            var categoriaVM = _categoriaVMs.First();
+            _mockCategoriaBusiness.Setup(b => b.Create(categoriaVM)).Returns(categoriaVM);
 
             // Act
-            var result = _categoriaController.Put(categoria);
+            var result = _categoriaController.Post(categoriaVM) as ObjectResult;
 
             // Assert
-            Assert.Equal(resultCategoria.Id, categoria.Id);
-            Assert.NotEqual(resultCategoria.Descricao, categoria.Descricao);
-            Assert.NotEqual(resultCategoria.IdTipoCategoria, categoria.IdTipoCategoria);
-            Assert.Equal(categoria.IdUsuario, categoria.IdUsuario);
+            Assert.NotNull(result);
+            Assert.IsType<CategoriaVM>(result.Value);
+            Assert.Equal(categoriaVM, result.Value);
         }
 
         [Fact]
-        public void Put_WithInvalidData_ReturnsBadRequestResult()
+        public void Post_ReturnsBadRequest()
         {
             // Arrange
-            var categoria = new CategoriaVM
-            {
-                Id = 1,
-                Descricao = "Salário",
-                IdTipoCategoria = 1,
-                IdUsuario = 1
-            };
-
+            var categoriaVM = _categoriaVMs.First();
+            // Assume a mismatch in the user ID
+            _mockCategoriaBusiness.Setup(b => b.Create(categoriaVM)).Returns((CategoriaVM)null);
 
             // Act
-            var result = _categoriaController.Put(categoria);
+            var result = _categoriaController.Post(categoriaVM) as BadRequestObjectResult;
 
             // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(result);
         }
 
         [Fact]
-        public void Delete_WithValidId_ReturnsNoContentResult()
+        public void Put_ReturnsOkResult()
         {
             // Arrange
-            CategoriaVM categoria = new CategoriaVM { Id = 1 };   
+            var categoriaVM = _categoriaVMs.First();
+            _mockCategoriaBusiness.Setup(b => b.Update(categoriaVM)).Returns(categoriaVM);
+
             // Act
-            var result = _categoriaController.Delete(categoria);
+            var result = _categoriaController.Put(categoriaVM) as ObjectResult;
 
             // Assert
-            Assert.IsType<NoContentResult>(result);
+            Assert.NotNull(result);
+            Assert.IsType<CategoriaVM>(result.Value);
+            Assert.Equal(categoriaVM, result.Value);
         }
-        */
+
+        [Fact]
+        public void Put_ReturnsBadRequest()
+        {
+            // Arrange
+            var categoriaVM = _categoriaVMs.First();
+            // Assume a mismatch in the user ID
+            _mockCategoriaBusiness.Setup(b => b.Update(categoriaVM)).Returns((CategoriaVM)null);
+
+            // Act
+            var result = _categoriaController.Put(categoriaVM) as BadRequestObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Delete_ReturnsOkResult()
+        {
+            // Arrange
+            var categoriaVM = _categoriaVMs.First();
+            _mockCategoriaBusiness.Setup(b => b.Delete(categoriaVM)).Returns(true);
+
+            // Act
+            var result = _categoriaController.Delete(categoriaVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(true, result.Value);
+        }
+
+        [Fact]
+        public void Delete_ReturnsBadRequest()
+        {
+            // Arrange
+            var categoriaVM = _categoriaVMs.First();
+            _mockCategoriaBusiness.Setup(b => b.Delete(categoriaVM)).Returns(false);
+
+            // Act
+            var result = _categoriaController.Delete(categoriaVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(false, result.Value);
+        }        
     }
 }

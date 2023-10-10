@@ -125,7 +125,7 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            if (_despesaBusiness.Delete(despesa.Id))
+            if (_despesaBusiness.Delete(despesa))
                 return new ObjectResult(new { message = true });
             else
                 return BadRequest(new { message = "Erro ao excluir Despesa!" });

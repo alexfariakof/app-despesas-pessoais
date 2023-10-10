@@ -65,7 +65,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public bool Delete(int idUsuario)
         {
-            return _repositorio.Delete(idUsuario);
+            return _repositorio.Delete(new Usuario{ Id = idUsuario });
         }
     }
 }
