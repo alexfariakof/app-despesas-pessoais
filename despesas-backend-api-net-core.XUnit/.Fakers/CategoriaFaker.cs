@@ -27,7 +27,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return categoriaFaker.Generate();
         }
 
-        public static List<CategoriaVM> CategoriasVM()
+        public static List<CategoriaVM> CategoriasVMs()
         {
             var listCategoriaVM = new List<CategoriaVM>();
             var usuario = UsuarioFaker.GetNewFaker();

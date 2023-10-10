@@ -1,6 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using despesas_backend_api_net_core.XUnit.Fakers;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -118,8 +118,9 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var id = 1;
-            _repositorioMock.Setup(repo => repo.Delete(id)).Returns(true);
+            _repositorioMock.Setup(repo => repo.Delete(new BaseModel { Id = id })).Returns(true);
 
+            // Act
             // Act
             var result = _usuarioBusiness.Delete(id);
 

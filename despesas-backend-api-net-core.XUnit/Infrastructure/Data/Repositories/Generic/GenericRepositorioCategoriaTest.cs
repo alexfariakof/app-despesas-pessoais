@@ -1,28 +1,12 @@
-﻿namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
+﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+
+namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
 {
     public class GenericRepositorioCategoriaTest
     {
         private Mock<RegisterContext> _dbContextMock;
         private Mock<GenericRepositorio<Categoria>> _repository;
-        private Mock<DbSet<T>> MockDbSet<T>(List<T> data) where T : class
-        {
-            var queryableData = data.AsQueryable();
-            var dbSetMock = new Mock<DbSet<T>>();
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryableData.Provider);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryableData.Expression);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryableData.ElementType);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryableData.GetEnumerator());
-            dbSetMock.Setup(d => d.Add(It.IsAny<T>())).Callback<T>(data.Add);
-            dbSetMock.Setup(d => d.Update(It.IsAny<T>())).Callback<T>(item =>
-            {   var index = data.IndexOf(item);
-                if (index != -1)
-                {
-                    data[index] = item;
-                }
-            });
-            dbSetMock.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>(item => data.Remove(item));
-            return dbSetMock;
-        }
+
         public GenericRepositorioCategoriaTest()
         {
             // Arrange
@@ -41,7 +25,7 @@
             // Arrange
             var item = new Categoria();
             var dataSet = new List<Categoria>();
-            var dbSetMock = MockDbSet(dataSet);
+            var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
@@ -61,7 +45,7 @@
             // Arrange
             var items = CategoriaFaker.Categorias();
             var dataSet = items;
-            var dbSetMock = MockDbSet(dataSet);
+            var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
@@ -82,7 +66,7 @@
             var itemId = item.Id;
             
             var dataSet = itens;
-            var dbSetMock = MockDbSet(dataSet);
+            var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Usuario>(_dbContextMock.Object);
 
@@ -100,7 +84,7 @@
         {
             // Arrange
             var dataSet = CategoriaFaker.Categorias();
-            var dbSetMock = MockDbSet(dataSet);
+            var dbSetMock = Usings.MockDbSet(dataSet);
             var existingItem = dataSet.First();
             var updatedItem = dataSet.First();
             updatedItem.Descricao = "Teste Update Item";
@@ -129,12 +113,12 @@
             var itemId = lstCategorias.First().Id;
             var dataSet = lstCategorias;
 
-            var dbSetMock = MockDbSet(dataSet);
+            var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
             // Act
-            var result = repository.Delete(itemId);
+            var result = repository.Delete(new BaseModel { Id = itemId });
 
             // Assert
             Assert.True(result);
@@ -148,12 +132,12 @@
             
             var dataSet = CategoriaFaker.Categorias();
             var itemId = 0;
-            var dbSetMock = MockDbSet(dataSet);
+            var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
             // Act
-            var result = repository.Delete(itemId);
+            var result = repository.Delete(new BaseModel { Id = itemId });
 
             // Assert            
             Assert.False(result);

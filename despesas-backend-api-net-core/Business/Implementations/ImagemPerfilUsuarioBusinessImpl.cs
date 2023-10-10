@@ -70,7 +70,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
                 if (result)
                 {
-                   return _repositorio.Delete(obj.Id);
+                   return _repositorio.Delete(new ImagemPerfilUsuario { Id = obj.Id });
                 }
             }
             return false;

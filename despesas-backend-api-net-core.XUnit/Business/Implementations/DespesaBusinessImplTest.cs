@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -18,16 +19,7 @@ namespace Test.XUnit.Business.Implementations
         public void Create_ReturnsParsedDespesaVM()
         {
             // Arrange
-            var despesaVM = new DespesaVM
-            {
-                Id = 2,
-                Data = DateTime.Now.AddDays(new Random().Next(200)),
-                Descricao = "Teste Despesas 2",
-                Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(),
-                DataVencimento = DateTime.Now.AddDays(new Random().Next(200)),
-                IdUsuario = 1,
-                IdCategoria = 25
-            };
+            var despesaVM = DespesaFaker.DespesasVMs().First();
 
             _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Despesa>())).Returns(new DespesaMap().Parse(despesaVM));
 
@@ -119,7 +111,7 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var id = 1;
-            _repositorioMock.Setup(repo => repo.Delete(id)).Returns(true);
+            _repositorioMock.Setup(repo => repo.Delete(new BaseModel { Id = id })).Returns(true);
 
             // Act
             var result = _despesaBusiness.Delete(id);

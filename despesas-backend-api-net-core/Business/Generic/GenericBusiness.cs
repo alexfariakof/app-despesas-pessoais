@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.Business.Generic
 
         public bool Delete(int id)
         {
-            return _repositorio.Delete(id);
+            return _repositorio.Delete(new BaseModel { Id = id });
         }
 
         public List<T> FindByIdUsuario(int idUsuario)
