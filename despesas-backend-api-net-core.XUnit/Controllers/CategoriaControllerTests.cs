@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -98,14 +99,16 @@ namespace Test.XUnit.Controllers
             var returnedResults = result.Value as List<CategoriaVM>;
             Assert.Equal(_categoriaVMs.Count, returnedResults.Count);
         }
-        /*
+
 
         [Fact]
-        public void GetById_ReturnsOkResult()
+        public void GetById_Returns_OkResult()
         {
-            // Arrange
-            var idCategoria = 1;
+            // Arrange            
             var categoriaVM = _categoriaVMs.First();
+            var idCategoria = categoriaVM.IdUsuario;
+            SetupBearerToken(idCategoria);
+
             _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, categoriaVM.IdUsuario)).Returns(categoriaVM);
 
             // Act
@@ -121,8 +124,9 @@ namespace Test.XUnit.Controllers
         public void GetById_ReturnsNotFound()
         {
             // Arrange
-            var idCategoria = 100; // Assume a non-existent category ID
+            var idCategoria = 0; // Assume a non-existent category ID
             var categoriaVM = _categoriaVMs.First();
+            SetupBearerToken(idCategoria);
             _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, categoriaVM.IdUsuario)).Returns((CategoriaVM)null);
 
             // Act
@@ -133,11 +137,13 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact]
-        public void GetByIdUsuario_ReturnsOkResult()
+        public void GetByIdUsuario_Returns_OkResult()
         {
             // Arrange
-            var idUsuario = 1; // Assume a valid user ID
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(_categoriaVMs);
+            var idUsuario = _categoriaVMs.First().Id;
+            SetupBearerToken(idUsuario);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(_categoriaVMs.FindAll(c => c.IdUsuario == idUsuario));
+
 
             // Act
             var result = _categoriaController.GetByIdUsuario(idUsuario) as OkObjectResult;
@@ -272,7 +278,6 @@ namespace Test.XUnit.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.Equal(false, result.Value);
-        }
-        */
+        }        
     }
 }
