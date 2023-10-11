@@ -176,7 +176,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                if (_perfilFileBusiness.Delete(idUsuario))
+                if (_perfilFileBusiness.Delete(new ImagemPerfilUsuarioVM { IdUsuario = idUsuario }))
                     return Ok(new { message = true });
                 else
                     return Ok(new { message = false });

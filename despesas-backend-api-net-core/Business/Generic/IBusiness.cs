@@ -10,6 +10,6 @@ namespace despesas_backend_api_net_core.Business.Generic
         T FindById(int id, int idUsuario);
         List<T> FindAll(int idUsuario);
         T Update(T obj);
-        bool Delete(int id);
+        bool Delete(T obj);
     }
 }
