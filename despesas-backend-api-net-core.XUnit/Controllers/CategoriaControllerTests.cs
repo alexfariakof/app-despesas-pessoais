@@ -1,7 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
-using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -116,7 +114,7 @@ namespace Test.XUnit.Controllers
             Assert.Null(result);         
         }
 
-        [Fact, Order(4)]
+        [Fact, Order(5)]
         public void GetByIdUsuario_Returns_Ok_Result()
         {
             // Arrange
@@ -146,7 +144,7 @@ namespace Test.XUnit.Controllers
         }
 
 
-        [Fact, Order(5)]
+        [Fact, Order(6)]
         public void GetByIdUsuario_Returns_BadRequest()
         {
             // Arrange
@@ -169,7 +167,7 @@ namespace Test.XUnit.Controllers
         }
 
 
-        [Fact, Order(5)]
+        [Fact, Order(7)]
         public void GetByTipoCategoria_Returns_BadRequest()
         {
             // Arrange
@@ -192,7 +190,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal(message, "Usuário não permitido a realizar operação!");
         }
 
-        [Fact, Order(6)]
+        [Fact, Order(8)]
         public void GetByTipoCategoria_Returns_Ok_Result_TipoCategoria_Todas()
         {
             // Arrange
@@ -219,7 +217,7 @@ namespace Test.XUnit.Controllers
             Assert.IsType<List<CategoriaVM>>(result.Value);
         }
 
-        [Fact, Order(6)]
+        [Fact, Order(9)]
         public void GetByTipoCategoria_Returns_Ok_Result()
         {
             // Arrange
@@ -248,7 +246,7 @@ namespace Test.XUnit.Controllers
 
 
 
-        [Fact, Order(7)]
+        [Fact, Order(10)]
         public void Post_Returns_Ok_Result()
         {
             // Arrange
@@ -280,7 +278,7 @@ namespace Test.XUnit.Controllers
             Assert.True(message);
         }
 
-        [Fact, Order(8)]
+        [Fact, Order(11)]
         public void Post_Returns_Bad_Request_When_BearerToken_Diferenet_Usuario()
         {
             // Arrange
@@ -303,7 +301,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal(message, "Usuário não permitido a realizar operação!");
         }
 
-        [Fact, Order(9)]
+        [Fact, Order(12)]
         public void Post_Returns_Bad_Request_When_TipoCategoria_Todas()
         {
             // Arrange
@@ -333,7 +331,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal(message, "Nenhum tipo de Categoria foi selecionado!");
         }
 
-        [Fact, Order(10)]
+        [Fact, Order(13)]
         public void Post_Returns_Bad_Request_When_TryCatch_ThrowError()
         {
             // Arrange Para ocorrer esta situação o tipo de categotia não pode ser == Todas 
@@ -358,7 +356,7 @@ namespace Test.XUnit.Controllers
 
         }
 
-        [Fact, Order(11)]
+        [Fact, Order(14)]
         public void Put_Returns_Ok_Result()
         {
             // Arrange
@@ -385,7 +383,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal(result.Value, categoriaVM);
         }
 
-        [Fact, Order(12)]
+        [Fact, Order(15)]
         public void Put_Returns_Bad_Request()
         {
             // Arrange
@@ -408,7 +406,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal(message, "Usuário não permitido a realizar operação!");
         }
 
-        [Fact, Order(12)]
+        [Fact, Order(16)]
         public void Put_Returns_Bad_Request_TipoCategoria_Todas()
         {
             // Arrange
@@ -432,7 +430,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal(message, "Nenhum tipo de Categoria foi selecionado!");
         }
 
-        [Fact, Order(12)]
+        [Fact, Order(17)]
         public void Put_Returns_Bad_Request_Categoria_Null()
         {
             // Arrange
@@ -457,7 +455,7 @@ namespace Test.XUnit.Controllers
         }
 
 
-        [Fact, Order(13)]
+        [Fact, Order(18)]
         public void Delete_Returns_Ok_Result()
         {
             // Arrange
@@ -486,7 +484,7 @@ namespace Test.XUnit.Controllers
             Assert.True(message);
         }
 
-        [Fact, Order(14)]
+        [Fact, Order(19)]
         public void Delete_Returns_OK_Result_Message_False()
         {
             // Arrange
@@ -514,7 +512,7 @@ namespace Test.XUnit.Controllers
             Assert.False(message);
         }
 
-        [Fact, Order(15)]
+        [Fact, Order(20)]
         public void Delete_Returns_BadRequest()
         {
             // Arrange
@@ -538,7 +536,6 @@ namespace Test.XUnit.Controllers
         protected Mock<IBusiness<CategoriaVM>> _mockCategoriaBusiness;
         protected CategoriaController _categoriaController;
         protected List<CategoriaVM> _categoriaVMs;
-
         public BaseCategoriaTest()
         {
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
