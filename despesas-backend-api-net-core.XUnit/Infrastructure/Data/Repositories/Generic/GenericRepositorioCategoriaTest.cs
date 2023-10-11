@@ -135,11 +135,11 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
 
 
         [Fact]
-        public void Delete_WithExistingItem_ShouldRemoveItemAndSaveChanges()
+        public void Delete_With_Existing_Item_Should_Remove_Item_And_SaveChanges()
         {
             // Arrange
             var lstCategorias = CategoriaFaker.Categorias();
-            var item = lstCategorias.First();
+            var item = lstCategorias.Last();
             var dataSet = lstCategorias;
 
             var dbSetMock = Usings.MockDbSet(dataSet);

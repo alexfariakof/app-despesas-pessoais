@@ -152,10 +152,10 @@ namespace despesas_backend_api_net_core.Controllers
 
             if (_categoriaBusiness.Delete(categoria))
             {
-                return new ObjectResult(new { Message = true });
+                return new ObjectResult(new { message = true });
             }
 
-            return new ObjectResult(new { Message = false });
+            return new ObjectResult(new { message = false });
         }
         
     }

@@ -32,7 +32,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         {
             var listCategoriaVM = new List<CategoriaVM>();
             var usuario = UsuarioFaker.GetNewFaker();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 99; i++)
             {
                 var categoriaVM = GetNewFakerVM(usuario.Id);
                 listCategoriaVM.Add(categoriaVM);
@@ -44,7 +44,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         {
             var listCategoria = new List<Categoria>();
             var usuario = UsuarioFaker.GetNewFaker();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 99; i++)
             {
                 var categoria = GetNewFaker(usuario);
                 listCategoria.Add(categoria);
