@@ -4,7 +4,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public static class CategoriaFaker
     {
-        static int counter = 0;
+        static int counter = 1;
         public static Categoria GetNewFaker(Usuario usuario)
         {
             var categoriaFaker = new Faker<Categoria>()

@@ -13,8 +13,7 @@ namespace Test.XUnit.Business.Implementations
         {
             _categorias = CategoriaFaker.Categorias();
             _repositorioMock = Usings.MockRepositorio(_categorias);
-            _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);
-            
+            _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);            
         }
 
         [Fact]

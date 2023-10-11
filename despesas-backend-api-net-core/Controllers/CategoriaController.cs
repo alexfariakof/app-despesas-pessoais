@@ -107,7 +107,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                return new ObjectResult(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
+                return new OkObjectResult(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
             }
             catch
             {
@@ -128,12 +128,12 @@ namespace despesas_backend_api_net_core.Controllers
             }
 
             if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
-                return BadRequest(new { messsage = "Nenhum tipo de Categoria foi selecionado!" });
+                return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
             CategoriaVM updateCategoria = _categoriaBusiness.Update(categoria);
 
             if (updateCategoria == null)
-                return BadRequest(new { messsage = "Erro ao atualizar categoria!" });
+                return BadRequest(new { message = "Erro ao atualizar categoria!" });
 
             return new ObjectResult(updateCategoria);
         }
@@ -152,10 +152,10 @@ namespace despesas_backend_api_net_core.Controllers
 
             if (_categoriaBusiness.Delete(categoria))
             {
-                return new ObjectResult(new { Message = true });
+                return new OkObjectResult(new { message = true });
             }
 
-            return new ObjectResult(new { Message = false });
+            return new BadRequestObjectResult(new { message = false });
         }
         
     }

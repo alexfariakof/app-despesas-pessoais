@@ -84,18 +84,25 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         {
             // Arrange
             var dataSet = CategoriaFaker.Categorias();
-            var dbSetMock = Usings.MockDbSet(dataSet);
             var existingItem = dataSet.First();
-            var updatedItem = dataSet.First();
-            updatedItem.Descricao = "Teste Update Item";
+            var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options);
 
-            _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
-
-            
-            var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
+            var repository = new GenericRepositorio<Categoria>(dbContext);
 
             // Act
-            var result = repository.Update(updatedItem);
+            var result = repository.Insert(existingItem);
+            var updatedItem = new Categoria
+            {
+                Id = result.Id,
+                Descricao = "Teste Update Item",
+                UsuarioId = result.Id,
+                Usuario = result.Usuario,
+                TipoCategoria = TipoCategoria.Receita
+            };
+
+            result = repository.Update(updatedItem);
 
             // Assert
             Assert.NotNull(result);
@@ -106,11 +113,33 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
 
 
         [Fact]
-        public void Delete_WithExistingItem_ShouldRemoveItemAndSaveChanges()
+        public void Update_Should_UpdateItem_And_ReturnNull()
+        {
+            // Arrange
+            var dataSet = CategoriaFaker.Categorias();
+            var existingItem = dataSet.First();
+                   
+            var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options);
+
+
+            var repository = new GenericRepositorio<Categoria>(dbContext);
+
+            // Act
+            var result = repository.Update(existingItem);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+
+        [Fact]
+        public void Delete_With_Existing_Item_Should_Remove_Item_And_SaveChanges()
         {
             // Arrange
             var lstCategorias = CategoriaFaker.Categorias();
-            var item = lstCategorias.First();
+            var item = lstCategorias.Last();
             var dataSet = lstCategorias;
 
             var dbSetMock = Usings.MockDbSet(dataSet);
@@ -129,9 +158,8 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         public void Delete_WithNonExistingItem_ShouldNotRemoveItemAndReturnFalse()
         {
             // Arrange
-            
             var dataSet = CategoriaFaker.Categorias();
-            var item = new Categoria { Id  = 0};
+            var item = new Categoria { Id = 0 };
             var dbSetMock = Usings.MockDbSet(dataSet);
             _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
             var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
