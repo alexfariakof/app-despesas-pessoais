@@ -71,6 +71,23 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
+        public void FindById_Returns_Null()
+        {
+            // Arrange
+            var categoria = _categorias.First();
+            var id = categoria.Id;
+            var idUsuario = categoria.UsuarioId;
+
+            _repositorioMock.Setup(repo => repo.Get(id)).Returns((Categoria)null);
+
+            // Act
+            var result = _categoriaBusiness.FindById(0, idUsuario);
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
         public void Update_Returns_Parsed_CategoriaVM()
         {
             // Arrange

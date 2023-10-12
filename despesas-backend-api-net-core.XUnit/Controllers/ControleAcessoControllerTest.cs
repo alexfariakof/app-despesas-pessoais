@@ -336,7 +336,7 @@ namespace Test.XUnit.Controllers
                 Senha = "!12345",
                 ConfirmaSenha = "!12345"
             };
-            SetupBearerToken(2); // Invalid token
+            SetupBearerToken(0); // Invalid token
 
             // Act
             var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
