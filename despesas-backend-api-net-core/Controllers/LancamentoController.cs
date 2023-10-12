@@ -1,11 +1,8 @@
-﻿using Amazon.S3.Model;
-using despesas_backend_api_net_core.Business;
-using despesas_backend_api_net_core.Business.Implementations;
+﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace despesas_backend_api_net_core.Controllers
 {
@@ -108,6 +105,5 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Erro ao gerar dados do Graáfico!" });
             }
         }
-
     }
 }

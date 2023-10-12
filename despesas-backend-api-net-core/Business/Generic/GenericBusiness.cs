@@ -33,9 +33,9 @@ namespace despesas_backend_api_net_core.Business.Generic
             return _repositorio.Update(obj);
         }
 
-        public bool Delete(int id)
+        public bool Delete(T obj)
         {
-            return _repositorio.Delete(id);
+            return _repositorio.Delete(obj);
         }
 
         public List<T> FindByIdUsuario(int idUsuario)

@@ -62,15 +62,15 @@ namespace despesas_backend_api_net_core.Business.Implementations
             }
             return null;            
         }
-        public bool Delete(int idUsaurio)
+        public bool Delete(ImagemPerfilUsuarioVM obj)
         {
-            var obj = FindAll(idUsaurio).Find(prop  => prop.IdUsuario.Equals(idUsaurio));
-            if (obj != null)
+            var imagemPerfilUsuario = FindAll(obj.IdUsuario).Find(prop  => prop.IdUsuario.Equals(obj.IdUsuario));
+            if (imagemPerfilUsuario != null)
             {
-                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
+                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(imagemPerfilUsuario).GetAwaiter().GetResult();
                 if (result)
                 {
-                   return _repositorio.Delete(obj.Id);
+                   return _repositorio.Delete(new ImagemPerfilUsuario { Id = imagemPerfilUsuario.Id });
                 }
             }
             return false;

@@ -8,6 +8,6 @@ namespace despesas_backend_api_net_core.Business
         UsuarioVM FindById(int id);
         List<UsuarioVM> FindAll(int idUsuario);
         UsuarioVM Update(UsuarioVM obj);
-        bool Delete(int id);
+        bool Delete(UsuarioVM usuarioVM);
     }
 }

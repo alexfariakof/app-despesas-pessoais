@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -18,16 +19,7 @@ namespace Test.XUnit.Business.Implementations
         public void Create_ReturnsParsedDespesaVM()
         {
             // Arrange
-            var despesaVM = new DespesaVM
-            {
-                Id = 2,
-                Data = DateTime.Now.AddDays(new Random().Next(200)),
-                Descricao = "Teste Despesas 2",
-                Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(),
-                DataVencimento = DateTime.Now.AddDays(new Random().Next(200)),
-                IdUsuario = 1,
-                IdCategoria = 25
-            };
+            var despesaVM = DespesaFaker.DespesasVMs().First();
 
             _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Despesa>())).Returns(new DespesaMap().Parse(despesaVM));
 
@@ -35,47 +27,54 @@ namespace Test.XUnit.Business.Implementations
             var result = _despesaBusiness.Create(despesaVM);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<DespesaVM>(result);
             Assert.Equal(despesaVM.Id, result.Id);
         }
 
         [Fact]
         public void FindAll_ReturnsListOfDespesaVM()
         {
-            // Arrange         
-            var despesas = Usings.lstDespesas;
+            // Arrange                     
+            var despesas = DespesaFaker.Despesas();
+            var despesa = despesas.First();
+            var idUsuario = despesa.UsuarioId;
+            despesas = despesas.FindAll(d => d.UsuarioId == idUsuario);
             _repositorioMock.Setup(repo => repo.GetAll()).Returns(despesas);
 
             // Act
-            var result = _despesaBusiness.FindAll(1);
+            var result = _despesaBusiness.FindAll(idUsuario);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<List<DespesaVM>>(result);
             Assert.Equal(despesas.Count, result.Count);
-            // Assert other properties as needed
         }
 
         [Fact]
         public void FindById_ReturnsParsedDespesaVM()
         {
             // Arrange
-            var id = 1;
-            var despesa = Usings.lstDespesas.Find(d => d.Id == 2);
+            var despesa = DespesaFaker.Despesas().First();
+            var id = despesa.Id;
 
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(despesa);
 
             // Act
-            var result = _despesaBusiness.FindById(id, 1);
+            var result = _despesaBusiness.FindById(id, despesa.UsuarioId);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<DespesaVM>(result);
             Assert.Equal(despesa.Id, result.Id);
-            // Assert other properties as needed
         }
 
         [Fact]
         public void FindById_ShouldReturnsNullWhenParsedDespesaVM()
         {
             // Arrange
-            var id = 0;
-            var despesa = Usings.lstDespesas.Find(d => d.Id == 2);
+            var despesa = DespesaFaker.Despesas().First();
+            var id = despesa.Id;
 
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(despesa);
 
@@ -83,28 +82,17 @@ namespace Test.XUnit.Business.Implementations
             var result = _despesaBusiness.FindById(id, 0);
 
             // Assert
-            Assert.Equal(result, null);
-            // Assert other properties as needed
+            Assert.Null(result);
         }
-
 
         [Fact]
         public void Update_ReturnsParsedDespesaVM()
         {
-            // Arrange
-            // Arrange
-            var despesaVM = new DespesaVM
-            {
-                Id = 2,
-                Data = DateTime.Now.AddDays(new Random().Next(99)),
-                Descricao = "Teste Despesas 2",
-                Valor = new Random().Next(1, 90001) + (decimal)new Random().NextDouble(),
-                DataVencimento = DateTime.Now.AddDays(new Random().Next(99)),
-                IdUsuario = 1,
-                IdCategoria = 25
-            };
+            // Arrange         
+            var despesaVM = DespesaFaker.DespesasVMs().First();
 
             var despesa = new DespesaMap().Parse(despesaVM);
+            despesa.Descricao = "Teste Update Despesa";
 
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Despesa>())).Returns(despesa);
 
@@ -112,19 +100,21 @@ namespace Test.XUnit.Business.Implementations
             var result = _despesaBusiness.Update(despesaVM);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<DespesaVM>(result);
             Assert.Equal(despesa.Id, result.Id);
-            // Assert other properties as needed
+            Assert.Equal(despesa.Descricao, result.Descricao);
         }
 
         [Fact]
         public void Delete_ReturnsTrue()
         {
             // Arrange
-            var id = 1;
-            _repositorioMock.Setup(repo => repo.Delete(id)).Returns(true);
-
+            var despesa = DespesaFaker.Despesas().First();
+            _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Despesa>())).Returns(true);
+            var despesaVM = new DespesaMap().Parse(despesa);
             // Act
-            var result = _despesaBusiness.Delete(id);
+            var result = _despesaBusiness.Delete(despesaVM);
 
             // Assert
             Assert.True(result);

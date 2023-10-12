@@ -156,9 +156,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             return obj;
         }
 
-        bool IRepositorio<Usuario>.Delete(int id)
+        bool IRepositorio<Usuario>.Delete(Usuario obj)
         {
-            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
+            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try
             {
                 if (result != null)

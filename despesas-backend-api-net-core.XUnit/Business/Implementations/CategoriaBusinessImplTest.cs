@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -7,88 +8,70 @@ namespace Test.XUnit.Business.Implementations
     {
         private readonly Mock<IRepositorio<Categoria>> _repositorioMock;
         private readonly CategoriaBusinessImpl _categoriaBusiness;
-
-
-        private List<Categoria> categorias = new List<Categoria>
-        {
-            new Categoria { Id = 1, Descricao = "Alimentação", UsuarioId = 1, TipoCategoria = TipoCategoria.Despesa, Usuario = new Mock<Usuario>().Object  },
-            new Categoria { Id = 2, Descricao = "Transporte", UsuarioId= 1, TipoCategoria = TipoCategoria.Despesa, Usuario = new Mock<Usuario>().Object },
-            new Categoria { Id = 3, Descricao = "Salário", UsuarioId= 1, TipoCategoria = TipoCategoria.Receita, Usuario = new Mock<Usuario>().Object },
-            new Categoria { Id = 4, Descricao = "Lazer", UsuarioId= 1, TipoCategoria = TipoCategoria.Despesa, Usuario = new Mock<Usuario>().Object },
-            new Categoria { Id = 5, Descricao = "Moradia", UsuarioId= 1, TipoCategoria = TipoCategoria.Despesa , Usuario = new Mock < Usuario >().Object},
-            new Categoria { Id = 6, Descricao = "Investimentos", UsuarioId= 1, TipoCategoria = TipoCategoria.Receita , Usuario = new Mock < Usuario >().Object},
-            new Categoria { Id = 7, Descricao = "Presentes", UsuarioId= 1, TipoCategoria = TipoCategoria.Despesa , Usuario = new Mock < Usuario >().Object},
-            new Categoria { Id = 8, Descricao = "Educação", UsuarioId= 1, TipoCategoria = TipoCategoria.Despesa , Usuario = new Mock < Usuario >().Object},
-            new Categoria { Id = 9, Descricao = "Prêmios", UsuarioId= 1, TipoCategoria = TipoCategoria.Receita , Usuario = new Mock < Usuario >().Object},
-            new Categoria { Id = 10, Descricao = "Saúde", UsuarioId= 1, TipoCategoria = TipoCategoria.Despesa , Usuario = new Mock < Usuario >().Object}
-        };
-
+        private readonly List<Categoria> _categorias;
         public CategoriaBusinessImplTest()
         {
-            _repositorioMock = new Mock<IRepositorio<Categoria>>();
-            _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);
+            _categorias = CategoriaFaker.Categorias();
+            _repositorioMock = Usings.MockRepositorio(_categorias);
+            _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);            
         }
 
         [Fact]
-        public void Create_ReturnsParsedCategoriaVM()
+        public void Create_Returns_Parsed_CategoriaVM()
         {
             // Arrange
-            var categoria = new CategoriaVM
-            {
-                Id = 1,
-                Descricao = "Alimentação",
-                IdUsuario = 1,
-                IdTipoCategoria = (int)TipoCategoria.Despesa
-            };
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
 
-            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Categoria>())).Returns(new CategoriaMap().Parse(categoria));
+            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Categoria>())).Returns(new CategoriaMap().Parse(categoriaVM));
 
             // Act
-            var result = _categoriaBusiness.Create(categoria);
+            var result = _categoriaBusiness.Create(categoriaVM);
 
             // Assert
-            Assert.Equal(categoria.Id, result.Id);
+            Assert.NotNull(result);
+            Assert.IsType<CategoriaVM>(result);
+            Assert.Equal(categoriaVM.Id, result.Id);
         }
 
         [Fact]
-        public void FindAll_ReturnsListOfCategoriaVM()
+        public void FindAll_Returns_List_Of_CategoriaVM()
         {
             // Arrange         
-            _repositorioMock.Setup(repo => repo.GetAll()).Returns(categorias);
+            var categoria = _categorias.First();
+            var mockCategorias = _categorias.FindAll(obj => obj.UsuarioId == categoria.UsuarioId);
+            _repositorioMock.Setup(repo => repo.GetAll()).Returns(mockCategorias);
 
             // Act
-            var result = _categoriaBusiness.FindAll(1);
+            var result = _categoriaBusiness.FindAll(categoria.UsuarioId);
 
             // Assert
-            Assert.Equal(categorias.Count, result.Count);
-            // Assert other properties as needed
+            Assert.NotNull(result);
+            Assert.IsType<List<CategoriaVM>>(result);
+            Assert.Equal(mockCategorias.Count, result.Count);
         }
 
         [Fact]
-        public void FindById_ReturnsParsedCategoriaVM()
+        public void FindById_Returns_Parsed_CategoriaVM()
         {
             // Arrange
-            var id = 1;
-            var categoria = new Categoria
-            {
-                Id = 1,
-                Descricao = "Teste Find By Id ",
-                TipoCategoria = TipoCategoria.Despesa,
-                UsuarioId = 1
-            };
+            var categoria = _categorias.First();
+            var id = categoria.Id;
+            var idUsuario = categoria.UsuarioId;
+            
 
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(categoria);
 
             // Act
-            var result = _categoriaBusiness.FindById(id, 1);
+            var result = _categoriaBusiness.FindById(id, idUsuario);
 
             // Assert
-            Assert.Equal(categoria.Id, result.Id);
-            // Assert other properties as needed
+            Assert.NotNull(result);
+            Assert.IsType<CategoriaVM>(result);
+            Assert.Equal(categoria.Id, result.Id);            
         }
 
         [Fact]
-        public void Update_ReturnsParsedCategoriaVM()
+        public void Update_Returns_Parsed_CategoriaVM()
         {
             // Arrange
             var categoriaVM = new CategoriaVM();
@@ -99,19 +82,21 @@ namespace Test.XUnit.Business.Implementations
             var result = _categoriaBusiness.Update(categoriaVM);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<CategoriaVM>(result);
             Assert.Equal(categoria.Id, result.Id);
-            // Assert other properties as needed
         }
 
         [Fact]
         public void Delete_ReturnsTrue()
         {
             // Arrange
-            var id = 1;
-            _repositorioMock.Setup(repo => repo.Delete(id)).Returns(true);
-
+            var obj = CategoriaFaker.CategoriasVMs().First();
+            var categoria = new CategoriaMap().Parse(obj);
+            _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>())).Returns(true);
+            
             // Act
-            var result = _categoriaBusiness.Delete(id);
+            var result = _categoriaBusiness.Delete(obj);
 
             // Assert
             Assert.True(result);

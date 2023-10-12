@@ -43,9 +43,9 @@ namespace despesas_backend_api_net_core.Controllers
                 var _despesa = _despesaBusiness.FindById(id, _idUsuario);
 
                 if (_despesa == null)
-                    return Ok( new { message = "Nenhuma despesa foi encontrada."});
+                    return BadRequest( new { message = "Nenhuma despesa foi encontrada."});
 
-                return new ObjectResult(new { message = true, despesa = _despesa });
+                return new OkObjectResult(new { message = true, despesa = _despesa });
             }
             catch
             {
@@ -86,7 +86,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                return new ObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
+                return new OkObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
             }
             catch
             {
@@ -110,7 +110,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (updateDespesa == null)
                 return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });
 
-            return new ObjectResult(new { message = true, despesa = updateDespesa });
+            return new OkObjectResult(new { message = true, despesa = updateDespesa });
         }
 
         [HttpDelete]
@@ -125,8 +125,8 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            if (_despesaBusiness.Delete(despesa.Id))
-                return new ObjectResult(new { message = true });
+            if (_despesaBusiness.Delete(despesa))
+                return new OkObjectResult(new { message = true });
             else
                 return BadRequest(new { message = "Erro ao excluir Despesa!" });
         }
