@@ -193,5 +193,363 @@ namespace Test.XUnit.Controllers
             Assert.Equal(usuarioNormal, result.Value);
             _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         }
+        
+        [Fact, Order(8)]
+        public void GetById_Should_Returns_BadRequest_When_InvalidUsuario()
+        {
+            // Arrange
+            var usuarioVM = usuarioNormal;
+            var idUsuario = usuarioVM.Id;
+            SetupBearerToken(0);
+
+            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
+
+            // Act
+            var result = _usuarioController.Post(idUsuario) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
+            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Never);
+        }
+
+        [Fact, Order(9)]
+        public void GetById_Should_Returns_BadRequest_When_Usuario_IsNull()
+        {
+            // Arrange
+            var usuarioVM = usuarioNormal;
+            var idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioVM)null);
+
+            // Act
+            var result = _usuarioController.Post(idUsuario) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não encontrado!", message);
+            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
+        }
+
+        [Fact, Order(10)]
+        public void Post_Should_Returns_BadRequest_When_InvalidUsuario()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(0);
+
+            _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Post(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
+            _mockUsuarioBusiness.Verify(b => b.Create(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(11)]
+        public void Post_Should_Returns_BadRequest_When_Telefone_IsNull()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Telefone = string.Empty;
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Post(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Campo Telefone não pode ser em branco", message);
+            _mockUsuarioBusiness.Verify(b => b.Create(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(12)]
+        public void Post_Should_Returns_BadRequest_When_Email_IsNull()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Email = string.Empty;
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Post(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Campo Login não pode ser em branco", message);
+            _mockUsuarioBusiness.Verify(b => b.Create(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(13)]
+        public void Post_Should_Returns_BadRequest_When_Email_IsNullOrWhiteSpace()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Email = " ";
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Post(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Campo Login não pode ser em branco", message);
+            _mockUsuarioBusiness.Verify(b => b.Create(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(14)]
+        public void Post_Should_Returns_BadRequest_When_Email_IsInvalid()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Email = "invalidEmail.com";
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Post(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Email inválido!", message);
+            _mockUsuarioBusiness.Verify(b => b.Create(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(15)]
+        public void Put_Should_Returns_BadRequest_When_InvalidUsuario()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(0);
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Put(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
+            _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(16)]
+        public void Put_Should_Returns_BadRequest_When_Telefone_IsNull()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Telefone = string.Empty;
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Put(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Campo Telefone não pode ser em branco", message);
+            _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(17)]
+        public void Put_Should_Returns_BadRequest_When_Email_IsNull()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Email = string.Empty;
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Put(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Campo Login não pode ser em branco", message);
+            _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(18)]
+        public void Put_Should_Returns_BadRequest_When_Email_IsNullOrWhiteSpace()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Email = " ";
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Put(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Campo Login não pode ser em branco", message);
+            _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(19)]
+        public void Put_Should_Returns_BadRequest_When_Email_IsInvalid()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            usuarioVM.Email = "invalidEmail.com";
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
+
+            // Act
+            var result = _usuarioController.Put(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Email inválido!", message);
+            _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Never);
+        }
+
+        [Fact, Order(20)]
+        public void Put_Should_Returns_BadRequest_When_Usuario_IsNull()
+        {
+            // Arrange
+            var usuarioVM = _usuarioVMs.First();
+            int idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+
+            // Act
+            var result = _usuarioController.Put(usuarioVM) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não encontrado!", message);
+            _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Once);
+        }
+
+        [Fact, Order(21)]
+        public void Delete_Should_Returns_BadRequest_When_InvalidUsuario()
+        {
+            // Arrange
+            var usuarioVM = usuarioNormal;
+            var idUsuario = usuarioVM.Id;
+            SetupBearerToken(0);
+            // Act
+            var result = _usuarioController.Delete(usuarioNormal, idUsuario) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
+        }
+
+        [Fact, Order(22)]
+        public void Delete_Should_Returns_BadRequest_When_Usuario_IsNotAdministrador()
+        {
+            // Arrange
+            var usuarioVM = usuarioNormal;
+            var idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
+
+            // Act
+            var result = _usuarioController.Delete(usuarioNormal, idUsuario) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Usuário não possui permissão para exectar deleção!", message);
+            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
+        }
+
+        [Fact, Order(23)]
+        public void Delete_Should_Returns_BadRequest_When_Try_To_Delete_Usuario()
+        {
+            // Arrange
+            var usuarioVM = usuarioNormal;
+            var idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(administrador);
+            _mockUsuarioBusiness.Setup(business => business.Delete(usuarioNormal)).Returns(false);
+
+            // Act
+            var result = _usuarioController.Delete(usuarioNormal, idUsuario) as ObjectResult;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsType<BadRequestObjectResult>(result);
+            var value = result.Value;
+            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.Equal("Erro ao excluir Usuário!", message);
+            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
+            _mockUsuarioBusiness.Verify(b => b.Delete(usuarioVM), Times.Once);
+        }
     }
 }

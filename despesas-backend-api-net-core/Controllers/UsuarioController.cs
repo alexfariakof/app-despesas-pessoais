@@ -70,10 +70,10 @@ namespace despesas_backend_api_net_core.Controllers
             }
 
             if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
-                return BadRequest("Campo Telefone não pode ser em branco");
+                return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
             if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
-                return BadRequest("Campo Login não pode ser em branco");
+                return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
             if (!IsValidEmail(usuarioVM.Email))
                 return BadRequest(new { message = "Email inválido!" });
@@ -94,10 +94,10 @@ namespace despesas_backend_api_net_core.Controllers
             }
 
             if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
-                return BadRequest("Campo Telefone não pode ser em branco");
+                return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
             if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
-                return BadRequest("Campo Login não pode ser em branco");
+                return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
             if (!IsValidEmail(usuarioVM.Email))
                 return BadRequest(new { message = "Email inválido!" });
