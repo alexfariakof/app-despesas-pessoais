@@ -57,6 +57,7 @@ namespace Test.XUnit.Controllers
             int idUsuario = usuarioNormal.Id;
             SetupBearerToken(idUsuario);            
             _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(new List<UsuarioVM>());
+            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
             // Act
             var result = _usuarioController.Get(idUsuario) as ObjectResult;
@@ -96,7 +97,7 @@ namespace Test.XUnit.Controllers
             int idUsuario = administrador.Id;
             SetupBearerToken(idUsuario);
             _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_usuarioVMs.FindAll(u => u.Id == idUsuario));
-
+            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(administrador);
             // Act
             var result = _usuarioController.Get(idUsuario) as ObjectResult;
 
@@ -158,7 +159,7 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(administrador.Id);
             
             _mockUsuarioBusiness.Setup(business => business.Delete(usuarioVM)).Returns(true);
-            _mockUsuarioBusiness.Setup(business => business.FindById(usuarioVM.Id)).Returns(usuarioNormal);
+            _mockUsuarioBusiness.Setup(business => business.FindById(administrador.Id)).Returns(administrador);
 
             // Act
             var result = _usuarioController.Delete(usuarioVM, administrador.Id) as ObjectResult;
@@ -176,9 +177,9 @@ namespace Test.XUnit.Controllers
         public void GetById_Should_Return_UsuarioVM()
         {
             // Arrange
-            var usuarioVM = administrador;
-            var idUsuario = usuarioNormal.Id;
-            SetupBearerToken(administrador.Id);            
+            var usuarioVM = usuarioNormal;
+            var idUsuario = usuarioVM.Id;
+            SetupBearerToken(idUsuario);            
             
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
@@ -192,6 +193,5 @@ namespace Test.XUnit.Controllers
             Assert.Equal(usuarioNormal, result.Value);
             _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         }
-
     }
 }

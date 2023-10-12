@@ -121,7 +121,7 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            UsuarioVM _usuario = _usuarioBusiness.FindById(usuarioVM.Id);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario);
             if (_usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return BadRequest(new { message = "Usuário não possui permissão para exectar deleção!" });
                 

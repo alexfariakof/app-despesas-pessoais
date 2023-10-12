@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
+using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
@@ -117,12 +118,11 @@ namespace Test.XUnit.Business.Implementations
         public void Delete_ReturnsTrue()
         {
             // Arrange
-            var obj = _usuarios.First();
+            var obj = new UsuarioMap().Parse(_usuarios.First());
             _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(true);
 
             // Act
-            // Act
-            var result = _usuarioBusiness.Delete(obj.Id);
+            var result = _usuarioBusiness.Delete(obj);
 
             // Assert
             Assert.True(result);
