@@ -8,6 +8,5 @@
         public string Email { get; set; }
         public StatusUsuario StatusUsuario { get; set; }
         public PerfilUsuario PerfilUsuario { get; set; }
-
     }
 }

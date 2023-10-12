@@ -68,7 +68,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(2)]
-        public void Get_Saldo_Should_Return_Saldo()
+        public void GetSaldo_Should_Return_Saldo()
         {
             // Arrange
             int idUsuario = 1;
@@ -87,7 +87,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(3)]
-        public void Get_DadosGraficoPorAno_Should_Return_GraficoData()
+        public void GetDadosGraficoPorAno_Should_Return_GraficoData()
         {
             // Arrange
             var dadosGrafico = GraficoFaker.GetNewFaker();
@@ -107,7 +107,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(4)]
-        public void Get_Returns_BadRequest_When_Usuario_IsInvalid()
+        public void Get_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
@@ -193,7 +193,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(8)]
-        public void Get_Saldo_Returns_BadRequest_When_IsINvalidUsuario()
+        public void GetSaldo_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             int idUsuario = 1;
@@ -213,7 +213,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(9)]
-        public void Get_Saldo_Returns_BadRequest_When_Throws_Error()
+        public void GetSaldo_Returns_BadRequest_When_Throws_Error()
         {
             // Arrange
             int idUsuario = 1;
@@ -235,7 +235,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(10)]
-        public void Get_DadosGraficoPorAno_Returns_BadRequest_When_IsInvalidUsuario()
+        public void GetDadosGraficoPorAno_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var dadosGrafico = GraficoFaker.GetNewFaker();
@@ -255,7 +255,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(11)]
-        public void Get_DadosGraficoPorAno_Returns_BadRequest_When_Throws_Error()
+        public void GetDadosGraficoPorAno_Returns_BadRequest_When_Throws_Error()
         {
             // Arrange
             var dadosGrafico = GraficoFaker.GetNewFaker();

@@ -71,7 +71,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(2)]
-        public void Get_Should_Returns_BadRequest_When_InvalidUsuario()
+        public void Get_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             int idUsuario = _usuarioVMs.Last().Id;
@@ -195,7 +195,7 @@ namespace Test.XUnit.Controllers
         }
         
         [Fact, Order(8)]
-        public void GetById_Should_Returns_BadRequest_When_InvalidUsuario()
+        public void GetById_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var usuarioVM = usuarioNormal;
@@ -239,7 +239,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(10)]
-        public void Post_Should_Returns_BadRequest_When_InvalidUsuario()
+        public void Post_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var usuarioVM = _usuarioVMs.First();
@@ -353,7 +353,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(15)]
-        public void Put_Should_Returns_BadRequest_When_InvalidUsuario()
+        public void Put_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var usuarioVM = _usuarioVMs.First();
@@ -489,7 +489,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(21)]
-        public void Delete_Should_Returns_BadRequest_When_InvalidUsuario()
+        public void Delete_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var usuarioVM = usuarioNormal;

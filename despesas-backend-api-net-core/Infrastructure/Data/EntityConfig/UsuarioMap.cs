@@ -27,9 +27,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 
             builder.Property(m => m.Telefone)
             .HasMaxLength(15)
-            .IsRequired(false)
-            ;
-
+            .IsRequired(false);
+            
             builder.Property(m => m.PerfilUsuario)
             .HasDefaultValue(PerfilUsuario.Usuario);
 

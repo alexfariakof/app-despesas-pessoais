@@ -282,7 +282,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(11)]
-        public void Post_Returns_Bad_Request_When_BearerToken_Diferenet_Usuario()
+        public void Post_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
