@@ -153,11 +153,11 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(6)]
-        public void GetByIdUsuario_Should_Returns_BadRequest_For_Invalid_UserId()
+        public void GetByIdUsuario_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             int idUsuario = _receitaVMs.Last().Id;
-            SetupBearerToken(2);
+            SetupBearerToken(0);
             _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs.FindAll(d => d.IdUsuario == idUsuario));
 
             // Act
@@ -219,7 +219,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(9)]
-        public void Post_Should_Returns_BadRequest_When_Receita_With_InvalidUsuario()
+        public void Post_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
@@ -261,7 +261,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(11)]
-        public void Put_Should_Returns_BadRequest_When_Receita_With_InvalidUsuario()
+        public void Put_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
@@ -349,7 +349,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(15)]
-        public void Delete_Should_Returns_BadRequest_With_InvalidUsuario()
+        public void Delete_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var receitaVM = _receitaVMs[2];

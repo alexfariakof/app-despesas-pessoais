@@ -350,7 +350,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(15)]
-        public void Delete_Should_Returns_BadRequest_With_InvalidUsuario()
+        public void Delete__With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
             var despesaVM = _despesaVMs[2];

@@ -1,34 +1,23 @@
-﻿namespace Test.XUnit.Domain.VM
+﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+
+namespace Test.XUnit.Domain.VM
 {
     public class ReceitaVMTest
     {
-        [Theory]
-        [InlineData(1, "Test Refeita Description 1", 0.99, 1, 11 )]
-        [InlineData(2, "Test Receita Description 2", 0, 1, 3 )]
-        [InlineData(3, "Test Receita Description 3", 2000, 1, 22)]
-        public void ReceitaVM_ShouldSetPropertiesCorrectly(int id, string descricao, Decimal valor, int idUsuario, int idCategoria)
+        [Fact]
+        public void ReceitaVM_ShouldSetPropertiesCorrectly()
         {
             // Arrange and Act
-            var data = DateTime.Now;
-
-            var receitaVM = new ReceitaVM
-            {
-                Id = id,
-                Data = data,
-                Descricao = descricao,
-                Valor = valor,
-                IdUsuario = idUsuario,
-                IdCategoria = idCategoria
-                
-            };
+            var receita = ReceitaFaker.Receitas().First();
+            var receitaVM = new ReceitaMap().Parse(receita);
 
             // Assert
-            Assert.Equal(id, receitaVM .Id);
-            Assert.Equal(data, receitaVM .Data);
-            Assert.Equal(descricao, receitaVM .Descricao);
-            Assert.Equal(valor, receitaVM .Valor);
-            Assert.Equal(idUsuario, receitaVM .IdUsuario);
-            Assert.Equal(idCategoria, receitaVM .IdCategoria);
+            Assert.Equal(receita.Id, receitaVM .Id);
+            Assert.Equal(receita.Data, receitaVM .Data);
+            Assert.Equal(receita.Descricao, receitaVM .Descricao);
+            Assert.Equal(receita.Valor, receitaVM .Valor);
+            Assert.Equal(receita.UsuarioId, receitaVM .IdUsuario);
+            Assert.Equal(receita.CategoriaId, receitaVM .IdCategoria);
         }
     }
 }
