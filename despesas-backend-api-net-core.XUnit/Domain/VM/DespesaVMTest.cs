@@ -1,37 +1,26 @@
-﻿namespace Test.XUnit.Domain.VM
+﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+using System.Reflection;
+
+namespace Test.XUnit.Domain.VM
 {
     public class DespesaVMTest
     {
-        [Theory]
-        [InlineData(1, "Test Despesa Description 1", 400.89, 1, 32 )]
-        [InlineData(2, "Test Despesa Description 2", 0, 1, 3 )]
-        [InlineData(3, "Test Despesa Description 3", 100000, 1, 99)]
-        public void DespesaVM_ShouldSetPropertiesCorrectly(int id, string descricao, Decimal valor, int idUsuario, int idCategoria)
+        [Fact]
+        public void DespesaVM_ShouldSetPropertiesCorrectly()
         {
             // Arrange and Act
-            var data = DateTime.Now;
-            var dataVencimento = DateTime.Now;
-
-            var despesaVM = new DespesaVM
-            {
-                Id = id,
-                Data = data,
-                Descricao = descricao,
-                Valor = valor,
-                DataVencimento = dataVencimento,
-                IdUsuario = idUsuario,
-                IdCategoria = idCategoria
-                
-            };
+            var despesa = DespesaFaker.Despesas().First();
+            var despesaVM = new DespesaMap().Parse(despesa);
 
             // Assert
-            Assert.Equal(id, despesaVM.Id);
-            Assert.Equal(data, despesaVM.Data);
-            Assert.Equal(descricao, despesaVM.Descricao);
-            Assert.Equal(valor, despesaVM.Valor);
-            Assert.Equal(dataVencimento, despesaVM.DataVencimento);
-            Assert.Equal(idUsuario, despesaVM.IdUsuario);
-            Assert.Equal(idCategoria, despesaVM.IdCategoria);
+            Assert.Equal(despesa.Id, despesaVM.Id);
+            Assert.Equal(despesa.Data, despesaVM.Data);
+            Assert.Equal(despesa.Descricao, despesaVM.Descricao);
+            Assert.Equal(despesa.Valor, despesaVM.Valor);
+            Assert.Equal(despesa.DataVencimento, despesaVM.DataVencimento);
+            Assert.Equal(despesa.UsuarioId, despesaVM.IdUsuario);
+            Assert.Equal(despesa.Categoria.Id, despesaVM.IdCategoria);
         }
+        
     }
 }
