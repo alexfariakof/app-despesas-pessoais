@@ -80,7 +80,12 @@ namespace despesas_backend_api_net_core.Controllers
             if (String.IsNullOrEmpty(controleAcesso.Senha) || String.IsNullOrWhiteSpace(controleAcesso.Senha))
                 return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
-            return new ObjectResult(_controleAcessoBusiness.FindByLogin(controleAcesso));
+            var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+            
+            if (result == null)
+                return BadRequest(new { message = "Erro ao realizar login!" });
+
+            return new OkObjectResult(result);
         }
 
 

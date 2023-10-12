@@ -1,28 +1,45 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using Moq;
-using System.Collections.Generic;
-using Xunit;
 
 namespace Test.XUnit.Business.Generic
 {
     public class GenericBusinessTests
     {
+        private Mock<IRepositorio<Categoria>> _mockRepositorio;
+        private GenericBusiness<Categoria> _genericBusiness;
+        private List<Categoria> _categorias;
+
+        public GenericBusinessTests()
+        {
+            _mockRepositorio = new Mock<IRepositorio<Categoria>>(MockBehavior.Default);
+            _genericBusiness = new GenericBusiness<Categoria>(_mockRepositorio.Object);
+            _categorias = CategoriaFaker.Categorias();
+        }
+
         [Fact]
         public void Create_Should_Return_Inserted_Object()
         {
             // Arrange
-            var obj = CategoriaFaker.Categorias().First();
-            var repositoryMock = new Mock<IRepositorio<Categoria>>();
-            repositoryMock.Setup(repo => repo.Insert(obj)).Returns(obj);
-            var business = new GenericBusiness<Categoria>(repositoryMock.Object);
+            var obj = _categorias.Last();
+            var categoria = new Categoria
+            {
+                Descricao = obj.Descricao,
+                TipoCategoria = obj.TipoCategoria,
+                Usuario = obj.Usuario,
+                UsuarioId = obj.UsuarioId
+            };
 
+            _mockRepositorio.Setup(repo => repo.Insert(It.IsAny<Categoria>())).Returns(categoria);
+            
             // Act
-            var result = business.Create(obj);
+            var result = _genericBusiness.Create(categoria);
 
             // Assert
-            Assert.Equal(obj, result);
+            Assert.NotNull(result);
+            Assert.IsType<Categoria>(result);
+            Assert.Equal(categoria.Id, result.Id);
+            _mockRepositorio.Verify(repo => repo.Insert(categoria), Times.Once);
         }
 
         [Fact]
@@ -38,7 +55,10 @@ namespace Test.XUnit.Business.Generic
             var result = business.FindAll(1);
 
             // Assert
+            Assert.NotNull(result);
             Assert.Equal(objects, result);
+            Assert.IsType<List<Usuario>>(result);
+            repositoryMock.Verify(repo => repo.GetAll(), Times.Once);            
         }
 
         [Fact]
@@ -55,7 +75,10 @@ namespace Test.XUnit.Business.Generic
             var result = business.FindById(id, 1);
 
             // Assert
+            Assert.NotNull(result);
             Assert.Equal(obj, result);
+            Assert.IsType<Despesa>(result);
+            repositoryMock.Verify(repo => repo.Get(id), Times.Once);            
         }
 
         [Fact]
@@ -71,7 +94,10 @@ namespace Test.XUnit.Business.Generic
             var result = business.Update(obj);
 
             // Assert
+            Assert.NotNull(result);
             Assert.Equal(obj, result);
+            Assert.IsType<Receita>(result);
+            repositoryMock.Verify(repo => repo.Update(obj), Times.Once);
         }
 
         [Fact]
@@ -88,6 +114,9 @@ namespace Test.XUnit.Business.Generic
             var result = business.Delete(obj);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
+            repositoryMock.Verify(repo => repo.Delete(obj), Times.Once);
             Assert.True(result);
         }
 
@@ -96,14 +125,14 @@ namespace Test.XUnit.Business.Generic
         {
             // Arrange
             var idUsuario = 1;
-            var business = new GenericBusiness<BaseModel>(Mock.Of<IRepositorio<BaseModel>>());
+            var business = new GenericBusiness<Lancamento>(Mock.Of<IRepositorio<Lancamento>>());
 
             // Act
             var result = business.FindByIdUsuario(idUsuario);
 
             // Assert
             Assert.Empty(result);
+            Assert.IsType<List<Lancamento>> (result);
         }
     }
 }
-

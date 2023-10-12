@@ -1,6 +1,4 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
@@ -42,9 +40,9 @@ namespace despesas_backend_api_net_core.Controllers
                 var _receita = _receitaBusiness.FindById(id, _idUsuario);
 
                 if (_receita == null)
-                    return Ok(new { message = "Nenhuma receita foi encontrada." });
+                    return BadRequest(new { message = "Nenhuma receita foi encontrada." });
 
-                return new ObjectResult(new { message = true, receita = _receita });
+                return new OkObjectResult(new { message = true, receita = _receita });
             }
             catch
             {
@@ -66,11 +64,11 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                return new ObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
+                return new OkObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
             }
             catch
             {
-                return BadRequest(new { message = "Não foi possível realizar o cadastro" });
+                return BadRequest(new { message = "Não foi possível realizar o cadastro da receita!" });
             }            
         }
 
@@ -110,7 +108,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (updateReceita == null)
                 return BadRequest(new { message = "Não foi possível atualizar o cadastro da receita." });
 
-            return new ObjectResult(new { message = true, receita = updateReceita });
+            return new OkObjectResult(new { message = true, receita = updateReceita });
         }
 
         [HttpDelete]
@@ -126,7 +124,7 @@ namespace despesas_backend_api_net_core.Controllers
             }
 
             if (_receitaBusiness.Delete(receita))
-                return new ObjectResult(new { message = true });
+                return new OkObjectResult(new { message = true });
             else
                 return BadRequest(new { message = "Erro ao excluir Receita!" });            
             
