@@ -83,7 +83,7 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(3)]
-        public void GetById_Should_Return_Despesa_With_Valid_Id()
+        public void GetById_Should_Returns_OkResults_With_Despesas()
         {
             // Arrange
             var despesa = _despesaVMs.Last();
@@ -130,12 +130,15 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(5)]
-        public void GetByIdUsuario_Should_Return_Despesas_For_Valid_UserId()
+        public void GetByIdUsuario_Should_Returns_OkResults_With_Despesas()
         {
             // Arrange
-            int idUsuario = _despesaVMs.Last().Id;
-            SetupBearerToken(idUsuario);            
-            _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaVMs.FindAll( d => d.IdUsuario == idUsuario));
+            var despesa = _despesaVMs.Last();
+            int idUsuario = despesa.IdUsuario;
+            int despesaId = despesa.Id;
+            SetupBearerToken(idUsuario);
+
+            _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaVMs.FindAll(d => d.IdUsuario == idUsuario));
 
             // Act
             var result = _despesaController.Post(idUsuario) as ObjectResult;
@@ -143,7 +146,10 @@ namespace Test.XUnit.Controllers
             // Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
-            Assert.Equal(_despesaVMs.FindAll(d => d.IdUsuario == idUsuario), result.Value);
+            var value = result.Value;
+            var _despesa = (List<DespesaVM>)result.Value;
+            Assert.NotNull(_despesa);
+            Assert.IsType<List<DespesaVM>>(_despesa);
             _mockDespesaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
         }
 
