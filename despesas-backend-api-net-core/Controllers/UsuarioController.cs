@@ -1,13 +1,9 @@
 ﻿using despesas_backend_api_net_core.Business;
-using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MySqlX.XDevAPI;
-using Org.BouncyCastle.Asn1;
 using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers
@@ -82,7 +78,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (!IsValidEmail(usuarioVM.Email))
                 return BadRequest(new { message = "Email inválido!" });
 
-            return new ObjectResult(_usuarioBusiness.Create(usuarioVM));
+            return new OkObjectResult(_usuarioBusiness.Create(usuarioVM));
         }
 
         [HttpPut]
@@ -110,28 +106,29 @@ namespace despesas_backend_api_net_core.Controllers
             if (updateUsuario == null)
                 return  BadRequest(new { message = "Usuário não encontrado!" });
 
-            return new ObjectResult(updateUsuario);
+            return new OkObjectResult(updateUsuario);
         }
 
         [HttpDelete]
         [Authorize("Bearer")]
-        public IActionResult Delete([FromBody] UsuarioVM usuarioVM)
+        public IActionResult Delete([FromBody] UsuarioVM usuarioVM, [FromBody] int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
-            if (_idUsuario != usuarioVM.Id)
+            if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-
-            UsuarioVM _usuario = _usuarioBusiness.FindById(_idUsuario);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(usuarioVM.Id);
             if (_usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return BadRequest(new { message = "Usuário não possui permissão para exectar deleção!" });
                 
-            _usuarioBusiness.Delete(usuarioVM.Id);
-            return NoContent();
+            if (_usuarioBusiness.Delete(usuarioVM))
+                return new OkObjectResult(new { message = true });
+            else
+                return BadRequest(new { message = "Erro ao excluir Usuário!" });
         }
         private bool IsValidEmail(string email)
         {
