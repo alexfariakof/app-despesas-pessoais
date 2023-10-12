@@ -8,7 +8,7 @@ using Xunit.Extensions.Ordering;
 namespace Test.XUnit.Controllers
 {
     [Order(1)]
-    public class CategoriaControllerTests
+    public class CategoriaControllerTest
     {
         protected Mock<IBusiness<CategoriaVM>> _mockCategoriaBusiness;
         protected CategoriaController _categoriaController;
@@ -35,7 +35,7 @@ namespace Test.XUnit.Controllers
             };
         }
 
-        public CategoriaControllerTests()
+        public CategoriaControllerTest()
         {
             
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
