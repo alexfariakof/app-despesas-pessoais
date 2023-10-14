@@ -112,7 +112,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    throw new Exception("ControleAcessoRepositorioImpl_Create_Exception", ex);
                 }
             }
             return false;
@@ -146,12 +146,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                         _context.SaveChanges();
                         return true;
                     }
-                    return false;                   
-                    
+                    return false;                    
                 }
-                catch 
+                catch (Exception ex)
                 {
-                    return false;
+                    throw ex;
                 }
             }            
         }
@@ -177,7 +176,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("ChangePassword_Erro", ex);
             }
         }
         private bool EnviarEmail(ControleAcesso controleAcesso, string message)
@@ -204,9 +203,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                         client.Send(mail);
                         return true;
                     }
-                    catch
+                    catch(Exception ex) 
                     {
-                        return false;
+                        throw new Exception("EnviarEmail_Erro", ex);
                     }
                 }
             }
