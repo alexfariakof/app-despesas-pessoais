@@ -138,14 +138,15 @@ namespace despesas_backend_api_net_core.Controllers
             return new ObjectResult(updateCategoria);
         }
 
-        [HttpDelete]
+        [HttpDelete("{idCategoria}")]
         [Authorize("Bearer")]
-        public IActionResult Delete([FromBody] CategoriaVM categoria)
+        public IActionResult Delete(int idCategoria)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
-            if (_idUsuario != categoria.IdUsuario)
+            CategoriaVM categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario);
+            if (categoria == null || _idUsuario != categoria.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

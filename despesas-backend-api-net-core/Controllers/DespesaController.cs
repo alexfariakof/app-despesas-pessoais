@@ -113,14 +113,15 @@ namespace despesas_backend_api_net_core.Controllers
             return new OkObjectResult(new { message = true, despesa = updateDespesa });
         }
 
-        [HttpDelete]
+        [HttpDelete("{idDespesa}")]
         [Authorize("Bearer")]
-        public IActionResult Delete([FromBody] DespesaVM despesa)
+        public IActionResult Delete(int idDespesa)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario =  bearerToken.getIdUsuarioFromToken();
 
-            if (_idUsuario != despesa.IdUsuario)
+            DespesaVM despesa = _despesaBusiness.FindById(idDespesa, _idUsuario);
+            if (despesa == null || _idUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
