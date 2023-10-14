@@ -7,7 +7,7 @@
         [InlineData(2, "Teste Usuario Ativo ", "Teste", "219999-9999", "teste1@ativo.com", StatusUsuario.Ativo, PerfilUsuario.Usuario)]
         [InlineData(3, "Teste Usuario Inativo", "Teste", "219999-9999", "teste1@teste.com", StatusUsuario.Inativo, PerfilUsuario.Usuario)]
 
-        public void Usuario_ShouldSetPropertiesCorrectly(int id, string nome, string sobreNome, string telefone, string email, StatusUsuario statusUsuario, PerfilUsuario perfilUsuario)
+        public void Usuario_Should_Set_Properties_Correctly(int id, string nome, string sobreNome, string telefone, string email, StatusUsuario statusUsuario, PerfilUsuario perfilUsuario)
         {
             // Arrange and Act
             var usuario = new Usuario

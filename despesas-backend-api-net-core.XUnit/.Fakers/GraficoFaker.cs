@@ -1,8 +1,6 @@
-﻿using Bogus;
-
-namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace despesas_backend_api_net_core.XUnit.Fakers
 {
-    public static class GraficoFaker
+    public class GraficoFaker
     {
         public static Grafico GetNewFaker()
         {

@@ -26,7 +26,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("GenericRepositorio_Insert", ex); ;
             }
             return item;
         }
@@ -37,11 +37,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             {
                 return dataSet.ToList();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                throw ex;
+                throw new Exception("GenericRepositorio_GetAll", ex);
             }
-
         }
 
         public T Get(int id)
@@ -51,33 +50,35 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
 
         public T Update(T obj)
         {
-            if (!Exists(obj.Id))
-                return null;
-
-            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             try
             {
+                if (!Exists(obj.Id))
+                return null;
+                
+                T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
                 _context.Entry(result).CurrentValues.SetValues(obj);
                 _context.SaveChanges();
                 return obj;
             }
-            catch (Exception ex)
+            catch (Exception ex)            
             {
-                throw ex;
+
+                throw new Exception("GenericRepositorio_Update", ex);
             }
         }
 
         public bool Delete(T obj)
         {
-            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
-            try 
+            try
             {
+                T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
                 if (result != null)
-                { 
-                    if (result.Equals(typeof(Usuario)))
+                {                    
+                    if (result.GetType().Equals(typeof(Usuario)))
                     {
                         var dataSet = _context.Set<Usuario>();
-                        Usuario usaurio = new Usuario { 
+                        Usuario usaurio = new Usuario
+                        {
                             Id = obj.Id,
                             StatusUsuario = StatusUsuario.Inativo
                         };
@@ -92,10 +93,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                 }
                 return false;
             }
-            catch 
+            catch (Exception ex)
             {
-                return false;
-            }            
+                throw new Exception("GenericRepositorio_Delete", ex);
+            }
         }
         public bool Exists(int? id)
         {

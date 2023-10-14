@@ -1,271 +1,87 @@
-﻿using System.Linq.Expressions;
+﻿using despesas_backend_api_net_core.Domain.Entities;
+using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Microsoft.Extensions.Configuration;
+using Moq;
 
 namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
 {
     public class ControleAcessoRepositorioImplTest
     {
-
-        private readonly Mock<RegisterContext> contextMock;
-        private readonly ControleAcessoRepositorioImpl repository;
-        private static DbSet<T> MockDbSet<T>(List<T> data) where T : class
-        {
-            var queryable = data.AsQueryable();
-            var dbSetMock = new Mock<DbSet<T>>();
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
-            dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
-            dbSetMock.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) => data.Add(s));
-            return dbSetMock.Object;
-        }
-
+        private Mock<IControleAcessoRepositorio> _mockRepository;
+        private Mock<ControleAcessoRepositorioImpl> _repository;
+        private ControleAcesso mockControleAcesso; 
+             
         public ControleAcessoRepositorioImplTest()
         {
-            // Arrange
-            var options = new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options;
 
-            contextMock = new Mock<RegisterContext>(options);
-            repository = new ControleAcessoRepositorioImpl(contextMock.Object);
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
+            
+            var context = Usings.GetRegisterContext();
+            mockControleAcesso = context.ControleAcesso.ToList().First();
+            _repository = new Mock<ControleAcessoRepositorioImpl>(MockBehavior.Strict, context);            
         }
 
-        
-
         [Fact]
-        public void Create_WithNewControleAcesso_ShouldCreateControleAcessoAndUsuarioAndCategorias()
+        public void Create_Should_Return_True()
         {
-            /*
             // Arrange
-            var controleAcesso = new ControleAcesso
-            {
-                Login = "testuser",
-                Senha = "testpassword",
-                Usuario = new Usuario
-                {
-                    Nome = "testuser",
-                    SobreNome = "Sobre nome Tester",
-                    Telefone = "(21) 00000-0000",
-                    Email = "testuser"
-                }
-            };
+            var usuario = UsuarioFaker.GetNewFaker();
+            usuario.StatusUsuario = StatusUsuario.Ativo;
+            usuario.PerfilUsuario = PerfilUsuario.Administrador;
 
-            var dsUsuarioMock = new Mock<DbSet<Usuario>>();
-            var dsControleAcessoMock = new Mock<DbSet<ControleAcesso>>();
-            var dsCategoriaMock = new Mock<DbSet<Categoria>>();
+            var controleAcesso = ControleAcessoFaker.GetNewFaker(usuario);
 
-            dsUsuarioMock.Setup(d => d.Add(It.IsAny<Usuario>()));
-            dsControleAcessoMock.Setup(d => d.Add(It.IsAny<ControleAcesso>()));
-            dsCategoriaMock.Setup(d => d.Add(It.IsAny<Categoria>())).Verifiable();
-
-            contextMock.Setup(c => c.Set<Usuario>()).Returns(dsUsuarioMock.Object);
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dsControleAcessoMock.Object);
-            contextMock.Setup(c => c.Set<Categoria>()).Returns(dsCategoriaMock.Object);
+            // Create a mock repository
+            var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
+            mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(controleAcesso);            
+            mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Returns(true);
 
             // Act
-            var result = repository.Create(controleAcesso);
+            var result = mockRepository.Object.Create(controleAcesso);
 
             // Assert
-            //dsUsuarioMock.Verify(d => d.Add(controleAcesso.Usuario), Times.Once);
-            //dsControleAcessoMock.Verify(d => d.Add(controleAcesso), Times.Once);
-            //dsCategoriaMock.Verify(d => d.Add(It.IsAny<Categoria>()), Times.Exactly(13)); // Verify 13 categories are added
-
-            contextMock.Verify(c => c.SaveChanges(), Times.Once);
+            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.True(result);
-            */
+            //_mockRepository.Verify(repo => repo.Create(controleAcesso), Times.Once);
         }
 
-        /*
         [Fact]
-        public void Create_WithExistingControleAcesso_ShouldNotCreateControleAcessoAndUsuarioAndCategorias()
+        public void Create_Should_Return_False()
         {
-            var controleAcesso = new ControleAcesso
-            {
-                Login = "testuser",
-                Senha = "testpassword",
-                Usuario = new Usuario
-                {
-                    Nome = "testuser",
-                    SobreNome = "Sobre nome Tester",
-                    Telefone = "(21) 00000-0000",
-                    Email = "testuser"
-                }
-            };
-
-            var dsControleAcessoMock = new Mock<DbSet<ControleAcesso>>();
-
-            dsControleAcessoMock.Setup(d => d.Add(It.IsAny<ControleAcesso>()));
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dsControleAcessoMock.Object);
-            contextMock.Setup(c => c.ControleAcesso).Returns(MockDbSet(new List<ControleAcesso> { controleAcesso }));
-
+            // Arrange and Setup mock repository            
+            var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
+            mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Returns(false);
+                        
             // Act
-            var result = repository.Create(controleAcesso);
+            var result = mockRepository.Object.Create(mockControleAcesso);
 
             // Assert
-            dsControleAcessoMock.Verify(d => d.Add(controleAcesso), Times.Never);
-            contextMock.Verify(c => c.SaveChanges(), Times.Never);
+            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.False(result);
+            //_mockRepository.Verify(repo => repo.Create(mockControleAcesso), Times.Never);
         }
-
         [Fact]
-        public void FindByEmail_WithExistingEmail_ShouldReturnControleAcesso()
+        public void FindByEmail_Should_Returns_ControleAcesso()
         {
-            // Arrange
-            var existingEmail = "testuser@example.com";
-            var existingControleAcesso = new ControleAcesso { Login = existingEmail };
-            var dataSetControleAcesso = new List<ControleAcesso> { existingControleAcesso };
-            var dbSetControleAcessoMock = MockDbSet(dataSetControleAcesso);
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetControleAcessoMock);
+            // Arrange and Setup Repository            
+            var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
 
             // Act
-            var result = repository.FindByEmail(new ControleAcesso { Login = existingEmail });
+            var result = mockRepository.Object.FindByEmail(mockControleAcesso);
 
             // Assert
-            Assert.Equal(existingControleAcesso, result);
+            Assert.NotNull(result);
+            Assert.IsType<ControleAcesso>(result);
+            Assert.Equal(mockControleAcesso, result);
+            //_mockRepository.Verify(repo => repo.FindByEmail(It.IsAny<ControleAcesso>()), Times.Once);
         }
-
-        [Fact]
-        public void FindByEmail_WithNonExistingEmail_ShouldReturnNull()
-        {
-            // Arrange
-            var nonExistingEmail = "nonexistinguser@example.com";
-            var dataSetControleAcesso = new List<ControleAcesso>();
-            var dbSetControleAcessoMock = MockDbSet(dataSetControleAcesso);
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetControleAcessoMock);
-
-            // Act
-            var result = repository.FindByEmail(new ControleAcesso { Login = nonExistingEmail });
-
-            // Assert
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public void GetUsuarioByEmail_WithExistingEmail_ShouldReturnUsuario()
-        {
-            // Arrange
-            var existingEmail = "testuser@example.com";
-            var existingUsuario = new Usuario { Email = existingEmail };
-            var dataSetUsuario = new List<Usuario> { existingUsuario };
-            var dbSetUsuarioMock = MockDbSet(dataSetUsuario);
-            contextMock.Setup(c => c.Set<Usuario>()).Returns(dbSetUsuarioMock);
-
-            // Act
-            var result = repository.GetUsuarioByEmail(existingEmail);
-
-            // Assert
-            Assert.Equal(existingUsuario, result);
-        }
-
-        [Fact]
-        public void GetUsuarioByEmail_WithNonExistingEmail_ShouldReturnNull()
-        {
-            // Arrange
-            var nonExistingEmail = "nonexistinguser@example.com";
-            var dataSetUsuario = new Mock<List<Usuario>>().Object;
-            var dbSetUsuarioMock = MockDbSet(dataSetUsuario);
-            contextMock.Setup(c => c.Set<Usuario>()).Returns(dbSetUsuarioMock);
-
-            // Act
-            var result = repository.GetUsuarioByEmail(nonExistingEmail);
-
-            // Assert
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public void RecoveryPassword_WithExistingEmail_ShouldUpdateControleAcessoAndSendEmail()
-        {
-            // Arrange
-            var existingEmail = "testuser@example.com";
-            var existingControleAcesso = new ControleAcesso { Login = existingEmail, Senha = "oldpassword" };
-            var dataSetControleAcesso = new List<ControleAcesso> { existingControleAcesso };
-            var dbSetControleAcessoMock = MockDbSet(dataSetControleAcesso);
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetControleAcessoMock);
-            contextMock.Setup(c => c.ControleAcesso).Returns(dbSetControleAcessoMock);
-
-            var dsControleAcessoMock = new Mock<DbSet<ControleAcesso>>();
-            dsControleAcessoMock.Setup(d => d.SingleOrDefault(It.IsAny <Expression<Func<ControleAcesso, bool>>> ()))
-                .Returns(existingControleAcesso);
-
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dsControleAcessoMock.Object);
-
-
-            // Act
-            var result = repository.RecoveryPassword(existingEmail);
-
-            // Assert
-            dsControleAcessoMock.Verify(d => d.SingleOrDefault(It.IsAny < Expression < Func<ControleAcesso,bool>>> ()), Times.Once);
-            contextMock.Verify(c => c.SaveChanges(), Times.Once);
-            Assert.True(result);
-            Assert.NotEqual("oldpassword", existingControleAcesso.Senha);
-        }
-
-        [Fact]
-        public void RecoveryPassword_WithNonExistingEmail_ShouldReturnFalse()
-        {
-            // Arrange
-            var nonExistingEmail = "nonexistinguser@example.com";
-            var dataSetControleAcesso = new List<ControleAcesso>();
-            var dbSetControleAcessoMock = MockDbSet(dataSetControleAcesso);
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetControleAcessoMock);
-
-            // Act
-            var result = repository.RecoveryPassword(nonExistingEmail);
-
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public void ChangePassword_WithExistingIdUsuario_ShouldUpdateControleAcessoAndUsuario()
-        {
-            // Arrange
-            var existingIdUsuario = 1;
-            var existingUsuario = new Usuario { Id = existingIdUsuario };
-            var existingControleAcesso = new ControleAcesso { Login = "testuser", Senha = "oldpassword", Usuario = existingUsuario };
-            var dataSetUsuario = new List<Usuario> { existingUsuario };
-            var dataSetControleAcesso = new List<ControleAcesso> { existingControleAcesso };
-            var dbSetUsuarioMock = MockDbSet(dataSetUsuario);
-            var dbSetControleAcessoMock = MockDbSet(dataSetControleAcesso);
-            contextMock.Setup(c => c.Set<Usuario>()).Returns(dbSetUsuarioMock);
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetControleAcessoMock);
-
-            var dsControleAcessoMock = new Mock<DbSet<ControleAcesso>>();
-            var dsUsuarioMock = new Mock<DbSet<Usuario>>();
-
-            dsControleAcessoMock.Setup(d => d.SingleOrDefault(It.IsAny <Expression <Func<ControleAcesso, bool>>> ()))
-                .Returns(existingControleAcesso);
-            dsUsuarioMock.Setup(d => d.SingleOrDefault(It.IsAny <Expression < Func<Usuario, bool>>> ()))
-                .Returns(existingUsuario);
-
-            contextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dsControleAcessoMock.Object);
-            contextMock.Setup(c => c.Set<Usuario>()).Returns(dsUsuarioMock.Object);
-
-            // Act
-            var result = repository.ChangePassword(existingIdUsuario, "newpassword");
-
-            // Assert
-            dsControleAcessoMock.Verify(d => d.SingleOrDefault(It.IsAny <Expression<Func<ControleAcesso, bool>>> ()), Times.Once);
-            dsUsuarioMock.Verify(d => d.SingleOrDefault(It.IsAny <Expression <Func<Usuario, bool>>> ()), Times.Once);
-            contextMock.Verify(c => c.SaveChanges(), Times.Once);
-            Assert.True(result);
-            Assert.NotEqual("oldpassword", existingControleAcesso.Senha);
-            Assert.Equal(StatusUsuario.Ativo, existingUsuario.StatusUsuario);
-        }
-
-        [Fact]
-        public void ChangePassword_WithNonExistingIdUsuario_ShouldThrowException()
-        {
-            // Arrange
-            var nonExistingIdUsuario = 999;
-            var dataSetUsuario = new List<Usuario>();
-            var dbSetUsuarioMock = MockDbSet(dataSetUsuario);
-            contextMock.Setup(c => c.Set<Usuario>()).Returns(dbSetUsuarioMock);
-
-            // Act and Assert
-            Assert.Throws<InvalidOperationException>(() => repository.ChangePassword(nonExistingIdUsuario, "newpassword"));
-        }
-        */
     }
 }

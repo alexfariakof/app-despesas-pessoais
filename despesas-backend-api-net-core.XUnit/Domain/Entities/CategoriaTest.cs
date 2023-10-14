@@ -6,7 +6,7 @@
         [InlineData(1, "Test Description 1", 1, TipoCategoria.Todas)]
         [InlineData(2, "Test Description 2", 2, TipoCategoria.Despesa)]
         [InlineData(3, "Test Description 3", 3, TipoCategoria.Receita)]
-        public void Categoria_ShouldSetPropertiesCorrectly(int idCatgeoria, string descricao, int idUsuario, TipoCategoria tipoCategoria)
+        public void Categoria_Should_Set_Properties_Correctly(int idCatgeoria, string descricao, int idUsuario, TipoCategoria tipoCategoria)
         {
             // Arrange
             var categoria = new Categoria();

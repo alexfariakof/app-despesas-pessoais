@@ -12,7 +12,6 @@ namespace Test.XUnit.Controllers
     {
         protected Mock<IBusiness<CategoriaVM>> _mockCategoriaBusiness;
         protected CategoriaController _categoriaController;
-        protected List<CategoriaVM> _categoriaVMs;
         private void SetupBearerToken(int userId)
         {
             var claims = new List<Claim>
@@ -40,7 +39,6 @@ namespace Test.XUnit.Controllers
             
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            _categoriaVMs = CategoriaFaker.CategoriasVMs();    
         }
 
         [Fact, Order(1)]
@@ -49,9 +47,9 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             SetupBearerToken(categoriaVM.IdUsuario);
-            _mockCategoriaBusiness.Setup(b => b.FindAll(categoriaVM.IdUsuario)).Returns(_categoriaVMs);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(categoriaVM.IdUsuario)).Returns(CategoriaFaker.CategoriasVMs());
 
             // Act
             var result = _categoriaController.Get() as OkObjectResult;
@@ -60,7 +58,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<List<CategoriaVM>>(result.Value);
             var returnedResults = result.Value as List<CategoriaVM>;
-            Assert.Equal(_categoriaVMs.Count, returnedResults.Count);
+            Assert.Equal(CategoriaFaker.CategoriasVMs().Count, returnedResults.Count);
         }
 
         [Fact, Order(2)]
@@ -69,7 +67,7 @@ namespace Test.XUnit.Controllers
             // Arrange            
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             var idCategoria = categoriaVM.IdUsuario;
             SetupBearerToken(idCategoria);
 
@@ -126,12 +124,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var listCategoriaVM = new List<CategoriaVM>();
-            for (int i = 1; i < 10; i++)
-            {
-                var categoriaVM = CategoriaFaker.GetNewFakerVM(i);
-                listCategoriaVM.Add(categoriaVM);
-            }
+            var listCategoriaVM = CategoriaFaker.CategoriasVMs();
 
             var idUsuario = listCategoriaVM.FirstOrDefault().Id;
             SetupBearerToken(idUsuario);
@@ -156,7 +149,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             var idUsuario = categoriaVM.IdUsuario;
             SetupBearerToken(10);
             _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(new List<CategoriaVM>());
@@ -179,7 +172,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             var idUsuario = categoriaVM.IdUsuario;
             SetupBearerToken(10);
             var tipoCategoria = TipoCategoria.Receita;
@@ -202,13 +195,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var listCategoriaVM = new List<CategoriaVM>();
-            for (int i = 1; i < 10; i++)
-            {
-                var categoriaVM = CategoriaFaker.GetNewFakerVM(i);
-                categoriaVM.IdTipoCategoria = (int)TipoCategoria.Todas;
-                listCategoriaVM.Add(categoriaVM);
-            }
+            var listCategoriaVM = CategoriaFaker.CategoriasVMs();
             var idUsuario = listCategoriaVM.FirstOrDefault().Id;
             SetupBearerToken(idUsuario);
             var tipoCategoria = TipoCategoria.Todas;
@@ -229,13 +216,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var listCategoriaVM = new List<CategoriaVM>();
-            for (int i = 1; i < 10; i++)
-            {
-                var categoriaVM = CategoriaFaker.GetNewFakerVM(i);
-                categoriaVM.IdTipoCategoria = i % 2 == 0 ? (int)TipoCategoria.Receita : (int)TipoCategoria.Despesa;
-                listCategoriaVM.Add(categoriaVM);
-            }
+            var listCategoriaVM = CategoriaFaker.CategoriasVMs();
             var idUsuario = listCategoriaVM.FirstOrDefault().Id;
             SetupBearerToken(idUsuario);
             var tipoCategoria = TipoCategoria.Despesa;
@@ -256,7 +237,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var obj = _categoriaVMs.First();
+            var obj = CategoriaFaker.CategoriasVMs().First();
             var categoriaVM = new CategoriaVM
             {
                 Id = obj.Id,
@@ -287,7 +268,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             SetupBearerToken(0);
             _mockCategoriaBusiness.Setup(b => b.Create(categoriaVM)).Returns(categoriaVM);
 
@@ -308,7 +289,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var obj = _categoriaVMs.First();
+            var obj = CategoriaFaker.CategoriasVMs().First();
             var categoriaVM = new CategoriaVM
             {
                 Id = obj.Id,
@@ -336,7 +317,7 @@ namespace Test.XUnit.Controllers
             // Arrange Para ocorrer esta situação o tipo de categotia não pode ser == Todas 
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             categoriaVM.IdTipoCategoria = (int)TipoCategoria.Receita;
             SetupBearerToken(categoriaVM.IdUsuario);
             _mockCategoriaBusiness.Setup(b => b.Create(categoriaVM)).Throws(new Exception());
@@ -359,7 +340,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var obj = _categoriaVMs.FindAll(c => c.IdTipoCategoria != 0).First();
+            var obj = CategoriaFaker.CategoriasVMs().FindAll(c => c.IdTipoCategoria != 0).First();
             var categoriaVM = new CategoriaVM
             {
                 Id = obj.Id,
@@ -386,7 +367,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             SetupBearerToken(10);
             _mockCategoriaBusiness.Setup(b => b.Update(categoriaVM)).Returns((CategoriaVM)null);
 
@@ -407,7 +388,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             categoriaVM.IdTipoCategoria = 0;
             SetupBearerToken(categoriaVM.IdUsuario);
             _mockCategoriaBusiness.Setup(b => b.Update(categoriaVM)).Returns(categoriaVM);
@@ -429,7 +410,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             categoriaVM.IdTipoCategoria = 1;
             SetupBearerToken(categoriaVM.IdUsuario);
             _mockCategoriaBusiness.Setup(b => b.Update(categoriaVM)).Returns((CategoriaVM)null);
@@ -452,7 +433,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var obj = _categoriaVMs.Last();
+            var obj = CategoriaFaker.CategoriasVMs().Last();
             var categoriaVM = new CategoriaVM
             {
                 Id = obj.Id,
@@ -480,7 +461,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var obj = _categoriaVMs.Last();
+            var obj = CategoriaFaker.CategoriasVMs().Last();
             var categoriaVM = new CategoriaVM
             {
                 Id = obj.Id,
@@ -508,7 +489,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = _categoriaVMs.First();
+            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
             SetupBearerToken(12);
             _mockCategoriaBusiness.Setup(b => b.Delete(categoriaVM)).Returns(false);
 

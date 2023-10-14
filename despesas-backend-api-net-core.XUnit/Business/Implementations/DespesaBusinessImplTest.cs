@@ -16,7 +16,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void Create_ReturnsParsedDespesaVM()
+        public void Create_Should_Returns_Parsed_Despesa_VM()
         {
             // Arrange
             var despesaVM = DespesaFaker.DespesasVMs().First();
@@ -30,10 +30,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<DespesaVM>(result);
             Assert.Equal(despesaVM.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Insert(It.IsAny<Despesa>()), Times.Once);
         }
 
         [Fact]
-        public void FindAll_ReturnsListOfDespesaVM()
+        public void FindAll_Should_Returns_List_Of_DespesaVM()
         {
             // Arrange                     
             var despesas = DespesaFaker.Despesas();
@@ -49,10 +50,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<List<DespesaVM>>(result);
             Assert.Equal(despesas.Count, result.Count);
+            _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
         }
 
         [Fact]
-        public void FindById_ReturnsParsedDespesaVM()
+        public void FindById_Should_Returns_Parsed_DespesaVM()
         {
             // Arrange
             var despesa = DespesaFaker.Despesas().First();
@@ -67,10 +69,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<DespesaVM>(result);
             Assert.Equal(despesa.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
         }
 
         [Fact]
-        public void FindById_ShouldReturnsNullWhenParsedDespesaVM()
+        public void FindById_Should_Returns_Null_When_Parsed_DespesaVM()
         {
             // Arrange
             var despesa = DespesaFaker.Despesas().First();
@@ -83,14 +86,14 @@ namespace Test.XUnit.Business.Implementations
 
             // Assert
             Assert.Null(result);
+            _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
         }
 
         [Fact]
-        public void Update_ReturnsParsedDespesaVM()
+        public void Update_Should_Returns_Parsed_DespesaVM()
         {
             // Arrange         
             var despesaVM = DespesaFaker.DespesasVMs().First();
-
             var despesa = new DespesaMap().Parse(despesaVM);
             despesa.Descricao = "Teste Update Despesa";
 
@@ -104,20 +107,25 @@ namespace Test.XUnit.Business.Implementations
             Assert.IsType<DespesaVM>(result);
             Assert.Equal(despesa.Id, result.Id);
             Assert.Equal(despesa.Descricao, result.Descricao);
+            _repositorioMock.Verify(repo => repo.Update(It.IsAny<Despesa>()), Times.Once);
         }
 
         [Fact]
-        public void Delete_ReturnsTrue()
+        public void Delete_Should_Returns_True()
         {
             // Arrange
             var despesa = DespesaFaker.Despesas().First();
             _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Despesa>())).Returns(true);
             var despesaVM = new DespesaMap().Parse(despesa);
+            
             // Act
             var result = _despesaBusiness.Delete(despesaVM);
 
             // Assert
+            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.True(result);
+            _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Despesa>()), Times.Once);
         }
     }
 }

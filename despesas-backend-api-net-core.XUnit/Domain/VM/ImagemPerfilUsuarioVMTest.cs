@@ -1,4 +1,7 @@
-﻿namespace Test.XUnit.Domain.VM
+﻿using Amazon.S3.Model;
+using System.Reflection;
+
+namespace Test.XUnit.Domain.VM
 {
     public class ImagemPerfilUsuarioVMTest
     {
@@ -6,12 +9,12 @@
         [InlineData(1, "http://localhost:user1", "User 1 ", "jpg", "image/jpg", 1)]
         [InlineData(2, "http://localhost:user2", "User 2 ", "jpeg", "image/jpeg", 2)]
         [InlineData(3, "http://localhost:user3", "User 3 ", "png", "image/png", 3)]
-        public void ImagemPerfilUsuarioVM_ShouldSetPropertiesCorrectly(int id, string url, string name, string type,string contentType, int idUsuario)
+        public void ImagemPerfil_UsuarioVM_Should_Set_Properties_Correctly(int id, string url, string name, string type,string contentType, int idUsuario)
         {
             // Arrange and Act
             var data = DateTime.Now;
             var dataVencimento = DateTime.Now;
-
+            byte[] arquivoData = new byte[] { 1, 2, 3, 4, 5 };
             var imagemPerfilUsuarioVM = new ImagemPerfilUsuarioVM
             {
                 Id = id,
@@ -19,9 +22,14 @@
                 Name = name,
                 Type = type,
                 ContentType = contentType,
-                IdUsuario = idUsuario
+                IdUsuario = idUsuario,
+                
             };
 
+            PropertyInfo arquivoProperty = imagemPerfilUsuarioVM.GetType().GetProperty("Arquivo", BindingFlags.NonPublic | BindingFlags.Instance);
+            arquivoProperty.SetValue(imagemPerfilUsuarioVM, arquivoData);
+
+            
             // Assert
             Assert.Equal(id, imagemPerfilUsuarioVM.Id);
             Assert.Equal(url, imagemPerfilUsuarioVM.Url);
@@ -29,6 +37,7 @@
             Assert.Equal(type, imagemPerfilUsuarioVM.Type);
             Assert.Equal(contentType, imagemPerfilUsuarioVM.ContentType);
             Assert.Equal(idUsuario, imagemPerfilUsuarioVM.IdUsuario);
+            Assert.Equal(arquivoData, arquivoProperty.GetValue(imagemPerfilUsuarioVM));
         }
     }
 }

@@ -1,5 +1,6 @@
 global using Xunit;
 global using Moq;
+global using Bogus;
 global using despesas_backend_api_net_core.Domain.Entities;
 global using despesas_backend_api_net_core.Domain.VM;
 global using despesas_backend_api_net_core.Infrastructure.Data.Common;
@@ -14,9 +15,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+
 public static class Usings
 {
-    public static Mock<DbSet<T>> MockDbSet<T>(List<T> data) where T : class
+    public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext context = null) where T : class
     {
         var queryableData = data.AsQueryable();
         var dbSetMock = new Mock<DbSet<T>>();
@@ -26,11 +28,13 @@ public static class Usings
         dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryableData.GetEnumerator());
         dbSetMock.Setup(d => d.Add(It.IsAny<T>())).Callback<T>(data.Add);
         dbSetMock.Setup(d => d.Update(It.IsAny<T>())).Callback<T>(item =>
-        {
-            var index = data.IndexOf(item);
-            if (index != -1)
+        {// Atualizar a entidade no contexto
+            var existingItem = data.FirstOrDefault(i => i == item);
+            if (existingItem != null)
             {
-                data[index] = item;
+                context.Attach(item);
+                context.Entry(item).State = EntityState.Modified;
+                context.SaveChangesAsync().Wait();
             }
         });
         dbSetMock.Setup(d => d.Remove(It.IsAny<T>())).Callback<T>(item => data.Remove(item));
@@ -99,4 +103,18 @@ public static class Usings
         return tokenHandler.WriteToken(token);
     }
 
+    public static RegisterContext GetRegisterContext()
+    {
+
+        // Set up test data in the in-memory database
+        var options = new DbContextOptionsBuilder<RegisterContext>()
+            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+            .Options;
+
+        var context = new RegisterContext(options);
+        context.ControleAcesso.AddRange(ControleAcessoFaker.ControleAcessos());
+        context.Usuario.AddRange(UsuarioFaker.Usuarios());
+        context.SaveChanges();
+        return context;
+    }
 }

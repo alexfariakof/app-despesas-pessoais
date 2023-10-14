@@ -6,7 +6,7 @@ namespace Test.XUnit.Domain.VM
     public class DespesaVMTest
     {
         [Fact]
-        public void DespesaVM_ShouldSetPropertiesCorrectly()
+        public void DespesaVM_Should_Set_Properties_Correctly()
         {
             // Arrange and Act
             var despesa = DespesaFaker.Despesas().First();

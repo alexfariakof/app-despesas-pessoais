@@ -1,5 +1,7 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,7 +14,7 @@ namespace Test.XUnit.Controllers
     {
         protected Mock<IBusiness<DespesaVM>> _mockDespesaBusiness;
         protected DespesaController _despesaController;
-        protected List<DespesaVM> _despesaVMs;
+        
         private void SetupBearerToken(int idUsuario)
         {
             var claims = new List<Claim>
@@ -40,13 +42,13 @@ namespace Test.XUnit.Controllers
             
             _mockDespesaBusiness = new Mock<IBusiness<DespesaVM>>();
             _despesaController = new DespesaController(_mockDespesaBusiness.Object);
-            _despesaVMs = DespesaFaker.DespesasVMs();    
         }
 
         [Fact, Order(1)]
         public void Get_Should_Return_All_Despesas_From_Usuario()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             int idUsuario = _despesaVMs.First().IdUsuario;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaVMs);
@@ -65,8 +67,8 @@ namespace Test.XUnit.Controllers
         public void GetById_Should_Returns_BadRequest_When_Despesa_NULL()
         {
             // Arrange
-            var despesaVM = _despesaVMs.First();
-            var idUsuario = despesaVM.IdUsuario;
+            var despesaVM = DespesaFaker.DespesasVMs().First();
+            int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns((DespesaVM)null);
 
@@ -86,12 +88,13 @@ namespace Test.XUnit.Controllers
         public void GetById_Should_Returns_OkResults_With_Despesas()
         {
             // Arrange
-            var despesa = _despesaVMs.Last();
-            int idUsuario = despesa.IdUsuario;
+            var despesa = DespesaFaker.Despesas().First();
+            var despesaVM = new DespesaMap().Parse(despesa);
+            int idUsuario = despesaVM.IdUsuario;
             int despesaId = despesa.Id;
             SetupBearerToken(idUsuario);
             
-            _mockDespesaBusiness.Setup(business => business.FindById(despesaId, idUsuario)).Returns(despesa);
+            _mockDespesaBusiness.Setup(business => business.FindById(despesaId, idUsuario)).Returns(despesaVM);
 
             // Act
             var result = _despesaController.Get(despesaId) as ObjectResult;
@@ -112,8 +115,8 @@ namespace Test.XUnit.Controllers
         public void GetById_Should_Returns_BadRequest_When_Throws_Error()
         {
             // Arrange
-            var despesaVM = _despesaVMs.First();
-            var idUsuario = despesaVM.IdUsuario;
+            var despesaVM = DespesaFaker.DespesasVMs().First();
+            int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Throws(new Exception());
 
@@ -133,9 +136,9 @@ namespace Test.XUnit.Controllers
         public void GetByIdUsuario_Should_Returns_OkResults_With_Despesas()
         {
             // Arrange
-            var despesa = _despesaVMs.Last();
-            int idUsuario = despesa.IdUsuario;
-            int despesaId = despesa.Id;
+            var _despesaVMs = DespesaFaker.DespesasVMs();
+            var despesaVM = _despesaVMs.First();
+            int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);
 
             _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaVMs.FindAll(d => d.IdUsuario == idUsuario));
@@ -157,6 +160,7 @@ namespace Test.XUnit.Controllers
         public void GetByIdUsuario_Should_Returns_BadRequest_For_Invalid_UserId()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             int idUsuario = _despesaVMs.Last().Id;
             SetupBearerToken(2);
             _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaVMs.FindAll(d => d.IdUsuario == idUsuario));
@@ -177,6 +181,7 @@ namespace Test.XUnit.Controllers
         public void GetByIdUsuario_Should_Returns_BadRequest_For_UserId_0()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesa = _despesaVMs.Last();
             despesa.IdUsuario = 0;
             int idUsuario = despesa.IdUsuario;
@@ -199,6 +204,7 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Create_Despesa()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
             int idUsuario = despesaVM.IdUsuario ;
             SetupBearerToken(idUsuario);
@@ -223,6 +229,7 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Despesa_With_InvalidUsuario()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(0);
@@ -244,6 +251,7 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Throws_Error()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);
@@ -265,6 +273,7 @@ namespace Test.XUnit.Controllers
         public void Put_Should_Returns_BadRequest_When_Despesa_With_InvalidUsuario()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(0);
@@ -286,6 +295,7 @@ namespace Test.XUnit.Controllers
         public void Put_Should_Update_Despesa()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[4];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);         
@@ -310,6 +320,7 @@ namespace Test.XUnit.Controllers
         public void Put_Should_Returns_BadRequest_When_Despesa_Return_Null()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);
@@ -331,6 +342,7 @@ namespace Test.XUnit.Controllers
         public void Delete_Should_Returns_OkResult()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[2];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);
@@ -353,6 +365,7 @@ namespace Test.XUnit.Controllers
         public void Delete__With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[2];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(0);
@@ -375,6 +388,7 @@ namespace Test.XUnit.Controllers
         public void Delete_Should_Returns_BadResquest_When_Despesa_Not_Deleted()
         {
             // Arrange
+            var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[2];
             int idUsuario = despesaVM.IdUsuario;
             SetupBearerToken(idUsuario);

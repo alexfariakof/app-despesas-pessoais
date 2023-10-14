@@ -116,8 +116,8 @@ namespace Test.XUnit.Business.Generic
             // Assert
             Assert.NotNull(result);
             Assert.IsType<bool>(result);
-            repositoryMock.Verify(repo => repo.Delete(obj), Times.Once);
             Assert.True(result);
+            repositoryMock.Verify(repo => repo.Delete(obj), Times.Once);            
         }
 
         [Fact]
