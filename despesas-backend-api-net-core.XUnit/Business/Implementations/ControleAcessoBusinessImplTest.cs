@@ -29,7 +29,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void Create_ControleAcesso_Returns_True()
+        public void Create_Should_ControleAcesso_Returns_True()
         {
             // Arrange
             var controleAcesso= new ControleAcesso
@@ -57,7 +57,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByLogin_Should_Return_ValidCredentials_And_AccessToken()
+        public void FindByLogin_Should_Return_Valid_Credentials_And_AccessToken()
         {
             // Arrange
             var controleAcesso = new ControleAcesso
@@ -88,7 +88,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByLogin_Should_Returns_UsaurioInexistente()
+        public void FindByLogin_Should_Returns_Usaurio_Inexistente()
         {
             // Arrange
             var controleAcesso = new ControleAcesso { Login = "teste@teste.com" };
@@ -103,7 +103,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByLogin_ShouldReturnsUsuarioInativo()
+        public void FindByLogin_Should_Returns_Usuario_Inativo()
         {
             // Arrange
             var controleAcesso = new ControleAcesso { Login = "teste@teste.com" };
@@ -120,7 +120,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByLogin_Should_Returns_EmailInexistente()
+        public void FindByLogin_Should_Returns_Email_Inexistente()
         {
             // Arrange
             var controleAcesso = new ControleAcesso
@@ -151,7 +151,7 @@ namespace Test.XUnit.Business.Implementations
         }
         
         [Fact]
-        public void FindByLogin_Should_Returns_SenahInvalida()
+        public void FindByLogin_Should_Returns_Senha_Invalida()
         {
             // Arrange
             var controleAcesso = new ControleAcesso
@@ -182,7 +182,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByLogin_Should_Returns_UsuarioInvalido()
+        public void FindByLogin_Should_Returns_Usuario_Invalido()
         {
             // Arrange
             var controleAcesso = new ControleAcesso

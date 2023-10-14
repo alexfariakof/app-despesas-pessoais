@@ -5,7 +5,7 @@ namespace Test.XUnit.Domain.Entities
     public class GraficoTest
     {
         [Fact]
-        public void Grafico_ShouldSetPropertiesCorrectly()
+        public void Grafico_Should_Set_Properties_Correctly()
         {
             var somatorioDespesasPorAno = new Mock<Dictionary<String, decimal>>().Object;
 

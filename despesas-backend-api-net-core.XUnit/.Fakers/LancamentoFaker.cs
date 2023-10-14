@@ -1,12 +1,11 @@
-﻿using Bogus;
-using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+﻿using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 
 namespace despesas_backend_api_net_core.XUnit.Fakers
 {
-    public static class LancamentoFaker
+    public class LancamentoFaker
     {
         static int counter = 1;
+        static int counterVM = 1;
         public static Lancamento GetNewFaker(Usuario usuario, Despesa despesa, Receita receita, Categoria categoria)
         {
             
@@ -30,7 +29,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         public static LancamentoVM GetNewFakerVM(int idusuario, int idDespesa, int idReceita, Categoria categoria)
         {
             var lancamentoVMFaker = new Faker<LancamentoVM>()
-                .RuleFor(l => l.Id, f => counter++)
+                .RuleFor(l => l.Id, f => counterVM++)
                 .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000).ToString("N2"))
                 .RuleFor(l => l.Data, DateTime.Now.AddDays(new Random().Next(99)).ToDateBr())
                 .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
@@ -43,44 +42,39 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return lancamentoVMFaker.Generate();
         }
 
-        public static List<LancamentoVM> LancamentoVMs()
+        public static List<LancamentoVM> LancamentoVMs(Usuario usuario = null, int? idUsuario = null)
         {
-            counter = 1;
-            var listLancamentoVM = new List<LancamentoVM>();
-            var usuario = UsuarioFaker.GetNewFaker();
-            var categoria = CategoriaFaker.GetNewFaker(usuario);
-            var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
-            var receita = ReceitaFaker.GetNewFaker(usuario, categoria);
-
+            var listLancamentoVM = new List<LancamentoVM>();            
             for (int i = 0; i < 10; i++)
             {
+                if (idUsuario == null)
+                    usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
+                else
+                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
+                                
+                var categoria = CategoriaFaker.GetNewFaker(usuario);
+                var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
+                var receita = ReceitaFaker.GetNewFaker(usuario, categoria);
                 var lancamentoVM = GetNewFakerVM(usuario.Id, despesa.Id, receita.Id, categoria);
                 listLancamentoVM.Add(lancamentoVM);
-                usuario = UsuarioFaker.GetNewFaker();
-                categoria = CategoriaFaker.GetNewFaker(usuario);
-                despesa = DespesaFaker.GetNewFaker(usuario, categoria);
-                receita = ReceitaFaker.GetNewFaker(usuario, categoria);
             }
 
             return listLancamentoVM;
         }
-        public static List<Lancamento> Lancamentos()
+        public static List<Lancamento> Lancamentos(Usuario usuario = null, int? idUsuario = null)
         {
-            counter = 1;
-            var listLancamento = new List<Lancamento>();
-            var usuario = UsuarioFaker.GetNewFaker();
-            var categoria = CategoriaFaker.GetNewFaker(usuario);
-            var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
-            var receita = ReceitaFaker.GetNewFaker(usuario, categoria);
-
+            var listLancamento = new List<Lancamento>();            
             for (int i = 0; i < 10; i++)
             {
+                if (idUsuario == null)
+                    usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
+                else
+                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
+                var categoria = CategoriaFaker.GetNewFaker(usuario);
+                var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
+                var receita = ReceitaFaker.GetNewFaker(usuario, categoria);
                 var lancamento = GetNewFaker(usuario, despesa, receita, categoria);
                 listLancamento.Add(lancamento);
-                usuario = UsuarioFaker.GetNewFaker();
-                categoria = CategoriaFaker.GetNewFaker(usuario);
-                despesa = DespesaFaker.GetNewFaker(usuario, categoria);
-                receita = ReceitaFaker.GetNewFaker(usuario, categoria);
             }
             return listLancamento;
         }

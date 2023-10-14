@@ -1,10 +1,9 @@
-﻿using Bogus;
-
-namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace despesas_backend_api_net_core.XUnit.Fakers
 {
-    public static class CategoriaFaker
+    public class CategoriaFaker
     {
         static int counter = 1;
+        static int counterVM = 1;
         public static Categoria GetNewFaker(Usuario usuario)
         {
             var categoriaFaker = new Faker<Categoria>()
@@ -17,35 +16,41 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return categoriaFaker.Generate();
         }
 
-        public static CategoriaVM GetNewFakerVM(int Idusuario)
+        public static CategoriaVM GetNewFakerVM(UsuarioVM usuarioVM)
         {
             var categoriaFaker = new Faker<CategoriaVM>()
-                .RuleFor(c => c.Id, counter++)
+                .RuleFor(c => c.Id, counterVM++)
                 .RuleFor(c => c.Descricao, f => f.Commerce.ProductName())
-                .RuleFor(c => c.IdUsuario, new Random().Next(1, 10))
+                .RuleFor(c => c.IdUsuario, f => usuarioVM.Id)
                 .RuleFor(c => c.IdTipoCategoria, counter % 2 == 0 ? (int)TipoCategoria.Receita : (int)TipoCategoria.Despesa);
 
             return categoriaFaker.Generate();
         }
-
-        public static List<CategoriaVM> CategoriasVMs()
+        public static List<CategoriaVM> CategoriasVMs(UsuarioVM usuarioVM = null, int? idUsaurio = null)
         {
             var listCategoriaVM = new List<CategoriaVM>();
-            var usuario = UsuarioFaker.GetNewFaker();            
             for (int i = 0; i < 10; i++)
             {
-                var categoriaVM = GetNewFakerVM(usuario.Id);
+                if (idUsaurio == null)
+                    usuarioVM = UsuarioFaker.GetNewFakerVM(new Random(1).Next(1, 10));
+                else
+                    usuarioVM = UsuarioFaker.GetNewFakerVM(idUsaurio.Value);
+
+                var categoriaVM = GetNewFakerVM(usuarioVM);
                 listCategoriaVM.Add(categoriaVM);
-                usuario = UsuarioFaker.GetNewFaker();
             }
             return listCategoriaVM;
         }
-        public static List<Categoria> Categorias()
+        public static List<Categoria> Categorias(Usuario usuario = null, int? idUsuario = null)
         {
             var listCategoria = new List<Categoria>();
-            var usuario = UsuarioFaker.GetNewFaker();
             for (int i = 0; i < 10; i++)
             {
+                if (idUsuario == null)
+                    usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
+                else
+                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
+
                 var categoria = GetNewFaker(usuario);
                 listCategoria.Add(categoria);
                 usuario = UsuarioFaker.GetNewFaker();

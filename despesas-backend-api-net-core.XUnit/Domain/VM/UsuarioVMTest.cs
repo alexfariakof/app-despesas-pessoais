@@ -7,7 +7,7 @@
         [InlineData(1, "Usuario 1", "Teste Usuario 1" ,"(21) 99999-9999", "user1@user.com")]
         [InlineData(2, "Usuario 2", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com")]
         [InlineData(3, "Usuario 3", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com")]
-        public void UsuarioVM_ShouldSetPropertiesCorrectly(int id, string nome, string sobreNome, string telefone, string email)
+        public void UsuarioVM_Should_Set_Properties_Correctly(int id, string nome, string sobreNome, string telefone, string email)
         {
             // Arrange and Act
 

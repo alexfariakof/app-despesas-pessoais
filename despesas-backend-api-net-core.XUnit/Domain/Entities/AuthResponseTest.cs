@@ -9,7 +9,7 @@ namespace Test.XUnit.Domain.Entities
         [InlineData(true, "20231006", "31536000", "0123456789ABCDEF", "Acesso realizado com sucesso", typeof(Usuario))]
         [InlineData(false, "", "", "", "Acesso não realizado", typeof(Usuario))]
         [InlineData(false, null, null, null, "Acesso não realizado", typeof(Usuario))]
-        public void AuthResponse_ShouldSetPropertiesCorrectly(bool authenticated, string created, string expiration, string accessToken, string message, Type type)
+        public void AuthResponse_Should_Set_Properties_Correctly(bool authenticated, string created, string expiration, string accessToken, string message, Type type)
         {
             var mockUsuario = Mock.Of<Usuario>();
 

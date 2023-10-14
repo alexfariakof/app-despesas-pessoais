@@ -6,7 +6,7 @@
         [InlineData(1, "Teste 1", "Teste password 1 ", 1 , typeof(Usuario))]
         [InlineData(1, "Teste 2", "Teste password 2 ", 2, typeof(Usuario))]
         [InlineData(3, "Teste 3", "Teste password 3 ", 3, typeof(Usuario))]
-        public void ControleAcesso_ShouldSetPropertiesCorrectly(int id, string login, string senha, int usuarioId, Type type)
+        public void ControleAcesso_Should_Set_Properties_Correctly(int id, string login, string senha, int usuarioId, Type type)
         {
             var mockUsuario = Mock.Of<Usuario>();
 

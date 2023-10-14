@@ -6,7 +6,7 @@ namespace Test.XUnit.Infrastructure.Data.Common
     public class DbSettingsTest
     {
         [Fact]
-        public void DbSettings_ShouldSetConnectionStringCorrectly()
+        public void DbSettings_Should_Set_Connection_String_Correctly()
         {
             // Arrange
             var dbSettings = new DbSettings();
