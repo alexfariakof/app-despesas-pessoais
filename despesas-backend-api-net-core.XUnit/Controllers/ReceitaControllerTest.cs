@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -335,9 +336,10 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(idUsuario);
             
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
+            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
 
             // Act
-            var result = _receitaController.Delete(receitaVM) as ObjectResult;
+            var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -345,7 +347,9 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.True(message);
+            _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Once);
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);
+            
         }
 
         [Fact, Order(15)]
@@ -357,9 +361,9 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(0);
 
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
-
+            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
             // Act
-            var result = _receitaController.Delete(receitaVM) as ObjectResult;
+            var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -367,6 +371,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.Equal("Usuário não permitido a realizar operação!", message);
+            _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Never);
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Never);
         }
 
@@ -379,9 +384,10 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(idUsuario);
 
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(false);
+            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
 
             // Act
-            var result = _receitaController.Delete(receitaVM) as ObjectResult;
+            var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -389,6 +395,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.Equal("Erro ao excluir Receita!", message);
+            _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Once);
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);
         }
     }
