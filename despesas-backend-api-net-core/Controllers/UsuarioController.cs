@@ -109,9 +109,9 @@ namespace despesas_backend_api_net_core.Controllers
             return new OkObjectResult(updateUsuario);
         }
 
-        [HttpDelete]
+        [HttpDelete("{idUsuario}")]
         [Authorize("Bearer")]
-        public IActionResult Delete([FromBody] UsuarioVM usuarioVM, [FromBody] int idUsuario)
+        public IActionResult Delete([FromBody] UsuarioVM usuarioVM, int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario =  bearerToken.getIdUsuarioFromToken();
