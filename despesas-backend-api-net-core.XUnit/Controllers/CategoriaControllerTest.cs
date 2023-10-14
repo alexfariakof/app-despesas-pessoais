@@ -443,9 +443,10 @@ namespace Test.XUnit.Controllers
             };
             SetupBearerToken(10);
             _mockCategoriaBusiness.Setup(b => b.Delete(It.IsAny<CategoriaVM>())).Returns(true);
+            _mockCategoriaBusiness.Setup(b => b.FindById(categoriaVM.Id, categoriaVM.IdUsuario)).Returns(categoriaVM);
 
             // Act
-            var result = _categoriaController.Delete(categoriaVM) as ObjectResult;
+            var result = _categoriaController.Delete(categoriaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -453,6 +454,8 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.True(message);
+            _mockCategoriaBusiness.Verify(b => b.FindById(categoriaVM.Id, categoriaVM.IdUsuario), Times.Once);
+            _mockCategoriaBusiness.Verify(b => b.Delete(categoriaVM), Times.Once);
         }
 
         [Fact, Order(19)]
@@ -471,9 +474,10 @@ namespace Test.XUnit.Controllers
             };
             SetupBearerToken(100);
             _mockCategoriaBusiness.Setup(b => b.Delete(categoriaVM)).Returns(false);
+            _mockCategoriaBusiness.Setup(b => b.FindById(categoriaVM.Id, categoriaVM.IdUsuario)).Returns(categoriaVM);
 
             // Act
-            var result = _categoriaController.Delete(categoriaVM) as ObjectResult;
+            var result = _categoriaController.Delete(categoriaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -481,6 +485,8 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.False(message);
+            _mockCategoriaBusiness.Verify(b => b.FindById(categoriaVM.Id, categoriaVM.IdUsuario), Times.Once);
+            _mockCategoriaBusiness.Verify(b => b.Delete(categoriaVM), Times.Once);
         }
 
         [Fact, Order(20)]
@@ -490,15 +496,18 @@ namespace Test.XUnit.Controllers
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
             var categoriaVM = CategoriaFaker.CategoriasVMs().First();
-            SetupBearerToken(12);
+            SetupBearerToken(0);
             _mockCategoriaBusiness.Setup(b => b.Delete(categoriaVM)).Returns(false);
+            _mockCategoriaBusiness.Setup(b => b.FindById(categoriaVM.Id, categoriaVM.IdUsuario)).Returns(categoriaVM);
 
             // Act
-            var result = _categoriaController.Delete(categoriaVM) as BadRequestObjectResult;
+            var result = _categoriaController.Delete(categoriaVM.Id) as BadRequestObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
+            _mockCategoriaBusiness.Verify(b => b.FindById(categoriaVM.Id, categoriaVM.IdUsuario), Times.Never);
+            _mockCategoriaBusiness.Verify(b => b.Delete(categoriaVM), Times.Never);
         }
     }
 }

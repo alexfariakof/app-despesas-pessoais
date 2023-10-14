@@ -111,14 +111,15 @@ namespace despesas_backend_api_net_core.Controllers
             return new OkObjectResult(new { message = true, receita = updateReceita });
         }
 
-        [HttpDelete]
+        [HttpDelete("{idReceita}")]
         [Authorize("Bearer")]
-        public IActionResult Delete([FromBody] ReceitaVM receita)
+        public IActionResult Delete(int idReceita)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken(); 
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
-            if (_idUsuario != receita.IdUsuario)
+            ReceitaVM receita = _receitaBusiness.FindById(idReceita, _idUsuario);
+            if (receita == null || _idUsuario != receita.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
