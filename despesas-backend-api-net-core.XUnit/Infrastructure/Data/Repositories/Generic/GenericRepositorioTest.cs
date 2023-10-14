@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal.Transform;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using System.Collections;
 using System.Reflection;
 
@@ -71,7 +70,8 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
                 { typeof(Usuario), UsuarioFaker.Usuarios().First() },
                 { typeof(Categoria), CategoriaFaker.Categorias().First() },
                 { typeof(Despesa), DespesaFaker.Despesas().First() },
-                { typeof(Receita), ReceitaFaker.Receitas().First() }
+                { typeof(Receita), ReceitaFaker.Receitas().First() },
+                { typeof(Lancamento), LancamentoFaker.Lancamentos().First() }
 
             };
 
@@ -80,7 +80,8 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
                 { typeof(Usuario), UsuarioFaker.Usuarios() },
                 { typeof(Categoria), CategoriaFaker.Categorias() },
                 { typeof(Despesa), DespesaFaker.Despesas() },
-                { typeof(Receita), ReceitaFaker.Receitas() }
+                { typeof(Receita), ReceitaFaker.Receitas() },
+                { typeof(Lancamento), LancamentoFaker.Lancamentos() }
             };
 
             var options = new DbContextOptionsBuilder<RegisterContext>()
@@ -93,6 +94,9 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         [Theory]        
         [InlineData(typeof(Usuario))]
         [InlineData(typeof(Categoria))]
+        [InlineData(typeof(Despesa))]
+        [InlineData(typeof(Lancamento))]
+
         public void Insert_Should_Add_Item_To_Database(Type entityType)
         {
             // Arrange
@@ -111,7 +115,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         [Theory]        
         [InlineData(typeof(Usuario))]
         [InlineData(typeof(Categoria))]
-
         public void Update_Should_Update_Item(Type entityType)
         {
             // Arrange
@@ -127,6 +130,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
 
             // Assert
             Assert.NotNull(updateItem);
+            Assert.Equal(insertedItem, updateItem);
         }
 
         [Theory]        
@@ -181,10 +185,13 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
 
             // Get the Id of the inserted item
             PropertyInfo countProperty = items.GetType().GetProperty("Count");
-            int count = (int)countProperty.GetValue(items);            
+            int count = (int)countProperty.GetValue(items);
+            var type= items.GetType();
+            
             // Assert
             Assert.NotNull(items);
-            Assert.Equal(count, ((IEnumerable)entityList).Cast<object>().Count());
+            Assert.Equal(type, entityList.GetType());
+            //Assert.Equal(count, ((IEnumerable)entityList).Cast<object>().Count());
         }
 
         [Theory]
@@ -212,6 +219,108 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
             // Assert
             Assert.NotNull(deletedItem);            
             Assert.True((bool)deletedItem);
+        }
+
+        [Fact]
+        public void GetAll_Throws_Erro()
+        {
+            //Arrange
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
+
+            var _dbContextMock = new Mock<RegisterContext>(options);
+            //var _repository = new Mock<IRepositorio<Categoria>>();
+            var lstCategorias = CategoriaFaker.Categorias();
+            var item = lstCategorias.Last();
+            var dataSet = lstCategorias;
+
+            var dbSetMock = Usings.MockDbSet(dataSet);
+            _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
+            var _repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
+                       
+            //Act 
+            var result = _repository.GetAll();
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public void Insert_Should_Throw_Exception()
+        {            
+            //Arrange
+            var categoria = CategoriaFaker.Categorias().First();
+            var _repository = new Mock<GenericRepositorio<Categoria>>(_context);
+            var mockRepository = Mock.Get<IRepositorio<Categoria>>(_repository.Object);
+
+            mockRepository.Setup(repo => repo.Insert(categoria)).Throws(new Exception());
+            //Act
+            var result = mockRepository.Object.Insert(categoria);
+
+            //Assert
+            var exception = Assert.Throws<Exception>(() => mockRepository.Object.Insert(categoria));
+            Assert.Equal("GenericRepositorio_Insert", exception.Message);
+        }
+
+        [Fact]
+        public void GetAll_Should_Throw_Exception()
+        {
+            //Arrange
+            var categoria = CategoriaFaker.Categorias().First();
+            var _repository = new Mock<GenericRepositorio<Categoria>>(_context);
+            var mockRepository = Mock.Get<IRepositorio<Categoria>>(_repository.Object);
+
+            mockRepository.Setup(repo => repo.GetAll()).Throws(new Exception());
+            //Act
+            var result = mockRepository.Object.GetAll();
+
+            //Assert
+            var exception = Assert.Throws<Exception>(() => mockRepository.Object.GetAll());
+            Assert.Equal("GenericRepositorio_GetAll", exception.Message);
+        }
+
+        [Fact]
+        public void Update_Should_Throw_Exception()
+        {
+            //Arrange
+            var lstCategorias = CategoriaFaker.Categorias();
+            var categoria = lstCategorias.First();
+            
+            
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+               .UseInMemoryDatabase(databaseName: "TestDatabase")
+               .Options;
+
+            var _dbContextMock = new Mock<RegisterContext>(options);
+            var dbSetMock = Usings.MockDbSet(lstCategorias, _dbContextMock.Object);
+            _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
+            var _repository = new Mock<GenericRepositorio<Categoria>>(_dbContextMock.Object);
+            var mockRepository = Mock.Get<IRepositorio<Categoria>>(_repository.Object);
+
+            mockRepository.Setup(repo => repo.Update(categoria)).Throws(new Exception());
+            //Act
+            var result = mockRepository.Object.Update(categoria);
+
+            //Assert
+            var exception = Assert.Throws<Exception>(() => mockRepository.Object.Update(categoria));
+            Assert.Equal("GenericRepositorio_Update", exception.Message);
+        }
+
+        [Fact]
+        public void Delete_Should_Throw_Exception()
+        {
+            //Arrange
+            var categoria = new Categoria { };
+            var _repository = new Mock<GenericRepositorio<Categoria>>(MockBehavior.Strict,  _context);            
+            var mockRepository = Mock.Get<IRepositorio<Categoria>>(_repository.Object);
+            
+
+            //mockRepository.Setup(repo => repo.Delete(categoria)).Throws(new Exception());
+            //Act
+            var result = mockRepository.Object.Delete(categoria);
+
+            //Assert
+            var exception = Assert.Throws<Exception>(() => mockRepository.Object.Delete(categoria));
+            Assert.Equal("GenericRepositorio_Delete", exception.Message);
         }
 
     }

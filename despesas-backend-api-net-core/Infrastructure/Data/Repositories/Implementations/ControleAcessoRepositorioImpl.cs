@@ -4,6 +4,7 @@ using System.Net.Mail;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using System.Net;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Microsoft.VisualBasic;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -103,6 +104,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     foreach (Categoria categoria in lstCategoria)
                     {
                         categoria.Usuario = controleAcesso.Usuario;
+                        categoria.UsuarioId = controleAcesso.UsuarioId;
                         dsCategoria.Add(categoria);
                     }
                     _context.SaveChanges();
@@ -117,7 +119,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
         }
         public ControleAcesso FindByEmail(ControleAcesso controleAcesso)
         {
-            return _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
+            var result = _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
+            return result;
         }
         public Usuario GetUsuarioByEmail(string email)
         {

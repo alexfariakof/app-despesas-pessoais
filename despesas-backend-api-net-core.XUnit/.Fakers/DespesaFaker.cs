@@ -1,13 +1,13 @@
-﻿using Bogus;
-
-namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace despesas_backend_api_net_core.XUnit.Fakers
 {
-    public static class DespesaFaker
+    public class DespesaFaker
     {
+        static int counter = 1;
+        static int counterVM = 1;
         public static Despesa GetNewFaker(Usuario usuario, Categoria categoria)
         {
             var despesaFaker = new Faker<Despesa>()
-                .RuleFor(r => r.Id, f => f.Random.Number(1, 100000))
+                .RuleFor(r => r.Id, f => counter++)
                 .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.DataVencimento, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
@@ -23,7 +23,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         public static DespesaVM GetNewFakerVM(int idUsuario, int idCategoria)
         {
             var despesaFaker = new Faker<DespesaVM>()
-                .RuleFor(r => r.Id, f => f.Random.Number(1, 100))
+                .RuleFor(r => r.Id, f => counterVM++)
                 .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.DataVencimento, DateTime.Now.AddDays(new Random().Next(99)))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
@@ -35,31 +35,36 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return despesaFaker.Generate();
         }
 
-        public static List<DespesaVM> DespesasVMs()
+        public static List<DespesaVM> DespesasVMs(UsuarioVM usuarioVM = null, int? idUsaurio = null)
         {
             var listDespesaVM = new List<DespesaVM>();
-            var usuario = UsuarioFaker.GetNewFaker();
-            
             for (int i = 0; i < 10; i++)
             {
-                var categoriaVM = CategoriaFaker.GetNewFakerVM(usuario.Id);
-                var despesaVM = GetNewFakerVM(usuario.Id, categoriaVM.Id);
+                if (idUsaurio == null)
+                    usuarioVM = UsuarioFaker.GetNewFakerVM(new Random().Next(1, 10));
+                else
+                    usuarioVM = UsuarioFaker.GetNewFakerVM(idUsaurio);
+
+                var categoriaVM = CategoriaFaker.GetNewFakerVM(usuarioVM);
+                var despesaVM = GetNewFakerVM(usuarioVM.Id, categoriaVM.Id);
                 listDespesaVM.Add(despesaVM);
-                usuario = UsuarioFaker.GetNewFaker();                
-            }
+            }            
+
             return listDespesaVM;
         }
-        public static List<Despesa> Despesas()
+        public static List<Despesa> Despesas(Usuario usuario = null, int? idUsurio = null)
         {
-            var listDespesa = new List<Despesa>();
-            var usuario = UsuarioFaker.GetNewFaker();
-            
+            var listDespesa = new List<Despesa>();            
             for (int i = 0; i < 10; i++)
             {
+                if (idUsurio == null)
+                    usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
+                else
+                    usuario = UsuarioFaker.GetNewFaker(idUsurio);
+
                 var categoria = CategoriaFaker.GetNewFaker(usuario);
                 var despesa = GetNewFaker(usuario, categoria);
                 listDespesa.Add(despesa);
-                usuario = UsuarioFaker.GetNewFaker();
             }
             return listDespesa;
         }

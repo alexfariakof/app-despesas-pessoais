@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Xunit.Extensions.Ordering;
 
 namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
 {
@@ -57,7 +58,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
             Assert.Equal(items, result);
         }
 
-        [Fact]
+        [Fact, Order(1)]
         public void Get_ShouldReturnItemWithMatchingId()
         {
             // Arrange
