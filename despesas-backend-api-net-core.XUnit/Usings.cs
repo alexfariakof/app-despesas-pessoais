@@ -114,10 +114,6 @@ public static class Usings
         var context = new RegisterContext(options);
         context.ControleAcesso.AddRange(ControleAcessoFaker.ControleAcessos());
         context.Usuario.AddRange(UsuarioFaker.Usuarios());
-        context.Categoria.AddRange(CategoriaFaker.Categorias());
-        context.Despesa.AddRange(DespesaFaker.Despesas());
-        context.Receita.AddRange(ReceitaFaker.Receitas());
-        context.Lancamento.AddRange(LancamentoFaker.Lancamentos());
         context.SaveChanges();
         return context;
     }
