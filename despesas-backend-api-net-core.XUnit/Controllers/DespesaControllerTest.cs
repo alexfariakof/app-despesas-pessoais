@@ -348,9 +348,10 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(idUsuario);
             
             _mockDespesaBusiness.Setup(business => business.Delete(despesaVM)).Returns(true);
+            _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns(despesaVM);
 
             // Act
-            var result = _despesaController.Delete(despesaVM) as ObjectResult;
+            var result = _despesaController.Delete(despesaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -358,6 +359,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.True(message);
+            _mockDespesaBusiness.Verify(business => business.FindById(despesaVM.Id, idUsuario), Times.Once);
             _mockDespesaBusiness.Verify(b => b.Delete(despesaVM), Times.Once);
         }
 
@@ -371,9 +373,9 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(0);
 
             _mockDespesaBusiness.Setup(business => business.Delete(despesaVM)).Returns(true);
-
+            _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns(despesaVM);
             // Act
-            var result = _despesaController.Delete(despesaVM) as ObjectResult;
+            var result = _despesaController.Delete(despesaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -381,6 +383,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.Equal("Usuário não permitido a realizar operação!", message);
+            _mockDespesaBusiness.Verify(business => business.FindById(despesaVM.Id, idUsuario), Times.Never);
             _mockDespesaBusiness.Verify(b => b.Delete(despesaVM), Times.Never);
         }
 
@@ -394,9 +397,10 @@ namespace Test.XUnit.Controllers
             SetupBearerToken(idUsuario);
 
             _mockDespesaBusiness.Setup(business => business.Delete(despesaVM)).Returns(false);
+            _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns(despesaVM);
 
             // Act
-            var result = _despesaController.Delete(despesaVM) as ObjectResult;
+            var result = _despesaController.Delete(despesaVM.Id) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -404,6 +408,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.Equal("Erro ao excluir Despesa!", message);
+            _mockDespesaBusiness.Verify(business => business.FindById(despesaVM.Id, idUsuario), Times.Once);
             _mockDespesaBusiness.Verify(b => b.Delete(despesaVM), Times.Once);
         }
     }
