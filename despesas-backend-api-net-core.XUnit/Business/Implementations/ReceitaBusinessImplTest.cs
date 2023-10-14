@@ -15,7 +15,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void Create_ReturnsParsedReceitaVM()
+        public void Create_Should_Returns_Parsed_ReceitaVM()
         {
             // Arrange
             var receitaVM = ReceitaFaker.ReceitasVMs().First();
@@ -29,10 +29,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<ReceitaVM>(result);
             Assert.Equal(receitaVM.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Insert(It.IsAny<Receita>()), Times.Once());
         }
 
         [Fact]
-        public void FindAll_ReturnsListOfReceitaVM()
+        public void FindAll_Should_Returns_List_Of_ReceitaVM()
         {
             // Arrange         
             var idUsuario = ReceitaFaker.ReceitasVMs().First().Id;
@@ -46,11 +47,12 @@ namespace Test.XUnit.Business.Implementations
             // Assert
             Assert.NotNull(result);
             Assert.IsType<List<ReceitaVM>>(result);
-            Assert.Equal(lstReceitas.Count, result.Count);            
+            Assert.Equal(lstReceitas.Count, result.Count);
+            _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
         }
 
         [Fact]
-        public void FindById_ReturnsParsedReceitaVM()
+        public void FindById_Should_Returns_Parsed_ReceitaVM()
         {
             // Arrange
             var id = ReceitaFaker.ReceitasVMs().First().Id;
@@ -65,10 +67,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<ReceitaVM>(result);
             Assert.Equal(receita.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
         }
 
         [Fact]
-        public void FindById_ShouldReturnsNullWhenParsedReceitaVM()
+        public void FindById_Should_Returns_Null_When_Parsed_ReceitaVM()
         {
             // Arrange
             var id = 0;
@@ -81,11 +84,11 @@ namespace Test.XUnit.Business.Implementations
 
             // Assert
             Assert.Null(result);
+            _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
         }
 
-
         [Fact]
-        public void Update_ReturnsParsedReceitaVM()
+        public void Update_Should_Returns_Parsed_ReceitaVM()
         {
             // Arrange
             var receita = ReceitaFaker.Receitas().First();
@@ -100,10 +103,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<ReceitaVM>(result);
             Assert.Equal(receita.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Update(It.IsAny<Receita>()), Times.Once);
         }
 
         [Fact]
-        public void Delete_ReturnsTrue()
+        public void Delete_Should_Returns_True()
         {
             // Arrange
             var receita = ReceitaFaker.Receitas().First();
@@ -114,7 +118,9 @@ namespace Test.XUnit.Business.Implementations
             var result = _receitaBusiness.Delete(receitaVM);
 
             // Assert
+            Assert.NotNull(result);
             Assert.True(result);
+            _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Receita>()), Times.Once);
         }
     }
 }

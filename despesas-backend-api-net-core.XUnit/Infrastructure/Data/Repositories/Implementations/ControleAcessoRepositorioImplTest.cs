@@ -58,8 +58,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             // Arrange and Setup mock repository            
             var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
             mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Returns(false);
-            //mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
-            
+                        
             // Act
             var result = mockRepository.Object.Create(mockControleAcesso);
 
@@ -74,7 +73,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         {
             // Arrange and Setup Repository            
             var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
-            mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
 
             // Act
             var result = mockRepository.Object.FindByEmail(mockControleAcesso);

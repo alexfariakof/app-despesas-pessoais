@@ -1,7 +1,6 @@
 ﻿
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
-using despesas_backend_api_net_core.XUnit.Fakers;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -10,7 +9,6 @@ namespace Test.XUnit.Business.Implementations
         private readonly Mock<ILancamentoRepositorio> _repositorioMock;
         private readonly LancamentoBusinessImpl _lancamentoBusiness;
 
-
         public LancamentoBusinessImplTest()
         {
             _repositorioMock = new Mock<ILancamentoRepositorio>();
@@ -18,15 +16,12 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByMesAno_ShouldReturnListOfLancamentoVM()
+        public void FindByMesAno_Should_Return_List_Of_LancamentoVM()
         {
-            // Mock the repository method to return some data
-            var lancamentos = LancamentoFaker.Lancamentos();
-
             // Arrange            
+            var lancamentos = LancamentoFaker.Lancamentos();
             var data = lancamentos.First().Data;
             var idUsuario = lancamentos.First().UsuarioId;
-
             
             _repositorioMock.Setup(r => r.FindByMesAno(data, idUsuario)).Returns(lancamentos.FindAll(l => l.UsuarioId == idUsuario));
 
@@ -37,15 +32,14 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<List<LancamentoVM>>(result);            
             Assert.Equal(lancamentos.FindAll(l => l.UsuarioId == idUsuario).Count, result.Count);
+            _repositorioMock.Verify(r => r.FindByMesAno(data, idUsuario), Times.Once);
         }
 
         [Fact]
-        public void GetSaldo_ShouldReturnDecimal()
+        public void GetSaldo_Should_Return_Saldo_As_Decimal()
         {
             // Arrange
             var idUsuario = 1;
-
-            // Mock the repository method to return a decimal value
             var saldo = 100.50m;
             _repositorioMock.Setup(r => r.GetSaldo(idUsuario)).Returns(saldo);
 
@@ -53,17 +47,17 @@ namespace Test.XUnit.Business.Implementations
             var result = _lancamentoBusiness.GetSaldo(idUsuario);
 
             // Assert
+            Assert.NotNull(result);
             Assert.Equal(saldo, result);
+            _repositorioMock.Verify(r => r.GetSaldo(idUsuario), Times.Once);
         }
 
         [Fact]
-        public void GetDadosGraficoByAnoByIdUsuario_ShouldReturnGrafico()
+        public void GetDadosGraficoByAnoByIdUsuario_Should_Return_Grafico()
         {
             // Arrange
             var idUsuario = 1;
             var data = new DateTime(2023, 10, 1);
-
-            // Mock the repository method to return a Grafico object
             var graficoData = GraficoFaker.GetNewFaker();
             _repositorioMock.Setup(r => r.GetDadosGraficoByAno(idUsuario, data)).Returns(graficoData);
 
@@ -73,6 +67,7 @@ namespace Test.XUnit.Business.Implementations
             // Assert
             Assert.NotNull(result);
             Assert.IsType<Grafico>(result);
+            _repositorioMock.Verify(r => r.GetDadosGraficoByAno(idUsuario, data), Times.Once);
         }
     }
 }

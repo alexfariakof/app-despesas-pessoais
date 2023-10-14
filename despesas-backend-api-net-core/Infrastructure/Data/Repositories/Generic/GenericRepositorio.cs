@@ -24,9 +24,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                 dataSet.Add(item);
                 _context.SaveChanges();
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception("GenericRepositorio_Insert"); ;
+                throw new Exception("GenericRepositorio_Insert", ex); ;
             }
             return item;
         }
@@ -37,9 +37,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             {
                 return dataSet.ToList();
             }
-            catch
+            catch(Exception ex)
             {
-                throw new Exception("GenericRepositorio_GetAll");
+                throw new Exception("GenericRepositorio_GetAll", ex);
             }
         }
 
@@ -60,8 +60,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                 _context.SaveChanges();
                 return obj;
             }
-            catch (Exception ex) 
+            catch (Exception ex)            
             {
+
                 throw new Exception("GenericRepositorio_Update", ex);
             }
         }
@@ -72,8 +73,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
             {
                 T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
                 if (result != null)
-                {
-                    if (result.Equals(typeof(Usuario)))
+                {                    
+                    if (result.GetType().Equals(typeof(Usuario)))
                     {
                         var dataSet = _context.Set<Usuario>();
                         Usuario usaurio = new Usuario
@@ -92,9 +93,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic
                 }
                 return false;
             }
-            catch
+            catch (Exception ex)
             {
-                throw new Exception("GenericRepositorio_Delete");
+                throw new Exception("GenericRepositorio_Delete", ex);
             }
         }
         public bool Exists(int? id)

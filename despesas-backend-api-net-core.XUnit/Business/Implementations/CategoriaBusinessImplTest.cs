@@ -18,7 +18,7 @@ namespace Test.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void Create_Returns_Parsed_CategoriaVM()
+        public void Create_Shloud_Returns_Parsed_CategoriaVM()
         {
             // Arrange
             var categoria = _categorias.First();
@@ -33,10 +33,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<CategoriaVM>(result);
             Assert.Equal(categoriaVM.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Insert(It.IsAny<Categoria>()), Times.Once);
         }
 
         [Fact]
-        public void FindAll_Returns_List_Of_CategoriaVM()
+        public void FindAll_Should_Returns_List_Of_CategoriaVM()
         {
             // Arrange         
             var categoria = _categorias.First();
@@ -50,10 +51,11 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<List<CategoriaVM>>(result);
             Assert.Equal(mockCategorias.Count, result.Count);
+            _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
         }
 
         [Fact]
-        public void FindById_Returns_Parsed_CategoriaVM()
+        public void FindById_Should_Returns_Parsed_CategoriaVM()
         {
             // Arrange
             var categoria = _categorias.First();
@@ -69,11 +71,12 @@ namespace Test.XUnit.Business.Implementations
             // Assert
             Assert.NotNull(result);
             Assert.IsType<CategoriaVM>(result);
-            Assert.Equal(categoria.Id, result.Id);            
+            Assert.Equal(categoria.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
         }
 
         [Fact]
-        public void FindById_Returns_Null()
+        public void FindById_Should_Returns_Null()
         {
             // Arrange
             var categoria = _categorias.First();
@@ -87,14 +90,16 @@ namespace Test.XUnit.Business.Implementations
 
             // Assert
             Assert.Null(result);
+            _repositorioMock.Verify(repo => repo.Get(id), Times.Never);
         }
 
         [Fact]
-        public void Update_Returns_Parsed_CategoriaVM()
+        public void Update_Should_Returns_Parsed_CategoriaVM()
         {
             // Arrange
             var categoriaVM = new CategoriaVM();
             var categoria = new Categoria();
+            
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Categoria>())).Returns(categoria);
 
             // Act
@@ -104,21 +109,25 @@ namespace Test.XUnit.Business.Implementations
             Assert.NotNull(result);
             Assert.IsType<CategoriaVM>(result);
             Assert.Equal(categoria.Id, result.Id);
+            _repositorioMock.Verify(repo => repo.Update(It.IsAny<Categoria>()), Times.Once);
         }
 
         [Fact]
-        public void Delete_ReturnsTrue()
+        public void Delete_Should_Returns_True()
         {
             // Arrange
             var categoria = _categorias.First();
             var objToDelete= new CategoriaMap().Parse(categoria);
+
             _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>())).Returns(true);
             
             // Act
             var result = _categoriaBusiness.Delete(objToDelete);
 
             // Assert
+            Assert.NotNull(result);
             Assert.True(result);
+            _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Categoria>()), Times.Once);
         }
     }
 }

@@ -5,7 +5,7 @@
         [Theory]
         [InlineData(1, 1, 2, 0, "R$ 200.00", "Teste Descripition Despesa ", "Despesa", typeof(Categoria))]
         [InlineData(2, 1, 0, 1, "R$ 500.55", "Teste Descripition Receita ", "Receita", typeof(Categoria))]
-        public void LancamentoVM_ShouldSetPropertiesCorrectly(int id, int idUsuario, int idDespesa, int idReceita, string valor, string descricao, string tipoCategoria, Type typeCategoria)
+        public void LancamentoVM_Should_Set_Properties_Correctly(int id, int idUsuario, int idDespesa, int idReceita, string valor, string descricao, string tipoCategoria, Type typeCategoria)
         {
             // Arrange and Act
             var data = DateTime.Now.ToString("yyyy-MM-dd");

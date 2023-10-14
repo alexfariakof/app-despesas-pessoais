@@ -5,7 +5,7 @@ namespace Test.XUnit.Domain.VM
     public class ReceitaVMTest
     {
         [Fact]
-        public void ReceitaVM_ShouldSetPropertiesCorrectly()
+        public void ReceitaVM_Should_Set_Properties_Correctly()
         {
             // Arrange and Act
             var receita = ReceitaFaker.Receitas().First();
