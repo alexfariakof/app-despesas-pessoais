@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -15,8 +15,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             _context = context;
             dataSet = context.Set<Usuario>();
         }
-
-        Usuario IRepositorio<Usuario>.Insert(Usuario item)
+        public Usuario Insert(Usuario item)
         {
             try
             {
@@ -114,7 +113,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             }
             return item;
         }
-        List<Usuario> IRepositorio<Usuario>.GetAll()
+        public List<Usuario> GetAll()
         {
             try
             {
@@ -125,24 +124,23 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 throw new Exception("Erro ao gerar resgistros de todos os usuários!");
             }
         }
-        Usuario IRepositorio<Usuario>.Get(int id)
+        public Usuario Get(int id)
         {
             return dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
         }
-
-        Usuario IRepositorio<Usuario>.Update(Usuario obj)
+        public Usuario Update(Usuario obj)
         {
             if (!Exists(obj.Id))
                 return null;
 
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
-            var controleAcesso = dsControleACesso.SingleOrDefault(prop => prop.UsuarioId.Equals(obj.Id));
-
-            if (controleAcesso is null)
-                return null;
-
+            
             try
             {
+                var controleAcesso = dsControleACesso.SingleOrDefault(prop => prop.UsuarioId.Equals(obj.Id));
+                if (controleAcesso == null)
+                    throw new Exception();
+
                 controleAcesso.Login = obj.Email;
                 _context.Entry(controleAcesso).CurrentValues.SetValues(controleAcesso);
                 var usaurio = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
@@ -155,12 +153,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             }
             return obj;
         }
-
-        bool IRepositorio<Usuario>.Delete(Usuario obj)
-        {
-            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+        public bool Delete(Usuario obj)
+        {            
             try
             {
+                var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
                 if (result != null)
                 {
                     result.StatusUsuario = StatusUsuario.Inativo;
@@ -175,7 +172,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 throw new Exception("Erro ao deletar usuário!");
             }
         }
-
         public bool Exists(int? id)
         {
             return dataSet.Any(prop => prop.Id.Equals(id));

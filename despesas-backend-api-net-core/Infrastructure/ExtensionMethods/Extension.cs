@@ -27,16 +27,16 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         public static DateTime ToDateTime(this string objToConvert)
         {
             DateTime obj;
-
-            DateTime.TryParse(objToConvert, out obj);
+            CultureInfo cultureInfo = new CultureInfo("pt-BR");
+            DateTime.TryParse(objToConvert, cultureInfo,  out obj);
 
             return obj;
         }
         public static decimal ToDecimal(this string objToConvert)
         {
             decimal obj;
-
-            decimal.TryParse(objToConvert, out obj);
+            CultureInfo cultureInfo = new CultureInfo("pt-BR");
+            decimal.TryParse(objToConvert, cultureInfo, out obj);
 
             return obj;
         }
