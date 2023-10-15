@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
+using despesas_backend_api_net_core.Infrastructure.Security;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -9,9 +10,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
     {
         private readonly RegisterContext _context;
         private readonly Crypto _crypto = Crypto.GetInstance;
-        public ControleAcessoRepositorioImpl(RegisterContext context)
+        private readonly IEmailSender _emailSender;
+        public ControleAcessoRepositorioImpl(RegisterContext context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
         public bool Create(ControleAcesso controleAcesso)
         {
@@ -137,7 +140,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 {
                     var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
                     controleAcesso.Senha = _crypto.Encrypt(senhaNova);
-                    if (new EmailSender().SendEmailPassword(controleAcesso.Usuario, senhaNova))
+                    if (_emailSender.SendEmailPassword(controleAcesso.Usuario, senhaNova))
                     {
                         _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                         _context.SaveChanges();
@@ -145,9 +148,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     }
                     return false;                    
                 }
-                catch (Exception ex)
+                catch 
                 {
-                    throw ex;
+                    return false;
                 }
             }            
         }
@@ -160,10 +163,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
-
-            var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
+                        
             try
             {
+                var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
                 controleAcesso.Senha = _crypto.Encrypt(password);
                 _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                 usuario.StatusUsuario = StatusUsuario.Ativo;
