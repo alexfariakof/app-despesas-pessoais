@@ -118,7 +118,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.NotNull(result);
             Assert.IsType<Usuario>(result);
         }
-
         
         [Fact]
         public void RecoveryPassword_Should_Returns_True() // Metodo não pode ser Testado por motivo do Enviar Email
