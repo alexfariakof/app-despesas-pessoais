@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -175,7 +175,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 throw new Exception("Erro ao deletar usuário!");
             }
         }
-
         public bool Exists(int? id)
         {
             return dataSet.Any(prop => prop.Id.Equals(id));

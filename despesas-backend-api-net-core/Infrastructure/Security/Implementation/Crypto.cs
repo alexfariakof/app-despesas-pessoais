@@ -1,20 +1,20 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
+namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
     public class Crypto
     {
         private static byte[] Key; // Chave fixa de 256 bits
         private static Crypto? Instance;
         private Crypto() { }
-        public static Crypto GetInstance 
+        public static Crypto GetInstance
         {
             get
             {
                 return Instance == null ? new() : Instance;
             }
-        
+
         }
 
         public void SetCryptoKey(string _key)

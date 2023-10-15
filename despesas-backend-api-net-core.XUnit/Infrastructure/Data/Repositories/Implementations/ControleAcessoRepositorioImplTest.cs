@@ -1,5 +1,5 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
 

@@ -1,5 +1,4 @@
-﻿
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+﻿using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using System.Security.Cryptography;
 
 namespace Test.XUnit.Infrastructure.Security.Configuration

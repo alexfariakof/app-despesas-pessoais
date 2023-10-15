@@ -3,7 +3,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using despesas_backend_api_net_core.Domain.VM;
 
-namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
+namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
     public class AmazonS3Bucket
     {
@@ -27,7 +27,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
                 return Instance == null ? new() : Instance;
             }
         }
-        public void SetConfiguration(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName) 
+        public void SetConfiguration(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName)
         {
             AccessKey = accessKey;
             SecretAccessKey = secretAccessKey;
