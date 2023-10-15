@@ -7,14 +7,30 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
     public class EmailSender : IEmailSender
     {
-        private readonly int lengthPassword;
+        private readonly int _lengthPassword;
+        private readonly string _hostSmpt;
+        private readonly NetworkCredential _Credentials;
+        public EmailSender()
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+                        
+            _lengthPassword = int.Parse(configuration.GetSection("EmailConfigurations:lengthPassword").Value);
+            _hostSmpt = configuration.GetSection("EmailConfigurations:host").Value;
+            var login = configuration.GetSection("EmailConfigurations:login").Value;
+            var senha = configuration.GetSection("EmailConfigurations:senha").Value;
+            _Credentials = new NetworkCredential(login, senha);
+        }
+
         private  void SendEmail(MailMessage message)
         {
-            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
+            using (SmtpClient client = new SmtpClient(_hostSmpt, 587))
             {
                 client.EnableSsl = true;
                 client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("appdespesaspessoais@gmail.com", "@Toor01!");
+                client.Credentials = _Credentials;
 
                 try
                 {
