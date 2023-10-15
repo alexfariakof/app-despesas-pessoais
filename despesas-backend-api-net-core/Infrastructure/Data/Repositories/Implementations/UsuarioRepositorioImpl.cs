@@ -138,6 +138,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             try
             {
                 var controleAcesso = dsControleACesso.SingleOrDefault(prop => prop.UsuarioId.Equals(obj.Id));
+                if (controleAcesso == null)
+                    throw new Exception();
+
                 controleAcesso.Login = obj.Email;
                 _context.Entry(controleAcesso).CurrentValues.SetValues(controleAcesso);
                 var usaurio = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
