@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+using System.Globalization;
 
 namespace Test.XUnit.Infrastructure.ExtensionMethods
 {
@@ -49,7 +50,8 @@ namespace Test.XUnit.Infrastructure.ExtensionMethods
         public void ToDateTime_Should_Convert_String_To_DateTime(string input, string expected)
         {
             // Arrange
-            DateTime expectedDate = DateTime.Parse(expected);
+            CultureInfo cultureInfo = new CultureInfo("pt-BR");
+            DateTime expectedDate = DateTime.Parse(expected, cultureInfo);
 
             // Act
             DateTime result = input.ToDateTime();
