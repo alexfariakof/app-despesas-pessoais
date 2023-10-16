@@ -118,56 +118,6 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     },
                     new Despesa
                     {
-                        Id = 6,
-                        Data = new DateTime(2023, 1, 6),
-                        Descricao = "Passagem de Ônibus",
-                        Valor = 10.00m,
-                        DataVencimento = new DateTime(2023, 1, 10),
-                        UsuarioId = 2,
-                        CategoriaId = 19
-                    },
-                    new Despesa
-                    {
-                        Id = 7,
-                        Data = new DateTime(2023, 1, 7),
-                        Descricao = "Cinema",
-                        Valor = 20.50m,
-                        DataVencimento = new DateTime(2023, 1, 15),
-                        UsuarioId = 2,
-                        CategoriaId = 20
-                    },
-                    new Despesa
-                    {
-                        Id = 8,
-                        Data = new DateTime(2023, 1, 8),
-                        Descricao = "Outros gastos",
-                        Valor = 15.20m,
-                        DataVencimento = new DateTime(2023, 1, 20),
-                        UsuarioId = 2,
-                        CategoriaId = 21
-                    },
-                    new Despesa
-                    {
-                        Id = 9,
-                        Data = new DateTime(2023, 1, 9),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
-                        DataVencimento = new DateTime(2023, 1, 25),
-                        UsuarioId = 2,
-                        CategoriaId = 22
-                    },
-                    new Despesa
-                    {
-                        Id = 10,
-                        Data = new DateTime(2023, 1, 10),
-                        Descricao = "Prêmio",
-                        Valor = 500.00m,
-                        DataVencimento = new DateTime(2023, 1, 5),
-                        UsuarioId = 2,
-                        CategoriaId = 23
-                    },
-                    new Despesa
-                    {
                         Id = 11,
                         Data = new DateTime(2023, 2, 1),
                         Descricao = "Aluguel",

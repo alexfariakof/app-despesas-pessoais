@@ -46,12 +46,7 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         public static void CreateDataBaseInMemory(this IServiceCollection services)
         {
             services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-            services.AddTransient<IDataSeeder, DataSeederUsuario>();
-            services.AddTransient<IDataSeeder, DataSeederControleAcesso>();
-            services.AddTransient<IDataSeeder, DataSeederCategoria>();
-            services.AddTransient<IDataSeeder, DataSeederDespesa>();
-            services.AddTransient<IDataSeeder, DataSeederReceita>();
-            services.AddTransient<IDataSeeder, DataSeederImagemPerfilUsuario>();
+            services.AddTransient<IDataSeeder, DataSeeder>();
         }
     }
 }
