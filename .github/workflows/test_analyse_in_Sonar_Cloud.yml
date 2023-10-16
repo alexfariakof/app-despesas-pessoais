@@ -66,7 +66,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          dotnet build > $null 2>&1 -restore
+          dotnet build -restore > $null 2>&1 
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="despesas-backend-api-net-core.XUnit/**,  **/Database-local/**,**/.documents/**, *.sql, **/Program.cs, **/Database-In-Memory/**" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
           
           # Executa Build Restore com Teste e coleta o GUID gerado          
