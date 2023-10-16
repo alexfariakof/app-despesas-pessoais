@@ -78,7 +78,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Nenhuma receita foi encontrada.", message);
             _mockReceitaBusiness.Verify(b => b.FindById(receitaVM.Id, idUsuario), Times.Once);
         }
@@ -125,7 +125,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Não foi possível realizar a consulta da receita.", message);
             _mockReceitaBusiness.Verify(b => b.FindById(receitaVM.Id, idUsuario), Times.Once);
         }
@@ -168,7 +168,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
         }
@@ -190,7 +190,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário inexistente!", message);
             _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
         }
@@ -235,7 +235,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Never);
         }
@@ -256,7 +256,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Não foi possível realizar o cadastro da receita!", message);
             _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Once);
         }
@@ -277,7 +277,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Never);
         }
@@ -322,7 +322,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Não foi possível atualizar o cadastro da receita.", message);
             _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Once);
         }
@@ -369,7 +369,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Never);
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Never);
@@ -393,7 +393,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao excluir Receita!", message);
             _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Once);
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);

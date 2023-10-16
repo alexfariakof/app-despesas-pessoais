@@ -35,13 +35,16 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-builder.Services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+
 
 ConfigureAutorization(builder.Services, builder.Configuration);
 ConfigureCrypto(builder.Services, builder.Configuration);
 ConfigureAmazonS3Access(builder.Services, builder.Configuration);
+builder.Services.CreateDataBaseInMemory();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+
+
 
 var app = builder.Build();
 
