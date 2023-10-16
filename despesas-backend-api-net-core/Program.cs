@@ -1,9 +1,10 @@
-using despesas_backend_api_net_core.Database_In_Memory;
+using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,10 +34,12 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
+builder.Services.AddDbContext<RegisterContext>(options =>
+options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+
 ConfigureAutorization(builder.Services, builder.Configuration);
 ConfigureCrypto(builder.Services, builder.Configuration);
 ConfigureAmazonS3Access(builder.Services, builder.Configuration);
-builder.Services.CreateDataBaseInMemory();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
@@ -59,15 +62,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseStaticFiles();
 
+
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var dataSeeder = services.GetRequiredService<IDataSeeder>();
-    dataSeeder.SeedData();
-}
-
 app.Run();
 
 static void ConfigureAutorization(IServiceCollection services, IConfiguration configuration)
