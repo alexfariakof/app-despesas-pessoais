@@ -6,6 +6,8 @@ using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations;
+using despesas_backend_api_net_core.Infrastructure.Security;
+using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 
 namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
@@ -28,7 +30,9 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
         {
             services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
             services.AddScoped(typeof(IRepositorio<Usuario>), typeof(UsuarioRepositorioImpl));
-            services.AddScoped(typeof(IControleAcessoRepositorio), typeof(ControleAcessoRepositorioImpl));
+            services.AddScoped<IControleAcessoRepositorio, ControleAcessoRepositorioImpl>();
+            services.AddScoped<IEmailSender, EmailSender>();           
+            //services.AddScoped(typeof(IControleAcessoRepositorio), typeof(ControleAcessoRepositorioImpl));
             services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));
 
             return services;

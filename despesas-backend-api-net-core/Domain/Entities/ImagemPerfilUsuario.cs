@@ -1,6 +1,6 @@
 ﻿namespace despesas_backend_api_net_core.Domain.Entities
 {
-    public class ImagemPerfilUsuario :BaseModel
+    public class ImagemPerfilUsuario : BaseModel
     {
         public string Url { get; set; }
         public string Name { get; set; }
