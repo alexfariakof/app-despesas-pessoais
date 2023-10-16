@@ -3,6 +3,7 @@ using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using despesas_backend_api_net_core.Infrastructure.Security;
 using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 
 namespace despesas_backend_api_net_core.Business.Implementations
@@ -11,12 +12,12 @@ namespace despesas_backend_api_net_core.Business.Implementations
     {
         private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
         private readonly ImagemPerfilUsuarioMap _converter;
-        private readonly AmazonS3Bucket _amazonS3Bucket;
-            public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio)
+        private readonly IAmazonS3Bucket _amazonS3Bucket;
+            public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio, IAmazonS3Bucket amazonS3Bucket = null)
         {
             _repositorio = repositorio;
             _converter = new ImagemPerfilUsuarioMap();
-            _amazonS3Bucket = AmazonS3Bucket.GetInstance; 
+            _amazonS3Bucket = amazonS3Bucket == null ? AmazonS3Bucket.GetInstance : amazonS3Bucket; 
         }
         public ImagemPerfilUsuarioVM Create(ImagemPerfilUsuarioVM obj)
         {

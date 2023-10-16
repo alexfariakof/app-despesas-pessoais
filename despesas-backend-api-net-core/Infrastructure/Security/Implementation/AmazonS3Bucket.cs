@@ -5,9 +5,9 @@ using despesas_backend_api_net_core.Domain.VM;
 
 namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
-    public class AmazonS3Bucket
+    public class AmazonS3Bucket : IAmazonS3Bucket
     {
-        private static AmazonS3Bucket? Instance;
+        private static IAmazonS3Bucket? Instance;
         private static readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
         private static IAmazonS3 client;
@@ -20,11 +20,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
         {
 
         }
-        public static AmazonS3Bucket GetInstance
+        public static IAmazonS3Bucket GetInstance
         {
             get
             {
-                return Instance == null ? new() : Instance;
+                return Instance == null ? new AmazonS3Bucket() : Instance;
             }
         }
         public void SetConfiguration(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName)
