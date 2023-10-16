@@ -24,14 +24,11 @@ jobs:
       with:
         dotnet-version: 7.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore
-  
-    - name: Build
-      run: dotnet build --no-restore
-    
-    - name: Test
-      run: dotnet test --no-build --no-restore
+    - name: Restore Build and Test 
+      run: | 
+        dotnet restore
+        dotnet build > /dev/null 2>&1
+        dotnet test
       continue-on-error: false
 
   build_analyze_code_in_sonar:
@@ -87,8 +84,7 @@ jobs:
         run: |          
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="despesas-backend-api-net-core.XUnit/**,  **/Database-local/**,**/.documents/**, *.sql, **/Program.cs, **/Database-In-Memory/**" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
           
-          # Executa o teste e coleta o GUID gerado
-          dotnet build -restore
+          # Executa o teste e coleta o GUID gerado          
           dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
             
             # Encontra o diretório mais recente na pasta TestResults
