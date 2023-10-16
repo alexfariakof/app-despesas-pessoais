@@ -27,7 +27,7 @@ jobs:
     - name: Restore Build and Test 
       run: | 
         dotnet restore
-        dotnet build -restore
+        dotnet build > $null 2>&1
         dotnet test
       continue-on-error: false
 
