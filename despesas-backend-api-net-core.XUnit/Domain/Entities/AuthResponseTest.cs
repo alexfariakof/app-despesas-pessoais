@@ -1,15 +1,12 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-
-
-namespace Test.XUnit.Domain.Entities
+﻿namespace Test.XUnit.Domain.Entities
 {
     public class AuthResponseTest
     {
         [Theory]
-        [InlineData(true, "20231006", "31536000", "0123456789ABCDEF", "Acesso realizado com sucesso", typeof(Usuario))]
-        [InlineData(false, "", "", "", "Acesso não realizado", typeof(Usuario))]
-        [InlineData(false, null, null, null, "Acesso não realizado", typeof(Usuario))]
-        public void AuthResponse_Should_Set_Properties_Correctly(bool authenticated, string created, string expiration, string accessToken, string message, Type type)
+        [InlineData(true, "20231006", "31536000", "0123456789ABCDEF", "Acesso realizado com sucesso")]
+        [InlineData(false, "", "", "", "Acesso não realizado")]
+        [InlineData(false, null, null, null, "Acesso não realizado")]
+        public void AuthResponse_Should_Set_Properties_Correctly(bool authenticated, string created, string expiration, string accessToken, string message)
         {
             var mockUsuario = Mock.Of<Usuario>();
 

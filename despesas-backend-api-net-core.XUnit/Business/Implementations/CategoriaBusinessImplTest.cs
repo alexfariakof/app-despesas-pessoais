@@ -125,7 +125,6 @@ namespace Test.XUnit.Business.Implementations
             var result = _categoriaBusiness.Delete(objToDelete);
 
             // Assert
-            Assert.NotNull(result);
             Assert.True(result);
             _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Categoria>()), Times.Once);
         }
