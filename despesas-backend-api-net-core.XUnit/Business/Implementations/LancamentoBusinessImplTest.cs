@@ -47,7 +47,6 @@ namespace Test.XUnit.Business.Implementations
             var result = _lancamentoBusiness.GetSaldo(idUsuario);
 
             // Assert
-            Assert.NotNull(result);
             Assert.Equal(saldo, result);
             _repositorioMock.Verify(r => r.GetSaldo(idUsuario), Times.Once);
         }
