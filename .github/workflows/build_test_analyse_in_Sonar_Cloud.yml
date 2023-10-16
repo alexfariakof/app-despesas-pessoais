@@ -8,6 +8,10 @@ on:
 
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: 
+      - main
+      - dev      
+      - pre-release
 
 permissions:
     contents: read 

@@ -1,5 +1,4 @@
-﻿using Amazon.S3.Model;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace Test.XUnit.Domain.VM
 {
@@ -22,8 +21,7 @@ namespace Test.XUnit.Domain.VM
                 Name = name,
                 Type = type,
                 ContentType = contentType,
-                IdUsuario = idUsuario,
-                
+                IdUsuario = idUsuario,                
             };
 
             PropertyInfo arquivoProperty = imagemPerfilUsuarioVM.GetType().GetProperty("Arquivo", BindingFlags.NonPublic | BindingFlags.Instance);

@@ -8,6 +8,10 @@ on:
 
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: 
+      - hotfix/*
+      - feature/*
+      - bugfix/*  
 
 permissions:
     contents: read 
