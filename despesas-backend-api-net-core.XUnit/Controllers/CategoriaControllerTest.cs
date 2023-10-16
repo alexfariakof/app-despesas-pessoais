@@ -161,8 +161,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Usuário não permitido a realizar operação!");
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
 
@@ -185,8 +185,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Usuário não permitido a realizar operação!");
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
         [Fact, Order(8)]
@@ -279,8 +279,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Usuário não permitido a realizar operação!");
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
         [Fact, Order(12)]
@@ -307,8 +307,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Nenhum tipo de Categoria foi selecionado!");
+            var message = value.GetType().GetProperty("message").GetValue(value, null) as string;
+            Assert.Equal("Nenhum tipo de Categoria foi selecionado!", message);
         }
 
         [Fact, Order(13)]
@@ -329,8 +329,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Não foi possível realizar o cadastro de uma nova categoria, tente mais tarde ou entre em contato com o suporte.");
+            var message = value.GetType().GetProperty("message").GetValue(value, null) as string;
+            Assert.Equal("Não foi possível realizar o cadastro de uma nova categoria, tente mais tarde ou entre em contato com o suporte.", message);
 
         }
 
@@ -378,8 +378,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Usuário não permitido a realizar operação!");
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+            Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
         [Fact, Order(16)]
@@ -400,8 +400,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Nenhum tipo de Categoria foi selecionado!");
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+            Assert.Equal("Nenhum tipo de Categoria foi selecionado!", message);
         }
 
         [Fact, Order(17)]
@@ -422,8 +422,8 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
-            Assert.Equal(message, "Erro ao atualizar categoria!");
+            var message = value.GetType().GetProperty("message").GetValue(value, null) as string;
+            Assert.Equal("Erro ao atualizar categoria!", message);
         }
 
 

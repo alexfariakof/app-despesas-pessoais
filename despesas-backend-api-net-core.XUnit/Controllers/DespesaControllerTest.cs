@@ -1,6 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
-using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,8 +37,7 @@ namespace Test.XUnit.Controllers
         }
 
         public DespesaControllerTest()
-        {
-            
+        {            
             _mockDespesaBusiness = new Mock<IBusiness<DespesaVM>>();
             _despesaController = new DespesaController(_mockDespesaBusiness.Object);
         }
@@ -79,7 +77,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Nenhuma despesa foi encontrada.", message);
             _mockDespesaBusiness.Verify(b => b.FindById(despesaVM.Id, idUsuario), Times.Once);
         }
@@ -103,9 +101,9 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
-            var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
             Assert.True(message);
-            var _despesa = (DespesaVM)value.GetType().GetProperty("despesa").GetValue(value, null);
+            var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaVM;
             Assert.NotNull(_despesa);
             Assert.IsType<DespesaVM>(_despesa);
             _mockDespesaBusiness.Verify(b => b.FindById(despesaId, idUsuario), Times.Once);
@@ -127,7 +125,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value) as string;
             Assert.Equal("Não foi possível realizar a consulta da despesa.", message);
             _mockDespesaBusiness.Verify(b => b.FindById(despesaVM.Id, idUsuario), Times.Once);
         }
@@ -150,7 +148,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
-            var _despesa = (List<DespesaVM>)result.Value;
+            var _despesa = result.Value as List<DespesaVM>;
             Assert.NotNull(_despesa);
             Assert.IsType<List<DespesaVM>>(_despesa);
             _mockDespesaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
@@ -172,7 +170,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockDespesaBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
         }
@@ -195,7 +193,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value) as string;
             Assert.Equal("Usuário inexistente!", message);
             _mockDespesaBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
         }
@@ -219,7 +217,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.True(message);
-            var _despesa = (DespesaVM)value.GetType().GetProperty("despesa").GetValue(value, null);
+            var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaVM;
             Assert.NotNull(_despesa);
             Assert.IsType<DespesaVM>(_despesa);
             _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Once());
@@ -242,7 +240,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Never);
         }
@@ -264,7 +262,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Não foi possível realizar o cadastro da despesa.", message);
             _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Once);
         }
@@ -286,7 +284,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockDespesaBusiness.Verify(b => b.Update(despesaVM), Times.Never);
         }
@@ -333,7 +331,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Não foi possível atualizar o cadastro da despesa.", message);
             _mockDespesaBusiness.Verify(b => b.Update(despesaVM), Times.Once);
         }
@@ -381,7 +379,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockDespesaBusiness.Verify(business => business.FindById(despesaVM.Id, idUsuario), Times.Never);
             _mockDespesaBusiness.Verify(b => b.Delete(despesaVM), Times.Never);
@@ -406,7 +404,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao excluir Despesa!", message);
             _mockDespesaBusiness.Verify(business => business.FindById(despesaVM.Id, idUsuario), Times.Once);
             _mockDespesaBusiness.Verify(b => b.Delete(despesaVM), Times.Once);

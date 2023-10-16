@@ -1,13 +1,18 @@
 ﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Business.Implementations;
+using despesas_backend_api_net_core.Database_In_Memory;
+using despesas_backend_api_net_core.Database_In_Memory.Implementations;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Security;
 using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
 {
@@ -36,6 +41,12 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
             services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));
 
             return services;
+        }
+
+        public static void CreateDataBaseInMemory(this IServiceCollection services)
+        {
+            services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+            services.AddTransient<IDataSeeder, DataSeeder>();
         }
     }
 }

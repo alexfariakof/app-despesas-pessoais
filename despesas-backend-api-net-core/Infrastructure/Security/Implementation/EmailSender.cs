@@ -17,7 +17,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 .AddJsonFile("appsettings.json")
                 .Build();
                         
-            _lengthPassword = int.Parse(configuration.GetSection("EmailConfigurations:lengthPassword").Value);
+            int.TryParse(configuration.GetSection("EmailConfigurations:lengthPassword").Value, out _lengthPassword);
             _hostSmpt = configuration.GetSection("EmailConfigurations:host").Value;
             var login = configuration.GetSection("EmailConfigurations:login").Value;
             var senha = configuration.GetSection("EmailConfigurations:senha").Value;

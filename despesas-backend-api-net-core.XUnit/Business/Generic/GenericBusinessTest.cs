@@ -1,5 +1,4 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 
 namespace Test.XUnit.Business.Generic
@@ -114,7 +113,6 @@ namespace Test.XUnit.Business.Generic
             var result = business.Delete(obj);
 
             // Assert
-            Assert.NotNull(result);
             Assert.IsType<bool>(result);
             Assert.True(result);
             repositoryMock.Verify(repo => repo.Delete(obj), Times.Once);            
