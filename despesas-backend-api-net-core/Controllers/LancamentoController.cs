@@ -3,6 +3,7 @@ using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 
 namespace despesas_backend_api_net_core.Controllers
 {
@@ -65,7 +66,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                var saldo = _lancamentoBusiness.GetSaldo(idUsuario).ToString("N2");
+                var saldo = _lancamentoBusiness.GetSaldo(idUsuario).ToString("N2", new CultureInfo("pt-br"));
 
                 return Ok(saldo);
             }

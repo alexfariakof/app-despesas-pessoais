@@ -41,7 +41,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             {
                 decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor);
                 decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor);
-                return sumReceita - sumDespesa;
+
+                return (sumReceita - sumDespesa);
             }
             catch
             {
