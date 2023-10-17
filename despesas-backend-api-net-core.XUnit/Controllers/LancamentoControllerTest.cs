@@ -2,6 +2,7 @@
 using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 using static Azure.Core.HttpHeader;
@@ -83,7 +84,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedSaldo = Assert.IsType<string>(okResult.Value);
-            Assert.Equal(saldo.ToString("N2"), returnedSaldo);
+            Assert.Equal(saldo.ToString("N2", new CultureInfo("pt-br")), returnedSaldo);
         }
 
         [Fact, Order(3)]
