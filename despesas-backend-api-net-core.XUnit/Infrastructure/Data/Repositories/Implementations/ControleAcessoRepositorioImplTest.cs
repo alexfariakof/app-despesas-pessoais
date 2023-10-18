@@ -48,7 +48,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.Create(controleAcesso);
 
             // Assert
-            Assert.NotNull(result);
             Assert.IsType<bool>(result);
             Assert.True(result);
             //_mockRepository.Verify(repo => repo.Create(controleAcesso), Times.Once);
@@ -65,7 +64,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.Create(mockControleAcesso);
 
             // Assert
-            Assert.NotNull(result);
             Assert.IsType<bool>(result);
             Assert.False(result);
             //_mockRepository.Verify(repo => repo.Create(mockControleAcesso), Times.Never);
@@ -136,7 +134,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);            
 
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.True(result);
         }
 
@@ -181,7 +179,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
 
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.False(result);
         }
 
@@ -212,7 +210,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             
 
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.False(result);
 
             /*
@@ -243,7 +241,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.ChangePassword(0, "!12345");
 
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.False(result);
         }
 
@@ -263,7 +261,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.ChangePassword(controleAcesso.UsuarioId, "!12345");
             
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.True(result);
         }
 
@@ -328,7 +326,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.isValidPasssword(_controleAceesso);
 
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.True(result);
         }
 
@@ -359,7 +357,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = mockRepository.Object.isValidPasssword(controleAcesso);
 
             //Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.False(result);
         }
     }

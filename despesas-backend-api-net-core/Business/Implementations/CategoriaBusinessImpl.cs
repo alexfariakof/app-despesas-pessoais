@@ -9,9 +9,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
     public class CategoriaBusinessImpl : IBusiness<CategoriaVM>
     {
         private readonly IRepositorio<Categoria> _repositorio;
-        private readonly CategoriaMap _converter;
-        private IRepositorio<CategoriaVM> @object;
-
+        private readonly CategoriaMap _converter;        
         public CategoriaBusinessImpl(IRepositorio<Categoria> repositorio)
         {
             _repositorio = repositorio;

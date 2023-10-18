@@ -63,7 +63,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("AmazonS3Bucket_WritingAnObjectAsync_Errro ", ex);
             }
         }
         public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuarioVM perfilFile)
@@ -86,7 +86,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 await client.DeleteObjectAsync(deleteObjectRequest);
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }
