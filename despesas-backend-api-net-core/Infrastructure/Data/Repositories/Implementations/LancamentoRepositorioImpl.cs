@@ -27,11 +27,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 var lancamentos = new LancamentoMap().ParseList(despesas)
                     .Union(new LancamentoMap().ParseList(receitas))
                     .ToList();
-                return lancamentos.OrderBy(l => l.Data).ThenBy(l => l.Categoria).ToList();
+                return lancamentos.OrderBy(l => l.Data).ToList();
             }
-            catch 
+            catch
             {
-                return new List<Lancamento>();
+                throw new Exception("LancamentoRepositorioImpl_FindByMesAno_Erro");
             }
         }
 
@@ -46,7 +46,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             }
             catch
             {
-                return 0;
+                throw new Exception("LancamentoRepositorioImpl_GetSaldo_Erro");
             }
         }
 
