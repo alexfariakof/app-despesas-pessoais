@@ -34,7 +34,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 
             return categoriaFaker.Generate();
         }
-        public static List<CategoriaVM> CategoriasVMs(UsuarioVM usuarioVM = null, int? idUsaurio = null)
+        public static List<CategoriaVM> CategoriasVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
         {
             var listCategoriaVM = new List<CategoriaVM>();
             for (int i = 0; i < 10; i++)
@@ -47,7 +47,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             }
             return listCategoriaVM;
         }
-        public static List<Categoria> Categorias(Usuario usuario = null, int? idUsuario = null)
+        public static List<Categoria> Categorias(Usuario? usuario = null, int? idUsuario = null)
         {
             var listCategoria = new List<Categoria>();
             for (int i = 0; i < 10; i++)

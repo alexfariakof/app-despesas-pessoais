@@ -35,7 +35,7 @@
             return despesaFaker.Generate();
         }
 
-        public static List<DespesaVM> DespesasVMs(UsuarioVM usuarioVM = null, int? idUsaurio = null)
+        public static List<DespesaVM> DespesasVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
         {
             var listDespesaVM = new List<DespesaVM>();
             for (int i = 0; i < 10; i++)
@@ -50,7 +50,7 @@
 
             return listDespesaVM;
         }
-        public static List<Despesa> Despesas(Usuario usuario = null, int? idUsurio = null)
+        public static List<Despesa> Despesas(Usuario? usuario = null, int? idUsurio = null)
         {
             var listDespesa = new List<Despesa>();            
             for (int i = 0; i < 10; i++)

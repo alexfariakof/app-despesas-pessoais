@@ -528,8 +528,9 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
-            var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            Assert.True(message);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+            Assert.IsType<bool>(message);
+            Assert.True((bool)message);
             _mockImagemPerfilUsuarioBusiness.Verify(b => b.Delete(It.IsAny<ImagemPerfilUsuarioVM>()), Times.Once);
         }
 
@@ -572,8 +573,9 @@ namespace Test.XUnit.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
             value = result.Value;
-            var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            Assert.False(message);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+            Assert.IsType<bool>(message);
+            Assert.False((bool)message);
             _mockImagemPerfilUsuarioBusiness.Verify(b => b.Delete(It.IsAny<ImagemPerfilUsuarioVM>()), Times.Once);
         }
 
