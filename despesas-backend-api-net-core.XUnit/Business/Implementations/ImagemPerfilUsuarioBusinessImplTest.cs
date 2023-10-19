@@ -4,7 +4,7 @@ using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using despesas_backend_api_net_core.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
 
-namespace despesas_backend_api_net_core.XUnit.Business.Implementations
+namespace Test.XUnit.Business.Implementations
 {
     public class ImagemPerfilUsuarioBusinessImplTests
     {
