@@ -3,7 +3,6 @@ using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
-using Google.Protobuf.WellKnownTypes;
 using System.Globalization;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
@@ -53,7 +52,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Descricao = origin.Descricao,
                 UsuarioId = origin.UsuarioId,
                 Usuario = origin.Usuario,
-                DespesaId = origin.UsuarioId,
+                DespesaId = origin.Id,
                 Despesa = origin,
                 ReceitaId = 0,
                 Receita = new Receita (),
@@ -73,9 +72,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Descricao = origin.Descricao,
                 UsuarioId = origin.UsuarioId,
                 Usuario = origin.Usuario,
-                DespesaId = origin.UsuarioId,
+                DespesaId = 0,
                 Despesa = new Despesa(),
-                ReceitaId = 0,
+                ReceitaId = origin.Id,
                 Receita = origin,
                 CategoriaId = origin.CategoriaId,
                 Categoria = origin.Categoria,
