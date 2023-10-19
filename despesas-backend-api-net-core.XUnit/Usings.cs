@@ -18,7 +18,7 @@ using System.Text;
 
 public static class Usings
 {
-    public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext context = null) where T : class
+    public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null) where T : class
     {
         var queryableData = data.AsQueryable();
         var dbSetMock = new Mock<DbSet<T>>();
