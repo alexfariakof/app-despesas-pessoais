@@ -32,7 +32,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 
             return imagemFaker.Generate();
         }
-        public static List<ImagemPerfilUsuario> ImagensPerfilUsuario(Usuario? usuario = null, int? idUsuario = null)
+        public static List<ImagemPerfilUsuario> ImagensPerfilUsuarios(Usuario? usuario = null, int? idUsuario = null)
         {
             var imagens = new List<ImagemPerfilUsuario>();
             for (var i = 0; i < 10; i++)
@@ -45,7 +45,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             }
             return imagens;
         }
-        public static List<ImagemPerfilUsuarioVM> ImagensPerfilUsuarioVM(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
+        public static List<ImagemPerfilUsuarioVM> ImagensPerfilUsuarioVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
         {
             var imagensVM = new List<ImagemPerfilUsuarioVM>();
             for (var i = 0; i < 10; i++)
