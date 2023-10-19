@@ -129,7 +129,7 @@ namespace Test.XUnit.Business.Implementations
             var result = _usuarioBusiness.Delete(obj);
 
             // Assert
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.True(result);
             _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Usuario>()), Times.Once);
         }

@@ -47,7 +47,7 @@ namespace Test.XUnit.Controllers
         public void Get_Should_Returns_OkResults()
         {
             // Arrange
-            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuario();
+            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
             var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
             var usuarioVM = new UsuarioMap().Parse(_imagemPerfilUsuarios.First().Usuario);
             int idUsuario = usuarioVM.Id;
@@ -71,7 +71,7 @@ namespace Test.XUnit.Controllers
         public void Get_Should_Returns_BadRequest_When_Usuario_IsInvalid_Token()
         {
             // Arrange
-            var _imagemPerfilUsuarioVMs = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM();
+            var _imagemPerfilUsuarioVMs = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs();
             var usuarioVM = UsuarioFaker.GetNewFakerVM(_imagemPerfilUsuarioVMs.First().Id);
             SetupBearerToken(0);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.FindByIdUsuario(usuarioVM.Id)).Returns(usuarioVM);
@@ -93,7 +93,7 @@ namespace Test.XUnit.Controllers
         public void GetByIdUsuario_Should_Returns_OkResults_With_ImagemPerfilUsuario()
         {
             // Arrange
-            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuario();
+            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
             var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
             var usuarioVM = new UsuarioMap().Parse(_imagemPerfilUsuarios.First().Usuario);
             int idUsuario = usuarioVM.Id;
@@ -119,7 +119,7 @@ namespace Test.XUnit.Controllers
         public void GetByIdUsuario_Should_Returns_BadRequest_When_Usuario_IsInvalid()
         {
             // Arrange
-            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuario();
+            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
             var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
             var usuarioVM = new UsuarioMap().Parse(_imagemPerfilUsuarios.First().Usuario);
             int idUsuario = usuarioVM.Id;
@@ -143,7 +143,7 @@ namespace Test.XUnit.Controllers
         public void GetByIdUsuario_Should_Returns_BadRequest_When_Usuario_NotFound()
         {
             // Arrange
-            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuario();
+            var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
             var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
             var usuarioVM = new UsuarioMap().Parse(_imagemPerfilUsuarios.First().Usuario);
             int idUsuario = usuarioVM.Id;
@@ -167,7 +167,7 @@ namespace Test.XUnit.Controllers
         public async void Post_Should_Create_And_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
         {
             // Arrange
-            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM().First();
+            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
             int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(imagemPerfilUsuarioVM);
@@ -236,7 +236,7 @@ namespace Test.XUnit.Controllers
         public async void Post_Should_Returns_BadRequest_For_Invalid_Images_Type()
         {
             // Arrange
-            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM().First();
+            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
             int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(imagemPerfilUsuarioVM);
@@ -262,7 +262,7 @@ namespace Test.XUnit.Controllers
         public async void Post_Should_Try_Create_And_Returns_BadRequest()
         {
             // Arrange
-            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM().First();
+            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
             int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilUsuarioVM>())).Returns((ImagemPerfilUsuarioVM)null);
@@ -342,7 +342,7 @@ namespace Test.XUnit.Controllers
         public async void Put_Should_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
         {
             // Arrange
-            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM().First();
+            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
             int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(imagemPerfilUsuarioVM);
@@ -462,7 +462,7 @@ namespace Test.XUnit.Controllers
         public async void Put_Should_Returns_BadRequest_For_Invalid_Images_Type()
         {
             // Arrange
-            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM().First();
+            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
             int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(imagemPerfilUsuarioVM);
@@ -488,7 +488,7 @@ namespace Test.XUnit.Controllers
         public async void Put_Should_Returns_BadRequest_When_ImagemPerfil_IsNull()
         {
             // Arrange
-            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVM().First();
+            var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
             int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
             SetupBearerToken(idUsuario);
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilUsuarioVM>())).Returns((ImagemPerfilUsuarioVM)null);
@@ -528,8 +528,9 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
-            var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            Assert.True(message);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+            Assert.IsType<bool>(message);
+            Assert.True((bool)message);
             _mockImagemPerfilUsuarioBusiness.Verify(b => b.Delete(It.IsAny<ImagemPerfilUsuarioVM>()), Times.Once);
         }
 
@@ -572,8 +573,9 @@ namespace Test.XUnit.Controllers
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
             value = result.Value;
-            var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            Assert.False(message);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+            Assert.IsType<bool>(message);
+            Assert.False((bool)message);
             _mockImagemPerfilUsuarioBusiness.Verify(b => b.Delete(It.IsAny<ImagemPerfilUsuarioVM>()), Times.Once);
         }
 

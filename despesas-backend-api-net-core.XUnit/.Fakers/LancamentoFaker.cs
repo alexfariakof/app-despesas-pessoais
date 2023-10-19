@@ -43,7 +43,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return lancamentoVMFaker.Generate();
         }
 
-        public static List<LancamentoVM> LancamentoVMs(Usuario usuario = null, int? idUsuario = null)
+        public static List<LancamentoVM> LancamentoVMs(Usuario? usuario = null, int? idUsuario = null)
         {
             var listLancamentoVM = new List<LancamentoVM>();            
             for (int i = 0; i < 10; i++)
@@ -60,7 +60,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 
             return listLancamentoVM;
         }
-        public static List<Lancamento> Lancamentos(Usuario usuario = null, int? idUsuario = null)
+        public static List<Lancamento> Lancamentos(Usuario? usuario = null, int? idUsuario = null)
         {
             var listLancamento = new List<Lancamento>();            
             for (int i = 0; i < 10; i++)

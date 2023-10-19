@@ -220,6 +220,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             bool result = _mockRepository.Object.Delete(usuario);
 
             // Assert
+            Assert.IsType<bool>(result);
             Assert.True(result);
         }
 
@@ -258,6 +259,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = _mockRepository.Object.Delete(item);
 
             // Assert            
+            Assert.IsType<bool>(result);
             Assert.False(result);
             _mockRegisterContext.Verify(c => c.SaveChanges(), Times.Never);
         }
@@ -299,7 +301,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             var result = _mockRepository.Object.Delete(item);
 
             // Assert 
-            Assert.NotNull(result);
+            Assert.IsType<bool>(result);
             Assert.False(result);
             _mockRegisterContext.Verify(c => c.Remove(item), Times.Never);
         }
