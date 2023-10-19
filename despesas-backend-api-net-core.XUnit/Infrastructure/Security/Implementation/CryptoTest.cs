@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using System.Security.Cryptography;
 
-namespace Test.XUnit.Infrastructure.Security.Configuration
+namespace despesas_backend_api_net_core.XUnit.Infrastructure.Security.Implementation
 {
     public class CryptoTest
     {
@@ -11,7 +11,7 @@ namespace Test.XUnit.Infrastructure.Security.Configuration
         public void Encrypt_And_Decrypt_Should_Work()
         {
             // Arrange
-            string key = "01010101010101010101010101010101"; 
+            string key = "01010101010101010101010101010101";
             string originalText = "!12345";
             Crypto crypto = Crypto.GetInstance;
             crypto.SetCryptoKey(key);
