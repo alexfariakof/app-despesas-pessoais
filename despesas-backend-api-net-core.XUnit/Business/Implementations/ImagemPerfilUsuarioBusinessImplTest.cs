@@ -119,19 +119,34 @@ namespace despesas_backend_api_net_core.XUnit.Business.Implementations
         }
 
         [Fact]
-        public void FindByIdUsuario_Should_Returns_List_Of_ImagemPerfilUsuarioVM()
+        public void FindByIdUsuario_Should_Return_Usuario()
         {
             // Arrange
-            var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
+            var usuario = _imagensPerfil.First().Usuario;
 
-            _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil.FindAll(obj => obj.Usuario.Id == imagemPerfilVM.IdUsuario));
+            _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil);
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.FindByIdUsuario(imagemPerfilVM.IdUsuario);
+            var result = _imagemPerfilUsuarioBusiness.FindByIdUsuario(usuario.Id);
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<List<ImagemPerfilUsuarioVM>>(result);
+            Assert.IsType<UsuarioVM>(result);
+        }
+
+        [Fact]
+        public void FindByIdUsuario_Throws_Exception_And_Returns_Null()
+        {
+            // Arrange
+            var usuario = new Usuario { Id = 0 };
+
+            _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil);
+
+            // Act
+            var result = _imagemPerfilUsuarioBusiness.FindByIdUsuario(usuario.Id);
+
+            // Assert
+            Assert.Null(result);
         }
 
         [Fact]

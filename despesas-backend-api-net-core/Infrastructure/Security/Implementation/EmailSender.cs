@@ -38,7 +38,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    throw new Exception("EmailSender_SendEmail_Erro", ex);
                 }
             }
         }

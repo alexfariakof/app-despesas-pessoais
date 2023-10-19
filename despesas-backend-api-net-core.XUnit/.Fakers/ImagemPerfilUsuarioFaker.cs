@@ -39,8 +39,6 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             {
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
-                else
-                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
 
                 var imagem = GetNewFaker(usuario);
                 imagens.Add(imagem);
@@ -54,8 +52,6 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             {
                 if (idUsaurio == null)
                     usuarioVM = UsuarioFaker.GetNewFakerVM(new Random(1).Next(1, 10));
-                else
-                    usuarioVM = UsuarioFaker.GetNewFakerVM(idUsaurio.Value);
 
                 var imagemVM = GetNewFakerVM(usuarioVM);
                 imagensVM.Add(imagemVM);

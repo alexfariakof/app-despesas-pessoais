@@ -19,14 +19,14 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
     public static class CommonInjectDependence
     {
         public static IServiceCollection AddServices(this IServiceCollection services)
-        {
-            services.AddScoped(typeof(IBusiness<ImagemPerfilUsuarioVM>), typeof(ImagemPerfilUsuarioBusinessImpl));
+        {            
             services.AddScoped(typeof(IBusiness<DespesaVM>), typeof(DespesaBusinessImpl));
             services.AddScoped(typeof(IBusiness<ReceitaVM>), typeof(ReceitaBusinessImpl));
             services.AddScoped(typeof(IBusiness<CategoriaVM>), typeof(CategoriaBusinessImpl));
             services.AddScoped(typeof(IControleAcessoBusiness), typeof(ControleAcessoBusinessImpl));
             services.AddScoped(typeof(ILancamentoBusiness), typeof(LancamentoBusinessImpl));
             services.AddScoped(typeof(IUsuarioBusiness), typeof(UsuarioBusinessImpl));
+            services.AddScoped(typeof(IImagemPerfilUsuarioBusiness), typeof(ImagemPerfilUsuarioBusinessImpl));
 
             return services;
         }

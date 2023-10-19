@@ -9,7 +9,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         {
             var receitaFaker = new Faker<Receita>()
                 .RuleFor(r => r.Id, f => counter++)
-                .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.UsuarioId, usuario.Id)
@@ -24,7 +24,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         {
             var receitaFaker = new Faker<ReceitaVM>()
                 .RuleFor(r => r.Id, f => counterVM++)
-                .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.IdUsuario, idUsuario)
@@ -40,8 +40,6 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             {
                 if (idUsaurio == null)
                     usuarioVM = UsuarioFaker.GetNewFakerVM(new Random().Next(1, 10));
-                else
-                    usuarioVM = UsuarioFaker.GetNewFakerVM(idUsaurio.Value);
 
                 var categoriaVM = CategoriaFaker.GetNewFakerVM(usuarioVM);
                 var receitaVM = GetNewFakerVM(usuarioVM.Id, categoriaVM.Id);
@@ -56,8 +54,6 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             {
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
-                else
-                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
 
                 var categoria = CategoriaFaker.GetNewFaker(usuario);
                 var receita = GetNewFaker(usuario, categoria);

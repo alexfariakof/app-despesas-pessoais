@@ -1,6 +1,4 @@
-﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Domain.Entities;
+﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +10,9 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class ImagemPerfilUsuarioController : ControllerBase
     {
-        private IBusiness<ImagemPerfilUsuarioVM> _perfilFileBusiness;
+        private IImagemPerfilUsuarioBusiness _perfilFileBusiness;
         private string bearerToken;
-        public ImagemPerfilUsuarioController(IBusiness<ImagemPerfilUsuarioVM> perfilFileBusiness)
+        public ImagemPerfilUsuarioController(IImagemPerfilUsuarioBusiness perfilFileBusiness)
         {
             _perfilFileBusiness = perfilFileBusiness;
             bearerToken = String.Empty;
@@ -26,6 +24,13 @@ namespace despesas_backend_api_net_core.Controllers
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario = bearerToken.getIdUsuarioFromToken();
+
+            var usuarioVM = _perfilFileBusiness.FindByIdUsuario(_idUsuario);
+
+            if (usuarioVM == null || _idUsuario != usuarioVM.Id)
+            {
+                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            }
 
             return Ok(_perfilFileBusiness.FindAll(_idUsuario));
         }
@@ -48,7 +53,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario= imagemPerfilUsuario });
             else
-                return Ok(new { message = false });
+                return BadRequest(new { message = false });
         }
 
         [HttpPost]
@@ -73,7 +78,7 @@ namespace despesas_backend_api_net_core.Controllers
                     typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
 
-                if (typeFile == "jpg" || typeFile == "png")
+                if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
                 {
 
 
@@ -94,11 +99,11 @@ namespace despesas_backend_api_net_core.Controllers
                         if (_imagemPerfilUsuario != null)
                             return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
                         else
-                            return Ok(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
+                            return BadRequest(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
                     }
                 }
                 else
-                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos." });
+                    return BadRequest(new { message = "Apenas arquivos do tipo jpg, jpeg ou png são aceitos." });
             }
             catch (Exception ex)
             {
@@ -128,10 +133,8 @@ namespace despesas_backend_api_net_core.Controllers
                     typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
                 }
 
-                if (typeFile == "jpg" || typeFile == "png")
+                if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
                 {
-
-
                     using (var memoryStream = new MemoryStream())
                     {
 
@@ -150,11 +153,11 @@ namespace despesas_backend_api_net_core.Controllers
                         if (imagemPerfilUsuario != null)
                             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
                         else
-                            return Ok(new { messsage = false, imagemPerfilUsuario = imagemPerfilUsuario });
+                            return BadRequest(new { message = false, imagemPerfilUsuario = imagemPerfilUsuario });
                     }
                 }
                 else
-                    return BadRequest(new { message = "Apenas arquivos do tipo jpg ou png são aceitos." });
+                    return BadRequest(new { message = "Apenas arquivos do tipo jpg, jpeg ou png são aceitos." });
             }
             catch (Exception ex)
             {
@@ -179,7 +182,7 @@ namespace despesas_backend_api_net_core.Controllers
                 if (_perfilFileBusiness.Delete(new ImagemPerfilUsuarioVM { IdUsuario = idUsuario }))
                     return Ok(new { message = true });
                 else
-                    return Ok(new { message = false });
+                    return BadRequest(new { message = false });
             }
             catch
             {
