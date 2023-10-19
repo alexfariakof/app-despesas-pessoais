@@ -14,9 +14,6 @@ namespace Test.XUnit.Infrastructure.ExtensionMethods
 {
     public class CommonInjectDependenceTest
     {
-<<<<<<< Updated upstream
-        
-=======
         [Fact]
         public void AddServices_Should_Register_Services()
         {
@@ -126,6 +123,5 @@ namespace Test.XUnit.Infrastructure.ExtensionMethods
             Assert.NotNull(context);
             Assert.NotNull(dataSeeder);
         }
->>>>>>> Stashed changes
     }
 }
