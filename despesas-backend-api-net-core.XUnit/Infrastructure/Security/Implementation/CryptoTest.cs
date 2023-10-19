@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using System.Security.Cryptography;
 
-namespace despesas_backend_api_net_core.XUnit.Infrastructure.Security.Implementation
+namespace Test.XUnit.Infrastructure.Security.Implementation
 {
     public class CryptoTest
     {
