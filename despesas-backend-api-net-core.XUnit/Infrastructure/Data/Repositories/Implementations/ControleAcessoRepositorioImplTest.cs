@@ -8,7 +8,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
     public class ControleAcessoRepositorioImplTest
     {
         private readonly RegisterContext _context;
-        private Mock<IControleAcessoRepositorio> _mockRepository;
         private Mock<ControleAcessoRepositorioImpl> _repository;                
         private ControleAcesso mockControleAcesso;
 

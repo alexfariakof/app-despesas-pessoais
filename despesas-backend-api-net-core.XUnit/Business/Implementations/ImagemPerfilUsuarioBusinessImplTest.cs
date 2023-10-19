@@ -15,7 +15,7 @@ namespace despesas_backend_api_net_core.XUnit.Business.Implementations
 
         public ImagemPerfilUsuarioBusinessImplTests()
         {
-            _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuario();
+            _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
             _repositorioMock = Usings.MockRepositorio(_imagensPerfil);
             _mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>();
 
@@ -33,7 +33,7 @@ namespace despesas_backend_api_net_core.XUnit.Business.Implementations
                        
 
             _imagemPerfilUsuarioBusiness = new ImagemPerfilUsuarioBusinessImpl(_repositorioMock.Object, _mockAmazonS3Bucket.Object);
-            _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuario();
+            _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
         }
 
         [Fact]

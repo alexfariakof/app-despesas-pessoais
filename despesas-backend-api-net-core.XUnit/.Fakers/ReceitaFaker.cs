@@ -33,7 +33,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return receitaFaker.Generate();
         }
 
-        public static List<ReceitaVM> ReceitasVMs(UsuarioVM usuarioVM = null, int? idUsaurio = null)
+        public static List<ReceitaVM> ReceitasVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
         {
             var listReceitaVM = new List<ReceitaVM>();
             for (int i = 0; i < 10; i++)
@@ -47,7 +47,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             }
             return listReceitaVM;
         }
-        public static List<Receita> Receitas(Usuario usuario = null, int? idUsuario = null)
+        public static List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null)
         {
             var listReceita = new List<Receita>();            
             for (int i = 0; i < 10; i++)
