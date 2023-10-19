@@ -31,7 +31,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
             var result = repository.Insert(item);
 
             // Assert
-            Assert.Equal(1, dataSet.Count);
+            Assert.Single(dataSet);
             Assert.Contains(item, dataSet);
             _dbContextMock.Verify(c => c.SaveChanges(), Times.Once);
             Assert.Equal(item, result);

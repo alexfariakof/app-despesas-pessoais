@@ -66,7 +66,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             Assert.IsType<List<UsuarioVM>>(result.Value);
-            Assert.Equal(((List<UsuarioVM>)result.Value).Count, 0);
+            Assert.Empty(((List<UsuarioVM>)result.Value));
             _mockUsuarioBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
         }
 

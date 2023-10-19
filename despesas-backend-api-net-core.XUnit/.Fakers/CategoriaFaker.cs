@@ -1,11 +1,16 @@
-﻿namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿using despesas_backend_api_net_core.Domain.Entities;
+
+namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public class CategoriaFaker
     {
         static int counter = 1;
         static int counterVM = 1;
-        public static Categoria GetNewFaker(Usuario usuario)
+        public static Categoria GetNewFaker(Usuario usuario, int? idUsuario = null)
         {
+            if (idUsuario == null)
+                usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
+
             var categoriaFaker = new Faker<Categoria>()
                 .RuleFor(c => c.Id, counter++)
                 .RuleFor(c => c.Descricao, f => f.Commerce.Categories(10)[1])
@@ -16,8 +21,11 @@
             return categoriaFaker.Generate();
         }
 
-        public static CategoriaVM GetNewFakerVM(UsuarioVM usuarioVM)
+        public static CategoriaVM GetNewFakerVM(UsuarioVM usuarioVM, int? idUsuario = null)
         {
+            if (idUsuario == null)
+                usuarioVM = UsuarioFaker.GetNewFakerVM(new Random(1).Next(1, 10));
+
             var categoriaFaker = new Faker<CategoriaVM>()
                 .RuleFor(c => c.Id, counterVM++)
                 .RuleFor(c => c.Descricao, f => f.Commerce.ProductName())
@@ -33,8 +41,6 @@
             {
                 if (idUsaurio == null)
                     usuarioVM = UsuarioFaker.GetNewFakerVM(new Random(1).Next(1, 10));
-                else
-                    usuarioVM = UsuarioFaker.GetNewFakerVM(idUsaurio.Value);
 
                 var categoriaVM = GetNewFakerVM(usuarioVM);
                 listCategoriaVM.Add(categoriaVM);
@@ -48,8 +54,6 @@
             {
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
-                else
-                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
 
                 var categoria = GetNewFaker(usuario);
                 listCategoria.Add(categoria);

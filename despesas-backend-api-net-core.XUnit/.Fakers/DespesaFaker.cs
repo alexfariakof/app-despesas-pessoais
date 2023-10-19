@@ -8,8 +8,8 @@
         {
             var despesaFaker = new Faker<Despesa>()
                 .RuleFor(r => r.Id, f => counter++)
-                .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
-                .RuleFor(r => r.DataVencimento, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
+                .RuleFor(r => r.DataVencimento, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.UsuarioId, usuario.Id)
@@ -24,8 +24,8 @@
         {
             var despesaFaker = new Faker<DespesaVM>()
                 .RuleFor(r => r.Id, f => counterVM++)
-                .RuleFor(r => r.Data, DateTime.Now.AddDays(new Random().Next(99)))
-                .RuleFor(r => r.DataVencimento, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
+                .RuleFor(r => r.DataVencimento, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.IdUsuario, idUsuario)
@@ -42,8 +42,6 @@
             {
                 if (idUsaurio == null)
                     usuarioVM = UsuarioFaker.GetNewFakerVM(new Random().Next(1, 10));
-                else
-                    usuarioVM = UsuarioFaker.GetNewFakerVM(idUsaurio);
 
                 var categoriaVM = CategoriaFaker.GetNewFakerVM(usuarioVM);
                 var despesaVM = GetNewFakerVM(usuarioVM.Id, categoriaVM.Id);
@@ -59,8 +57,6 @@
             {
                 if (idUsurio == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
-                else
-                    usuario = UsuarioFaker.GetNewFaker(idUsurio);
 
                 var categoria = CategoriaFaker.GetNewFaker(usuario);
                 var despesa = GetNewFaker(usuario, categoria);
