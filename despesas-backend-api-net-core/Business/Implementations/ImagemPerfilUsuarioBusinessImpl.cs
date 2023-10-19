@@ -1,5 +1,4 @@
-﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Domain.Entities;
+﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
@@ -8,7 +7,7 @@ using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
-    public class ImagemPerfilUsuarioBusinessImpl : IBusiness<ImagemPerfilUsuarioVM>
+    public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
     {
         private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
         private readonly ImagemPerfilUsuarioMap _converter;
@@ -47,6 +46,20 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
             return imagemPerfilUsuario;
         }
+
+        public UsuarioVM FindByIdUsuario(int idUsuario)
+        {
+            try
+            {
+                var usuario = _repositorio.GetAll().Find(u => u.UsuarioId == idUsuario).Usuario;
+                return new UsuarioMap().Parse(usuario);
+            }
+            catch
+            {
+                return null;
+            }            
+        }
+
         public ImagemPerfilUsuarioVM Update(ImagemPerfilUsuarioVM obj)
         {
             var isPerfilValid = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
@@ -75,12 +88,6 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 }
             }
             return false;
-        }
-
-        public List<ImagemPerfilUsuarioVM> FindByIdUsuario(int idUsuario)
-        {
-            var lstPerfilFile = _repositorio.GetAll().FindAll(p => p.UsuarioId.Equals(idUsuario));
-            return _converter.ParseList(lstPerfilFile);
         }
     }
 }
