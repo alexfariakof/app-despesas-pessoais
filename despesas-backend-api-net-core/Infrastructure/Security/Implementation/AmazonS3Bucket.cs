@@ -8,13 +8,13 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
     public class AmazonS3Bucket : IAmazonS3Bucket
     {
         private static IAmazonS3Bucket? Instance;
-        private static readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
-        private static IAmazonS3 client;
-        private static string AccessKey;
-        private static string SecretAccessKey;
-        private static string S3ServiceUrl;
-        private static string BucketName;
+        private readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
+        private readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
+        private IAmazonS3 client;
+        private string AccessKey;
+        private string SecretAccessKey;
+        private string S3ServiceUrl;
+        private string BucketName;
 
         private AmazonS3Bucket()
         {

@@ -1,17 +1,51 @@
-﻿using System.Linq;
-using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using Microsoft.EntityFrameworkCore;
+﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Test.XUnit.Infrastructure.Data.EntityConfig
 {
     public class CategoriaMapTest
     {
+
         [Fact]
-        public void CategoriaMap_Should_Parse_CategoriaVM_To_Categoria()
+        public void EntityConfiguration_IsValid()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+                .Options;
+
+            using (var context = new RegisterContext(options))
+            {
+                var builder = new ModelBuilder(new ConventionSet());
+                var configuration = new CategoriaMap();
+
+                configuration.Configure(builder.Entity<Categoria>());
+
+                var model = builder.Model;
+                var entityType = model.FindEntityType(typeof(Categoria));
+
+                // Act
+                var idProperty = entityType.FindProperty("Id");
+                var descricaoProperty = entityType.FindProperty("Descricao");
+                var usuarioIdProperty = entityType.FindProperty("UsuarioId");
+                var tipoCategoriaProperty = entityType.FindProperty("TipoCategoria");
+
+                // Assert
+                Assert.NotNull(idProperty);
+                Assert.NotNull(descricaoProperty);
+                Assert.NotNull(usuarioIdProperty);
+                Assert.NotNull(tipoCategoriaProperty);
+
+                Assert.True(idProperty.IsPrimaryKey());
+                Assert.False(usuarioIdProperty.IsNullable);
+                Assert.False(tipoCategoriaProperty.IsNullable);
+                Assert.True(descricaoProperty.IsNullable);
+                Assert.Equal(100, descricaoProperty.GetMaxLength());
+            }
+        }
+
+        [Fact]
+        public void Should_Parse_CategoriaVM_To_Categoria()
         {
             // Arrange
             var categoriaMap = new CategoriaMap();
@@ -34,7 +68,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         }
 
         [Fact]
-        public void CategoriaMap_Should_Parse_Categoria_To_CategoriaVM()
+        public void Should_Parse_Categoria_To_CategoriaVM()
         {
             // Arrange
             var categoriaMap = new CategoriaMap();
@@ -57,7 +91,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         }
 
         [Fact]
-        public void CategoriaMap_Should_ParseList_CategoriaVM_To_Categoria()
+        public void Should_Parse_List_CategoriaVMs_To_List_Categorias()
         {
             // Arrange
             var categoriaMap = new CategoriaMap();
@@ -83,7 +117,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         }
 
         [Fact]
-        public void CategoriaMap_Should_ParseList_Categoria_To_CategoriaVM()
+        public void Should_Parse_List_Categorias_To_List_CategoriaVMs()
         {
             // Arrange
             var categoriaMap = new CategoriaMap();

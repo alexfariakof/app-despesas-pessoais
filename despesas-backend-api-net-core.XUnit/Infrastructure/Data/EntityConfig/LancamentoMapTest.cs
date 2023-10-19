@@ -1,12 +1,67 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+﻿using despesas_backend_api_net_core.Domain.VM;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Test.XUnit.Infrastructure.Data.EntityConfig
 {
     public class LancamentoMapTest
     {
         [Fact]
-        public void LancamentoMap_Should_Parse_LancamentoVM_To_Lancamento()
+        public void EntityConfiguration_IsValid()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+                .Options;
+
+            using (var context = new RegisterContext(options))
+            {
+                var builder = new ModelBuilder(new ConventionSet());
+                var configuration = new LancamentoMap();
+
+                configuration.Configure(builder.Entity<Lancamento>());
+
+                var model = builder.Model;
+                var entityType = model.FindEntityType(typeof(Lancamento));
+
+                // Act
+                var idProperty = entityType.FindProperty("Id");
+                var usuarioIdProperty = entityType.FindProperty("UsuarioId");
+                var despesaIdProperty = entityType.FindProperty("DespesaId");
+                var receitaIdProperty = entityType.FindProperty("ReceitaId");
+                var dataProperty = entityType.FindProperty("Data");
+                var dataCriacaoProperty = entityType.FindProperty("DataCriacao");
+                var valorProperty = entityType.FindProperty("Valor");
+                var descricaoProperty = entityType.FindProperty("Descricao");
+
+                // Assert
+                Assert.NotNull(idProperty);
+                Assert.NotNull(usuarioIdProperty);
+                Assert.NotNull(despesaIdProperty);
+                Assert.NotNull(receitaIdProperty);
+                Assert.NotNull(dataProperty);
+                Assert.NotNull(dataCriacaoProperty);
+                Assert.NotNull(valorProperty);
+                Assert.NotNull(descricaoProperty);
+
+                Assert.True(idProperty.IsPrimaryKey());
+                Assert.False(usuarioIdProperty.IsNullable);
+                Assert.True(despesaIdProperty.IsNullable);
+                Assert.Null(despesaIdProperty.GetDefaultValue());
+                Assert.True(receitaIdProperty.IsNullable);
+                Assert.Null(receitaIdProperty.GetDefaultValue());
+                Assert.True(dataProperty.GetColumnType() == "timestamp");
+                Assert.False(dataProperty.IsNullable);
+                Assert.True(dataCriacaoProperty.GetColumnType() == "timestamp");
+                //Assert.Equal(DateTime.Now, dataCriacaoProperty.GetDefaultValue());
+                Assert.True(valorProperty.GetColumnType() == "decimal(10, 2)");
+                Assert.Equal(100, descricaoProperty.GetMaxLength());
+            }
+        }
+
+        [Fact]
+        public void Should_Parse_LancamentoVM_To_Lancamento()
         {
             // Arrange
             var lancamentoMap = new LancamentoMap();
@@ -36,7 +91,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         }
 
         [Fact]
-        public void LancamentoMap_Should_Parse_Lancamento_To_LancamentoVM()
+        public void Should_Parse_Lancamento_To_LancamentoVM()
         {
             // Arrange
             var lancamentoMap = new LancamentoMap();
@@ -68,7 +123,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         }
 
         [Fact]
-        public void LancamentoMap_Should_ParseList_LancamentoVM_To_Lancamento()
+        public void Should_Parse_List_LancamentoVM_To_Lancamento()
         {
             // Arrange
             var lancamentoMap = new LancamentoMap();
@@ -93,7 +148,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         }
 
         [Fact]
-        public void LancamentoMap_Should_ParseList_Lancamento_To_lancamentoVM()
+        public void Should_Parse_Parse_List_Lancamento_To_lancamentoVM()
         {
             // Arrange
             var lancamentoMap = new LancamentoMap();
@@ -114,6 +169,115 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 Assert.Equal(lancamentos[i].Id, lancamentoVMs[i].Id);
                 //Assert.Equal(lancamentos[i].Descricao, lancamentoVMs[i].Descricao);
                 Assert.Equal(lancamentos[i].UsuarioId, lancamentoVMs[i].IdUsuario);
+            }
+        }
+
+        [Fact]
+        public void Should_Parse_Despesa_To_Lancamento()
+        {
+            // Arrange
+            var map = new LancamentoMap();
+            var usuario = UsuarioFaker.GetNewFaker(1);
+            var origin = DespesaFaker.GetNewFaker(usuario, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+
+            // Act
+            var result = map.Parse(origin);
+
+            // Assert            
+            Assert.Equal(origin.Valor, result.Valor);
+            Assert.Equal(origin.Descricao, result.Descricao);
+            Assert.Equal(origin.UsuarioId, result.UsuarioId);
+            Assert.Equal(origin.Usuario, result.Usuario);
+            Assert.Equal(origin.Id, result.DespesaId);
+            Assert.Equal(origin, result.Despesa);
+            Assert.Equal(0, result.ReceitaId);
+            Assert.NotNull(result.Receita);
+            Assert.IsType<Receita>(result.Receita);
+            Assert.Equal(origin.CategoriaId, result.CategoriaId);
+            Assert.Equal(origin.Categoria, result.Categoria);
+        }
+
+        [Fact]
+        public void Should_Parse_Receita_To_Lancamento()
+        {
+            // Arrange
+            var map = new LancamentoMap();
+            var usuario = UsuarioFaker.GetNewFaker(1);
+            var origin = ReceitaFaker.GetNewFaker(usuario, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+
+            // Act
+            var result = map.Parse(origin);
+
+            // Assert
+            Assert.Equal(origin.Valor, result.Valor);
+            Assert.Equal(origin.Descricao, result.Descricao);
+            Assert.Equal(origin.UsuarioId, result.UsuarioId);
+            Assert.Equal(origin.Usuario, result.Usuario);
+            Assert.Equal(0, result.DespesaId);
+            Assert.NotNull(result.Despesa);
+            Assert.IsType<Despesa>(result.Despesa);
+            Assert.Equal(origin.Id, result.ReceitaId);
+            Assert.Equal(origin, result.Receita);
+            Assert.Equal(origin.CategoriaId, result.CategoriaId);
+            Assert.Equal(origin.Categoria, result.Categoria);
+        }
+
+        [Fact]
+        public void Should_Parse_List_Despesas_To_List_Lancamentos()
+        {
+            // Arrange
+            var map = new LancamentoMap();
+            var usuarario = UsuarioFaker.GetNewFaker(1);
+            var origin = DespesaFaker.Despesas(usuarario, usuarario.Id);
+
+            // Act
+            var result = map.ParseList(origin);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(origin.Count, result.Count);
+            for (int i = 0; i < result.Count; i++)
+            {
+                Assert.Equal(origin[i].Valor, result[i].Valor);
+                Assert.Equal(origin[i].Descricao, result[i].Descricao);
+                Assert.Equal(origin[i].UsuarioId, result[i].UsuarioId);
+                Assert.Equal(origin[i].Usuario, result[i].Usuario);
+                Assert.Equal(origin[i].Id, result[i].DespesaId);
+                Assert.Equal(origin[i], result[i].Despesa);
+                Assert.Equal(0, result[i].ReceitaId);
+                Assert.NotNull(result[i].Receita);
+                Assert.IsType<Receita>(result[i].Receita);
+                Assert.Equal(origin[i].CategoriaId, result[i].CategoriaId);
+                Assert.Equal(origin[i].Categoria, result[i].Categoria);
+            }
+        }
+
+        [Fact]
+        public void Should_Parse_List_Receitas_To_List_Lancamentos()
+        {
+            // Arrange
+            var map = new LancamentoMap();
+            var usuarario = UsuarioFaker.GetNewFaker(1);
+            var origin = ReceitaFaker.Receitas(usuarario, usuarario.Id);
+
+            // Act
+            var result = map.ParseList(origin);
+
+            Assert.NotNull(result);
+            Assert.Equal(origin.Count, result.Count);
+            for (int i = 0; i < result.Count; i++)
+            {
+                Assert.Equal(origin[i].Valor, result[i].Valor);
+                Assert.Equal(origin[i].Descricao, result[i].Descricao);
+                Assert.Equal(origin[i].UsuarioId, result[i].UsuarioId);
+                Assert.Equal(origin[i].Usuario, result[i].Usuario);
+                Assert.Equal(0, result[i].DespesaId);
+                Assert.NotNull(result[i].Despesa);
+                Assert.IsType<Despesa>(result[i].Despesa);
+                Assert.Equal(origin[i].Id, result[i].ReceitaId);
+                Assert.Equal(origin[i], result[i].Receita);
+                Assert.Equal(origin[i].CategoriaId, result[i].CategoriaId);
+                Assert.Equal(origin[i].Categoria, result[i].Categoria);
             }
         }
     }
