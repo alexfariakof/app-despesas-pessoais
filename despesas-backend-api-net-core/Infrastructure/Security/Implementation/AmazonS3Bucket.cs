@@ -11,14 +11,21 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
         private readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
         private readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
         private IAmazonS3 client;
-        private string AccessKey;
-        private string SecretAccessKey;
-        private string S3ServiceUrl;
-        private string BucketName;
+        private readonly string AccessKey;
+        private readonly string SecretAccessKey;
+        private readonly string S3ServiceUrl;
+        private readonly string BucketName;
 
         private AmazonS3Bucket()
         {
-
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            AccessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
+            SecretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
+            S3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
+            BucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
         }
         public static IAmazonS3Bucket GetInstance
         {
@@ -26,13 +33,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
             {
                 return Instance == null ? new AmazonS3Bucket() : Instance;
             }
-        }
-        public void SetConfiguration(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName)
-        {
-            AccessKey = accessKey;
-            SecretAccessKey = secretAccessKey;
-            S3ServiceUrl = s3ServiceUrl;
-            BucketName = bucketName;
         }
         public async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
         {
@@ -56,10 +56,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 var url = $"https://{BucketName}.s3.amazonaws.com/{perfilFile.Name}";
                 return url;
 
-            }
-            catch (AmazonS3Exception ex)
-            {
-                throw new Exception("Error encountered ***. Message:'{0}' when writing an object", ex);
             }
             catch (Exception ex)
             {
