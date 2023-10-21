@@ -1,7 +1,6 @@
 using despesas_backend_api_net_core.Database_In_Memory;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
-using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +31,7 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Despesas Pessoais V4",
-            Version = "4.0.7"
+            Version = "4.0.8"
         });
 });
 

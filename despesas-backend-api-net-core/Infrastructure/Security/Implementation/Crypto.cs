@@ -13,7 +13,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .Build();
-            Key = Convert.FromBase64String(configuration.GetSection("Crypto:Key").Value);
+            var key = configuration.GetSection("Crypto:Key").Value;
+            var keyByte = Convert.FromBase64String(key);
+            Key = keyByte;
         }
         public static Crypto GetInstance
         {
