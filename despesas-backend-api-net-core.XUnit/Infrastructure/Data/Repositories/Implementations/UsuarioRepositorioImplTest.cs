@@ -17,7 +17,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
+            var _crypto = Crypto.GetInstance;
 
             var options = new DbContextOptionsBuilder<RegisterContext>()
                 .UseInMemoryDatabase(databaseName: "UsuarioRpository")
