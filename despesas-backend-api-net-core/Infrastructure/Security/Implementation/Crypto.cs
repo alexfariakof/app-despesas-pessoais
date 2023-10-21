@@ -5,9 +5,16 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
     public class Crypto
     {
-        private static byte[] Key; // Chave fixa de 256 bits
+        private readonly byte[] Key; // Chave fixa de 256 bits
         private static Crypto? Instance;
-        private Crypto() { }
+        private Crypto() 
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            Key = Convert.FromBase64String(configuration.GetSection("Crypto:Key").Value);
+        }
         public static Crypto GetInstance
         {
             get
@@ -15,11 +22,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 return Instance == null ? new() : Instance;
             }
 
-        }
-
-        public void SetCryptoKey(string _key)
-        {
-            Key = Convert.FromBase64String(_key);
         }
         public string Encrypt(string password)
         {

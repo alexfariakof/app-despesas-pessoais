@@ -40,7 +40,6 @@ builder.Services.AddDbContext<RegisterContext>(options =>
 options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
-ConfigureCrypto(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
@@ -123,8 +122,4 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
             .RequireAuthenticatedUser().Build());
     });
-}
-static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
-{
-    Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
 }
