@@ -37,8 +37,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 ConfigureAutorization(builder.Services, builder.Configuration);
-ConfigureCrypto(builder.Services, builder.Configuration);
-ConfigureAmazonS3Access(builder.Services, builder.Configuration);
 builder.Services.CreateDataBaseInMemory();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
@@ -129,16 +127,4 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
             .RequireAuthenticatedUser().Build());
     });
-}
-static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
-{
-    Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
-}
-static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration configuration)
-{
-    var accessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
-    var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
-    var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
-    var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
-    AmazonS3Bucket.GetInstance.SetConfiguration(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
 }
