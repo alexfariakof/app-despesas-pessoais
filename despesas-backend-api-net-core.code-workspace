@@ -11,7 +11,7 @@
     "[csharp]": {
       "editor.formatOnSave": true,
       "editor.codeLens": true,
-      "editor.defaultFormatter": "csharpier.csharpier-vscode",
+      "editor.defaultFormatter": "ms-dotnettools.csharp",
     }
   }
 }

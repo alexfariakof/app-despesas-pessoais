@@ -65,7 +65,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             var isPerfilValid = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
             if (isPerfilValid != null)
             {
-                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(obj).GetAwaiter().GetResult();
+                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(isPerfilValid).GetAwaiter().GetResult();
                 if (result)
                 {
                     string url = _amazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
