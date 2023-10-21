@@ -44,7 +44,6 @@ builder.Services.AddServices();
 
 var app = builder.Build();
 
-
 var supportedCultures = new[] { new CultureInfo("pt-BR") };
 var localizationOptions = new RequestLocalizationOptions
 {
