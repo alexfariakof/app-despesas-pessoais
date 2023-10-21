@@ -18,18 +18,6 @@ namespace Test.XUnit.Business.Implementations
             _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
             _repositorioMock = Usings.MockRepositorio(_imagensPerfil);
             _mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>();
-
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-            
-            var accessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
-            var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
-            var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
-            var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
-            var RegionEndpoint = configuration.GetSection("AmazonS3Bucket:RegionEndpoint").Value;
-            _mockAmazonS3Bucket.Object.SetConfiguration(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
                        
 
             _imagemPerfilUsuarioBusiness = new ImagemPerfilUsuarioBusinessImpl(_repositorioMock.Object, _mockAmazonS3Bucket.Object);
