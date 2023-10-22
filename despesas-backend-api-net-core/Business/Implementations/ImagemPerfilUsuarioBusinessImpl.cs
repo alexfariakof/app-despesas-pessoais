@@ -64,7 +64,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
             try
             {                
                 if (validImagemPerfil == null)
-                    throw new Exception();
+                    throw new NullReferenceException("ImagemPerfilUsuarioVM");
 
                 _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
                 var imagemPerfilUsuario = new ImagemPerfilUsuarioVM

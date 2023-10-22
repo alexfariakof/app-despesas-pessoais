@@ -5,7 +5,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
     public class Crypto
     {
-        private static byte[] Key; // Chave fixa de 256 bits
+        private static byte[]? Key = null; // Chave fixa de 256 bits
         private static Crypto? Instance;
         private Crypto() 
         {
