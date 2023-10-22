@@ -13,7 +13,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
             // Arrange
             string key = "01010101010101010101010101010101";
             string originalText = "!12345";
-            Crypto crypto = Crypto.GetInstance;
+            ICrypto crypto = Crypto.GetInstance;
 
             // Act
             string encryptedText = crypto.Encrypt(originalText);
@@ -30,7 +30,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
             // Arrange
             string key = "01010101010101010101010101010101";
             string originalText = "!12345";
-            Crypto crypto = Crypto.GetInstance;
+            ICrypto crypto = Crypto.GetInstance;
 
             // Act
             string encryptedText1 = crypto.Encrypt(originalText);

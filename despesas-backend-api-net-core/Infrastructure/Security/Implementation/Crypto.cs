@@ -3,10 +3,10 @@ using System.Text;
 
 namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
-    public class Crypto
+    public class Crypto : ICrypto
     {
-        private static byte[]? Key = null; // Chave fixa de 256 bits
-        private static Crypto? Instance;
+        private readonly byte[] Key; // Chave fixa de 256 bits
+        private static ICrypto? Instance;
         private Crypto() 
         {
             var configuration = new ConfigurationBuilder()
@@ -17,11 +17,12 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
             var keyByte = Convert.FromBase64String(key);
             Key = keyByte;
         }
-        public static Crypto GetInstance
+
+        public static ICrypto GetInstance
         {
             get
             {
-                return Instance == null ? new() : Instance;
+                return Instance == null ? new Crypto() : Instance;
             }
 
         }
