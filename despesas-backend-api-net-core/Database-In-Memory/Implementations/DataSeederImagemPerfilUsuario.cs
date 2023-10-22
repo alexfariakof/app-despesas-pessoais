@@ -18,22 +18,21 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                 {
                     new ImagemPerfilUsuario
                     {
-                        Id = 2,
-                        Url =
-                            "https://bucket-usuario-perfil.s3.amazonaws.com/perfil-usuarioId-1-20230703",
-                        Name = "perfil-usuarioId-1-20230702",
+                        Id = 1,
+                        Url ="https://bucket-usuario-perfil.s3.amazonaws.com/1-imagem-perfil-usuario",
+                        Name = "1-imagem-perfil-usuario",
                         Type = "jpg",
                         UsuarioId = 1
                     },
                     new ImagemPerfilUsuario
                     {
-                        Id = 3,
+                        Id = 2,
                         Url =
-                            "https://bucket-usuario-perfil.s3.amazonaws.com/perfil-usuarioId-2-20230907",
-                        Name = "perfil-usuarioId-2-20230719",
-                        Type = "png",
+                            "https://bucket-usuario-perfil.s3.sa-east-1.amazonaws.com/2-imagem-perfil-usuario",
+                        Name = "2-imagem-perfil-usuario",
+                        Type = "jpg",
                         UsuarioId = 2
-                    }
+                    },
                 };
                 _context.ImagemPerfilUsuario.AddRange(imagens);
                 _context.SaveChanges();
