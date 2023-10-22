@@ -13,8 +13,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
             // Arrange
             string key = "01010101010101010101010101010101";
             string originalText = "!12345";
-            Crypto crypto = Crypto.GetInstance;
-            crypto.SetCryptoKey(key);
+            ICrypto crypto = Crypto.GetInstance;
 
             // Act
             string encryptedText = crypto.Encrypt(originalText);
@@ -26,31 +25,12 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
         }
 
         [Fact]
-        public void Decrypt_With_Wrong_Key_Should_Throw_Exception()
-        {
-            // Arrange
-            string correctKey = "01010101010101010101010101010101";
-            string wrongKey = "01010101010101010101010101010100";
-            string originalText = "!12345";
-            Crypto crypto = Crypto.GetInstance;
-            crypto.SetCryptoKey(correctKey);
-
-            // Act
-            string encryptedText = crypto.Encrypt(originalText);
-
-            // Assert
-            crypto.SetCryptoKey(wrongKey);
-            Assert.Throws<CryptographicException>(() => crypto.Decrypt(encryptedText));
-        }
-
-        [Fact]
         public void Encrypt_Should_Produce_Different_Output_For_Same_Input()
         {
             // Arrange
             string key = "01010101010101010101010101010101";
             string originalText = "!12345";
-            Crypto crypto = Crypto.GetInstance;
-            crypto.SetCryptoKey(key);
+            ICrypto crypto = Crypto.GetInstance;
 
             // Act
             string encryptedText1 = crypto.Encrypt(originalText);

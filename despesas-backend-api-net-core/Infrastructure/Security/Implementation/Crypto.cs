@@ -3,23 +3,28 @@ using System.Text;
 
 namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
-    public class Crypto
+    public class Crypto : ICrypto
     {
-        private static byte[] Key; // Chave fixa de 256 bits
-        private static Crypto? Instance;
-        private Crypto() { }
-        public static Crypto GetInstance
+        private readonly byte[] Key; // Chave fixa de 256 bits
+        private static ICrypto? Instance;
+        private Crypto() 
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            var key = configuration.GetSection("Crypto:Key").Value;
+            var keyByte = Convert.FromBase64String(key);
+            Key = keyByte;
+        }
+
+        public static ICrypto GetInstance
         {
             get
             {
-                return Instance == null ? new() : Instance;
+                return Instance == null ? new Crypto() : Instance;
             }
 
-        }
-
-        public void SetCryptoKey(string _key)
-        {
-            Key = Convert.FromBase64String(_key);
         }
         public string Encrypt(string password)
         {
