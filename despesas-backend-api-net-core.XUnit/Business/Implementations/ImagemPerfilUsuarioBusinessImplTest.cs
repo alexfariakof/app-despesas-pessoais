@@ -2,7 +2,6 @@
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using despesas_backend_api_net_core.Infrastructure.Security;
-using Microsoft.Extensions.Configuration;
 
 namespace Test.XUnit.Business.Implementations
 {
@@ -185,7 +184,7 @@ namespace Test.XUnit.Business.Implementations
 
             _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil.FindAll(obj => obj.Usuario.Id == imagemPerfilVM.IdUsuario));
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<ImagemPerfilUsuario>())).Returns(imagemPerfil);
-            _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuarioVM>())).ReturnsAsync(false);
+            _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuarioVM>())).Throws<Exception>();
             _mockAmazonS3Bucket.Setup(a => a.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuarioVM>())).ReturnsAsync("http://teste.url");
 
             // Act
