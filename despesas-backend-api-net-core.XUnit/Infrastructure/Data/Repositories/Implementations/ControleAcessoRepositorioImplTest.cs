@@ -18,8 +18,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .Build();
-
-            Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
             
             _context = Usings.GetRegisterContext();
             mockControleAcesso = _context.ControleAcesso.ToList().First();
