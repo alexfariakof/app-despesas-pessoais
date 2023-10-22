@@ -1,7 +1,6 @@
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
-using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +43,6 @@ builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
-
 
 var supportedCultures = new[] { new CultureInfo("pt-BR") };
 var localizationOptions = new RequestLocalizationOptions
