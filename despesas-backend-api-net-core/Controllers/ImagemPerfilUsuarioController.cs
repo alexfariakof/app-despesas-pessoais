@@ -70,7 +70,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                string fileName = "perfil-usuarioId-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMdd");
+                string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string typeFile = "";
                 int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
                 if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
@@ -125,7 +125,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                string fileName = "perfil-usuarioId-" + idUsuario + "-" + DateTime.Now.ToString("yyyyMMdd");
+                string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string typeFile = "";
                 int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
                 if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
