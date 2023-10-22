@@ -1,4 +1,5 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+using System.Globalization;
 
 namespace despesas_backend_api_net_core.XUnit.Fakers
 {
@@ -12,7 +13,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             var LancamentoFaker = new Faker<Lancamento>()
                 .RuleFor(l => l.Id, f => counter++)
                 .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
-                .RuleFor(l => l.Data, DateTime.Now.AddDays(new Random().Next(99)))
+                .RuleFor(l => l.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
                 .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(l => l.UsuarioId, usuario.Id)
                 .RuleFor(l => l.Usuario, usuario)
@@ -31,7 +32,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             var lancamentoVMFaker = new Faker<LancamentoVM>()
                 .RuleFor(l => l.Id, f => counterVM++)
                 .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000).ToString("N2"))
-                .RuleFor(l => l.Data, DateTime.Now.AddDays(new Random().Next(99)).ToDateBr())
+                .RuleFor(l => l.Data, f => new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1).ToString())
                 .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(l => l.IdUsuario, idusuario)
                 .RuleFor(l => l.IdDespesa, idDespesa)                    
@@ -42,15 +43,13 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return lancamentoVMFaker.Generate();
         }
 
-        public static List<LancamentoVM> LancamentoVMs(Usuario usuario = null, int? idUsuario = null)
+        public static List<LancamentoVM> LancamentoVMs(Usuario? usuario = null, int? idUsuario = null)
         {
             var listLancamentoVM = new List<LancamentoVM>();            
             for (int i = 0; i < 10; i++)
             {
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
-                else
-                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
                                 
                 var categoria = CategoriaFaker.GetNewFaker(usuario);
                 var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
@@ -61,15 +60,14 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 
             return listLancamentoVM;
         }
-        public static List<Lancamento> Lancamentos(Usuario usuario = null, int? idUsuario = null)
+        public static List<Lancamento> Lancamentos(Usuario? usuario = null, int? idUsuario = null)
         {
             var listLancamento = new List<Lancamento>();            
             for (int i = 0; i < 10; i++)
             {
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
-                else
-                    usuario = UsuarioFaker.GetNewFaker(idUsuario.Value);
+
                 var categoria = CategoriaFaker.GetNewFaker(usuario);
                 var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
                 var receita = ReceitaFaker.GetNewFaker(usuario, categoria);

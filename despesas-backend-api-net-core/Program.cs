@@ -1,10 +1,13 @@
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,12 +40,20 @@ builder.Services.AddDbContext<RegisterContext>(options =>
 options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 
 ConfigureAutorization(builder.Services, builder.Configuration);
-ConfigureCrypto(builder.Services, builder.Configuration);
-ConfigureAmazonS3Access(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
 var app = builder.Build();
+
+
+var supportedCultures = new[] { new CultureInfo("pt-BR") };
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("pt-BR"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -111,16 +122,4 @@ static void ConfigureAutorization(IServiceCollection services, IConfiguration co
             .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
             .RequireAuthenticatedUser().Build());
     });
-}
-static void ConfigureCrypto(IServiceCollection services, IConfiguration configuration)
-{
-    Crypto.GetInstance.SetCryptoKey(configuration.GetSection("Crypto:Key").Value);
-}
-static void ConfigureAmazonS3Access(IServiceCollection services, IConfiguration configuration)
-{
-    var accessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
-    var secretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
-    var s3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
-    var bucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
-    AmazonS3Bucket.GetInstance.SetConfiguration(accessKey, secretAccessKey, s3ServiceUrl, bucketName);
 }

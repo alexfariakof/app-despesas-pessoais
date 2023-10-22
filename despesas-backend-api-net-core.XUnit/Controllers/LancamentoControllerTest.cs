@@ -2,6 +2,7 @@
 using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 using static Azure.Core.HttpHeader;
@@ -83,7 +84,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             var okResult = Assert.IsType<OkObjectResult>(result);
             var returnedSaldo = Assert.IsType<string>(okResult.Value);
-            Assert.Equal(saldo.ToString("N2"), returnedSaldo);
+            Assert.Equal(saldo.ToString("N2", new CultureInfo("pt-br")), returnedSaldo);
         }
 
         [Fact, Order(3)]
@@ -122,7 +123,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
@@ -143,7 +144,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Nenhum Lançamento foi encontrado!", message);
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
@@ -165,7 +166,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Nenhum Lançamento foi encontrado!", message);
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
@@ -188,7 +189,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.IsType<List<LancamentoVM>>(okResult.Value);
-            Assert.Equal(((List<LancamentoVM>)okResult.Value).Count(), 0);
+            Assert.Empty(((List<LancamentoVM>)okResult.Value));
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 
@@ -208,7 +209,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
@@ -229,7 +230,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao gerar saldo!", message);
             _mockLancamentoBusiness.Verify(b => b.GetSaldo(idUsuario), Times.Once);
         }
@@ -250,7 +251,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
@@ -272,7 +273,7 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
-            var message = (string)value.GetType().GetProperty("message").GetValue(value, null);
+            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao gerar dados do Graáfico!", message);
         }
     }

@@ -3,14 +3,15 @@
     public class ImagemPerfilUsuarioTest
     {
         [Theory]
-        [InlineData(1, "http://localhost/usuario1", "usuario 1", "jpg", 1, typeof(Usuario))]
-        [InlineData(2, "http://localhost/usuario2", "usuario 2", "png", 2, typeof(Usuario))]
-        [InlineData(3, "http://localhost/usuario3", "usuario 3", "jpeg", 3, typeof(Usuario))]
-        public void ImagemPerfilUsuario_Should_Set_Properties_Correctly(int id, string url, string name, string type, int usuarioId, Type typeUsuario )
+        [InlineData(1, "http://localhost/usuario1", "usuario 1", "jpg", 1)]
+        [InlineData(2, "http://localhost/usuario2", "usuario 2", "png", 2)]
+        [InlineData(3, "http://localhost/usuario3", "usuario 3", "jpeg", 3)]
+        public void ImagemPerfilUsuario_Should_Set_Properties_Correctly(int id, string url, string name, string type, int usuarioId)
         {
+            // Arrange
             var mockUsuario = Mock.Of<Usuario>();
 
-            // Arrange and Act
+            // Act
             var imagemPerfilUsuario = new ImagemPerfilUsuario
             { 
                 Id = id,

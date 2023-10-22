@@ -7,7 +7,8 @@ if (Test-Path $reportPath) {
 }
 
 # Executa o teste e coleta o GUID gerado
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+dotnet build -restore
+dotnet test  /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 
 # Encontra o diretório mais recente na pasta TestResults
 $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -22,7 +23,8 @@ if ($latestDir -ne $null) {
     $coverageXmlPath = Join-Path -Path (Join-Path -Path $baseDirectory -ChildPath "TestResults") -ChildPath $guid
 
     # Gera o relatório de cobertura usando o GUID capturado
-    reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs
+    reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$sourceDirs\Database-In-Memory\**
+    
 
     # Abre a página index.html no navegador padrão do sistema operacional
     Invoke-Item $coverageXmlPath\coveragereport\index.html

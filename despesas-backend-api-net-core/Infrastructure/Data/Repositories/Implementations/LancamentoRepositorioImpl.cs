@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using despesas_backend_api_net_core.Domain.Entities;
+﻿using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
-using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
+using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using System.Data;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
@@ -22,160 +19,119 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             int mes = data.Month;
             int ano = data.Year;
 
-            string sql = $"CALL LancamentosPorMesAno({idUsuario},{mes}, {ano})";
-            using (_context)
+            try
             {
-                try
-                {
-                    var list = _context.Lancamento.FromSqlRaw(sql).ToList();
-                    return list.OrderBy(item => item.Data).ThenBy(item => item.Categoria).ToList();
-                }
-                catch
-                {
-                    throw new Exception("Erro ao gerar registros de lançamentos!");
-                }
+                var despesas = _context.Despesa.Where(d => d.Data.Month == mes && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList();
+                var receitas = _context.Receita.Where(r => r.Data.Month == mes && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList();
+
+                var lancamentos = new LancamentoMap().ParseList(despesas)
+                    .Union(new LancamentoMap().ParseList(receitas))
+                    .ToList();
+                return lancamentos.OrderBy(l => l.Data).ToList();
+            }
+            catch
+            {
+                throw new Exception("LancamentoRepositorioImpl_FindByMesAno_Erro");
             }
         }
 
         public decimal GetSaldo(int idUsuario)
         {
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            try
             {
-                decimal saldo = 0;                
-                _context.Database.OpenConnection();
-                try
-                {
-                    command.CommandText = $"CALL GetSaldoByIdUsuario({idUsuario})";
-                    command.CommandType = CommandType.Text;
+                decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor);
+                decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor);
 
-                    using (var result = command.ExecuteReader())
-                    {
-                        if (result.Read())
-                        {
-                            decimal.TryParse(result.GetString(0), out saldo);
-                        }
-                    }
-                }
-                catch
-                {
-                    throw new Exception("Erro ao consultar saldo!");
-                }
-                finally
-                {
-                    _context.Database.CloseConnection();
-                }
-                
-                return saldo;
+                return (sumReceita - sumDespesa);
+            }
+            catch
+            {
+                throw new Exception("LancamentoRepositorioImpl_GetSaldo_Erro");
             }
         }
 
         public Grafico GetDadosGraficoByAno(int idUsuario, DateTime data)
         {
-            int ano = data.Year;
-            Dictionary<string, decimal> somatorioDespesaPorAno = new Dictionary<string, decimal>
+            Dictionary<string, decimal> defaultSumDespesa = new Dictionary<string, decimal>
             {
-                { "Janeiro", 0 },
-                { "Fevereiro", 0 },
-                { "Março", 0 },
-                { "Abril", 0 },
-                { "Maio", 0 },
-                { "Junho", 0 },
-                { "Julho", 0 },
-                { "Agosto", 0 },
-                { "Setembro", 0 },
-                { "Outubro", 0 },
-                { "Novembro", 0 },
-                { "Dezembro", 0 }
+                { "Janeiro", 1},
+                { "Fevereiro", 2 },
+                { "Março", 3 },
+                { "Abril", 4 },
+                { "Maio", 5},
+                { "Junho", 6 },
+                { "Julho", 7 },
+                { "Agosto", 8 },
+                { "Setembro", 9 },
+                { "Outubro", 10 },
+                { "Novembro", 11 },
+                { "Dezembro", 12 }
             };
-            Dictionary<string, decimal> somatorioReceitaProAno = new Dictionary<string, decimal>
+
+            Dictionary<string, decimal> defaultSumReceita = new Dictionary<string, decimal>
             {
-                { "Janeiro", 0 },
-                { "Fevereiro", 0 },
-                { "Março", 0 },
-                { "Abril", 0 },
-                { "Maio", 0 },
-                { "Junho", 0 },
-                { "Julho", 0 },
-                { "Agosto", 0 },
-                { "Setembro", 0 },
-                { "Outubro", 0 },
-                { "Novembro", 0 },
-                { "Dezembro", 0 }
+                { "Janeiro", 12 },
+                { "Fevereiro", 11 },
+                { "Março", 10 },
+                { "Abril", 9 },
+                { "Maio", 8 },
+                { "Junho", 7 },
+                { "Julho", 6 },
+                { "Agosto", 5 },
+                { "Setembro", 4 },
+                { "Outubro", 3 },
+                { "Novembro", 2 },
+                { "Dezembro", 1 }
             };
-            Grafico grafico = new Grafico();
 
-            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            try 
             {
-                string sqlDespesa = $"CALL SomatorioDespesasPorAno({idUsuario}, {ano})";
-                string sqlReceita = $"CALL SomatorioReceitasPorAno({idUsuario}, {ano})";
+                int ano = data.Year;
 
-                _context.Database.OpenConnection();
-                try
+                Grafico grafico = new Grafico
                 {
-                    command.CommandText = sqlDespesa;
-                    command.CommandType = CommandType.Text;
-
-
-                    using (var result = command.ExecuteReader())
+                    SomatorioDespesasPorAno = new Dictionary<string, decimal>
                     {
-                        if (result.Read())
-                        {
-                            somatorioDespesaPorAno = new Dictionary<string, decimal>
-                            {
-                                { "Janeiro", result.GetDecimal("Janeiro") },
-                                { "Fevereiro", result.GetDecimal("Fevereiro") },
-                                { "Marco", result.GetDecimal("Marco") },
-                                { "Abril", result.GetDecimal("Abril")},
-                                { "Maio", result.GetDecimal("Maio") },
-                                { "Junho", result.GetDecimal("Junho") },
-                                { "Julho", result.GetDecimal("Julho") },
-                                { "Agosto", result.GetDecimal("Agosto") },
-                                { "Setembro", result.GetDecimal("Setembro") },
-                                { "Outubro", result.GetDecimal("Outubro") },
-                                { "Novembro", result.GetDecimal("Novembro") },
-                                { "Dezembro", result.GetDecimal("Dezembro") }
-                            };
-                            grafico.SomatorioDespesasPorAno = somatorioDespesaPorAno;
-                        }
-                        
-                    }
-                    
-                    command.CommandText = sqlReceita;
-                    using (var result = command.ExecuteReader())
+                        { "Janeiro", _context.Despesa.Where(d => d.Data.Month == 1 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor) },
+                        { "Fevereiro", _context.Despesa.Where(d => d.Data.Month == 2 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Março", _context.Despesa.Where(d => d.Data.Month == 3 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Abril", _context.Despesa.Where(d => d.Data.Month == 4 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Maio", _context.Despesa.Where(d => d.Data.Month == 5 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor) },
+                        { "Junho", _context.Despesa.Where(d => d.Data.Month == 6 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Julho", _context.Despesa.Where(d => d.Data.Month == 7 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Agosto", _context.Despesa.Where(d => d.Data.Month == 8 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Setembro", _context.Despesa.Where(d => d.Data.Month == 9 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Outubro", _context.Despesa.Where(d => d.Data.Month == 10 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Novembro", _context.Despesa.Where(d => d.Data.Month == 11 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                        { "Dezembro", _context.Despesa.Where(d => d.Data.Month == 12 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                    },
+                    SomatorioReceitasPorAno = new Dictionary<string, decimal>
                     {
-                        if (result.Read())
-                        {
-                            somatorioReceitaProAno = new Dictionary<string, decimal>
-                            {
-                                { "Janeiro", result.GetDecimal("Janeiro") },
-                                { "Fevereiro", result.GetDecimal("Fevereiro") },
-                                { "Marco", result.GetDecimal("Marco") },
-                                { "Abril", result.GetDecimal("Abril")},
-                                { "Maio", result.GetDecimal("Maio") },
-                                { "Junho", result.GetDecimal("Junho") },
-                                { "Julho", result.GetDecimal("Julho") },
-                                { "Agosto", result.GetDecimal("Agosto") },
-                                { "Setembro", result.GetDecimal("Setembro") },
-                                { "Outubro", result.GetDecimal("Outubro") },
-                                { "Novembro", result.GetDecimal("Novembro") },
-                                { "Dezembro", result.GetDecimal("Dezembro") }
-                            };
-                            grafico.SomatorioReceitasPorAno = somatorioReceitaProAno;
-                        }
+                        { "Janeiro", _context.Receita.Where(r => r.Data.Month == 1 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Fevereiro", _context.Receita.Where(r => r.Data.Month == 2 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Março", _context.Receita.Where(r => r.Data.Month == 3 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Abril", _context.Receita.Where(r => r.Data.Month == 4 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Maio", _context.Receita.Where(r => r.Data.Month == 5 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Junho", _context.Receita.Where(r => r.Data.Month == 6 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Julho", _context.Receita.Where(r => r.Data.Month == 7 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Agosto", _context.Receita.Where(r => r.Data.Month == 8 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Setembro", _context.Receita.Where(r => r.Data.Month == 9 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Outubro", _context.Receita.Where(r => r.Data.Month == 10 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Novembro", _context.Receita.Where(r => r.Data.Month == 11 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
+                        { "Dezembro", _context.Receita.Where(r => r.Data.Month == 12 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) }
                     }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Erro ao consultar saldo!", ex);
-                }
-                finally
-                {
-                    _context.Database.CloseConnection();
-                }                
+                };                
 
                 return grafico;
-            }        
-            
+            }
+            catch
+            {
+                return new Grafico
+                {
+                    SomatorioDespesasPorAno = defaultSumDespesa,
+                    SomatorioReceitasPorAno = defaultSumReceita
+                };                
+            }            
         }
     }
 }

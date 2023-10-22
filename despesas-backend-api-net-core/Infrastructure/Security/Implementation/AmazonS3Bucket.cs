@@ -3,36 +3,36 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using despesas_backend_api_net_core.Domain.VM;
 
-namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
+namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
 {
-    public class AmazonS3Bucket
+    public class AmazonS3Bucket : IAmazonS3Bucket
     {
-        private static AmazonS3Bucket? Instance;
-        private static readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
-        private static IAmazonS3 client;
-        private static string AccessKey;
-        private static string SecretAccessKey;
-        private static string S3ServiceUrl;
-        private static string BucketName;
+        private static IAmazonS3Bucket? Instance;
+        private readonly S3CannedACL fileCannedACL = S3CannedACL.PublicRead;
+        private readonly RegionEndpoint bucketRegion = RegionEndpoint.SAEast1;
+        private IAmazonS3 client;
+        private readonly string AccessKey;
+        private readonly string SecretAccessKey;
+        private readonly string S3ServiceUrl;
+        private readonly string BucketName;
 
         private AmazonS3Bucket()
         {
-
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            AccessKey = configuration.GetSection("AmazonS3Bucket:accessKey").Value;
+            SecretAccessKey = configuration.GetSection("AmazonS3Bucket:secretAccessKey").Value;
+            S3ServiceUrl = configuration.GetSection("AmazonS3Bucket:s3ServiceUrl").Value;
+            BucketName = configuration.GetSection("AmazonS3Bucket:bucketName").Value;
         }
-        public static AmazonS3Bucket GetInstance
+        public static IAmazonS3Bucket GetInstance
         {
             get
             {
-                return Instance == null ? new() : Instance;
+                return Instance == null ? new AmazonS3Bucket() : Instance;
             }
-        }
-        public void SetConfiguration(string accessKey, string secretAccessKey, string s3ServiceUrl, string bucketName) 
-        {
-            AccessKey = accessKey;
-            SecretAccessKey = secretAccessKey;
-            S3ServiceUrl = s3ServiceUrl;
-            BucketName = bucketName;
         }
         public async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
         {
@@ -57,13 +57,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
                 return url;
 
             }
-            catch (AmazonS3Exception ex)
-            {
-                throw new Exception("Error encountered ***. Message:'{0}' when writing an object", ex);
-            }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("AmazonS3Bucket_WritingAnObjectAsync_Errro ", ex);
             }
         }
         public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuarioVM perfilFile)
@@ -86,7 +82,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Configuration
                 await client.DeleteObjectAsync(deleteObjectRequest);
                 return true;
             }
-            catch (Exception e)
+            catch
             {
                 return false;
             }

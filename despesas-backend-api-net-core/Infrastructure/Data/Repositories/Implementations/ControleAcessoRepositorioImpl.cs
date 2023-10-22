@@ -1,10 +1,8 @@
 ﻿using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Mail;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using System.Net;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
-using Microsoft.VisualBasic;
+using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
+using despesas_backend_api_net_core.Infrastructure.Security;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations
 {
@@ -12,9 +10,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
     {
         private readonly RegisterContext _context;
         private readonly Crypto _crypto = Crypto.GetInstance;
-        public ControleAcessoRepositorioImpl(RegisterContext context)
+        private readonly IEmailSender _emailSender;
+        public ControleAcessoRepositorioImpl(RegisterContext context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
         public bool Create(ControleAcesso controleAcesso)
         {
@@ -140,7 +140,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 {
                     var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
                     controleAcesso.Senha = _crypto.Encrypt(senhaNova);
-                    if (EnviarEmail(controleAcesso, "<b>Nova senha:</b>" + senhaNova))
+                    if (_emailSender.SendEmailPassword(controleAcesso.Usuario, senhaNova))
                     {
                         _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                         _context.SaveChanges();
@@ -148,9 +148,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                     }
                     return false;                    
                 }
-                catch (Exception ex)
+                catch 
                 {
-                    throw ex;
+                    return false;
                 }
             }            
         }
@@ -163,10 +163,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
 
             ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
             DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
-
-            var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
+                        
             try
             {
+                var result = dsControleACesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
                 controleAcesso.Senha = _crypto.Encrypt(password);
                 _context.Entry(result).CurrentValues.SetValues(controleAcesso);
                 usuario.StatusUsuario = StatusUsuario.Ativo;
@@ -179,37 +179,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
                 throw new Exception("ChangePassword_Erro", ex);
             }
         }
-        private bool EnviarEmail(ControleAcesso controleAcesso, string message)
-        {
-            Usuario usuario = controleAcesso.Usuario;
-
-            using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
-            {
-                client.EnableSsl = true;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("appdespesaspessoais@gmail.com", "@Toor01!");
-
-                using (MailMessage mail = new MailMessage())
-                {
-                    mail.From = new MailAddress("appdespesaspessoais@gmail.com", "App Despesas Pessoais");
-                    mail.To.Add(new MailAddress(usuario.Email, usuario.Nome + " " + usuario.SobreNome));
-                    mail.Subject = "Contato";
-                    mail.Body = $"Mensagem do site:<br/> Prezado(a) {usuario.Nome} {usuario.SobreNome}<br/>Segue dados para acesso a conta cadastrada.<br><b>Nova Senha :</b> {controleAcesso.Senha}<br/>{message}";
-                    mail.IsBodyHtml = true;
-                    mail.Priority = MailPriority.High;
-
-                    try
-                    {
-                        client.Send(mail);
-                        return true;
-                    }
-                    catch(Exception ex) 
-                    {
-                        throw new Exception("EnviarEmail_Erro", ex);
-                    }
-                }
-            }
-        }
+        
         public bool isValidPasssword(ControleAcesso controleAcesso)
         {
             ControleAcesso _controleAcesso = FindByEmail(controleAcesso);

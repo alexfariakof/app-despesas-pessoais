@@ -3,7 +3,6 @@ using despesas_backend_api_net_core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
-using Google.Protobuf.WellKnownTypes;
 using System.Globalization;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
@@ -42,7 +41,46 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             builder.Property(m => m.Descricao)
             .HasMaxLength(100);            
         }
-
+        public Lancamento Parse(Despesa origin)
+        {
+            if (origin == null) return new Lancamento();
+            return new Lancamento
+            {
+                Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+                Valor = origin.Valor,
+                Data = DateTime.Parse(origin.Data.ToString(), new CultureInfo("pt-BR")),
+                Descricao = origin.Descricao,
+                UsuarioId = origin.UsuarioId,
+                Usuario = origin.Usuario,
+                DespesaId = origin.Id,
+                Despesa = origin,
+                ReceitaId = 0,
+                Receita = new Receita (),
+                CategoriaId = origin.CategoriaId,
+                Categoria = origin.Categoria,
+                DataCriacao = DateTime.Now
+            };
+        }
+        public Lancamento Parse(Receita origin)
+        {
+            if (origin == null) return new Lancamento();
+            return new Lancamento
+            {
+                Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+                Valor = origin.Valor,
+                Data = DateTime.Parse(origin.Data.ToString(), new CultureInfo("pt-BR")),
+                Descricao = origin.Descricao,
+                UsuarioId = origin.UsuarioId,
+                Usuario = origin.Usuario,
+                DespesaId = 0,
+                Despesa = new Despesa(),
+                ReceitaId = origin.Id,
+                Receita = origin,
+                CategoriaId = origin.CategoriaId,
+                Categoria = origin.Categoria,
+                DataCriacao = DateTime.Now
+            };
+        }
         public Lancamento Parse(LancamentoVM origin)
         {
             if (origin == null) return new Lancamento();
@@ -60,7 +98,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Categoria = origin.Categoria
             };
         }
-
         public LancamentoVM Parse(Lancamento origin)
         {
             if (origin == null) return new LancamentoVM();
@@ -76,7 +113,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 TipoCategoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
             };
         }
-
         public List<Lancamento> ParseList(List<LancamentoVM> origin)
         {
             if (origin == null) return new List<Lancamento>();
@@ -86,6 +122,16 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
         public List<LancamentoVM> ParseList(List<Lancamento> origin)
         {
             if (origin == null) return new List<LancamentoVM>();
+            return origin.Select(item => Parse(item)).ToList();
+        }
+        public List<Lancamento> ParseList(List<Despesa> origin)
+        {
+            if (origin == null) return new List<Lancamento>();
+            return origin.Select(item => Parse(item)).ToList();
+        }
+        public List<Lancamento> ParseList(List<Receita> origin)
+        {
+            if (origin == null) return new List<Lancamento>();
             return origin.Select(item => Parse(item)).ToList();
         }
     }

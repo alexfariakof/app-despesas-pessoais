@@ -3,10 +3,10 @@
     public class ReceitaTest
     {
         [Theory]
-        [InlineData(1, "Descrição 1", 10.0, 1, typeof(Usuario), 1, typeof(Categoria))]
-        [InlineData(2, "Descrição 2", 0.0, 2, typeof(Usuario), 2, typeof(Categoria))]
-        [InlineData(3, "Descrição 3", 9.5, 3, typeof(Usuario), 3, typeof(Categoria))]
-        public void Receita_Should_Set_Properties_Correctly(int id, string descricao, Decimal valor, int usuarioId, Type typeUsuario, int categoriaId, Type typeCategoria )
+        [InlineData(1, "Descrição 1", 10.0, 1, 1)]
+        [InlineData(2, "Descrição 2", 0.0, 2, 2)]
+        [InlineData(3, "Descrição 3", 9.5, 3, 3)]
+        public void Receita_Should_Set_Properties_Correctly(int id, string descricao, Decimal valor, int usuarioId, int categoriaId)
         {
             var mockUsuario = Mock.Of<Usuario>();
             var mockCategoria= Mock.Of<Categoria>();

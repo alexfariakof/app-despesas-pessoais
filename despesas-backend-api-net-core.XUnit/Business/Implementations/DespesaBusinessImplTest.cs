@@ -122,7 +122,6 @@ namespace Test.XUnit.Business.Implementations
             var result = _despesaBusiness.Delete(despesaVM);
 
             // Assert
-            Assert.NotNull(result);
             Assert.IsType<bool>(result);
             Assert.True(result);
             _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Despesa>()), Times.Once);

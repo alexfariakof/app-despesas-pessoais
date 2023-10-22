@@ -7,7 +7,6 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
     public class CategoriaMap : IParser<CategoriaVM, Categoria>, IParser<Categoria, CategoriaVM>, IEntityTypeConfiguration<Categoria>
     {
-
         public void Configure(EntityTypeBuilder<Categoria> builder)
         {
             builder.HasKey(m => m.Id);
