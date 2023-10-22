@@ -13,11 +13,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
 
         public ControleAcessoRepositorioImplTest()
         {
-
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
             
             _context = Usings.GetRegisterContext();
             mockControleAcesso = _context.ControleAcesso.ToList().First();
