@@ -12,7 +12,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
         private readonly ImagemPerfilUsuarioMap _converter;
         private readonly IAmazonS3Bucket _amazonS3Bucket;
-            public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio, IAmazonS3Bucket amazonS3Bucket = null)
+        public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio, IAmazonS3Bucket amazonS3Bucket = null)
         {
             _repositorio = repositorio;
             _converter = new ImagemPerfilUsuarioMap();
@@ -46,7 +46,6 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
             return imagemPerfilUsuario;
         }
-
         public UsuarioVM FindByIdUsuario(int idUsuario)
         {
             try
@@ -59,22 +58,31 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 return null;
             }            
         }
-
         public ImagemPerfilUsuarioVM Update(ImagemPerfilUsuarioVM obj)
         {
-            var isPerfilValid = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
-            if (isPerfilValid != null)
-            {
-                var result = _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(isPerfilValid).GetAwaiter().GetResult();
-                if (result)
+            var validImagemPerfil = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
+            try
+            {                
+                if (validImagemPerfil == null)
+                    throw new Exception();
+
+                _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
+                var imagemPerfilUsuario = new ImagemPerfilUsuarioVM
                 {
-                    string url = _amazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult();
-                    isPerfilValid.Url = url;
-                    ImagemPerfilUsuario perfilFile = _converter.Parse(isPerfilValid);
-                    return _converter.Parse(_repositorio.Update(perfilFile));
-                }
+                    Id = validImagemPerfil.Id,
+                    Url = _amazonS3Bucket.WritingAnObjectAsync(obj).GetAwaiter().GetResult(),
+                    Name = obj.Name,
+                    Type = obj.Type,
+                    IdUsuario = validImagemPerfil.IdUsuario
+                };
+                
+                var resultImagePerfilUsuario = _repositorio.Update(new ImagemPerfilUsuarioMap().Parse(imagemPerfilUsuario));
+                return _converter.Parse(resultImagePerfilUsuario);
             }
-            return null;            
+            catch
+            {
+                return null;
+            }
         }
         public bool Delete(ImagemPerfilUsuarioVM obj)
         {
