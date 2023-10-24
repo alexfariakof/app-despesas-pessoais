@@ -75,8 +75,7 @@ Run  `./generate_coverage_report.ps1` if using windows, or Run `./generate_cover
 ![reportTestCoverage](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/afd1b5e4-5a2f-490c-bf4f-a530df41c1ae)
 
 ## Security Settings
-<h5> 
-   <ul>
+ <ul>
       <li>   
          <h6>User Access/Password Control</h6>
             <p>Passwords are encrypted and not exposed in any requests, and they are managed by a key  accessed by the Crypto class in a file created on the server. Ideally, the access should be through a key created within Azure or AWS, thereby enhancing security.
@@ -98,7 +97,7 @@ Run  `./generate_coverage_report.ps1` if using windows, or Run `./generate_cover
          </p>
       </li>                 
  </ul>
-</h5>
+
 
 ## Sonar Cloud
 
