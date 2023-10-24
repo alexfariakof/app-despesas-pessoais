@@ -1,3 +1,43 @@
+# Projeto Backend API Restful Despesas Pessoais 
+
+## Introduction
+
+In summary, this project involves an update of the Restful API application created in the current final project, upgrading from .NET Core 3.1 to .NET Core 7.0. Test-Driven Development (TDD) is implemented using XUnit, generating test coverage reports locally with ReportGenerator. CI/CD is implemented with GitActions/Workflows, which perform "Build, Unit Testing, and Static Code Analysis in the cloud using Sonar Cloud." The Restful API documentation is created using Swagger, and the application is dockerized. Document and image storage is done on an Amazon S3 bucket file server, with integration with either MySql Server or Sql Server through the Entity Framework using Migrations to control versioning of entities or tables created or updated during the project's evolution. The application is currently in production on an AWS EC2 server, ensuring high availability.
+
+## Application in Production 
+
+This project can be access at [API Restful Despesas Pessoais](http://alexfariakof.com:42535/swagger).
+![backend](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/d715b8d3-e275-4998-beb7-cb8c9690513f)
+
+## Development server without automatically reload
+
+* First way
+     > In windows at root project path "CMD or Powershell" Run `dotnet run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+     
+     > In Linux bash at root project path Run `dotnet run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+  
+* Second way
+     > In windows at root path "CMD or Powershell" Run `./run.ps1 `. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+     
+     > In Linux bash at root path Run `./run.sh`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+
+## Development server with automatically reload
+
+Make sure have instaled tool watch, if not Run `dotnet tool install --global dotnet-watch`
+
+* First way
+     > In windows at root project path CMD or Powershell Run `dotnet watch run --project ./despesas-backend-api-net-core`.  Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`. The application automatically restart it when changes are detected.
+     
+     > In Linux bash at root project path Run `dotnet watch run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`. The application  automatically restart it when changes are detected.
+  
+* Second way
+     > In windows at root project path CMD or Powershell Run `./run.ps1 -w`. The application will open in default browser and automatically restart it when changes are detected.
+     
+     > In Linux bash at root project path Run `./run.sh -w`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+
+
+
+
 <h2 align="center"> 
    Backend API Restful DESPESAS PESSOAIS 
 </h2>
