@@ -1,0 +1,6 @@
+FROM mysql:8.0
+EXPOSE 3306
+COPY ./despesas-backend-api-net-core/Database-local/migrations/ /home/database/
+COPY ./despesas-backend-api-net-core/Database-local/dataset/ /home/database/
+COPY ./despesas-backend-api-net-core/Database-local/init_database.sh /docker-entrypoint-initdb.d/init_database.sh
+RUN chmod +x /docker-entrypoint-initdb.d/init_database.sh
