@@ -67,7 +67,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
             }
         }
 
-        private byte[] GenerateIV()
+        private static byte[] GenerateIV()
         {
             byte[] iv = new byte[16];
             using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
@@ -77,13 +77,13 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
             return iv;
         }
 
-        private byte[] PerformCryptography(string data, ICryptoTransform transform)
+        private static byte[] PerformCryptography(string data, ICryptoTransform transform)
         {
             byte[] inputBytes = Encoding.UTF8.GetBytes(data);
             return PerformCryptography(inputBytes, transform);
         }
 
-        private byte[] PerformCryptography(byte[] data, ICryptoTransform transform)
+        private static byte[] PerformCryptography(byte[] data, ICryptoTransform transform)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {

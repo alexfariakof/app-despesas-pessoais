@@ -9,6 +9,10 @@ WORKDIR /src
 COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "."]
 RUN dotnet restore "despesas-backend-api-net-core.csproj"
 COPY . .
+RUN rm --force ./despesas-backend-api-net-core/appsettings.json
+RUN rm --force ./despesas-backend-api-net-core/appsettings.development.json
+RUN mv ./despesas-backend-api-net-core/appsettings.docker.json ./despesas-backend-api-net-core/appsettings.json
+RUN rm --force ./despesas-backend-api-net-core/appsettings.docker.json
 
 WORKDIR "/src/."
 RUN dotnet build "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/build
@@ -16,9 +20,6 @@ RUN dotnet build "despesas-backend-api-net-core/despesas-backend-api-net-core.cs
 FROM build AS publish
 RUN dotnet publish "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-COPY ./despesas-backend-api-net-core/appsettings.docker.json appsettings.json
-COPY ./despesas-backend-api-net-core/appsettings.docker.json appsettings.development.json
-RUN rm --force appsettings.docker.json
 
 FROM base AS final
 WORKDIR /app

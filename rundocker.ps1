@@ -1,11 +1,18 @@
 # Defina o diretório do projeto (onde o arquivo docker-compose.yml está localizado)
 $projectDirectory = ".\"
+docker-compose -f "$projectDirectory\docker-compose.yml" down
+docker-compose -f "$projectDirectory\docker-compose.database.yml" down
 
-# Comando para realizar o build dos contêineres
-$buildCommand = "docker-compose -f $projectDirectory\docker-compose.yml build"
+# Verifique se o parâmetro -w foi passado
+if ($args -contains "-local") {
+    $buildCommand = "docker-compose -f $projectDirectory\docker-compose.database.yml build"
+    $startCommand = "docker-compose -f $projectDirectory\docker-compose.database.yml up -d"
+}
+else {
+    $buildCommand = "docker-compose -f $projectDirectory\docker-compose.yml build"
+    $startCommand = "docker-compose -f $projectDirectory\docker-compose.yml up -d"
+}
 
-# Comando para iniciar os contêineres em modo detached (-d)
-$startCommand = "docker-compose -f $projectDirectory\docker-compose.yml up -d"
 
 # Execute o comando de build
 Invoke-Expression $buildCommand
