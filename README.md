@@ -16,28 +16,50 @@ Run `dotnet build -restore ` to build the project. The build artifacts will be s
 ## Development server without automatically reload
 
 * First way
-     > In windows at root project path "CMD or Powershell" Run `dotnet run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
-     
-     > In Linux bash at root project path Run `dotnet run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
-  
+
+  Run `dotnet run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+
 * Second way
-     > In windows at root path "CMD or Powershell" Run `./run.ps1 `. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
-     
-     > In Linux bash at root path Run `./run.sh`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+
+  Run `./run.ps1 ` if using windows, or Run `./run.sh` if using linux. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
 
 ## Development server with automatically reload
 
 Make sure have instaled tool watch, if not Run `dotnet tool install --global dotnet-watch`
 
 * First way
-     > In windows at root project path CMD or Powershell Run `dotnet watch run --project ./despesas-backend-api-net-core`.  Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`. The application automatically restart it when changes are detected.
-     
-     > In Linux bash at root project path Run `dotnet watch run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`. The application  automatically restart it when changes are detected.
+
+  Run `dotnet watch run --project ./despesas-backend-api-net-core`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`. The application automatically restart it when changes are detected.
   
 * Second way
-     > In windows at root project path CMD or Powershell Run `./run.ps1 -w`. The application will open in default browser and automatically restart it when changes are detected.
-     
-     > In Linux bash at root project path Run `./run.sh -w`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+
+  Run `./run.ps1 -w` if using windows, or Run `./run.sh -w` if using linux. The application will open in default browser and automatically restart it when changes are detected.
+
+## Development server in Docker with Database Localy
+
+Make sure have instaled Docker Engine instaled, if not go to [Install Docker Engine](https://docs.docker.com/engine/install/).
+
+* First way
+
+  Run `docker-compose -f .\docker-compose.database.yml up -d`.  Navigate to `http://localhost:42535/swagger`. 
+  
+* Second way
+
+  Run `./rundocker.ps1 -local` if using windows, or Run `./rundocker.sh -local` is using linux. The application will open in default browser.
+
+## Development server in Docker without Database Localy `The Application will work only in branch database-in-memory`
+
+Make sure have instaled Docker Engine instaled, if not go to [Install Docker Engine](https://docs.docker.com/engine/install/).
+
+* First way
+
+  Run `docker-compose -f .\docker-compose.yml up -d`.  Navigate to `http://localhost:42535/swagger`. 
+  
+* Second way
+
+  Run  `./rundocker.ps1` if using windows, or Run `./rundocker.sh` if using linux. The application will open in default browser.
+
+  
 
 ## Running Unit Tests
 
@@ -47,10 +69,7 @@ Run `dotnet test` to execute the unit tests.
 
 Make sure have instaled tool ReportGenerator, if not Run `dotnet tool install --global dotnet-reportgenerator-globaltool`
 
-* Report Generator
-     > In windows at root project path CMD or Powershell Run `./generate_coverage_report.ps1`. The Report will open in default browser automatically.      
-     
-     > In Linux bash at root project path Run `./generate_coverage_report.sh`. The Report will open in default browser automatically.
+Run  `./generate_coverage_report.ps1` if using windows, or Run `./generate_coverage_report.sh` if using linux. The Report will open in default browser automatically.
 
 ![reportTestCoverage](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/afd1b5e4-5a2f-490c-bf4f-a530df41c1ae)
 
@@ -118,5 +137,11 @@ SonarCloud is a cloud-based static code analysis platform that helps development
       </li>                 
  </ul>
 </h5>
+
+## Sonar Cloud
+
+SonarCloud is a cloud-based static code analysis platform that helps development teams maintain code quality and identify issues early in the software development process. It offers automated code review, continuous inspection, and code analytics. SonarCloud scans your code for bugs, vulnerabilities, and code smells, providing actionable feedback to improve code quality and security. It is an essential tool for ensuring that your software projects are maintainable, reliable, and secure. via [Sonar Cloud](https://sonarcloud.io/).
+
+This project Overview in Sonar Cloud can be access at [Overview Project in Sonar Cloud](https://sonarcloud.io/project/overview?id=alexfariakof_despesas-backend-api-net-core) 
 
 ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=vulnerabilities) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=bugs) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=security_rating) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=sqale_rating) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=code_smells) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=ncloc) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=coverage) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=sqale_index) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=alert_status) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=reliability_rating) ![alt text](https://sonarcloud.io/api/project_badges/measure?project=alexfariakof_despesas-backend-api-net-core&metric=duplicated_lines_density)
