@@ -9,6 +9,10 @@ In summary, this project involves an update of the Restful API application creat
 This project can be access at [API Restful Despesas Pessoais](http://alexfariakof.com:42535/swagger).
 ![backend](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/d715b8d3-e275-4998-beb7-cb8c9690513f)
 
+## Build
+
+Run `dotnet build -restore ` to build the project. The build artifacts will be stored in the `bin/` directory. 
+
 ## Development server without automatically reload
 
 * First way
@@ -34,6 +38,22 @@ Make sure have instaled tool watch, if not Run `dotnet tool install --global dot
      > In windows at root project path CMD or Powershell Run `./run.ps1 -w`. The application will open in default browser and automatically restart it when changes are detected.
      
      > In Linux bash at root project path Run `./run.sh -w`. Navigate to `http://localhost:42535/swagger` or `https://localhost/swagger`.
+
+## Running Unit Tests
+
+Run `dotnet test` to execute the unit tests.
+
+## Running Unit Tests and Generate Report Test Coverage
+
+Make sure have instaled tool ReportGenerator, if not Run `dotnet tool install --global dotnet-reportgenerator-globaltool`
+
+* Report Generator
+     > In windows at root project path CMD or Powershell Run `./generate_coverage_report.ps1`. The Report will open in default browser automatically.      
+     
+     > In Linux bash at root project path Run `./generate_coverage_report.sh`. The Report will open in default browser automatically.
+
+![reportTestCoverage](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/afd1b5e4-5a2f-490c-bf4f-a530df41c1ae)
+
 
 
 
