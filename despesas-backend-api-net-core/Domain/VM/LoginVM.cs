@@ -2,10 +2,10 @@
 {
     public class LoginVM 
     {
-        public int? IdUsuario { get; set; }
+        internal int? IdUsuario { get; set; }
         public string? Email { get; set; }
         public string Senha { get; set; }
-        public string? ConfirmaSenha { get; set; }
+        internal string? ConfirmaSenha { get; set; }
 
     }
 }
