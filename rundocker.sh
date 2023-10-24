@@ -1,29 +1,39 @@
 #!/bin/bash
 
-# Defina o diretório do projeto (onde o arquivo docker-compose.yml está localizado)
 projectDirectory="./"
+docker-compose -f $projectDirectory/docker-compose.yml down
+docker-compose -f $projectDirectory/docker-compose.database.yml down
 
-# Comando para realizar o build dos contêineres
-buildCommand="docker-compose -f $projectDirectory/docker-compose.yml build"
+if [ "$1" == "-local" ]; then
+    
+    buildCommand="docker-compose -f $projectDirectory/docker-compose.database.yml build"
+    startCommand="docker-compose -f $projectDirectory/docker-compose.database.yml up -d"
 
-# Comando para iniciar os contêineres em modo detached (-d)
-startCommand="docker-compose -f $projectDirectory/docker-compose.yml up -d"
-
-# Execute o comando de build
-eval "$buildCommand"
-
-# Verifique se o build foi bem-sucedido
-if [ $? -eq 0 ]; then
-    # Se o build for bem-sucedido, execute o comando para iniciar os contêineres
-    eval "$startCommand"
-
-    # Verifique se o início dos contêineres foi bem-sucedido
+    eval "$buildCommand"
     if [ $? -eq 0 ]; then
-        # Se o início for bem-sucedido, abra a página HTML em um navegador padrão
-        start "http://localhost:42535/swagger"  # Isso depende do ambiente de desktop Linux; pode variar
+        eval "$startCommand"
+        if [ $? -eq 0 ]; then
+            start "http://localhost:42535/swagger"
+        else
+            echo "Falha ao iniciar os contêineres."
+        fi
     else
-        echo "Falha ao iniciar os contêineres."
+        echo "Falha ao construir os contêineres."
     fi
-else
-    echo "Falha ao construir os contêineres."
+else    
+    buildCommand="docker-compose -f $projectDirectory/docker-compose.yml build"
+    startCommand="docker-compose -f $projectDirectory/docker-compose.yml up -d"
+
+    eval "$buildCommand"
+    if [ $? -eq 0 ]; then
+        eval "$startCommand"
+        if [ $? -eq 0 ]; then
+            start "http://localhost:42535/swagger" 
+        else
+            echo "Falha ao iniciar os contêineres."
+        fi
+    else
+        echo "Falha ao construir os contêineres."
+    fi
+
 fi

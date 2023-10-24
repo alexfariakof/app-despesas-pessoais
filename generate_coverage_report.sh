@@ -23,7 +23,7 @@ if [ -n "$latestDir" ]; then
     coverageXmlPath=$baseDirectory/TestResults/$guid
     sourceDirs=$(pwd)/despesas-backend-api-net-core
     # Gera o relatório de cobertura usando o GUID capturado
-    reportgenerator -reports:$baseDirectory/coverage.cobertura.xml -targetdir:$coverageXmlPath/coveragereport -reporttypes:'Html;lcov;' -filefilters:-$sourceDirs/Database-In-Memory
+    reportgenerator -reports:$baseDirectory/coverage.cobertura.xml -targetdir:$coverageXmlPath/coveragereport -reporttypes:'Html;lcov;' -filefilters:-$sourceDirs/Database-In-Memory/**
 
     # Abre a página index.html no navegador padrão do sistema operacional (navegador web padrão no Linux)
     start $coverageXmlPath/coveragereport/index.html
