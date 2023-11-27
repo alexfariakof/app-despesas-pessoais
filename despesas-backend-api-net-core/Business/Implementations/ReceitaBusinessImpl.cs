@@ -9,12 +9,15 @@ namespace despesas_backend_api_net_core.Business.Implementations
     public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
     {
         private readonly IRepositorio<Receita> _repositorio;
+        private readonly IRepositorio<Categoria> _repoCategoria;
         private readonly ReceitaMap _converter;
 
-        public ReceitaBusinessImpl(IRepositorio<Receita> repositorio)
+        public ReceitaBusinessImpl(IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria)
         {
             _repositorio = repositorio;
+            _repoCategoria = repoCategoria;
             _converter = new ReceitaMap();
+            _repoCategoria = repoCategoria;
         }
         public ReceitaVM Create(ReceitaVM obj)
         {
@@ -24,7 +27,10 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public List<ReceitaVM> FindAll(int idUsuario)
         {
-            return _converter.ParseList(_repositorio.GetAll().FindAll(r => r.UsuarioId == idUsuario));
+            var receitas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
+            foreach (var receita in receitas)
+                receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
+            return _converter.ParseList(receitas);
         }      
 
         public ReceitaVM FindById(int id, int idUsuario)

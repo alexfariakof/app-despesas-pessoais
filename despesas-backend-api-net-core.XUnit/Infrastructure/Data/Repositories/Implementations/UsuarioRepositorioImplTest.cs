@@ -12,13 +12,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public UsuarioRepositorioImplTest()
         {
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            var _crypto = Crypto.GetInstance;
-
             var options = new DbContextOptionsBuilder<RegisterContext>()
                 .UseInMemoryDatabase(databaseName: "UsuarioRpository")
                 .Options;

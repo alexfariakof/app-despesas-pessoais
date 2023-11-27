@@ -9,7 +9,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
     public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
     {
         private readonly RegisterContext _context;
-        private readonly Crypto _crypto = Crypto.GetInstance;
+        private readonly ICrypto _crypto = Crypto.GetInstance;
         private readonly IEmailSender _emailSender;
         public ControleAcessoRepositorioImpl(RegisterContext context, IEmailSender emailSender)
         {
