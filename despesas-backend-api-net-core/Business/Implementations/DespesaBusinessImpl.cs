@@ -9,10 +9,12 @@ namespace despesas_backend_api_net_core.Business.Implementations
     public class DespesaBusinessImpl : IBusiness<DespesaVM>
     {
         private readonly IRepositorio<Despesa> _repositorio;
+        private readonly IRepositorio<Categoria> _repoCategoria;
         private readonly DespesaMap _converter;
-        public DespesaBusinessImpl(IRepositorio<Despesa> repositorio)
+        public DespesaBusinessImpl(IRepositorio<Despesa> repositorio, IRepositorio<Categoria> repoCategoria)
         {
             _repositorio = repositorio;
+            _repoCategoria = repoCategoria;
             _converter = new DespesaMap();
         }
         public DespesaVM Create(DespesaVM obj)
@@ -23,7 +25,10 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public List<DespesaVM> FindAll(int idUsuario)
         {
-            return _converter.ParseList(_repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario));
+            var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
+            foreach( var despesa in despesas)
+                despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);            
+            return _converter.ParseList(despesas);
         }
 
         public DespesaVM FindById(int id, int idUsuario)

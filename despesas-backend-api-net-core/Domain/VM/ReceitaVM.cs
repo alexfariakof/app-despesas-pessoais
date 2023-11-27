@@ -10,7 +10,8 @@ namespace despesas_backend_api_net_core.Domain.VM
         public int IdUsuario { get; set; }
         internal virtual UsuarioVM Usuario { get; set; }
         public int IdCategoria { get; set; }
-        internal virtual CategoriaVM Categoria { get; set; }
+        public String? Categoria { get; set; }
+        internal virtual CategoriaVM _Categoria { get; set; }
 
     }
 }

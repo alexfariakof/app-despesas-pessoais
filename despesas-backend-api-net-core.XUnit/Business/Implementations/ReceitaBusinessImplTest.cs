@@ -7,11 +7,13 @@ namespace Test.XUnit.Business.Implementations
     public class ReceitaBusinessImplTest
     {
         private readonly Mock<IRepositorio<Receita>> _repositorioMock;
+        private readonly Mock<IRepositorio<Categoria>> _repositorioMockCategoria;
         private readonly ReceitaBusinessImpl _receitaBusiness;
         public ReceitaBusinessImplTest()
         {
             _repositorioMock = new Mock<IRepositorio<Receita>>();
-            _receitaBusiness = new ReceitaBusinessImpl(_repositorioMock.Object);
+            _repositorioMockCategoria = new Mock<IRepositorio<Categoria>>();
+            _receitaBusiness = new ReceitaBusinessImpl(_repositorioMock.Object, _repositorioMockCategoria.Object);
         }
 
         [Fact]
