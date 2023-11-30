@@ -128,9 +128,9 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             var lancamentoMap = new LancamentoMap();
             var lancamentoVMs = new List<LancamentoVM>
             {
-                new LancamentoVM { Id = 1,IdUsuario = 1, IdDespesa = 1, IdReceita  = 0, Valor = 2000, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Despesa", Categoria = Mock.Of<Categoria>(), },
-                new LancamentoVM { Id = 2,IdUsuario = 3, IdDespesa = 0, IdReceita  = 1, Valor = 500, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Receita", Categoria = Mock.Of<Categoria>(), },
-                new LancamentoVM { Id = 3,IdUsuario = 2, IdDespesa = 1, IdReceita  = 0, Valor = 70000, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Despesa", Categoria = Mock.Of<Categoria>(), }
+                new LancamentoVM { Id = 1,IdUsuario = 1, IdDespesa = 1, IdReceita  = 0, Valor = 2000, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Despesa", Categoria = Mock.Of<Categoria>().Descricao, },
+                new LancamentoVM { Id = 2,IdUsuario = 3, IdDespesa = 0, IdReceita  = 1, Valor = 500, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Receita", Categoria = Mock.Of<Categoria>().Descricao, },
+                new LancamentoVM { Id = 3,IdUsuario = 2, IdDespesa = 1, IdReceita  = 0, Valor = 70000, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Despesa", Categoria = Mock.Of<Categoria>().Descricao, }
             };
 
             // Act
