@@ -22,7 +22,11 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             try
             {
                 var despesas = _context.Despesa.Where(d => d.Data.Month == mes && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList();
+                foreach(var despesa in despesas)
+                    despesa.Categoria = _context.Categoria.Where(c => c.Id == despesa.CategoriaId).First();
                 var receitas = _context.Receita.Where(r => r.Data.Month == mes && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList();
+                foreach (var receita in receitas)
+                    receita.Categoria = _context.Categoria.Where(c => c.Id == receita.CategoriaId).First();
 
                 var lancamentos = new LancamentoMap().ParseList(despesas)
                     .Union(new LancamentoMap().ParseList(receitas))
