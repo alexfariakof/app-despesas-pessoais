@@ -26,28 +26,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 2,
                         Login = "teste@teste.com",
-                        Senha = "afKN1iDmOHu39DlY8KmJmoXQrWYsCB4j4ZxLyxQ7BZE=",
+                        Senha = "5bgAMsdJdv08DMKj4Eco8/COtUdfxTfrQjhU1jftVy4==",
                         UsuarioId = 2 
                     },
                     new ControleAcesso
                     {
                         Id = 3,
                         Login = "dns@dns.com",
-                        Senha = "XA5hSF5rgAqwnIft5SM9ZH1VcOmjTe6zgXjiVn71WFI=",
+                        Senha = "5bgAMsdJdv08DMKj4Eco8/COtUdfxTfrQjhU1jftVy4==",
                         UsuarioId = 3 
                     },
                     new ControleAcesso
                     {
                         Id = 4,
                         Login = "joao.silva5@gmail.com",
-                        Senha = "w5qZPFcbbunIKqHaEzeeOPFZUNp5AXBYkfavRvpu3Vw=",
+                        Senha = "5bgAMsdJdv08DMKj4Eco8/COtUdfxTfrQjhU1jftVy4==",
                         UsuarioId = 4 
                     },
                     new ControleAcesso
                     {
                         Id = 5,
                         Login = "lequinho.mumu@gmail.com",
-                        Senha = "O8p40Qsi5UVuVO9WctvW6IEcsUwIBQ0foaqqa8EYxQQ=",
+                        Senha = "5bgAMsdJdv08DMKj4Eco8/COtUdfxTfrQjhU1jftVy4==",
                         UsuarioId = 5 
                     });
                 _context.SaveChanges();
