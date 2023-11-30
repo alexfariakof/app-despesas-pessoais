@@ -67,7 +67,7 @@ namespace Test.XUnit.Controllers
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamento")?.GetValue(value, null);
+            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
             Assert.True(message);
             Assert.NotEmpty(lancamentos);            
             var returnedLancamentoVMs = Assert.IsType<List<LancamentoVM>>(lancamentos);
@@ -152,9 +152,9 @@ namespace Test.XUnit.Controllers
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamento= (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamento")?.GetValue(value, null);
+            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
             Assert.True(message);
-            Assert.Empty(lancamento);
+            Assert.Empty(lancamentos);
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 
@@ -176,9 +176,9 @@ namespace Test.XUnit.Controllers
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamento = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamento")?.GetValue(value, null);
+            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
             Assert.True(message);
-            Assert.Empty(lancamento);
+            Assert.Empty(lancamentos);
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 
@@ -201,9 +201,9 @@ namespace Test.XUnit.Controllers
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamento = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamento")?.GetValue(value, null);
+            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
             Assert.True(message);            
-            Assert.Empty(lancamento);
+            Assert.Empty(lancamentos);
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 

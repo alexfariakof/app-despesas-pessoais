@@ -39,13 +39,13 @@ namespace despesas_backend_api_net_core.Controllers
                 var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
 
                 if (list == null || list.Count == 0)
-                    return Ok(new { message = true, lancamento = new List<LancamentoVM>() });
+                    return Ok(new { message = true, lancamentos = new List<LancamentoVM>() });
 
-                return Ok(new { message = true, lancamento = list });
+                return Ok(new { message = true, lancamentos = list });
             }
             catch
             {
-                return Ok(new { message = true, lancamento = new List<LancamentoVM>() });
+                return Ok(new { message = true, lancamentos = new List<LancamentoVM>() });
             }
         }
 
