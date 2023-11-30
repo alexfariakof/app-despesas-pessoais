@@ -16,7 +16,6 @@ namespace despesas_backend_api_net_core.Controllers
         private object labels = null;
         private object datasets = null;
         private string bearerToken;
-
         public LancamentoController(ILancamentoBusiness lancamentoBusiness)
         {
             _lancamentoBusiness = lancamentoBusiness;
@@ -35,19 +34,18 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-
             try
             {
                 var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
 
                 if (list == null || list.Count == 0)
-                    return BadRequest(new { message = "Nenhum Lançamento foi encontrado!" });
+                    return Ok(new { message = true, lancamento = new List<LancamentoVM>() });
 
-                return Ok(list);
+                return Ok(new { message = true, lancamento = list });
             }
             catch
             {
-                return Ok(new List<LancamentoVM>());
+                return Ok(new { message = true, lancamento = new List<LancamentoVM>() });
             }
         }
 

@@ -21,7 +21,7 @@
                 Data = data,
                 Descricao = descricao,
                 TipoCategoria = tipoCategoria,
-                Categoria = mockCategoria
+                Categoria = mockCategoria.Descricao
             };
 
             // Assert
@@ -33,7 +33,7 @@
             Assert.Equal(data, lancamentoVM.Data);
             Assert.Equal(descricao, lancamentoVM.Descricao);
             Assert.Equal(tipoCategoria, lancamentoVM.TipoCategoria);
-            Assert.Equal(mockCategoria, lancamentoVM.Categoria);
+            Assert.Equal(mockCategoria.Descricao, lancamentoVM.Categoria);
         }
     }
 }
