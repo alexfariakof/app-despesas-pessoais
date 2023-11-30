@@ -31,14 +31,14 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
         {
             var lancamentoVMFaker = new Faker<LancamentoVM>()
                 .RuleFor(l => l.Id, f => counterVM++)
-                .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000).ToString("N2"))
+                .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
                 .RuleFor(l => l.Data, f => new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1).ToString())
                 .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(l => l.IdUsuario, idusuario)
                 .RuleFor(l => l.IdDespesa, idDespesa)                    
                 .RuleFor(l => l.IdReceita, idReceita)
                 .RuleFor(c => c.TipoCategoria, f => f.PickRandom<TipoCategoria>().ToString())
-                .RuleFor(l => l.Categoria, categoria);
+                .RuleFor(l => l.Categoria, categoria.Descricao);
 
             return lancamentoVMFaker.Generate();
         }
