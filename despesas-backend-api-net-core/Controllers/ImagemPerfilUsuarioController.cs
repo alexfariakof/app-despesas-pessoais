@@ -80,8 +80,6 @@ namespace despesas_backend_api_net_core.Controllers
 
                 if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
                 {
-
-
                     using (var memoryStream = new MemoryStream())
                     {
                         await file.CopyToAsync(memoryStream);
@@ -99,8 +97,8 @@ namespace despesas_backend_api_net_core.Controllers
                         if (_imagemPerfilUsuario != null)
                             return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
                         else
-                            return BadRequest(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
-                    }
+                            return BadRequest(new { message = "Erro ao incluir nova imagem de peefil!", imagemPerfilUsuario = _imagemPerfilUsuario });
+                     }
                 }
                 else
                     return BadRequest(new { message = "Apenas arquivos do tipo jpg, jpeg ou png são aceitos." });
@@ -153,7 +151,7 @@ namespace despesas_backend_api_net_core.Controllers
                         if (imagemPerfilUsuario != null)
                             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
                         else
-                            return BadRequest(new { message = false, imagemPerfilUsuario = imagemPerfilUsuario });
+                            return BadRequest(new { message = "Erro ao atualizar imagem do perfil!", imagemPerfilUsuario = imagemPerfilUsuario });
                     }
                 }
                 else
@@ -161,7 +159,7 @@ namespace despesas_backend_api_net_core.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Erro ao Atualizar imagem do perfil!" });
+                return BadRequest(new { message = "Erro ao atualizar imagem do perfil!" });
             }
         }
 
@@ -182,7 +180,7 @@ namespace despesas_backend_api_net_core.Controllers
                 if (_perfilFileBusiness.Delete(new ImagemPerfilUsuarioVM { IdUsuario = idUsuario }))
                     return Ok(new { message = true });
                 else
-                    return BadRequest(new { message = false });
+                    return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
             }
             catch
             {
