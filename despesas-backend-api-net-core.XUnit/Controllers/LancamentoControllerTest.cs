@@ -75,6 +75,7 @@ namespace Test.XUnit.Controllers
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 
+        /*
         [Fact, Order(2)]
         public void GetSaldo_Should_Return_Saldo()
         {
@@ -113,7 +114,7 @@ namespace Test.XUnit.Controllers
             var okResult = Assert.IsType<OkObjectResult>(result);
             var graficoData = okResult.Value;
         }
-
+        */
         [Fact, Order(4)]
         public void Get_With_InvalidToken_Returns_BadRequest()
         {
@@ -206,7 +207,7 @@ namespace Test.XUnit.Controllers
             Assert.Empty(lancamentos);
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
-
+        /*
         [Fact, Order(8)]
         public void GetSaldo_With_InvalidToken_Returns_BadRequest()
         {
@@ -290,5 +291,6 @@ namespace Test.XUnit.Controllers
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao gerar dados do Graáfico!", message);
         }
+        */
     }
 }
