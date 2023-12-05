@@ -184,7 +184,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
             // Act
-            var result = _usuarioController.Post(idUsuario) as ObjectResult;
+            var result = _usuarioController.GetById(idUsuario) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -205,7 +205,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
             // Act
-            var result = _usuarioController.Post(idUsuario) as ObjectResult;
+            var result = _usuarioController.GetById(idUsuario) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -227,7 +227,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioVM)null);
 
             // Act
-            var result = _usuarioController.Post(idUsuario) as ObjectResult;
+            var result = _usuarioController.GetById(idUsuario) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
