@@ -27,6 +27,8 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
             services.AddScoped(typeof(ILancamentoBusiness), typeof(LancamentoBusinessImpl));
             services.AddScoped(typeof(IUsuarioBusiness), typeof(UsuarioBusinessImpl));
             services.AddScoped(typeof(IImagemPerfilUsuarioBusiness), typeof(ImagemPerfilUsuarioBusinessImpl));
+            services.AddScoped(typeof(ISaldoBusiness), typeof(SaldoBusinessImpl));
+            services.AddScoped(typeof(IGraficosBusiness), typeof(GraficosBusinessImpl));
 
             return services;
         }
@@ -39,6 +41,8 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
             services.AddScoped<IEmailSender, EmailSender>();           
             //services.AddScoped(typeof(IControleAcessoRepositorio), typeof(ControleAcessoRepositorioImpl));
             services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));
+            services.AddScoped(typeof(ISaldoRepositorio), typeof(SaldoRepositorioImpl));
+            services.AddScoped(typeof(IGraficosRepositorio), typeof(GraficosRepositorioImpl));
 
             return services;
         }

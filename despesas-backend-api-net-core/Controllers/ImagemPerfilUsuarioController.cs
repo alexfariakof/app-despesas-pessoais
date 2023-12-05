@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace despesas_backend_api_net_core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class ImagemPerfilUsuarioController : ControllerBase
     {
         private IImagemPerfilUsuarioBusiness _perfilFileBusiness;
@@ -23,37 +24,15 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            var usuarioVM = _perfilFileBusiness.FindByIdUsuario(_idUsuario);
-
-            if (usuarioVM == null || _idUsuario != usuarioVM.Id)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
-            return Ok(_perfilFileBusiness.FindAll(_idUsuario));
-        }
-
-        [HttpGet("GetByIdUsuario/{idUsuario}")]
-        [Authorize("Bearer")]
-        public IActionResult GetByIdUsuario([FromRoute] int idUsuario)
-        {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
-            if (_idUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
+            
             var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario)
-                .Find(prop => prop.IdUsuario.Equals(idUsuario));
+                .Find(prop => prop.IdUsuario.Equals(_idUsuario));
 
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario= imagemPerfilUsuario });
             else
-                return BadRequest(new { message = false });
+                return BadRequest(new { message = "Usuário não possui nenhuma imagem de perfil cadastrada!" });
         }
 
         [HttpPost]
@@ -188,7 +167,6 @@ namespace despesas_backend_api_net_core.Controllers
             {
                 return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
             }
-
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ControleAcessoController : Controller
     {

@@ -8,8 +8,9 @@ using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class UsuarioController : Controller
     {
         private IUsuarioBusiness _usuarioBusiness;
@@ -37,10 +38,10 @@ namespace despesas_backend_api_net_core.Controllers
 
             return Ok(_usuarioBusiness.FindAll(_idUsuario));
         }
-
+                
+        [HttpGet("GetById/{idUsuario}")]
         [Authorize("Bearer")]
-        [HttpPost("GetById")]
-        public IActionResult Post([FromBody] int idUsuario)
+        public IActionResult GetById(int idUsuario)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario =  bearerToken.getIdUsuarioFromToken();
