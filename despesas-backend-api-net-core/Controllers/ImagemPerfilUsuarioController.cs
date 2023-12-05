@@ -24,13 +24,13 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-            
+            var _idUsuario = bearerToken.getIdUsuarioFromToken();
+
             var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario)
                 .Find(prop => prop.IdUsuario.Equals(_idUsuario));
 
             if (imagemPerfilUsuario != null)
-                return Ok(new { message = true, imagemPerfilUsuario= imagemPerfilUsuario });
+                return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
             else
                 return BadRequest(new { message = "Usuário não possui nenhuma imagem de perfil cadastrada!" });
         }
@@ -44,42 +44,16 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-                string typeFile = "";
-                int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
-                if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
-                {
-                    typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
-                }
-
-                if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(memoryStream);
-
-                        ImagemPerfilUsuarioVM imagemPerfilUsuario = new ImagemPerfilUsuarioVM
-                        {
-                            Arquivo = memoryStream.GetBuffer(),
-                            IdUsuario = idUsuario,
-                            Name = fileName,
-                            Type = typeFile,
-                            ContentType = file.ContentType
-                        };
-
-                        ImagemPerfilUsuarioVM? _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
-                        if (_imagemPerfilUsuario != null)
-                            return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
-                        else
-                            return BadRequest(new { message = "Erro ao incluir nova imagem de peefil!", imagemPerfilUsuario = _imagemPerfilUsuario });
-                     }
-                }
+                var imagemPerfilUsuario = ConvertFileToImagemPerfilUsuarioVM(file, idUsuario);
+                ImagemPerfilUsuarioVM? _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
+                if (_imagemPerfilUsuario != null)
+                    return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
                 else
-                    return BadRequest(new { message = "Apenas arquivos do tipo jpg, jpeg ou png são aceitos." });
+                    return BadRequest(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message= "Erro ao incluir nova imagem de peefil!" });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -92,43 +66,16 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-                string typeFile = "";
-                int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
-                if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
-                {
-                    typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
-                }
-
-                if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-
-                        await file.CopyToAsync(memoryStream);
-
-                        ImagemPerfilUsuarioVM imagemPerfilUsuario = new ImagemPerfilUsuarioVM
-                        {
-                            Arquivo = memoryStream.GetBuffer(),
-                            IdUsuario = idUsuario,
-                            Name = fileName,
-                            Type = typeFile,
-                            ContentType = file.ContentType
-                        };
-
-                        imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
-                        if (imagemPerfilUsuario != null)
-                            return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
-                        else
-                            return BadRequest(new { message = "Erro ao atualizar imagem do perfil!", imagemPerfilUsuario = imagemPerfilUsuario });
-                    }
-                }
+                var imagemPerfilUsuario = ConvertFileToImagemPerfilUsuarioVM(file, idUsuario);
+                imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
+                if (imagemPerfilUsuario != null)
+                    return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
                 else
-                    return BadRequest(new { message = "Apenas arquivos do tipo jpg, jpeg ou png são aceitos." });
+                    return BadRequest(new { message = false, imagemPerfilUsuario = imagemPerfilUsuario });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Erro ao atualizar imagem do perfil!" });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -149,12 +96,40 @@ namespace despesas_backend_api_net_core.Controllers
                 if (_perfilFileBusiness.Delete(new ImagemPerfilUsuarioVM { IdUsuario = idUsuario }))
                     return Ok(new { message = true });
                 else
-                    return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
+                    return BadRequest(new { message = false });
             }
             catch
             {
                 return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
             }
+        }   
+        private ImagemPerfilUsuarioVM ConvertFileToImagemPerfilUsuarioVM(IFormFile file, int idUsuario)
+        {
+            string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            string typeFile = "";
+            int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
+            if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
+                typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
+
+            if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    file.CopyToAsync(memoryStream);
+
+                    ImagemPerfilUsuarioVM imagemPerfilUsuario = new ImagemPerfilUsuarioVM
+                    {
+                        Arquivo = memoryStream.GetBuffer(),
+                        IdUsuario = idUsuario,
+                        Name = fileName,
+                        Type = typeFile,
+                        ContentType = file.ContentType
+                    };
+                    return imagemPerfilUsuario;
+                }
+            }
+            else
+                throw new Exception("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.");
         }
     }
 }

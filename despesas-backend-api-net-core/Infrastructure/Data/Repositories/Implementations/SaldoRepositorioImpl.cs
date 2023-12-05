@@ -54,7 +54,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories.Impleme
             }
             catch
             {
-                throw new Exception("SaldoRepositorioImpl_GetSaldoNyMesAno_Erro");
+                throw new Exception("SaldoRepositorioImpl_GetSaldoByMesAno_Erro");
             }
         }
     }
