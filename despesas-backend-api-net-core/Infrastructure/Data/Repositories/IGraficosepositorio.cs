@@ -2,8 +2,8 @@
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.Repositories
 {
-    public interface ILancamentoRepositorio
+    public interface IGraficosRepositorio
     {
-        List<Lancamento> FindByMesAno(DateTime data, int idUsuario);
+        Grafico GetDadosGraficoByAno(int idUsuario, DateTime data);
     }
 }

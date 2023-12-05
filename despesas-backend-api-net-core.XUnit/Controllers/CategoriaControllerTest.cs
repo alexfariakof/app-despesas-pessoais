@@ -1,5 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -47,18 +48,19 @@ namespace Test.XUnit.Controllers
             // Arrange
             _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
             _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
-            SetupBearerToken(categoriaVM.IdUsuario);
-            _mockCategoriaBusiness.Setup(b => b.FindAll(categoriaVM.IdUsuario)).Returns(CategoriaFaker.CategoriasVMs());
+            var categoriaVMs = CategoriaFaker.CategoriasVMs();
+            var idUsuario = categoriaVMs.First().IdUsuario;
+            SetupBearerToken(idUsuario);
+            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(categoriaVMs.FindAll(c => c.IdUsuario == idUsuario));
 
             // Act
             var result = _categoriaController.Get() as OkObjectResult;
 
             // Assert
             Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
             Assert.IsType<List<CategoriaVM>>(result.Value);
-            var returnedResults = result.Value as List<CategoriaVM>;
-            Assert.Equal(CategoriaFaker.CategoriasVMs().Count, returnedResults.Count);
+            Assert.Equal(categoriaVMs.FindAll(c => c.IdUsuario == idUsuario), result.Value);
         }
 
         [Fact, Order(2)]
@@ -102,94 +104,6 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact, Order(4)]
-        public void GetByIdUsuario_Returns_Result_NotFound()
-        {
-            // Arrange
-            _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
-            _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var idUsuario = 1;
-            SetupBearerToken(idUsuario);
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(new List<CategoriaVM>());
-
-            // Act
-            var result = _categoriaController.GetByIdUsuario(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.Null(result);
-        }
-
-        [Fact, Order(5)]
-        public void GetByIdUsuario_Returns_Ok_Result()
-        {
-            // Arrange
-            _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
-            _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var listCategoriaVM = CategoriaFaker.CategoriasVMs();
-
-            var idUsuario = listCategoriaVM.FirstOrDefault().Id;
-            SetupBearerToken(idUsuario);
-
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(listCategoriaVM);
-
-            // Act
-            var result = _categoriaController.GetByIdUsuario(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<List<CategoriaVM>>(result.Value);
-            var returnedResults = result.Value as List<CategoriaVM>;
-            Assert.Equal(listCategoriaVM.Count, returnedResults.Count);
-        }
-
-
-        [Fact, Order(6)]
-        public void GetByIdUsuario_Returns_BadRequest()
-        {
-            // Arrange
-            _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
-            _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
-            var idUsuario = categoriaVM.IdUsuario;
-            SetupBearerToken(10);
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(new List<CategoriaVM>());
-
-            // Act
-            var result = _categoriaController.GetByIdUsuario(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-        }
-
-
-        [Fact, Order(7)]
-        public void GetByTipoCategoria_Returns_BadRequest()
-        {
-            // Arrange
-            _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
-            _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var categoriaVM = CategoriaFaker.CategoriasVMs().First();
-            var idUsuario = categoriaVM.IdUsuario;
-            SetupBearerToken(10);
-            var tipoCategoria = TipoCategoria.Receita;
-            _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(new List<CategoriaVM>());
-
-            // Act
-            var result = _categoriaController.GetByTipoCategoria(idUsuario, tipoCategoria) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-        }
-
-        [Fact, Order(8)]
         public void GetByTipoCategoria_Returns_Ok_Result_TipoCategoria_Todas()
         {
             // Arrange
@@ -202,7 +116,7 @@ namespace Test.XUnit.Controllers
             _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(listCategoriaVM);
 
             // Act
-            var result = _categoriaController.GetByTipoCategoria(idUsuario, tipoCategoria) as ObjectResult;
+            var result = _categoriaController.GetByTipoCategoria(tipoCategoria) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -210,7 +124,7 @@ namespace Test.XUnit.Controllers
             Assert.IsType<List<CategoriaVM>>(result.Value);
         }
 
-        [Fact, Order(9)]
+        [Fact, Order(5)]
         public void GetByTipoCategoria_Returns_Ok_Result()
         {
             // Arrange
@@ -223,7 +137,7 @@ namespace Test.XUnit.Controllers
             _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(listCategoriaVM);
 
             // Act
-            var result = _categoriaController.GetByTipoCategoria(idUsuario, tipoCategoria) as ObjectResult;
+            var result = _categoriaController.GetByTipoCategoria(tipoCategoria) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -231,7 +145,7 @@ namespace Test.XUnit.Controllers
             Assert.IsType<List<CategoriaVM>>(result.Value);
         }
 
-        [Fact, Order(10)]
+        [Fact, Order(6)]
         public void Post_Returns_Ok_Result()
         {
             // Arrange
@@ -262,7 +176,7 @@ namespace Test.XUnit.Controllers
             Assert.True(message);
         }
 
-        [Fact, Order(11)]
+        [Fact, Order(7)]
         public void Post_With_InvalidToken_Returns_BadRequest()
         {
             // Arrange
@@ -283,7 +197,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
-        [Fact, Order(12)]
+        [Fact, Order(8)]
         public void Post_Returns_Bad_Request_When_TipoCategoria_Todas()
         {
             // Arrange
@@ -311,7 +225,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal("Nenhum tipo de Categoria foi selecionado!", message);
         }
 
-        [Fact, Order(13)]
+        [Fact, Order(9)]
         public void Post_Returns_Bad_Request_When_TryCatch_ThrowError()
         {
             // Arrange Para ocorrer esta situação o tipo de categotia não pode ser == Todas 
@@ -331,10 +245,9 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = value.GetType().GetProperty("message").GetValue(value, null) as string;
             Assert.Equal("Não foi possível realizar o cadastro de uma nova categoria, tente mais tarde ou entre em contato com o suporte.", message);
-
         }
 
-        [Fact, Order(14)]
+        [Fact, Order(10)]
         public void Put_Returns_Ok_Result()
         {
             // Arrange
@@ -357,11 +270,15 @@ namespace Test.XUnit.Controllers
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsType<CategoriaVM>(result.Value);
-            Assert.Equal(result.Value, categoriaVM);
+            var value = result.Value;
+            var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+            Assert.True(message);
+            var _categoriaVM = value.GetType().GetProperty("categoria").GetValue(value, null);
+            Assert.IsType<CategoriaVM>(_categoriaVM);
+            Assert.Equal(_categoriaVM, categoriaVM);
         }
 
-        [Fact, Order(15)]
+        [Fact, Order(11)]
         public void Put_Returns_Bad_Request()
         {
             // Arrange
@@ -382,7 +299,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
-        [Fact, Order(16)]
+        [Fact, Order(12)]
         public void Put_Returns_Bad_Request_TipoCategoria_Todas()
         {
             // Arrange
@@ -404,7 +321,7 @@ namespace Test.XUnit.Controllers
             Assert.Equal("Nenhum tipo de Categoria foi selecionado!", message);
         }
 
-        [Fact, Order(17)]
+        [Fact, Order(13)]
         public void Put_Returns_Bad_Request_Categoria_Null()
         {
             // Arrange
@@ -427,7 +344,7 @@ namespace Test.XUnit.Controllers
         }
 
 
-        [Fact, Order(18)]
+        [Fact, Order(14)]
         public void Delete_Returns_Ok_Result()
         {
             // Arrange
@@ -458,7 +375,7 @@ namespace Test.XUnit.Controllers
             _mockCategoriaBusiness.Verify(b => b.Delete(categoriaVM), Times.Once);
         }
 
-        [Fact, Order(19)]
+        [Fact, Order(15)]
         public void Delete_Returns_OK_Result_Message_False()
         {
             // Arrange
@@ -489,7 +406,7 @@ namespace Test.XUnit.Controllers
             _mockCategoriaBusiness.Verify(b => b.Delete(categoriaVM), Times.Once);
         }
 
-        [Fact, Order(20)]
+        [Fact, Order(16)]
         public void Delete_Returns_BadRequest()
         {
             // Arrange

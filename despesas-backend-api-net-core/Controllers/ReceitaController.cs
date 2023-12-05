@@ -6,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace despesas_backend_api_net_core.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
+    [Authorize("Bearer")]
     public class ReceitaController : Controller
     {
         private IBusiness<ReceitaVM> _receitaBusiness;

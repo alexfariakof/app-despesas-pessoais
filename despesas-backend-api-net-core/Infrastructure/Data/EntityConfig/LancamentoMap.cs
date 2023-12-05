@@ -92,10 +92,9 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 UsuarioId = origin.IdUsuario,
                 Data = DateTime.Parse(origin.Data, new CultureInfo("pt-BR")),
                 DataCriacao = DateTime.Now,
-                Valor = origin.Valor.ToDecimal(),
+                Valor = origin.Valor,
                 Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
-                Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao },
-                Categoria = origin.Categoria
+                Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao }
             };
         }
         public LancamentoVM Parse(Lancamento origin)
@@ -108,9 +107,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 IdReceita = origin.ReceitaId.Value,
                 IdUsuario = origin.UsuarioId,
                 Data = origin.Data.ToDateBr(),
-                Valor = origin.Valor.ToString("N2"),
+                Valor = origin.Valor,
                 Descricao = origin.Descricao,
-                TipoCategoria = origin.DespesaId == 0 ? "Receita" : "Despesa"
+                TipoCategoria = origin.DespesaId == 0 ? "Receita" : "Despesa",
+                Categoria = origin.Categoria.Descricao
             };
         }
         public List<Lancamento> ParseList(List<LancamentoVM> origin)
