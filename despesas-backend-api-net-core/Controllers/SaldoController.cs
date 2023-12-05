@@ -42,7 +42,7 @@ namespace despesas_backend_api_net_core.Controllers
             var _idUsuario = bearerToken.getIdUsuarioFromToken();
             try
             {
-                var saldo = _saldoBusiness.GetSaldoByMesAno(ano, _idUsuario);
+                var saldo = _saldoBusiness.GetSaldoAnual(ano, _idUsuario);
                 return Ok(new { message = true, saldo = saldo });
             }
             catch
@@ -53,7 +53,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpGet("ByMesAno/{anoMes}")]
         [Authorize("Bearer")]
-        public IActionResult GetSaldoByMesANo([FromRoute] DateTime anoMes)
+        public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
             var _idUsuario = bearerToken.getIdUsuarioFromToken();
