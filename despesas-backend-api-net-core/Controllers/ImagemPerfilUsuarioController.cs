@@ -37,15 +37,10 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPost]
         [Authorize("Bearer")]
-        public async Task<IActionResult> Post(int idUsuario, IFormFile file)
+        public async Task<IActionResult> Post(IFormFile file)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            if (_idUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
+            var idUsuario = bearerToken.getIdUsuarioFromToken();
 
             try
             {
@@ -92,15 +87,10 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpPut]
         [Authorize("Bearer")]
-        public async Task<IActionResult> Put(int idUsuario, IFormFile file)
+        public async Task<IActionResult> Put(IFormFile file)
         {
             bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            if (_idUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
+            var idUsuario = bearerToken.getIdUsuarioFromToken();
 
             try
             {
