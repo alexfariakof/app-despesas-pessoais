@@ -44,7 +44,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                var imagemPerfilUsuario = ConvertFileToImagemPerfilUsuarioVM(file, idUsuario);
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, idUsuario);
                 ImagemPerfilUsuarioVM? _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
                 if (_imagemPerfilUsuario != null)
                     return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
@@ -66,7 +66,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             try
             {
-                var imagemPerfilUsuario = ConvertFileToImagemPerfilUsuarioVM(file, idUsuario);
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, idUsuario);
                 imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
                 if (imagemPerfilUsuario != null)
                     return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -103,7 +103,7 @@ namespace despesas_backend_api_net_core.Controllers
                 return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
             }
         }   
-        private ImagemPerfilUsuarioVM ConvertFileToImagemPerfilUsuarioVM(IFormFile file, int idUsuario)
+        private async Task<ImagemPerfilUsuarioVM> ConvertFileToImagemPerfilUsuarioVMAsync(IFormFile file, int idUsuario)
         {
             string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
             string typeFile = "";
@@ -115,11 +115,11 @@ namespace despesas_backend_api_net_core.Controllers
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    file.CopyToAsync(memoryStream);
+                    await file.CopyToAsync(memoryStream);
 
                     ImagemPerfilUsuarioVM imagemPerfilUsuario = new ImagemPerfilUsuarioVM
                     {
-                        Arquivo = memoryStream.GetBuffer(),
+                        Arquivo =  memoryStream.GetBuffer(),
                         IdUsuario = idUsuario,
                         Name = fileName,
                         Type = typeFile,
