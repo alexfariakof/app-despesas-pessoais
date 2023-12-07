@@ -1,6 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,23 +8,18 @@ namespace despesas_backend_api_net_core.Controllers
     [Route("[controller]")]
     [ApiController]
     [Authorize("Bearer")]
-    public class ImagemPerfilUsuarioController : ControllerBase
+    public class ImagemPerfilUsuarioController : AuthController
     {
         private IImagemPerfilUsuarioBusiness _perfilFileBusiness;
-        private string bearerToken;
         public ImagemPerfilUsuarioController(IImagemPerfilUsuarioBusiness perfilFileBusiness)
         {
             _perfilFileBusiness = perfilFileBusiness;
-            bearerToken = String.Empty;
         }
 
         [HttpGet]
         [Authorize("Bearer")]
         public IActionResult Get()
-        {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
+        { 
             var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario)
                 .Find(prop => prop.IdUsuario.Equals(_idUsuario));
 
@@ -39,12 +33,9 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public async Task<IActionResult> Post(IFormFile file)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var idUsuario = bearerToken.getIdUsuarioFromToken();
-
             try
             {
-                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, idUsuario);
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, _idUsuario);
                 ImagemPerfilUsuarioVM? _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
                 if (_imagemPerfilUsuario != null)
                     return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
@@ -61,12 +52,9 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public async Task<IActionResult> Put(IFormFile file)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var idUsuario = bearerToken.getIdUsuarioFromToken();
-
             try
             {
-                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, idUsuario);
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, _idUsuario);
                 imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
                 if (imagemPerfilUsuario != null)
                     return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -83,9 +71,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idUsuario)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });

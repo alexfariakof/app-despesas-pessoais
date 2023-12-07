@@ -206,7 +206,7 @@ namespace Test.XUnit.Controllers
                 Email = "teste@teste.com",
                 Senha = "password"
             };
-            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new AuthResponse());
+            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new Authentication());
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -225,7 +225,7 @@ namespace Test.XUnit.Controllers
                 Email = "",
                 Senha = "password"
             };
-            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new AuthResponse());
+            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new Authentication());
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -247,7 +247,7 @@ namespace Test.XUnit.Controllers
                 Email = "teste@teste.com",
                 Senha = " "
             };
-            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new AuthResponse());
+            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new Authentication());
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;

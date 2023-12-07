@@ -1,7 +1,6 @@
 ﻿using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Domain.Entities;
 using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
@@ -10,14 +9,12 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ControleAcessoController : Controller
+    public class ControleAcessoController : AuthController
     {
         private IControleAcessoBusiness _controleAcessoBusiness;
-        private string bearerToken;
         public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
         {
             _controleAcessoBusiness = controleAcessoBusiness;
-            bearerToken = String.Empty;
         }
         
         [AllowAnonymous]
@@ -93,9 +90,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != login.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -110,7 +104,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (String.IsNullOrEmpty(login.ConfirmaSenha) | String.IsNullOrWhiteSpace(login.ConfirmaSenha))
                 return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
 
-            if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.ToInteger(), login.Senha))
+            if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.Value, login.Senha))
                     return Ok(new { message = true });
 
             return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
@@ -118,6 +112,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [AllowAnonymous]
         [HttpPost("RecoveryPassword")]
+        [Authorize("Bearer")]
         public IActionResult RecoveryPassword([FromBody]  string email)
         {
 

@@ -11,22 +11,18 @@ namespace despesas_backend_api_net_core.Controllers
     [Route("[controller]")]
     [ApiController]
     [Authorize("Bearer")]
-    public class UsuarioController : Controller
+    public class UsuarioController : AuthController
     {
         private IUsuarioBusiness _usuarioBusiness;
-        private string bearerToken;
         public UsuarioController(IUsuarioBusiness usuarioBusiness)
         {
             _usuarioBusiness = usuarioBusiness;
-            bearerToken = String.Empty;
         }
 
         [HttpGet("{IdUsuario}")]
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int idUsuario)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
             if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -43,9 +39,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult GetById(int idUsuario)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -62,9 +55,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -86,9 +76,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -114,9 +101,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete([FromBody] UsuarioVM usuarioVM, int idUsuario)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });

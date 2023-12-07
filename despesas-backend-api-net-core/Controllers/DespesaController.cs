@@ -1,6 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,25 +7,18 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize("Bearer")]
-    public class DespesaController : Controller
+    public class DespesaController : AuthController
     {
         private IBusiness<DespesaVM> _despesaBusiness;
-        private string bearerToken;
-
         public DespesaController(IBusiness<DespesaVM> despesaBusiness)
         {
             _despesaBusiness = despesaBusiness;
-            bearerToken = String.Empty;
         }
 
         [HttpGet]
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             return Ok(_despesaBusiness.FindAll(_idUsuario));
         }
 
@@ -34,9 +26,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int id)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
             try
             {
                 var _despesa = _despesaBusiness.FindById(id, _idUsuario);
@@ -56,9 +45,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromRoute] int idUsuario)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -75,9 +61,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -97,9 +80,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             if (_idUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -116,9 +96,6 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idDespesa)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             DespesaVM despesa = _despesaBusiness.FindById(idDespesa, _idUsuario);
             if (despesa == null || _idUsuario != despesa.IdUsuario)
             {
