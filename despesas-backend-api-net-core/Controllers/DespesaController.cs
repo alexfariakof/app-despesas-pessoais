@@ -19,7 +19,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            return Ok(_despesaBusiness.FindAll(_idUsuario));
+            return Ok(_despesaBusiness.FindAll(IdUsuario));
         }
 
         [HttpGet("GetById/{id}")]
@@ -28,7 +28,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var _despesa = _despesaBusiness.FindById(id, _idUsuario);
+                var _despesa = _despesaBusiness.FindById(id, IdUsuario);
 
                 if (_despesa == null)
                     return BadRequest( new { message = "Nenhuma despesa foi encontrada."});
@@ -41,27 +41,11 @@ namespace despesas_backend_api_net_core.Controllers
             }
         }
 
-        [HttpGet("GetByIdUsuario/{idUsuario}")]
-        [Authorize("Bearer")]
-        public IActionResult Post([FromRoute] int idUsuario)
-        {
-            if (_idUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
-            if (idUsuario == 0)
-                return BadRequest(new { message = "Usuário inexistente!" });
-            else
-                return Ok(_despesaBusiness.FindAll(idUsuario));           
-
-        }
-
         [HttpPost]
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
-            if (_idUsuario != despesa.IdUsuario)
+            if (IdUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -80,7 +64,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
-            if (_idUsuario != despesa.IdUsuario)
+            if (IdUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -96,8 +80,8 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idDespesa)
         {
-            DespesaVM despesa = _despesaBusiness.FindById(idDespesa, _idUsuario);
-            if (despesa == null || _idUsuario != despesa.IdUsuario)
+            DespesaVM despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
+            if (despesa == null || IdUsuario != despesa.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

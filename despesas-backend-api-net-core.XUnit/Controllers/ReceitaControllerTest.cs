@@ -1,6 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Controllers;
-using despesas_backend_api_net_core.Domain.VM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -128,71 +127,6 @@ namespace Test.XUnit.Controllers
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Não foi possível realizar a consulta da receita.", message);
             _mockReceitaBusiness.Verify(b => b.FindById(receitaVM.Id, idUsuario), Times.Once);
-        }
-        
-        [Fact, Order(5)]
-        public void GetByIdUsuario_Should_Returns_OkResult_With_Receitas()
-        {
-            // Arrange
-            var receita = _receitaVMs.Last();
-            int idUsuario = receita.IdUsuario;
-            int receitaId = receita.Id;
-            SetupBearerToken(idUsuario);
-
-            _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs.FindAll(r => r.IdUsuario == idUsuario));
-
-            // Act
-            var result = _receitaController.Post(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);
-            var _receita = (List<ReceitaVM>)result.Value;
-            Assert.NotNull(_receita);
-            Assert.IsType<List<ReceitaVM>>(_receita);
-            _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
-        }
-
-        [Fact, Order(6)]
-        public void GetByIdUsuario_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            int idUsuario = _receitaVMs.Last().Id;
-            SetupBearerToken(0);
-            _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs.FindAll(d => d.IdUsuario == idUsuario));
-
-            // Act
-            var result = _receitaController.Post(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
-        }
-
-        [Fact, Order(7)]
-        public void GetByIdUsuario_Should_Returns_BadRequest_For_UserId_0()
-        {
-            // Arrange
-            var receita = _receitaVMs.Last();
-            receita.IdUsuario = 0;
-            int idUsuario = receita.IdUsuario;
-            SetupBearerToken(idUsuario);
-            _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs.FindAll(d => d.IdUsuario == idUsuario));
-
-            // Act
-            var result = _receitaController.Post(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário inexistente!", message);
-            _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
         }
 
         [Fact, Order(8)]

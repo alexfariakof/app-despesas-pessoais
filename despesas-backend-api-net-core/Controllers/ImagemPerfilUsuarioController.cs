@@ -20,8 +20,8 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         { 
-            var imagemPerfilUsuario = _perfilFileBusiness.FindAll(_idUsuario)
-                .Find(prop => prop.IdUsuario.Equals(_idUsuario));
+            var imagemPerfilUsuario = _perfilFileBusiness.FindAll(IdUsuario)
+                .Find(prop => prop.IdUsuario.Equals(IdUsuario));
 
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, _idUsuario);
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
                 ImagemPerfilUsuarioVM? _imagemPerfilUsuario = _perfilFileBusiness.Create(imagemPerfilUsuario);
                 if (_imagemPerfilUsuario != null)
                     return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
@@ -54,7 +54,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, _idUsuario);
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
                 imagemPerfilUsuario = _perfilFileBusiness.Update(imagemPerfilUsuario);
                 if (imagemPerfilUsuario != null)
                     return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -71,7 +71,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idUsuario)
         {
-            if (_idUsuario != idUsuario)
+            if (IdUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

@@ -16,7 +16,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class AuthController : Controller
     {       
         public AuthController() { }
-        protected int _idUsuario
+        protected int IdUsuario
         {
             get
             {

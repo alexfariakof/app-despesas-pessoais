@@ -19,7 +19,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(_idUsuario);
+            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(IdUsuario);
 
             if (_categoria.Count == 0)
                 return NotFound();
@@ -32,7 +32,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult GetById([FromRoute] int idCategoria)
         {
 
-            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario);
+            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
 
             if (_categoria == null)
                 return NotFound();
@@ -46,13 +46,13 @@ namespace despesas_backend_api_net_core.Controllers
         {
             if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
             {
-                var _categoria = _categoriaBusiness.FindAll(_idUsuario)
-                                 .FindAll(prop => prop.IdUsuario.Equals(_idUsuario));
+                var _categoria = _categoriaBusiness.FindAll(IdUsuario)
+                                 .FindAll(prop => prop.IdUsuario.Equals(IdUsuario));
                 return Ok(_categoria);
             }
             else
             {
-                var _categoria = _categoriaBusiness.FindAll(_idUsuario)
+                var _categoria = _categoriaBusiness.FindAll(IdUsuario)
                                 .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
                 return Ok(_categoria);
             }           
@@ -63,7 +63,7 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] CategoriaVM categoria)
         {
 
-            if (_idUsuario != categoria.IdUsuario)
+            if (IdUsuario != categoria.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -85,7 +85,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] CategoriaVM categoria)
         {
-            if (_idUsuario != categoria.IdUsuario)
+            if (IdUsuario != categoria.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -105,8 +105,8 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idCategoria)
         {
-            CategoriaVM categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario);
-            if (categoria == null || _idUsuario != categoria.IdUsuario)
+            CategoriaVM categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+            if (categoria == null || IdUsuario != categoria.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

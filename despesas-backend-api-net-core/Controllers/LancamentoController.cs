@@ -20,7 +20,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
         {
-            if (_idUsuario != idUsuario)
+            if (IdUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

@@ -308,7 +308,6 @@ namespace Test.XUnit.Controllers
             // Arrange
             var loginVM = new LoginVM
             {
-                IdUsuario = 1,
                 Senha = "!12345",
                 ConfirmaSenha = "!12345"
             };
@@ -327,35 +326,11 @@ namespace Test.XUnit.Controllers
         }
 
         [Fact]
-        public void ChangePassword_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 1,
-                Senha = "!12345",
-                ConfirmaSenha = "!12345"
-            };
-            SetupBearerToken(0); // Invalid token
-
-            // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-        }
-
-        [Fact]
         public void ChangePassword_With_Usuario_Teste_Returns_BadRequest()
         {
             // Arrange
             var loginVM = new LoginVM
             {
-                IdUsuario = 2,
                 Senha = "!12345",
                 ConfirmaSenha = "!12345"
             };
@@ -378,7 +353,6 @@ namespace Test.XUnit.Controllers
             // Arrange
             var loginVM = new LoginVM
             {
-                IdUsuario = 1,
                 Senha = "",
                 ConfirmaSenha = "!12345"
             };
@@ -401,7 +375,6 @@ namespace Test.XUnit.Controllers
             // Arrange
             var loginVM = new LoginVM
             {
-                IdUsuario = 1,
                 Senha = "!12345",
                 ConfirmaSenha = ""
             };
@@ -424,7 +397,6 @@ namespace Test.XUnit.Controllers
             // Arrange
             var loginVM = new LoginVM
             {
-                IdUsuario = 1,
                 Senha = "!12345",
                 ConfirmaSenha = "!12345"
             };

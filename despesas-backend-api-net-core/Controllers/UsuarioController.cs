@@ -23,23 +23,23 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get([FromRoute]int idUsuario)
         {
-            if (_idUsuario != idUsuario)
+            if (IdUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
 
-            var usuario = _usuarioBusiness.FindById(_idUsuario);
+            var usuario = _usuarioBusiness.FindById(IdUsuario);
             if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 return Ok(new List<UsuarioVM>());
 
-            return Ok(_usuarioBusiness.FindAll(_idUsuario));
+            return Ok(_usuarioBusiness.FindAll(IdUsuario));
         }
                 
         [HttpGet("GetById/{idUsuario}")]
         [Authorize("Bearer")]
         public IActionResult GetById(int idUsuario)
         {
-            if (_idUsuario != idUsuario)
+            if (IdUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -55,7 +55,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] UsuarioVM usuarioVM)
         {
-            if (_idUsuario != usuarioVM.Id)
+            if (IdUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -76,7 +76,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] UsuarioVM usuarioVM)
         {
-            if (_idUsuario != usuarioVM.Id)
+            if (IdUsuario != usuarioVM.Id)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
@@ -101,7 +101,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete([FromBody] UsuarioVM usuarioVM, int idUsuario)
         {
-            if (_idUsuario != idUsuario)
+            if (IdUsuario != idUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

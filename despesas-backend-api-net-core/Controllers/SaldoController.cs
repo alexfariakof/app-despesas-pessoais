@@ -20,7 +20,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var saldo = _saldoBusiness.GetSaldo(_idUsuario);
+                var saldo = _saldoBusiness.GetSaldo(IdUsuario);
                 return Ok(new { message = true, saldo = saldo});
             }
             catch
@@ -35,7 +35,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var saldo = _saldoBusiness.GetSaldoAnual(ano, _idUsuario);
+                var saldo = _saldoBusiness.GetSaldoAnual(ano, IdUsuario);
                 return Ok(new { message = true, saldo = saldo });
             }
             catch
@@ -50,7 +50,7 @@ namespace despesas_backend_api_net_core.Controllers
         {
             try
             {
-                var saldo = _saldoBusiness.GetSaldoByMesAno(anoMes, _idUsuario);
+                var saldo = _saldoBusiness.GetSaldoByMesAno(anoMes, IdUsuario);
                 return Ok(new { message = true, saldo = saldo });
             }
             catch

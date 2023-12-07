@@ -1,3 +1,18 @@
+
+
+# Função para matar processos com base no nome do processo
+function Stop-ProcessesByName {
+    $processes = Get-Process | Where-Object { $_.ProcessName -like 'dotnet*' } | Where-Object { $_.MainWindowTitle -eq '' }
+    if ($processes.Count -gt 0) {
+        $processes | ForEach-Object { Stop-Process -Id $_.Id -Force }
+    }
+}
+
+# Encerra qualquer processo em segundo plano relacionado ao comando npm run test:watch
+Stop-ProcessesByName
+
+dotnet clean
+
 # Defina o diretório do projeto (onde o arquivo docker-compose.yml está localizado)
 $projectDirectory = ".\despesas-backend-api-net-core"
 

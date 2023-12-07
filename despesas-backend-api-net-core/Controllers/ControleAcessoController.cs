@@ -85,17 +85,12 @@ namespace despesas_backend_api_net_core.Controllers
             return new OkObjectResult(result);
         }
 
-
         [HttpPost("ChangePassword")]
         [Authorize("Bearer")]        
         public IActionResult ChangePassword([FromBody] LoginVM login)
         {
-            if (_idUsuario != login.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
 
-            if (login.IdUsuario.Equals(2))
+            if (IdUsuario.Equals(2))
                 return BadRequest(new { message = "A senha deste usuário não pode ser atualizada!" });
 
             if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
@@ -104,7 +99,7 @@ namespace despesas_backend_api_net_core.Controllers
             if (String.IsNullOrEmpty(login.ConfirmaSenha) | String.IsNullOrWhiteSpace(login.ConfirmaSenha))
                 return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
 
-            if (_controleAcessoBusiness.ChangePassword(login.IdUsuario.Value, login.Senha))
+            if (_controleAcessoBusiness.ChangePassword(IdUsuario, login.Senha))
                     return Ok(new { message = true });
 
             return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
