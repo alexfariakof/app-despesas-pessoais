@@ -63,16 +63,12 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] CategoriaVM categoria)
         {
 
-            if (IdUsuario != categoria.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
             if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
                 return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!"});
 
             try
             {
+                categoria.IdUsuario = IdUsuario;
                 return Ok(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
             }
             catch
@@ -85,14 +81,11 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] CategoriaVM categoria)
         {
-            if (IdUsuario != categoria.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
 
             if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
                 return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
+            categoria.IdUsuario = IdUsuario;
             CategoriaVM updateCategoria = _categoriaBusiness.Update(categoria);
 
             if (updateCategoria == null)

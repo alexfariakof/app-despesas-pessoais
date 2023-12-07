@@ -98,7 +98,7 @@ namespace despesas_backend_api_net_core.Controllers
 
             if (String.IsNullOrEmpty(login.ConfirmaSenha) | String.IsNullOrWhiteSpace(login.ConfirmaSenha))
                 return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
-
+            
             if (_controleAcessoBusiness.ChangePassword(IdUsuario, login.Senha))
                     return Ok(new { message = true });
 

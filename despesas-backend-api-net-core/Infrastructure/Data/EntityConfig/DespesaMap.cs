@@ -46,7 +46,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Valor = origin.Valor,
                 DataVencimento = origin.DataVencimento,
                 CategoriaId =origin.IdCategoria,
-                UsuarioId = origin.IdUsuario,
+                UsuarioId = origin.IdUsuario.Value,
             };
         }
 

@@ -35,16 +35,11 @@ namespace despesas_backend_api_net_core.Controllers
             return Ok(_usuarioBusiness.FindAll(IdUsuario));
         }
                 
-        [HttpGet("GetById/{idUsuario}")]
+        [HttpGet("GetUsuario")]
         [Authorize("Bearer")]
-        public IActionResult GetById(int idUsuario)
+        public IActionResult GetUsuario()
         {
-            if (IdUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
-            UsuarioVM _usuario = _usuarioBusiness.FindById(idUsuario);
+            UsuarioVM _usuario = _usuarioBusiness.FindById(IdUsuario);
             if (_usuario == null)
                 return BadRequest(new { message ="Usuário não encontrado!" });
 

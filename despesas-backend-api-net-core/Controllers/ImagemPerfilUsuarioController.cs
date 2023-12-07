@@ -67,18 +67,13 @@ namespace despesas_backend_api_net_core.Controllers
             }
         }
 
-        [HttpDelete("{idUsuario}")]
+        [HttpDelete]
         [Authorize("Bearer")]
-        public IActionResult Delete(int idUsuario)
+        public IActionResult Delete()
         {
-            if (IdUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
             try
             {
-                if (_perfilFileBusiness.Delete(new ImagemPerfilUsuarioVM { IdUsuario = idUsuario }))
+                if (_perfilFileBusiness.Delete(new ImagemPerfilUsuarioVM { IdUsuario = IdUsuario }))
                     return Ok(new { message = true });
                 else
                     return BadRequest(new { message = false });

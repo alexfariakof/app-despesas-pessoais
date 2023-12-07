@@ -47,7 +47,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
-            int idUsuario = _despesaVMs.First().IdUsuario;
+            int idUsuario = _despesaVMs.First().IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaVMs);
 
@@ -66,7 +66,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var despesaVM = DespesaFaker.DespesasVMs().First();
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns((DespesaVM)null);
 
@@ -88,7 +88,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var despesa = DespesaFaker.Despesas().First();
             var despesaVM = new DespesaMap().Parse(despesa);
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             int despesaId = despesa.Id;
             SetupBearerToken(idUsuario);
             
@@ -114,7 +114,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var despesaVM = DespesaFaker.DespesasVMs().First();
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Throws(new Exception());
 
@@ -135,7 +135,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
-            int idUsuario = despesaVM.IdUsuario ;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.Create(despesaVM)).Returns(despesaVM);
 
@@ -154,35 +154,13 @@ namespace Test.XUnit.Controllers
             _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Once());
         }
 
-        [Fact, Order(9)]
-        public void Post_Should_Returns_BadRequest_When_Despesa_With_InvalidUsuario()
-        {
-            // Arrange
-            var _despesaVMs = DespesaFaker.DespesasVMs();
-            var despesaVM = _despesaVMs[3];
-            int idUsuario = despesaVM.IdUsuario;
-            SetupBearerToken(0);
-            _mockDespesaBusiness.Setup(business => business.Create(despesaVM)).Returns(despesaVM);
-
-            // Act
-            var result = _despesaController.Post(despesaVM) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Never);
-        }
-
         [Fact, Order(10)]
         public void Post_Should_Returns_BadRequest_When_Throws_Error()
         {
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.Create(despesaVM)).Throws(new Exception());
 
@@ -198,35 +176,13 @@ namespace Test.XUnit.Controllers
             _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Once);
         }
 
-        [Fact, Order(11)]
-        public void Put_Should_Returns_BadRequest_When_Despesa_With_InvalidUsuario()
-        {
-            // Arrange
-            var _despesaVMs = DespesaFaker.DespesasVMs();
-            var despesaVM = _despesaVMs[3];
-            int idUsuario = despesaVM.IdUsuario;
-            SetupBearerToken(0);
-            _mockDespesaBusiness.Setup(business => business.Update(despesaVM)).Returns(despesaVM);
-
-            // Act
-            var result = _despesaController.Put(despesaVM) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockDespesaBusiness.Verify(b => b.Update(despesaVM), Times.Never);
-        }
-
         [Fact, Order(12)]
         public void Put_Should_Update_Despesa()
         {
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[4];
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);         
             _mockDespesaBusiness.Setup(business => business.Update(despesaVM)).Returns(despesaVM);
 
@@ -251,7 +207,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[3];
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockDespesaBusiness.Setup(business => business.Update(despesaVM)).Returns((DespesaVM)null);
 
@@ -273,7 +229,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[2];
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             
             _mockDespesaBusiness.Setup(business => business.Delete(despesaVM)).Returns(true);
@@ -298,7 +254,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[2];
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(0);
 
             _mockDespesaBusiness.Setup(business => business.Delete(despesaVM)).Returns(true);
@@ -322,7 +278,7 @@ namespace Test.XUnit.Controllers
             // Arrange
             var _despesaVMs = DespesaFaker.DespesasVMs();
             var despesaVM = _despesaVMs[2];
-            int idUsuario = despesaVM.IdUsuario;
+            int idUsuario = despesaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
 
             _mockDespesaBusiness.Setup(business => business.Delete(despesaVM)).Returns(false);

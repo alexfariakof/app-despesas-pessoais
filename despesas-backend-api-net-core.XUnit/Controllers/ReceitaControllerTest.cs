@@ -47,7 +47,7 @@ namespace Test.XUnit.Controllers
         public void Get_Should_Return_All_Receitas_From_Usuario()
         {
             // Arrange
-            int idUsuario = _receitaVMs.First().IdUsuario;
+            int idUsuario = _receitaVMs.First().IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs);
 
@@ -66,7 +66,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs.First();
-            var idUsuario = receitaVM.IdUsuario;
+            var idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns((ReceitaVM)null);
 
@@ -87,7 +87,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receita = _receitaVMs.Last();
-            int idUsuario = receita.IdUsuario;
+            int idUsuario = receita.IdUsuario.Value;
             int receitaId = receita.Id;
             SetupBearerToken(idUsuario);
 
@@ -113,7 +113,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs.First();
-            var idUsuario = receitaVM.IdUsuario;
+            var idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Throws(new Exception());
 
@@ -134,7 +134,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario ;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Returns(receitaVM);
 
@@ -153,33 +153,12 @@ namespace Test.XUnit.Controllers
             _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Once());
         }
 
-        [Fact, Order(9)]
-        public void Post_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario;
-            SetupBearerToken(0);
-            _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Returns(receitaVM);
-
-            // Act
-            var result = _receitaController.Post(receitaVM) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Never);
-        }
-
         [Fact, Order(10)]
         public void Post_Should_Returns_BadRequest_When_Throws_Error()
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Throws(new Exception());
 
@@ -195,33 +174,12 @@ namespace Test.XUnit.Controllers
             _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Once);
         }
 
-        [Fact, Order(11)]
-        public void Put_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario;
-            SetupBearerToken(0);
-            _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns(receitaVM);
-
-            // Act
-            var result = _receitaController.Put(receitaVM) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Never);
-        }
-
         [Fact, Order(12)]
         public void Put_Should_Update_Receita()
         {
             // Arrange
             var receitaVM = _receitaVMs[4];
-            int idUsuario = receitaVM.IdUsuario;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);         
             _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns(receitaVM);
 
@@ -245,7 +203,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns((ReceitaVM)null);
 
@@ -266,7 +224,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[2];
-            int idUsuario = receitaVM.IdUsuario;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
             
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
@@ -291,7 +249,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[2];
-            int idUsuario = receitaVM.IdUsuario;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(0);
 
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
@@ -314,7 +272,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[2];
-            int idUsuario = receitaVM.IdUsuario;
+            int idUsuario = receitaVM.IdUsuario.Value;
             SetupBearerToken(idUsuario);
 
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(false);

@@ -16,18 +16,13 @@ namespace despesas_backend_api_net_core.Controllers
             _lancamentoBusiness = lancamentoBusiness;
         }
 
-        [HttpGet("{anoMes}/{idUsuario}")]
+        [HttpGet("{anoMes}")]
         [Authorize("Bearer")]
-        public IActionResult Get([FromRoute]DateTime anoMes, [FromRoute]int idUsuario)
+        public IActionResult Get([FromRoute]DateTime anoMes)
         {
-            if (IdUsuario != idUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
             try
             {
-                var list = _lancamentoBusiness.FindByMesAno(anoMes, idUsuario);
+                var list = _lancamentoBusiness.FindByMesAno(anoMes, IdUsuario);
 
                 if (list == null || list.Count == 0)
                     return Ok(new { message = true, lancamentos = new List<LancamentoVM>() });

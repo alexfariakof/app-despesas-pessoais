@@ -46,13 +46,9 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] ReceitaVM receita)
         {
-            if (IdUsuario != receita.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
             try
             {
+                receita.IdUsuario = IdUsuario;
                 return new OkObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
             }
             catch
@@ -65,11 +61,8 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] ReceitaVM receita)
         {
-            if (IdUsuario != receita.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
 
+            receita.IdUsuario = IdUsuario;
             var updateReceita = _receitaBusiness.Update(receita);
 
             if (updateReceita == null)

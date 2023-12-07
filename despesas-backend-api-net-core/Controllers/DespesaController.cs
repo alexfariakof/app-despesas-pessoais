@@ -45,13 +45,9 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Post([FromBody] DespesaVM despesa)
         {
-            if (IdUsuario != despesa.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
             try
             {
+                despesa.IdUsuario = IdUsuario;
                 return new OkObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
             }
             catch
@@ -64,11 +60,7 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] DespesaVM despesa)
         {
-            if (IdUsuario != despesa.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
+            despesa.IdUsuario = IdUsuario;
             var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
                 return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });

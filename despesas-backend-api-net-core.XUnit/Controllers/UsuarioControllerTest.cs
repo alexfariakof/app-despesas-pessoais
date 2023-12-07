@@ -26,7 +26,6 @@ namespace Test.XUnit.Controllers
             var identity = new ClaimsIdentity(claims, "IdUsuario");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-
             var httpContext = new DefaultHttpContext
             {
                 User = claimsPrincipal
@@ -40,8 +39,7 @@ namespace Test.XUnit.Controllers
         }
 
         public UsuarioControllerTest()
-        {
-            
+        {            
             _mockUsuarioBusiness = new Mock<IUsuarioBusiness>();
             _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object);
             var usuarios = UsuarioFaker.Usuarios();
@@ -171,72 +169,7 @@ namespace Test.XUnit.Controllers
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
             Assert.True(message);
             _mockUsuarioBusiness.Verify(b => b.Delete(usuarioVM), Times.Once);
-        }
-
-        [Fact, Order(7)]
-        public void GetById_Should_Return_UsuarioVM()
-        {
-            // Arrange
-            var usuarioVM = usuarioNormal;
-            var idUsuario = usuarioVM.Id;
-            SetupBearerToken(idUsuario);            
-            
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
-
-            // Act
-            var result = _usuarioController.GetById(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);
-            Assert.IsType<UsuarioVM>(result.Value);
-            Assert.Equal(usuarioNormal, result.Value);
-            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
-        }
-        
-        [Fact, Order(8)]
-        public void GetById_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            var usuarioVM = usuarioNormal;
-            var idUsuario = usuarioVM.Id;
-            SetupBearerToken(0);
-
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
-
-            // Act
-            var result = _usuarioController.GetById(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Never);
-        }
-
-        [Fact, Order(9)]
-        public void GetById_Should_Returns_BadRequest_When_Usuario_IsNull()
-        {
-            // Arrange
-            var usuarioVM = usuarioNormal;
-            var idUsuario = usuarioVM.Id;
-            SetupBearerToken(idUsuario);
-
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioVM)null);
-
-            // Act
-            var result = _usuarioController.GetById(idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não encontrado!", message);
-            _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
-        }
+        }        
 
         [Fact, Order(10)]
         public void Post_With_InvalidToken_Returns_BadRequest()

@@ -97,13 +97,13 @@ namespace Test.XUnit.Business.Implementations
         public void Update_Should_Returns_Parsed_CategoriaVM()
         {
             // Arrange
-            var categoriaVM = new CategoriaVM();
-            var categoria = new Categoria();
+            var categoriaVM = CategoriaFaker.GetNewFakerVM(null);
+            var categoria = new CategoriaMap().Parse(categoriaVM);
             
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Categoria>())).Returns(categoria);
 
             // Act
-            var result = _categoriaBusiness.Update(categoriaVM);
+            var result = _categoriaBusiness.Update(categoriaVM) as CategoriaVM;
 
             // Assert
             Assert.NotNull(result);

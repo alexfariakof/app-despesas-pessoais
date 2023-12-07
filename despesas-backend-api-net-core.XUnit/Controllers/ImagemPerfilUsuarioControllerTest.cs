@@ -400,7 +400,7 @@ namespace Test.XUnit.Controllers
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Delete(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(true);
 
             // Act
-            var result = _imagemPerfilUsuarioController.Delete(idUsuario) as ObjectResult;
+            var result = _imagemPerfilUsuarioController.Delete() as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -412,28 +412,6 @@ namespace Test.XUnit.Controllers
             _mockImagemPerfilUsuarioBusiness.Verify(b => b.Delete(It.IsAny<ImagemPerfilUsuarioVM>()), Times.Once);
         }
 
-        [Fact, Order(12)]
-        public void Delete_Should_Returns_BadRequestResult_When_Usuario_IsInvalid()
-        {
-            // Arrange
-            int idUsuario = 1;
-            SetupBearerToken(0);
-            _mockImagemPerfilUsuarioBusiness.Setup(business => business.Delete(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(false);
-
-            // Act
-            var result = _imagemPerfilUsuarioController.Delete(idUsuario) as ObjectResult;
-
-            // Assert
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as String;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockImagemPerfilUsuarioBusiness.Verify(b => b.Delete(It.IsAny<ImagemPerfilUsuarioVM>()), Times.Never);
-        }
-
         [Fact, Order(13)]
         public void Delete_Should_Returns_BadRequest_When_Try_To_Delete()
         {
@@ -443,7 +421,7 @@ namespace Test.XUnit.Controllers
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Delete(It.IsAny<ImagemPerfilUsuarioVM>())).Returns(false);
 
             // Act
-            var result = _imagemPerfilUsuarioController.Delete(idUsuario) as ObjectResult;
+            var result = _imagemPerfilUsuarioController.Delete() as ObjectResult;
 
             // Assert
             // Assert
@@ -466,7 +444,7 @@ namespace Test.XUnit.Controllers
             _mockImagemPerfilUsuarioBusiness.Setup(business => business.Delete(It.IsAny<ImagemPerfilUsuarioVM>())).Throws<Exception>();
 
             // Act
-            var result = _imagemPerfilUsuarioController.Delete(idUsuario) as ObjectResult;
+            var result = _imagemPerfilUsuarioController.Delete() as ObjectResult;
 
             // Assert
             // Assert
