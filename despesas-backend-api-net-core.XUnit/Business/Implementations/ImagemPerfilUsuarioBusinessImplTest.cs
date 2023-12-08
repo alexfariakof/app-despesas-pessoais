@@ -67,7 +67,7 @@ namespace Test.XUnit.Business.Implementations
             _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil);
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.FindAll(imagemPerfilVM.IdUsuario); 
+            var result = _imagemPerfilUsuarioBusiness.FindAll(imagemPerfilVM.IdUsuario.Value ); 
 
             // Assert
             Assert.NotNull(result);
@@ -83,7 +83,7 @@ namespace Test.XUnit.Business.Implementations
             _repositorioMock.Setup(repo => repo.Get(imagemPerfilVM.Id)).Returns(_imagensPerfil.Find(obj => obj.Id == imagemPerfilVM.Id));
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.FindById(imagemPerfilVM.Id, imagemPerfilVM.IdUsuario);
+            var result = _imagemPerfilUsuarioBusiness.FindById(imagemPerfilVM.Id, imagemPerfilVM.IdUsuario.Value);
 
             // Assert
             Assert.NotNull(result);
@@ -99,7 +99,7 @@ namespace Test.XUnit.Business.Implementations
             _repositorioMock.Setup(repo => repo.Get(imagemPerfilVM.Id)).Returns((ImagemPerfilUsuario)null);
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.FindById(imagemPerfilVM.Id, imagemPerfilVM.IdUsuario);
+            var result = _imagemPerfilUsuarioBusiness.FindById(imagemPerfilVM.Id, imagemPerfilVM.IdUsuario.Value);
 
             // Assert
             Assert.Null(result);
@@ -204,7 +204,7 @@ namespace Test.XUnit.Business.Implementations
             _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(true);
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario);
+            var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario.Value);
 
             // Assert
             Assert.True(result);
@@ -220,7 +220,7 @@ namespace Test.XUnit.Business.Implementations
             _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(false);
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario);
+            var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario.Value);
 
             // Assert
             Assert.False(result);
@@ -236,7 +236,7 @@ namespace Test.XUnit.Business.Implementations
             _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(true);
 
             // Act
-            var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario);
+            var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario.Value);
 
             // Assert
             Assert.False(result);

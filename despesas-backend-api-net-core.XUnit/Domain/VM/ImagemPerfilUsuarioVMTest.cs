@@ -22,11 +22,8 @@ namespace Test.XUnit.Domain.VM
                 Type = type,
                 ContentType = contentType,
                 IdUsuario = idUsuario,                
+                Arquivo = arquivoData
             };
-
-            PropertyInfo arquivoProperty = imagemPerfilUsuarioVM.GetType().GetProperty("Arquivo", BindingFlags.NonPublic | BindingFlags.Instance);
-            arquivoProperty.SetValue(imagemPerfilUsuarioVM, arquivoData);
-
             
             // Assert
             Assert.Equal(id, imagemPerfilUsuarioVM.Id);
@@ -35,7 +32,7 @@ namespace Test.XUnit.Domain.VM
             Assert.Equal(type, imagemPerfilUsuarioVM.Type);
             Assert.Equal(contentType, imagemPerfilUsuarioVM.ContentType);
             Assert.Equal(idUsuario, imagemPerfilUsuarioVM.IdUsuario);
-            Assert.Equal(arquivoData, arquivoProperty.GetValue(imagemPerfilUsuarioVM));
+            Assert.Equal(arquivoData, imagemPerfilUsuarioVM.Arquivo);
         }
     }
 }

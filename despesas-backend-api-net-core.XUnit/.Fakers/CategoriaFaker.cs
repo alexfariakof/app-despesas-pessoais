@@ -52,10 +52,18 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             var listCategoria = new List<Categoria>();
             for (int i = 0; i < 10; i++)
             {
+                Categoria categoria = null;
                 if (idUsuario == null)
+                {
                     usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
+                    categoria = GetNewFaker(usuario);
+                }
+                else
+                {
+                    categoria = GetNewFaker(usuario, idUsuario);
+                }
 
-                var categoria = GetNewFaker(usuario);
+                
                 listCategoria.Add(categoria);
                 usuario = UsuarioFaker.GetNewFaker();
             }

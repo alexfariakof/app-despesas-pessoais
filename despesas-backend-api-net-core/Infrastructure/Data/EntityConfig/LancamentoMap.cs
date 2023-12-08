@@ -89,7 +89,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Id = origin.Id,
                 DespesaId = origin.IdDespesa,
                 ReceitaId = origin.IdReceita,
-                UsuarioId = origin.IdUsuario,
+                UsuarioId = origin.IdUsuario.Value,
                 Data = DateTime.Parse(origin.Data, new CultureInfo("pt-BR")),
                 DataCriacao = DateTime.Now,
                 Valor = origin.Valor,

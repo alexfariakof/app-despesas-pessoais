@@ -60,7 +60,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
             // Act
-            var result = _usuarioController.Get(idUsuario) as ObjectResult;
+            var result = _usuarioController.Get() as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -79,7 +79,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_usuarioVMs.FindAll(u => u.Id == idUsuario));
 
             // Act
-            var result = _usuarioController.Get(idUsuario) as ObjectResult;
+            var result = _usuarioController.Get() as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -99,7 +99,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_usuarioVMs.FindAll(u => u.Id == idUsuario));
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(administrador);
             // Act
-            var result = _usuarioController.Get(idUsuario) as ObjectResult;
+            var result = _usuarioController.Get() as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -162,7 +162,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindById(administrador.Id)).Returns(administrador);
 
             // Act
-            var result = _usuarioController.Delete(usuarioVM, administrador.Id) as ObjectResult;
+            var result = _usuarioController.Delete(usuarioVM) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -431,7 +431,7 @@ namespace Test.XUnit.Controllers
             var idUsuario = usuarioVM.Id;
             SetupBearerToken(0);
             // Act
-            var result = _usuarioController.Delete(usuarioNormal, idUsuario) as ObjectResult;
+            var result = _usuarioController.Delete(usuarioNormal) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -452,7 +452,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
             // Act
-            var result = _usuarioController.Delete(usuarioNormal, idUsuario) as ObjectResult;
+            var result = _usuarioController.Delete(usuarioNormal) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -475,7 +475,7 @@ namespace Test.XUnit.Controllers
             _mockUsuarioBusiness.Setup(business => business.Delete(usuarioNormal)).Returns(false);
 
             // Act
-            var result = _usuarioController.Delete(usuarioNormal, idUsuario) as ObjectResult;
+            var result = _usuarioController.Delete(usuarioNormal) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);

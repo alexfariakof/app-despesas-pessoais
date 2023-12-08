@@ -48,7 +48,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
-            int idUsuario = _lancamentoVMs.First().IdUsuario;
+            int idUsuario = _lancamentoVMs.First().IdUsuario.Value;
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
             
@@ -76,7 +76,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
-            int idUsuario = _lancamentoVMs.First().IdUsuario;
+            int idUsuario = _lancamentoVMs.First().IdUsuario.Value;
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
 
@@ -100,7 +100,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
-            int idUsuario = _lancamentoVMs.First().IdUsuario;
+            int idUsuario = _lancamentoVMs.First().IdUsuario.Value;
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
 
@@ -124,7 +124,7 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
-            int idUsuario = _lancamentoVMs.First().IdUsuario;
+            int idUsuario = _lancamentoVMs.First().IdUsuario.Value;
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
 

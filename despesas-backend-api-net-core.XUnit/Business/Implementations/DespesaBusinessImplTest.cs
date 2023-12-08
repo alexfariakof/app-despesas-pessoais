@@ -21,10 +21,12 @@ namespace Test.XUnit.Business.Implementations
         public void Create_Should_Returns_Parsed_Despesa_VM()
         {
             // Arrange
-            var despesaVM = DespesaFaker.DespesasVMs().First();
+            var despesa = DespesaFaker.Despesas().First();
+            var despesaVM = new DespesaMap().Parse(despesa);
 
-            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Despesa>())).Returns(new DespesaMap().Parse(despesaVM));
-
+            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Despesa>())).Returns(despesa);
+            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(despesa.Usuario, despesa.UsuarioId));
+            
             // Act
             var result = _despesaBusiness.Create(despesaVM);
 
@@ -95,11 +97,12 @@ namespace Test.XUnit.Business.Implementations
         public void Update_Should_Returns_Parsed_DespesaVM()
         {
             // Arrange         
-            var despesaVM = DespesaFaker.DespesasVMs().First();
-            var despesa = new DespesaMap().Parse(despesaVM);
+            var despesa = DespesaFaker.Despesas().First();
+            var despesaVM = new DespesaMap().Parse(despesa);
             despesa.Descricao = "Teste Update Despesa";
 
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Despesa>())).Returns(despesa);
+            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(despesa.Usuario, despesa.UsuarioId));
 
             // Act
             var result = _despesaBusiness.Update(despesaVM);
