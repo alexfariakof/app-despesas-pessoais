@@ -19,9 +19,9 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
 
             return imagemFaker.Generate();
         }
-        public static ImagemPerfilUsuarioVM GetNewFakerVM(UsuarioVM usuarioVM)
+        public static ImagemPerfilVM GetNewFakerVM(UsuarioVM usuarioVM)
         {
-            var imagemFaker = new Faker<ImagemPerfilUsuarioVM>()
+            var imagemFaker = new Faker<ImagemPerfilVM>()
                 .RuleFor(i => i.Id, f => counterVM++)
                 .RuleFor(i => i.Url, f => f.Internet.Url())
                 .RuleFor(i => i.Name, f => f.System.FileName())
@@ -45,9 +45,9 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             }
             return imagens;
         }
-        public static List<ImagemPerfilUsuarioVM> ImagensPerfilUsuarioVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
+        public static List<ImagemPerfilVM> ImagensPerfilUsuarioVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
         {
-            var imagensVM = new List<ImagemPerfilUsuarioVM>();
+            var imagensVM = new List<ImagemPerfilVM>();
             for (var i = 0; i < 10; i++)
             {
                 if (idUsaurio == null)

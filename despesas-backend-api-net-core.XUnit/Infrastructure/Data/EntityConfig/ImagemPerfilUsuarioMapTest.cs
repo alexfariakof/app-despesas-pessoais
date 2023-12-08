@@ -60,7 +60,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         {
             // Arrange
             var map = new ImagemPerfilUsuarioMap();
-            var origin = new ImagemPerfilUsuarioVM
+            var origin = new ImagemPerfilVM
             {
                 Id = 1,
                 Name = "example.jpg",

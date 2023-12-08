@@ -40,7 +40,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
         public async Task WritingAnObjectAsync_Should_Return_Url()
         {
             // Arrange
-            var perfilFile = new ImagemPerfilUsuarioVM
+            var perfilFile = new ImagemPerfilVM
             {
                 Name = "test-image.jpg",
                 ContentType = "image/jpeg",
@@ -61,7 +61,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
         public async Task WritingAnObjectAsync_Should_Throws_Exception()
         {
             // Arrange
-            var perfilFile = new ImagemPerfilUsuarioVM
+            var perfilFile = new ImagemPerfilVM
             {
                 Name = "test-image.jpg",
                 ContentType = "image/jpeg",
@@ -80,7 +80,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
         public async Task DeleteObjectNonVersionedBucketAsync_Should_Return_True()
         {
             // Arrange
-            var perfilFile = new ImagemPerfilUsuarioVM
+            var perfilFile = new ImagemPerfilVM
             {
                 Name = "test-image.jpg"
             };
@@ -99,7 +99,7 @@ namespace Test.XUnit.Infrastructure.Security.Implementation
         public async Task DeleteObjectNonVersionedBucketAsync_Should_Throws_Erro_And_Return_False()
         {
             // Arrange
-            var perfilFile = new ImagemPerfilUsuarioVM
+            var perfilFile = new ImagemPerfilVM
             {
                 Name = "non-existing-file.jpg"
             };

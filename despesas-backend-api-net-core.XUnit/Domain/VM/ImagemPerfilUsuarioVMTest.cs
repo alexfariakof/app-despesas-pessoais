@@ -14,7 +14,7 @@ namespace Test.XUnit.Domain.VM
             var data = DateTime.Now;
             var dataVencimento = DateTime.Now;
             byte[] arquivoData = new byte[] { 1, 2, 3, 4, 5 };
-            var imagemPerfilUsuarioVM = new ImagemPerfilUsuarioVM
+            var imagemPerfilUsuarioVM = new ImagemPerfilVM
             {
                 Id = id,
                 Url = url,
