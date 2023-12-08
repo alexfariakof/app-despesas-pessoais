@@ -12,6 +12,7 @@ namespace Test.XUnit.Controllers
     public class UsuarioControllerTest
     {
         protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
+        protected Mock<IImagemPerfilUsuarioBusiness> _mockImagemPerfilBusiness;
         protected UsuarioController _usuarioController;
         protected List<UsuarioVM> _usuarioVMs;
         private UsuarioVM administrador;
@@ -41,7 +42,8 @@ namespace Test.XUnit.Controllers
         public UsuarioControllerTest()
         {            
             _mockUsuarioBusiness = new Mock<IUsuarioBusiness>();
-            _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object);
+            _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness>();
+            _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object, _mockImagemPerfilBusiness.Object);
             var usuarios = UsuarioFaker.Usuarios();
             administrador = new UsuarioMap().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First());
             usuarioNormal = new UsuarioMap().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());

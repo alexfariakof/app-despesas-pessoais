@@ -14,9 +14,11 @@ namespace despesas_backend_api_net_core.Controllers
     public class UsuarioController : AuthController
     {
         private IUsuarioBusiness _usuarioBusiness;
-        public UsuarioController(IUsuarioBusiness usuarioBusiness)
+        private IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
+        public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
         {
             _usuarioBusiness = usuarioBusiness;
+            _imagemPerfilBussiness = imagemPerfilBussiness;
         }
 
         [HttpGet("{IdUsuario}")]
@@ -116,5 +118,103 @@ namespace despesas_backend_api_net_core.Controllers
             Regex regex = new Regex(pattern);
             return regex.IsMatch(email);
         }
+
+
+        [HttpGet("ImagemPerfil")]
+        [Authorize("Bearer")]
+        public IActionResult GetImage()
+        {
+            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
+                .Find(prop => prop.IdUsuario.Equals(IdUsuario));
+
+            if (imagemPerfilUsuario != null)
+                return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
+            else
+                return BadRequest(new { message = "Usuário não possui nenhuma imagem de perfil cadastrada!" });
+        }
+
+        [HttpPost("ImagemPerfil")]
+        [Authorize("Bearer")]
+        public async Task<IActionResult> PostImagemPerfil(IFormFile file)
+        {
+            try
+            {
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
+                ImagemPerfilVM? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+                if (_imagemPerfilUsuario != null)
+                    return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
+                else
+                    return BadRequest(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPut("ImagemPerfil")]
+        [Authorize("Bearer")]
+        public async Task<IActionResult> PutImagemPerfil(IFormFile file)
+        {
+            try
+            {
+                var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
+                imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
+                if (imagemPerfilUsuario != null)
+                    return Ok(new { message = true, url = imagemPerfilUsuario.Url });
+                else
+                    return BadRequest(new { message = false });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("ImagemPerfil")]
+        [Authorize("Bearer")]
+        public IActionResult DeleteImagemPefil()
+        {
+            try
+            {
+                if (_imagemPerfilBussiness.Delete(IdUsuario))
+                    return Ok(new { message = true });
+                else
+                    return BadRequest(new { message = false });
+            }
+            catch
+            {
+                return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
+            }
+        }
+        private async Task<ImagemPerfilVM> ConvertFileToImagemPerfilUsuarioVMAsync(IFormFile file, int idUsuario)
+        {
+            string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            string typeFile = "";
+            int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
+            if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
+                typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
+
+            if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.CopyToAsync(memoryStream);
+
+                    ImagemPerfilVM imagemPerfilUsuario = new ImagemPerfilVM {
+
+                        Name = fileName,
+                        Type = typeFile,
+                        ContentType = file.ContentType,
+                        IdUsuario = IdUsuario,
+                        Arquivo = memoryStream.GetBuffer()
+                    };
+                    return imagemPerfilUsuario;
+                }
+            }
+            else
+                throw new Exception("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.");
+        }
     }
 }
+

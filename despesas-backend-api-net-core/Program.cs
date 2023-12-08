@@ -1,3 +1,4 @@
+using despesas_backend_api_net_core.Database_In_Memory;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
@@ -30,14 +31,14 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v5",
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
-            Title = "API Despesas Pessoais V5",
+            Title = "API Version 5",
             Version = "5.0.0"
         });
 });
 
 builder.Services.AddDbContext<RegisterContext>(options =>
 options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
-
+//builder.Services.CreateDataBaseInMemory();
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
@@ -60,7 +61,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
-    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v5/swagger.json", "API Despesas Pessoais V5");
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v5/swagger.json", "API Version 5");
 });
 //}
 
@@ -70,8 +71,17 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseStaticFiles();
 
-
 app.MapControllers();
+
+/*
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dataSeeder = services.GetRequiredService<IDataSeeder>();
+    dataSeeder.SeedData();
+}
+*/
+
 app.Run();
 
 static void ConfigureAutorization(IServiceCollection services, IConfiguration configuration)
