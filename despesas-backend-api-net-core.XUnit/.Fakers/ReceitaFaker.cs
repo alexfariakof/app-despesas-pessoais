@@ -55,7 +55,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
 
-                var categoria = CategoriaFaker.GetNewFaker(usuario);
+                var categoria = CategoriaFaker.GetNewFaker(usuario, usuario.Id);
                 var receita = GetNewFaker(usuario, categoria);
                 listReceita.Add(receita);
             }

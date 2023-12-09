@@ -58,7 +58,7 @@
                 if (idUsurio == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
 
-                var categoria = CategoriaFaker.GetNewFaker(usuario);
+                var categoria = CategoriaFaker.GetNewFaker(usuario, usuario.Id);
                 var despesa = GetNewFaker(usuario, categoria);
                 listDespesa.Add(despesa);
             }

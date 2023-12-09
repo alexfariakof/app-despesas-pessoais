@@ -24,15 +24,11 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            var adm= _usuarioBusiness.FindById(IdUsuario);
+            var adm = _usuarioBusiness.FindById(IdUsuario);
             if (adm.PerfilUsuario != PerfilUsuario.Administrador)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
-
-            var usuario = _usuarioBusiness.FindById(IdUsuario);
-            if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
-                return Ok(new List<UsuarioVM>());
 
             return Ok(_usuarioBusiness.FindAll(IdUsuario));
         }
@@ -125,10 +121,6 @@ namespace despesas_backend_api_net_core.Controllers
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }
-
-            UsuarioVM _usuario = _usuarioBusiness.FindById(IdUsuario);
-            if (_usuario.PerfilUsuario != PerfilUsuario.Administrador)
-                return BadRequest(new { message = "Usuário não possui permissão para exectar deleção!" });
                 
             if (_usuarioBusiness.Delete(usuarioVM))
                 return new OkObjectResult(new { message = true });

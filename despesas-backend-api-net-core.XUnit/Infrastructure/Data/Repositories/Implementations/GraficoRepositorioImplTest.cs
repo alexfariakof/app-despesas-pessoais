@@ -12,13 +12,12 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public GraficoRepositorioImplTest()
         {
             _context = Usings.GetRegisterContext();
-            _mockUsuario = UsuarioFaker.GetNewFaker();
-            _context.Usuario.AddRange(_mockUsuario);
-            var despesas = DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id);
-            var receitas = ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id);
-            _mockAnoMes = despesas.First().Data;
-            _context.Despesa.AddRange(despesas);
-            _context.Receita.AddRange(receitas);
+            _mockUsuario = UsuarioFaker.GetNewFaker(65545);
+            _context.Usuario.Add(_mockUsuario);
+            _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
+            _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
+            _context.Receita.AddRange(ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id));
+            _context.Receita.AddRange(ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id));
             _context.SaveChanges();
             _repository = new Mock<GraficosRepositorioImpl>(MockBehavior.Strict, _context);
             _mockRepository = Mock.Get<IGraficosRepositorio>(_repository.Object);
@@ -39,7 +38,6 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.IsType<Grafico>(result);
             Assert.NotEmpty(result.SomatorioDespesasPorAno);
             Assert.NotEmpty(result.SomatorioReceitasPorAno);
-
         }
 
         [Fact]

@@ -1,10 +1,11 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security;
 using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
-using Microsoft.Extensions.Configuration;
+using Xunit.Extensions.Ordering;
 
 namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
 {
+    [Order(22)]
     public class ControleAcessoRepositorioImplTest
     {
         private readonly RegisterContext _context;
@@ -21,7 +22,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             _repository = new Mock<ControleAcessoRepositorioImpl>(MockBehavior.Strict, _context, mockEmailSender.Object);            
         }
 
-        [Fact]
+        [Fact, Order(1)]
         public void Create_Should_Return_True()
         {
             // Arrange
@@ -42,10 +43,10 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             // Assert
             Assert.IsType<bool>(result);
             Assert.True(result);
-            //_mockRepository.Verify(repo => repo.Create(controleAcesso), Times.Once);
+            //mockRepository.Verify(repo => repo.Create(controleAcesso), Times.Once);
         }
 
-        [Fact]
+        [Fact, Order(2)]
         public void Create_Should_Return_False()
         {
             // Arrange and Setup mock repository            
@@ -61,7 +62,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             //_mockRepository.Verify(repo => repo.Create(mockControleAcesso), Times.Never);
         }
 
-        [Fact]
+        [Fact, Order(3)]
         public void Create_Should_Throws_Exception()
         {
             // Arrange and Setup mock repository            
@@ -79,7 +80,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.Equal("ControleAcessoRepositorioImpl_Create_Exception", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(4)]
         public void FindByEmail_Should_Returns_ControleAcesso()
         {
             // Arrange and Setup Repository            
@@ -95,7 +96,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             //_mockRepository.Verify(repo => repo.FindByEmail(It.IsAny<ControleAcesso>()), Times.Once);
         }
 
-        [Fact]
+        [Fact, Order(5)]
         public void GetUsuarioByEmail_Should_Returns_Usuario()
         {
             // Arrange and Setup Repository            
@@ -109,7 +110,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.IsType<Usuario>(result);
         }
         
-        [Fact]
+        [Fact, Order(6)]
         public void RecoveryPassword_Should_Returns_True() // Metodo não pode ser Testado por motivo do Enviar Email
         {
             // Arrange
@@ -130,7 +131,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result);
         }
 
-        [Fact]
+        [Fact, Order(7)]
         public void RecoveryPassword_Should_Returns_False()
         {
             // Arrange
@@ -175,7 +176,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.False(result);
         }
 
-        [Fact]
+        [Fact, Order(8)]
         public void RecoveryPassword_Should_Returns_False_When_Thorws_Exception()
         {
 
@@ -216,7 +217,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             */
         }
         
-        [Fact]
+        [Fact, Order(9)]
         public void ChangePassword_Should_Returns_False_When_Usuario_Null()
         {
             // Arrange
@@ -237,7 +238,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.False(result);
         }
 
-        [Fact]
+        [Fact, Order(10)]
         public void ChangePassword_Should_Returns_True()
         {
             // Arrange
@@ -257,12 +258,12 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result);
         }
 
-        [Fact]
+        [Fact, Order(11)]
         public void ChangePassword_Should_Throws_Exception()
         {
             // Arrange
             var options = new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "Teste Change Passaword ")
+                .UseInMemoryDatabase(databaseName: "ChangePassword_Should_Throws_Exception")
                 .Options;
             var context = new RegisterContext(options);
             var lstControleAcesso = ControleAcessoFaker.ControleAcessos();            
@@ -293,7 +294,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(true);
         }
 
-        [Fact]
+        [Fact, Order(12)]
         public void IsValidPasssword_Should_Returns_True()
         {
             // Arrange
@@ -322,7 +323,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result);
         }
 
-        [Fact]
+        [Fact, Order(13)]
         public void IsValidPasssword_Should_Returns_False()
         {
             // Arrange
