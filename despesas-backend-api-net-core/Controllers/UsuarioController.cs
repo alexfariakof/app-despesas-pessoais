@@ -135,7 +135,7 @@ namespace despesas_backend_api_net_core.Controllers
             else
                 return BadRequest(new { message = "Erro ao excluir Usuário!" });
         }
-
+        
         [HttpGet("ImagemPerfil")]
         [Authorize("Bearer")]
         public IActionResult GetImage()
@@ -177,7 +177,7 @@ namespace despesas_backend_api_net_core.Controllers
                 var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
                 imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
                 if (imagemPerfilUsuario != null)
-                    return Ok(new { message = true, url = imagemPerfilUsuario.Url });
+                    return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
                 else
                     return BadRequest(new { message = false });
             }
@@ -189,7 +189,7 @@ namespace despesas_backend_api_net_core.Controllers
 
         [HttpDelete("ImagemPerfil")]
         [Authorize("Bearer")]
-        public IActionResult DeleteImagemPefil()
+        public IActionResult DeleteImagemPerfil()
         {
             try
             {
