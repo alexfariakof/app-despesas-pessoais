@@ -13,9 +13,12 @@ namespace Infrastructure.Repositories
         private DateTime _mockAnoMes = DateTime.Today;
         public SaldoRepositorioImplTest()
         {
-            _context = Usings.GetRegisterContext();
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "Saldo Repo Database InMemory")
+                .Options;
+            _context = new RegisterContext(options);
             _mockUsuario = UsuarioFaker.GetNewFaker(null);
-            _context.Usuario.Add(_mockUsuario);
+            _context.Usuario.AddRange(_mockUsuario);
             _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
             _context.Receita.AddRange(ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id));
             _context.SaveChanges();

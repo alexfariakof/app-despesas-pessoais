@@ -14,7 +14,10 @@ namespace Infrastructure.Repositories
 
         public ControleAcessoRepositorioImplTest()
         {
-            _context = Usings.GetRegisterContext();
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "Controle de Acesso Repo Database InMemory")
+                .Options;
+            _context = new RegisterContext(options);
             _context.ControleAcesso.AddRange(ControleAcessoFaker.ControleAcessos());
             _context.SaveChanges();
             mockControleAcesso = _context.ControleAcesso.ToList().First();
@@ -267,12 +270,11 @@ namespace Infrastructure.Repositories
         public void ChangePassword_Should_Returns_False_When_Usuario_Null()
         {
             // Arrange
-            var context = Usings.GetRegisterContext();
-            var controleAcesso = context.ControleAcesso.ToList().First();
+            var controleAcesso = _context.ControleAcesso.ToList().First();
             var mockEmailSender = new Mock<IEmailSender>();
             _repository = new Mock<ControleAcessoRepositorioImpl>(
                 MockBehavior.Strict,
-                context,
+                _context,
                 mockEmailSender.Object
             );
 
@@ -294,12 +296,11 @@ namespace Infrastructure.Repositories
         public void ChangePassword_Should_Returns_True()
         {
             // Arrange
-            var context = Usings.GetRegisterContext();
-            var controleAcesso = context.ControleAcesso.ToList().First();
+            var controleAcesso = _context.ControleAcesso.ToList().First();
             var mockEmailSender = new Mock<IEmailSender>();
             _repository = new Mock<ControleAcessoRepositorioImpl>(
                 MockBehavior.Strict,
-                context,
+                _context,
                 mockEmailSender.Object
             );
             var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
@@ -369,12 +370,11 @@ namespace Infrastructure.Repositories
         public void IsValidPasssword_Should_Returns_True()
         {
             // Arrange
-            var context = Usings.GetRegisterContext();
-            var controleAcesso = context.ControleAcesso.ToList().First();
+            var controleAcesso = _context.ControleAcesso.ToList().First();
             var mockEmailSender = new Mock<IEmailSender>();
             _repository = new Mock<ControleAcessoRepositorioImpl>(
                 MockBehavior.Strict,
-                context,
+                _context,
                 mockEmailSender.Object
             );
             var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
@@ -404,8 +404,7 @@ namespace Infrastructure.Repositories
         public void IsValidPasssword_Should_Returns_False()
         {
             // Arrange
-            var context = Usings.GetRegisterContext();
-            var controleAcesso = context.ControleAcesso.ToList().First();
+            var controleAcesso = _context.ControleAcesso.ToList().First();
             controleAcesso.Senha = Crypto.GetInstance.Encrypt("!12345");
             ControleAcesso _controleAceesso = new ControleAcesso
             {
@@ -419,7 +418,7 @@ namespace Infrastructure.Repositories
             var mockEmailSender = new Mock<IEmailSender>();
             _repository = new Mock<ControleAcessoRepositorioImpl>(
                 MockBehavior.Strict,
-                context,
+                _context,
                 mockEmailSender.Object
             );
             var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);

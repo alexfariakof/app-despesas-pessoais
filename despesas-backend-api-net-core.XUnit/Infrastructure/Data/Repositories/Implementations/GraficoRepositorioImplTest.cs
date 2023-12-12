@@ -14,7 +14,10 @@ namespace Infrastructure.Repositories
 
         public GraficoRepositorioImplTest()
         {
-            _context = Usings.GetRegisterContext();
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "Grafico Repo Database InMemory")
+                .Options;
+            _context = new RegisterContext(options);
             _mockUsuario = UsuarioFaker.GetNewFaker(null);
             _context.Usuario.Add(_mockUsuario);
             _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
@@ -47,7 +50,7 @@ namespace Infrastructure.Repositories
         public void GetDadosGraficoByAno_Throws_Exception_And_Returns_Grafico_With_Default_Values()
         {
             // Arrange
-            var usuario = UsuarioFaker.GetNewFaker();
+            var usuario = UsuarioFaker.GetNewFaker(null);
             var data = _mockAnoMes;
 
             var despesaDbSetMock = new Mock<DbSet<Despesa>>();

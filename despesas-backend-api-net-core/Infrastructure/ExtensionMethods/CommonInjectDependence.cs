@@ -39,7 +39,6 @@ namespace despesas_backend_api_net_core.Infrastructure.ExtensionMethods
             services.AddScoped(typeof(IRepositorio<Usuario>), typeof(UsuarioRepositorioImpl));
             services.AddScoped<IControleAcessoRepositorio, ControleAcessoRepositorioImpl>();
             services.AddScoped<IEmailSender, EmailSender>();           
-            //services.AddScoped(typeof(IControleAcessoRepositorio), typeof(ControleAcessoRepositorioImpl));
             services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));
             services.AddScoped(typeof(ISaldoRepositorio), typeof(SaldoRepositorioImpl));
             services.AddScoped(typeof(IGraficosRepositorio), typeof(GraficosRepositorioImpl));

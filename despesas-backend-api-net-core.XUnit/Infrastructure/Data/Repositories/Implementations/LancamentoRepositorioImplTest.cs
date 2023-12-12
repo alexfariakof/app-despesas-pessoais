@@ -13,7 +13,11 @@ namespace Infrastructure.Repositories
         private DateTime _mockAnoMes;
         public LancamentoRepositorioImplTest()
         {
-            _context = Usings.GetRegisterContext();
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "Lancamento Repo Database InMemory")
+                .Options;
+            _context = new RegisterContext(options);
+
             _mockUsuario = UsuarioFaker.GetNewFaker();
             _context.Usuario.Add(_mockUsuario);
             var despesas = DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id);

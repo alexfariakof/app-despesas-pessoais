@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Data;
 
 public static class Usings
 {
@@ -124,16 +125,5 @@ public static class Usings
 
         var tokenHandler = new JwtSecurityTokenHandler();
         return tokenHandler.WriteToken(token);
-    }
-
-    public static RegisterContext GetRegisterContext()
-    {
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "Static Register COntext Databse InMemory")
-            .Options;
-
-        var context = new RegisterContext(options);
-
-        return context;
     }
 }
