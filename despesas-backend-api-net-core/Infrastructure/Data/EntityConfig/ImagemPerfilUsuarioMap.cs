@@ -47,7 +47,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Name = origin.Name,
                 Type = origin.Type,          
                 Url = origin.Url,
-                UsuarioId = origin.IdUsuario.Value,
+                UsuarioId = origin.IdUsuario,
             };
         }
         public ImagemPerfilVM Parse(ImagemPerfilUsuario origin)

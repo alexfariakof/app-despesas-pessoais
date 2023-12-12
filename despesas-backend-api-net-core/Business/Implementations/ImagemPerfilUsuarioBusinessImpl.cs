@@ -60,7 +60,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public ImagemPerfilVM Update(ImagemPerfilVM obj)
         {
-            var validImagemPerfil = FindAll(obj.IdUsuario.Value).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
+            var validImagemPerfil = FindAll(obj.IdUsuario).Find(prop => prop.IdUsuario.Equals(obj.IdUsuario));
             try
             {                
                 if (validImagemPerfil == null)

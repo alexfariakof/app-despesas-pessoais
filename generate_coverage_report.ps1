@@ -11,7 +11,7 @@ function Stop-ProcessesByName {
 # Encerra qualquer processo em segundo plano relacionado ao comando npm run test:watch
 Stop-ProcessesByName
 
-dotnet clean
+
 # Pasta onde o relatório será gerado
 $reportPath = ".\despesas-backend-api-net-core.XUnit\TestResults"
 
@@ -21,7 +21,8 @@ if (Test-Path $reportPath) {
 }
 
 # Executa o teste e coleta o GUID gerado
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
+dotnet clean
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 
 # Encontra o diretório mais recente na pasta TestResults
 $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1

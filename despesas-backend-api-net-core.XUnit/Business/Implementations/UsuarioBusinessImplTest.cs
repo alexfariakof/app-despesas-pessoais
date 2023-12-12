@@ -1,9 +1,11 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(109)]
     public class UsuarioBusinessImplTest
     {
         private readonly Mock<IRepositorio<Usuario>> _repositorioMock;
@@ -14,7 +16,7 @@ namespace Test.XUnit.Business.Implementations
         {
             _repositorioMock = new Mock<IRepositorio<Usuario>>();
             _usuarioBusiness = new UsuarioBusinessImpl(_repositorioMock.Object);
-            _usuarios = UsuarioFaker.Usuarios();
+            _usuarios = UsuarioFaker.GetNewFakersUsuarios();
         }
 
         [Fact]

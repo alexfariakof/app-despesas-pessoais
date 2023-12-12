@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using System.Reflection;
 
-namespace Test.XUnit.Domain.VM
+namespace Test.Domain.ViewModel
 {
     public class DespesaVMTest
     {

@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Controllers
+namespace Controllers
 {
+    [Order(5)]
     public class GraficosControllerTest
     {
         protected Mock<IGraficosBusiness> _mockGraficoBusiness;

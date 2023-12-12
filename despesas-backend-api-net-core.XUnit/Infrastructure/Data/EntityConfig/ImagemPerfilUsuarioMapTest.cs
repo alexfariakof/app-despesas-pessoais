@@ -1,8 +1,10 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.EntityConfig
+namespace Infrastructure.EntityConfig
 {
+    [Order(205)]
     public class ImagemPerfilUsuarioMapTest
     {
         [Fact]
@@ -15,7 +17,6 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
 
             using (var context = new RegisterContext(options))
             {
-
                 var builder = new ModelBuilder(new ConventionSet());
                 var configuration = new ImagemPerfilUsuarioMap();
                 var model = builder.Model;
@@ -25,14 +26,22 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 var entity = builder.Model.FindEntityType(typeof(ImagemPerfilUsuario));
 
                 // Act
+
                 var idProperty = entity.FindProperty("Id");
+
                 var nameProperty = entity.FindProperty("Name");
                 var urlProperty = entity.FindProperty("Url");
                 var typeProperty = entity.FindProperty("Type");
                 var usuarioIdProperty = entity.FindProperty("UsuarioId");
-                var nameIndex = entity.GetIndexes().FirstOrDefault(index => index.Properties.Any(p => p.Name == "Name"));
-                var urlIndex = entity.GetIndexes().FirstOrDefault(index => index.Properties.Any(p => p.Name == "Url"));
-                var usuarioIdIndex = entity.GetIndexes().FirstOrDefault(index => index.Properties.Any(p => p.Name == "UsuarioId"));
+                var nameIndex = entity
+                    .GetIndexes()
+                    .FirstOrDefault(index => index.Properties.Any(p => p.Name == "Name"));
+                var urlIndex = entity
+                    .GetIndexes()
+                    .FirstOrDefault(index => index.Properties.Any(p => p.Name == "Url"));
+                var usuarioIdIndex = entity
+                    .GetIndexes()
+                    .FirstOrDefault(index => index.Properties.Any(p => p.Name == "UsuarioId"));
 
                 // Assert
                 Assert.NotNull(idProperty);
@@ -111,7 +120,10 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var map = new ImagemPerfilUsuarioMap();
             var usuarioVM = UsuarioFaker.GetNewFakerVM(1);
-            var originList = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs(usuarioVM, usuarioVM.Id);
+            var originList = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs(
+                usuarioVM,
+                usuarioVM.Id
+            );
             // Act
             var resultList = map.ParseList(originList);
 

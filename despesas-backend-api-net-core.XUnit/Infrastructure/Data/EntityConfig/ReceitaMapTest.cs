@@ -1,8 +1,10 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.EntityConfig
+namespace Infrastructure.EntityConfig
 {
+    [Order(207)]
     public class ReceitaMapTest
     {
         [Fact]
@@ -23,9 +25,10 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 var model = builder.Model;
                 var entityType = model.FindEntityType(typeof(Receita));
 
-
                 // Act
+
                 var idProperty = entityType.FindProperty("Id");
+
                 var descricaoProperty = entityType.FindProperty("Descricao");
                 var usuarioIdProperty = entityType.FindProperty("UsuarioId");
                 var categoriaIdProperty = entityType.FindProperty("CategoriaId");
@@ -49,9 +52,11 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 //Assert.Equal(DateTime.Now, dataProperty.GetDefaultValue());
                 Assert.Equal(typeof(decimal), valorProperty.ClrType);
                 Assert.Equal("decimal(10, 2)", valorProperty.GetColumnType());
+
                 Assert.Equal(0, (decimal)valorProperty.GetDefaultValue());
             }
         }
+
         [Fact]
         public void Should_Parse_ReceitaVM_To_Receita()
         {
@@ -74,7 +79,10 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var receitaMap = new ReceitaMap();
             var usuario = UsuarioFaker.GetNewFaker(1);
-            var receita = ReceitaFaker.GetNewFaker(usuario, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+            var receita = ReceitaFaker.GetNewFaker(
+                usuario,
+                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+            );
 
             // Act
             var receitaVM = receitaMap.Parse(receita);

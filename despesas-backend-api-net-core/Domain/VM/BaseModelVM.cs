@@ -6,6 +6,6 @@ namespace despesas_backend_api_net_core.Domain.VM
     public class BaseModelVM: BaseModel
     {
         [JsonIgnore]
-        public int? IdUsuario {  get; set; }
+        public int IdUsuario { get; set; }
     }
 }

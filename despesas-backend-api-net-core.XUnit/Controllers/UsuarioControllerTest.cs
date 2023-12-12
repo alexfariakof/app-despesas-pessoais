@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Controllers
+namespace Controllers.Usuario
 {
-    [Order(13)]
+    [Order(10)]
     public class UsuarioControllerTest
     {
         protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
@@ -41,10 +41,17 @@ namespace Test.XUnit.Controllers
         {
             _mockUsuarioBusiness = new Mock<IUsuarioBusiness>();
             _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness>();
-            _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object,_mockImagemPerfilBusiness.Object);
-            var usuarios = UsuarioFaker.Usuarios();
-            administrador = new UsuarioMap().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First());
-            usuarioNormal = new UsuarioMap().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());
+            _usuarioController = new UsuarioController(
+                _mockUsuarioBusiness.Object,
+                _mockImagemPerfilBusiness.Object
+            );
+            var usuarios = UsuarioFaker.GetNewFakersUsuarios();
+            administrador = new UsuarioMap().Parse(
+                usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First()
+            );
+            usuarioNormal = new UsuarioMap().Parse(
+                usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First()
+            );
             _usuarioVMs = new UsuarioMap().ParseList(usuarios);
         }
 
@@ -52,12 +59,20 @@ namespace Test.XUnit.Controllers
         public void Get_With_Usuario_Normal_Returns_BadRequest()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
-            int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).Last().Id;
+            int idUsuario = usaurios
+                .FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario)
+                .Last()
+                .Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(usauriosVMs.FindAll(u => u.Id == idUsuario));
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+            _mockUsuarioBusiness
+                .Setup(business => business.FindAll(idUsuario))
+                .Returns(usauriosVMs.FindAll(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
 
             // Act
             var result = _usuarioController.Get() as ObjectResult;
@@ -77,8 +92,12 @@ namespace Test.XUnit.Controllers
             // Arrange
             int idUsuario = administrador.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_usuarioVMs.FindAll(u => u.Id == idUsuario));
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(administrador);
+            _mockUsuarioBusiness
+                .Setup(business => business.FindAll(idUsuario))
+                .Returns(_usuarioVMs.FindAll(u => u.Id == idUsuario));
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(administrador);
 
             // Act
             var result = _usuarioController.Get() as ObjectResult;
@@ -97,7 +116,10 @@ namespace Test.XUnit.Controllers
             // Arrange
             int idUsuario = usuarioNormal.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioVM)null);
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns((UsuarioVM)null);
 
             // Act
             var result = _usuarioController.GetUsuario() as ObjectResult;
@@ -117,7 +139,9 @@ namespace Test.XUnit.Controllers
             // Arrange
             int idUsuario = usuarioNormal.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usuarioNormal);
 
             // Act
             var result = _usuarioController.GetUsuario() as ObjectResult;
@@ -133,14 +157,18 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Usuario_Is_Not_Administrador()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
             var usuarioVM = new UsuarioMap().Parse(
                 usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).Last()
             );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -160,14 +188,18 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_OkResult_When_Usuario_Is_Administrador()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
             var usuarioVM = new UsuarioMap().Parse(
                 usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
             );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -207,7 +239,9 @@ namespace Test.XUnit.Controllers
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(administrador.Id);
             _mockUsuarioBusiness.Setup(business => business.Delete(usuarioVM)).Returns(true);
-            _mockUsuarioBusiness.Setup(business => business.FindById(administrador.Id)).Returns(administrador);
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(administrador.Id))
+                .Returns(administrador);
 
             // Act
             var result = _usuarioController.Delete(usuarioVM) as ObjectResult;
@@ -216,7 +250,9 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
             _mockUsuarioBusiness.Verify(b => b.Delete(usuarioVM), Times.Once);
         }
@@ -225,13 +261,21 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Telefone_IsNull()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
+
             usuarioVM.Telefone = null;
+
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -250,15 +294,21 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Email_IsNull()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
             var usuarioVM = new UsuarioMap().Parse(
                 usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
             );
+
             usuarioVM.Email = null;
+
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -277,7 +327,7 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Email_IsNullOrWhiteSpace()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
             var usuarioVM = new UsuarioMap().Parse(
                 usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
             );
@@ -285,7 +335,11 @@ namespace Test.XUnit.Controllers
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -304,13 +358,19 @@ namespace Test.XUnit.Controllers
         public void Post_Should_Returns_BadRequest_When_Email_IsInvalid()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
             usuarioVM.Email = "TestINvalidemail";
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Create(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -328,9 +388,13 @@ namespace Test.XUnit.Controllers
         [Fact, Order(12)]
         public void Put_Should_Returns_BadRequest_When_Telefone_IsNull()
         {
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First()
+            );
+
             usuarioVM.Telefone = null;
+
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
@@ -420,7 +484,10 @@ namespace Test.XUnit.Controllers
             var usuarioVM = _usuarioVMs.First();
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+
+            _mockUsuarioBusiness
+                .Setup(business => business.Update(usuarioVM))
+                .Returns((UsuarioVM)null);
 
             // Act
             var result = _usuarioController.Put(usuarioVM) as ObjectResult;
@@ -438,14 +505,18 @@ namespace Test.XUnit.Controllers
         public void Delete_Should_Returns_BadRequest_When_Usuario_IsNotAdministrador()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
             var usuarioVM = new UsuarioMap().Parse(
                 usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).Last()
             );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Delete(usuarioNormal)).Returns(false);
 
             // Act
@@ -465,12 +536,18 @@ namespace Test.XUnit.Controllers
         public void Delete_Should_Returns_BadRequest_When_Try_To_Delete_Usuario()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Delete(usuarioNormal)).Returns(false);
 
             // Act
@@ -491,12 +568,18 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             SetupBearerToken(idUsuario);
             _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
 
@@ -514,13 +597,19 @@ namespace Test.XUnit.Controllers
         public void PutAdministrador_Should_Returns_BadRequest_When_Email_IsInvalid()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
             usuarioVM.Email = "TestINvalidemail";
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -539,13 +628,21 @@ namespace Test.XUnit.Controllers
         public void PutAdministrador_Should_Returns_BadRequest_When_Telefone_IsNull()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
+
             usuarioVM.Telefone = null;
+
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -564,13 +661,21 @@ namespace Test.XUnit.Controllers
         public void PutAdministrador_Should_Returns_BadRequest_When_Email_IsNull()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
-            usuarioVM.Email = null ;
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
+
+            usuarioVM.Email = null;
+
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
             _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
 
             // Act
@@ -589,15 +694,20 @@ namespace Test.XUnit.Controllers
         public void PutAdministrador_Should_Returns_BadRequest_When_Email_IsNullOrWhiteSpace()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
             usuarioVM.Email = " ";
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
-            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
 
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns(usuarioVM);
 
             // Act
             var result = _usuarioController.PutAdministrador(usuarioVM) as ObjectResult;
@@ -615,13 +725,21 @@ namespace Test.XUnit.Controllers
         public void PutAdministrador_Should_Returns_BadRequest_When_Usuario_IsNull()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last()
+            );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
-            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.Update(usuarioVM))
+                .Returns((UsuarioVM)null);
 
             // Act
             var result = _usuarioController.PutAdministrador(usuarioVM) as ObjectResult;
@@ -632,6 +750,7 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não encontrado!", message);
+
             _mockUsuarioBusiness.Verify(b => b.Update(null), Times.Never);
         }
 
@@ -639,13 +758,21 @@ namespace Test.XUnit.Controllers
         public void PutAdministrador_Should_Returns_BadRequest_When_Usuario_Is_Not_Administrador()
         {
             // Arrange
-            var usaurios = UsuarioFaker.Usuarios();
-            var usuarioVM = new UsuarioMap().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());
+            var usaurios = UsuarioFaker.GetNewFakersUsuarios();
+            var usuarioVM = new UsuarioMap().Parse(
+                usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First()
+            );
             var usauriosVMs = new UsuarioMap().ParseList(usaurios);
             int idUsuario = usuarioVM.Id;
             SetupBearerToken(idUsuario);
-            _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario));
-            _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+
+            _mockUsuarioBusiness
+                .Setup(business => business.FindById(idUsuario))
+                .Returns(usauriosVMs.Find(u => u.Id == idUsuario));
+
+            _mockUsuarioBusiness
+                .Setup(business => business.Update(usuarioVM))
+                .Returns((UsuarioVM)null);
 
             // Act
             var result = _usuarioController.PutAdministrador(usuarioVM) as ObjectResult;
@@ -658,6 +785,5 @@ namespace Test.XUnit.Controllers
             Assert.Equal("Usuário não permitido a realizar operação!", message);
             _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Never);
         }
-
     }
 }

@@ -1,10 +1,10 @@
-﻿
-namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public class ReceitaFaker
     {
         static int counter = 1;
         static int counterVM = 1;
+
         public static Receita GetNewFaker(Usuario usuario, Categoria categoria)
         {
             var receitaFaker = new Faker<Receita>()
@@ -33,7 +33,10 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
             return receitaFaker.Generate();
         }
 
-        public static List<ReceitaVM> ReceitasVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
+        public static List<ReceitaVM> ReceitasVMs(
+            UsuarioVM? usuarioVM = null,
+            int? idUsaurio = null
+        )
         {
             var listReceitaVM = new List<ReceitaVM>();
             for (int i = 0; i < 10; i++)
@@ -42,20 +45,23 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                     usuarioVM = UsuarioFaker.GetNewFakerVM(new Random().Next(1, 10));
 
                 var categoriaVM = CategoriaFaker.GetNewFakerVM(usuarioVM);
+
                 var receitaVM = GetNewFakerVM(usuarioVM.Id, categoriaVM.Id);
                 listReceitaVM.Add(receitaVM);
             }
             return listReceitaVM;
         }
+
         public static List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null)
         {
-            var listReceita = new List<Receita>();            
+            var listReceita = new List<Receita>();
             for (int i = 0; i < 10; i++)
             {
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
 
                 var categoria = CategoriaFaker.GetNewFaker(usuario, usuario.Id);
+
                 var receita = GetNewFaker(usuario, categoria);
                 listReceita.Add(receita);
             }

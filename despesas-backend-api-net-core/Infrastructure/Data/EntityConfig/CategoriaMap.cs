@@ -30,7 +30,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Id = origin.Id,
                 Descricao = origin.Descricao,
                 TipoCategoria = origin.IdTipoCategoria == 1 ? TipoCategoria.Despesa : TipoCategoria.Receita,
-                UsuarioId = origin.IdUsuario.Value
+                UsuarioId = origin.IdUsuario
             };
         }
 

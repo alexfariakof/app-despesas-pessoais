@@ -1,7 +1,9 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
+namespace Infrastructure.Repositories
 {
+    [Order(212)]
     public class GraficoRepositorioImplTest
     {
         private readonly RegisterContext _context;
@@ -9,10 +11,11 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         private Mock<GraficosRepositorioImpl> _repository;
         private Usuario _mockUsuario;
         private DateTime _mockAnoMes;
+
         public GraficoRepositorioImplTest()
         {
             _context = Usings.GetRegisterContext();
-            _mockUsuario = UsuarioFaker.GetNewFaker(65545);
+            _mockUsuario = UsuarioFaker.GetNewFaker(null);
             _context.Usuario.Add(_mockUsuario);
             _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
             _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
@@ -33,7 +36,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             // Act
             var result = _mockRepository.Object.GetDadosGraficoByAno(idUsuario, data);
 
-            // Assert            
+            // Assert
             Assert.NotNull(result);
             Assert.IsType<Grafico>(result);
             Assert.NotEmpty(result.SomatorioDespesasPorAno);
@@ -44,26 +47,26 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void GetDadosGraficoByAno_Throws_Exception_And_Returns_Grafico_With_Default_Values()
         {
             // Arrange
-            var idUsuario = 0;
+            var usuario = UsuarioFaker.GetNewFaker();
             var data = _mockAnoMes;
 
             var despesaDbSetMock = new Mock<DbSet<Despesa>>();
-            despesaDbSetMock.As<IQueryable<Despesa>>()
-               .Setup(d => d.Provider)
-               .Throws<Exception>();
+            despesaDbSetMock.As<IQueryable<Despesa>>().Setup(d => d.Provider).Throws<Exception>();
 
             var options = new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "MemoryDatabase GetDadosGraficoByAno Throws Erro")
+                .UseInMemoryDatabase(
+                    databaseName: "MemoryDatabase GetDadosGraficoByAno Throws Erro"
+                )
                 .Options;
 
             var context = new RegisterContext(options);
             context.Despesa = despesaDbSetMock.Object;
-
+            context.SaveChanges();
 
             var repository = new GraficosRepositorioImpl(context);
 
             // Act
-            var result = repository.GetDadosGraficoByAno(idUsuario, data);
+            var result = repository.GetDadosGraficoByAno(usuario.Id, data);
 
             // Assert
             Assert.NotNull(result);

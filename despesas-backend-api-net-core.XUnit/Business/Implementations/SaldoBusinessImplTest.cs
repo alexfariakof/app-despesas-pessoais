@@ -1,9 +1,10 @@
-﻿
-using despesas_backend_api_net_core.Business.Implementations;
+﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(108)]
     public class SaldoBusinessImplTest
     {
         private readonly Mock<ISaldoRepositorio> _repositorioMock;

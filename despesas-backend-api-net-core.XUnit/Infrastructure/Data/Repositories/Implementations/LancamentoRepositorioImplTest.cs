@@ -1,9 +1,9 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
+namespace Infrastructure.Repositories
 {
-    [Order(20)]
+    [Order(213)]
     public class LancamentoRepositorioImplTest
     {
         private readonly RegisterContext _context;
@@ -14,7 +14,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public LancamentoRepositorioImplTest()
         {
             _context = Usings.GetRegisterContext();
-            _mockUsuario = UsuarioFaker.GetNewFaker(5000);
+            _mockUsuario = UsuarioFaker.GetNewFaker();
             _context.Usuario.Add(_mockUsuario);
             var despesas = DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id);
             var receitas = ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id);

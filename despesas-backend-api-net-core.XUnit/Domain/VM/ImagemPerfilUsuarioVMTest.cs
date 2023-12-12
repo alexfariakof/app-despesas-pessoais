@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Test.XUnit.Domain.VM
+namespace Domain.ViewModel
 {
     public class ImagemPerfilUsuarioVMTest
     {

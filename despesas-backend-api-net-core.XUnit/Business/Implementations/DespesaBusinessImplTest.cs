@@ -1,9 +1,11 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(103)]
     public class DespesaBusinessImplTest
     {
         private readonly Mock<IRepositorio<Despesa>> _repositorioMock;
