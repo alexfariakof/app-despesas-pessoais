@@ -1,7 +1,9 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
+namespace Infrastructure.Repositories
 {
+    [Order(213)]
     public class LancamentoRepositorioImplTest
     {
         private readonly RegisterContext _context;
@@ -11,8 +13,13 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         private DateTime _mockAnoMes;
         public LancamentoRepositorioImplTest()
         {
-            _context = Usings.GetRegisterContext();
-            _mockUsuario = _context.Usuario.First();
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "Lancamento Repo Database InMemory")
+                .Options;
+            _context = new RegisterContext(options);
+
+            _mockUsuario = UsuarioFaker.GetNewFaker();
+            _context.Usuario.Add(_mockUsuario);
             var despesas = DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id);
             var receitas = ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id);
             _mockAnoMes = despesas.First().Data;
@@ -23,13 +30,12 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             _mockRepository = Mock.Get<ILancamentoRepositorio>(_repository.Object);
         }
 
-        [Fact]
+        [Fact, Order(1)]
         public void FindByMesAno_Should_Returns_List_lancamentos()
         {
             // Arrange
             var data = _mockAnoMes;
             var idUsuario = _mockUsuario.Id;
-
 
             // Act
             var result = _mockRepository.Object.FindByMesAno(data, idUsuario);
@@ -40,7 +46,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result.Count >= 1);
         }
 
-        [Fact]
+        [Fact, Order(2)]
         public void FindByMesAno_Should_Returns_Null_List_lancamentos()
         {
             // Arrange
@@ -67,7 +73,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result.Count == 0);
         }
 
-        [Fact]
+        [Fact, Order(3)]
         public void FindByMesAno_Throws_Exception_When_Despesa_Execute_Where()
         {
             // Arrange
@@ -80,7 +86,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
                .Throws<Exception>();
 
             var options = new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "MemoryDatabase Throws Erro")
+                .UseInMemoryDatabase(databaseName: "FindByMesAno_Throws_Exception_When_Despesa_Execute_Where")
                 .Options;
 
             var context = new RegisterContext(options);
@@ -98,12 +104,12 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.Equal("LancamentoRepositorioImpl_FindByMesAno_Erro", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(4)]
         public void FindByMesAno_Throws_Exception_When_Receita_Execute_Where()
         {
             // Arrange
             var data = _mockAnoMes;
-            var idUsuario = 0;
+            var idUsuario = 20;
 
             var receitaDbSetMock = new Mock<DbSet<Receita>>();
             receitaDbSetMock.As<IQueryable<Receita>>()
@@ -111,7 +117,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
                .Throws<Exception>();
 
             var options = new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "MemoryDatabase Throws Erro")
+                .UseInMemoryDatabase(databaseName: "FindByMesAno Throws Exception When Receita Execute Where   ")
                 .Options;
 
             var context = new RegisterContext(options);

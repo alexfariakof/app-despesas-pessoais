@@ -1,8 +1,10 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Generic
+namespace Business.Generic
 {
+    [Order(100)]
     public class GenericBusinessTests
     {
         private Mock<IRepositorio<Categoria>> _mockRepositorio;
@@ -45,7 +47,7 @@ namespace Test.XUnit.Business.Generic
         public void FindAll_Should_Return_All_Objects()
         {
             // Arrange
-            var objects = UsuarioFaker.Usuarios();
+            var objects = UsuarioFaker.GetNewFakersUsuarios();
             var repositoryMock = new Mock<IRepositorio<Usuario>>();
             repositoryMock.Setup(repo => repo.GetAll()).Returns(objects);
             var business = new GenericBusiness<Usuario>(repositoryMock.Object);
@@ -103,7 +105,7 @@ namespace Test.XUnit.Business.Generic
         public void Delete_Should_Return_True_If_Deleted_Successfully()
         {
             // Arrange
-            var objects = UsuarioFaker.Usuarios();
+            var objects = UsuarioFaker.GetNewFakersUsuarios();
             var obj = objects.First();
             var repositoryMock = Usings.MockRepositorio(objects);
             repositoryMock.Setup(repo => repo.Delete(obj)).Returns(true);

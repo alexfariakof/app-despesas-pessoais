@@ -1,9 +1,8 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using Microsoft.EntityFrameworkCore;
+﻿using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Common
+namespace Infrastructure.Common
 {
+    [Order(201)]
     public class RegisterContextTest
     {
         [Fact]

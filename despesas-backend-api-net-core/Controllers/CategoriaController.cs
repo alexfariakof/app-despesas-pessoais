@@ -1,6 +1,5 @@
 ﻿using despesas_backend_api_net_core.Business.Generic;
 using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,25 +7,19 @@ namespace despesas_backend_api_net_core.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize("Bearer")]
-    public class CategoriaController : Controller
+    public class CategoriaController : AuthController
     {
         private IBusiness<CategoriaVM> _categoriaBusiness;
-        private string bearerToken;
         public CategoriaController(IBusiness<CategoriaVM> categoriaBusiness)
         {
             _categoriaBusiness = categoriaBusiness;
-            bearerToken = String.Empty;
         }
 
         [HttpGet]
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(_idUsuario);
+            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(IdUsuario);
 
             if (_categoria.Count == 0)
                 return NotFound();
@@ -38,10 +31,8 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult GetById([FromRoute] int idCategoria)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
 
-            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario);
+            CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
 
             if (_categoria == null)
                 return NotFound();
@@ -53,18 +44,15 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult GetByTipoCategoria([FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario =  bearerToken.getIdUsuarioFromToken();
-
             if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
             {
-                var _categoria = _categoriaBusiness.FindAll(_idUsuario)
-                                 .FindAll(prop => prop.IdUsuario.Equals(_idUsuario));
+                var _categoria = _categoriaBusiness.FindAll(IdUsuario)
+                                 .FindAll(prop => prop.IdUsuario.Equals(IdUsuario));
                 return Ok(_categoria);
             }
             else
             {
-                var _categoria = _categoriaBusiness.FindAll(_idUsuario)
+                var _categoria = _categoriaBusiness.FindAll(IdUsuario)
                                 .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
                 return Ok(_categoria);
             }           
@@ -75,19 +63,12 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Post([FromBody] CategoriaVM categoria)
         {
 
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            if (_idUsuario != categoria.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
-
             if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
                 return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!"});
 
             try
             {
+                categoria.IdUsuario = IdUsuario;
                 return Ok(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
             }
             catch
@@ -100,17 +81,11 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Put([FromBody] CategoriaVM categoria)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            if (_idUsuario != categoria.IdUsuario)
-            {
-                return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-            }
 
             if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
                 return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
+            categoria.IdUsuario = IdUsuario;
             CategoriaVM updateCategoria = _categoriaBusiness.Update(categoria);
 
             if (updateCategoria == null)
@@ -123,11 +98,8 @@ namespace despesas_backend_api_net_core.Controllers
         [Authorize("Bearer")]
         public IActionResult Delete(int idCategoria)
         {
-            bearerToken = HttpContext.Request.Headers["Authorization"].ToString();
-            var _idUsuario = bearerToken.getIdUsuarioFromToken();
-
-            CategoriaVM categoria = _categoriaBusiness.FindById(idCategoria, _idUsuario);
-            if (categoria == null || _idUsuario != categoria.IdUsuario)
+            CategoriaVM categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+            if (categoria == null || IdUsuario != categoria.IdUsuario)
             {
                 return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
             }

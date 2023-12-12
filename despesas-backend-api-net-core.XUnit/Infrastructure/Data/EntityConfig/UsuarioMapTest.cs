@@ -1,9 +1,11 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.EntityConfig
+namespace Infrastructure.EntityConfig
 {
+    [Order(208)]
     public class UsuarioMapTest
     {
         [Fact]
@@ -11,8 +13,8 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         {
             // Arrange
             var options = new DbContextOptionsBuilder<RegisterContext>()
-                            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
-                            .Options;
+                .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
+                .Options;
 
             using (var context = new RegisterContext(options))
             {
@@ -25,13 +27,17 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 var model = builder.Model;
                 var entityType = model.FindEntityType(typeof(Usuario));
                 // Act
+
                 var idProperty = entityType.FindProperty("Id");
+
                 var emailProperty = entityType.FindProperty("Email");
                 var nomeProperty = entityType.FindProperty("Nome");
                 var sobrenomeProperty = entityType.FindProperty("SobreNome");
                 var telefoneProperty = entityType.FindProperty("Telefone");
                 var perfilUsuarioProperty = entityType.FindProperty("PerfilUsuario");
-                var emailIndex = entityType.GetIndexes().FirstOrDefault(index => index.Properties.Any(p => p.Name == "Email"));
+                var emailIndex = entityType
+                    .GetIndexes()
+                    .FirstOrDefault(index => index.Properties.Any(p => p.Name == "Email"));
 
                 // Assert
                 Assert.NotNull(idProperty);
@@ -60,9 +66,12 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var map = new UsuarioMap();
             var origin = UsuarioFaker.GetNewFakerVM(1);
-            var originPerfilUsuarioProperty = typeof(UsuarioVM).GetProperty("PerfilUsuario", BindingFlags.NonPublic | BindingFlags.Instance);
-            var originPerfilUsuarioValue = originPerfilUsuarioProperty.GetValue(origin, null);
+            var originPerfilUsuarioProperty = typeof(UsuarioVM).GetProperty(
+                "PerfilUsuario",
+                BindingFlags.NonPublic | BindingFlags.Instance
+            );
 
+            var originPerfilUsuarioValue = originPerfilUsuarioProperty.GetValue(origin, null);
 
             // Act
             var result = map.Parse(origin);
@@ -72,7 +81,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             Assert.Equal(origin.Email, result.Email);
             Assert.Equal(origin.Nome, result.Nome);
             Assert.Equal(origin.SobreNome, result.SobreNome);
-            Assert.Equal(origin.Telefone, result.Telefone);            
+            Assert.Equal(origin.Telefone, result.Telefone);
             Assert.Equal(originPerfilUsuarioValue, result.PerfilUsuario);
         }
 
@@ -100,7 +109,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var map = new UsuarioMap();
 
-            var originList = UsuarioFaker.Usuarios();
+            var originList = UsuarioFaker.GetNewFakersUsuarios();
 
             // Act
             var resultList = map.ParseList(originList);
@@ -122,7 +131,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
         {
             // Arrange
             var map = new UsuarioMap();
-            var originList = UsuarioFaker.UsuariosVMs();
+            var originList = UsuarioFaker.GetNewFakersUsuariosVMs();
 
             // Act
             var resultList = map.ParseList(originList);

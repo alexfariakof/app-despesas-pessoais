@@ -1,20 +1,23 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(101)]
     public class CategoriaBusinessImplTest
     {
         private readonly Mock<IRepositorio<Categoria>> _repositorioMock;
         private readonly CategoriaBusinessImpl _categoriaBusiness;
         private readonly List<Categoria> _categorias;
+
         public CategoriaBusinessImplTest()
         {
             var usuario = UsuarioFaker.GetNewFaker();
             _categorias = CategoriaFaker.Categorias(usuario);
             _repositorioMock = Usings.MockRepositorio(_categorias);
-            _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);            
+            _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);
         }
 
         [Fact]
@@ -39,7 +42,7 @@ namespace Test.XUnit.Business.Implementations
         [Fact]
         public void FindAll_Should_Returns_List_Of_CategoriaVM()
         {
-            // Arrange         
+            // Arrange
             var categoria = _categorias.First();
             var mockCategorias = _categorias.FindAll(obj => obj.UsuarioId == categoria.UsuarioId);
             _repositorioMock.Setup(repo => repo.GetAll()).Returns(mockCategorias);
@@ -61,7 +64,6 @@ namespace Test.XUnit.Business.Implementations
             var categoria = _categorias.First();
             var id = categoria.Id;
             var idUsuario = categoria.UsuarioId;
-            
 
             _repositorioMock.Setup(repo => repo.Get(id)).Returns(categoria);
 
@@ -97,13 +99,15 @@ namespace Test.XUnit.Business.Implementations
         public void Update_Should_Returns_Parsed_CategoriaVM()
         {
             // Arrange
-            var categoriaVM = new CategoriaVM();
-            var categoria = new Categoria();
-            
+
+            var categoriaVM = CategoriaFaker.GetNewFakerVM(null);
+
+            var categoria = new CategoriaMap().Parse(categoriaVM);
+
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Categoria>())).Returns(categoria);
 
             // Act
-            var result = _categoriaBusiness.Update(categoriaVM);
+            var result = _categoriaBusiness.Update(categoriaVM) as CategoriaVM;
 
             // Assert
             Assert.NotNull(result);
@@ -117,10 +121,10 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var categoria = _categorias.First();
-            var objToDelete= new CategoriaMap().Parse(categoria);
+            var objToDelete = new CategoriaMap().Parse(categoria);
 
             _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>())).Returns(true);
-            
+
             // Act
             var result = _categoriaBusiness.Delete(objToDelete);
 

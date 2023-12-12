@@ -1,9 +1,10 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.EntityConfig
+namespace Infrastructure.EntityConfig
 {
+    [Order(204)]
     public class DespesaMapTest
     {
         [Fact]
@@ -24,9 +25,10 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 var model = builder.Model;
                 var entityType = model.FindEntityType(typeof(Despesa));
 
-
                 // Act
+
                 var idProperty = entityType.FindProperty("Id");
+
                 var descricaoProperty = entityType.FindProperty("Descricao");
                 var usuarioIdProperty = entityType.FindProperty("UsuarioId");
                 var categoriaIdProperty = entityType.FindProperty("CategoriaId");
@@ -54,6 +56,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 Assert.Null(dataVencimentoProperty.GetDefaultValue());
                 Assert.Equal(typeof(decimal), valorProperty.ClrType);
                 Assert.Equal("decimal(10, 2)", valorProperty.GetColumnType());
+
                 Assert.Equal(0, (decimal)valorProperty.GetDefaultValue());
             }
         }
@@ -80,7 +83,10 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var despesaMap = new DespesaMap();
             var usuario = UsuarioFaker.GetNewFaker(1);
-            var despesa = DespesaFaker.GetNewFaker(usuario, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+            var despesa = DespesaFaker.GetNewFaker(
+                usuario,
+                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+            );
             // Act
             var despesaVM = despesaMap.Parse(despesa);
 

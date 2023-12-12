@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Controllers
+namespace Controllers
 {
-    [Order(14)]
+    [Order(7)]
     public class LancamentoControllerTest
     {
         protected Mock<ILancamentoBusiness> _mockLancamentoBusiness;
@@ -23,12 +23,9 @@ namespace Test.XUnit.Controllers
             var identity = new ClaimsIdentity(claims, "IdUsuario");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-
-            var httpContext = new DefaultHttpContext
-            {
-                User = claimsPrincipal
-            };
-            httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(idUsuario);
+            var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+            httpContext.Request.Headers["Authorization"] =
+                "Bearer " + Usings.GenerateJwtToken(idUsuario);
 
             _lancamentoController.ControllerContext = new ControllerContext
             {
@@ -37,10 +34,10 @@ namespace Test.XUnit.Controllers
         }
 
         public LancamentoControllerTest()
-        {            
+        {
             _mockLancamentoBusiness = new Mock<ILancamentoBusiness>();
             _lancamentoController = new LancamentoController(_mockLancamentoBusiness.Object);
-            _lancamentoVMs = LancamentoFaker.LancamentoVMs(); 
+            _lancamentoVMs = LancamentoFaker.LancamentoVMs();
         }
 
         [Fact, Order(1)]
@@ -48,47 +45,41 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
+
             int idUsuario = _lancamentoVMs.First().IdUsuario;
+
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
-            
-            _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(lancamentoVMs.FindAll(l => l.IdUsuario == idUsuario));
+
+            _mockLancamentoBusiness
+                .Setup(business => business.FindByMesAno(anoMes, idUsuario))
+                .Returns(lancamentoVMs.FindAll(l => l.IdUsuario == idUsuario));
 
             // Act
-            var result = _lancamentoController.Get(anoMes, idUsuario) as ObjectResult;
+            var result = _lancamentoController.Get(anoMes) as ObjectResult;
 
             // Assert
             // Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
+            var lancamentos =
+                (List<LancamentoVM>)
+                    value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
             Assert.True(message);
-            Assert.NotEmpty(lancamentos);            
+
+            Assert.NotEmpty(lancamentos);
+
             var returnedLancamentoVMs = Assert.IsType<List<LancamentoVM>>(lancamentos);
-            Assert.Equal(lancamentoVMs.FindAll(l => l.IdUsuario == idUsuario), returnedLancamentoVMs);
+            Assert.Equal(
+                lancamentoVMs.FindAll(l => l.IdUsuario == idUsuario),
+                returnedLancamentoVMs
+            );
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
-        }
-
-        [Fact, Order(4)]
-        public void Get_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            var lancamentoVMs = _lancamentoVMs;
-            int idUsuario = _lancamentoVMs.First().IdUsuario;
-            DateTime anoMes = DateTime.Now;
-            SetupBearerToken(0);
-
-            // Act
-            var result = _lancamentoController.Get(anoMes, idUsuario) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
         [Fact, Order(5)]
@@ -96,22 +87,34 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
+
             int idUsuario = _lancamentoVMs.First().IdUsuario;
+
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
 
-            _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns((List<LancamentoVM>)null);
+            _mockLancamentoBusiness
+                .Setup(business => business.FindByMesAno(anoMes, idUsuario))
+                .Returns((List<LancamentoVM>)null);
+
             // Act
-            var result = _lancamentoController.Get(anoMes, idUsuario) as ObjectResult;
+            var result = _lancamentoController.Get(anoMes) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
+            var lancamentos =
+                (List<LancamentoVM>)
+                    value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
             Assert.True(message);
+
             Assert.Empty(lancamentos);
+
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 
@@ -120,22 +123,33 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
+
             int idUsuario = _lancamentoVMs.First().IdUsuario;
+
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
 
-            _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(new List<LancamentoVM>());
+            _mockLancamentoBusiness
+                .Setup(business => business.FindByMesAno(anoMes, idUsuario))
+                .Returns(new List<LancamentoVM>());
             // Act
-            var result = _lancamentoController.Get(anoMes, idUsuario) as ObjectResult;
+            var result = _lancamentoController.Get(anoMes) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
+            var lancamentos =
+                (List<LancamentoVM>)
+                    value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
             Assert.True(message);
+
             Assert.Empty(lancamentos);
+
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
 
@@ -144,25 +158,35 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var lancamentoVMs = _lancamentoVMs;
+
             int idUsuario = _lancamentoVMs.First().IdUsuario;
+
             DateTime anoMes = DateTime.Now;
             SetupBearerToken(idUsuario);
 
-            _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Throws(new Exception());
+            _mockLancamentoBusiness
+                .Setup(business => business.FindByMesAno(anoMes, idUsuario))
+                .Throws(new Exception());
 
             // Act
-            var result = _lancamentoController.Get(anoMes, idUsuario) as ObjectResult;
+            var result = _lancamentoController.Get(anoMes) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var lancamentos = (List<LancamentoVM>)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
-            Assert.True(message);            
+
+            var lancamentos =
+                (List<LancamentoVM>)
+                    value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+
+            Assert.True(message);
+
             Assert.Empty(lancamentos);
+
             _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
         }
-
     }
 }

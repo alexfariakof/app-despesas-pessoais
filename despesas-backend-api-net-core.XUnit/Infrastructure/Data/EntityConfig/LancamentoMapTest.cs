@@ -1,9 +1,11 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.EntityConfig
+namespace Infrastructure.EntityConfig
 {
+    [Order(206)]
     public class LancamentoMapTest
     {
         [Fact]
@@ -25,7 +27,9 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 var entityType = model.FindEntityType(typeof(Lancamento));
 
                 // Act
+
                 var idProperty = entityType.FindProperty("Id");
+
                 var usuarioIdProperty = entityType.FindProperty("UsuarioId");
                 var despesaIdProperty = entityType.FindProperty("DespesaId");
                 var receitaIdProperty = entityType.FindProperty("ReceitaId");
@@ -69,12 +73,12 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 Id = 1,
                 IdUsuario = 1,
                 IdDespesa = 1,
-                IdReceita  = 0,
+                IdReceita = 0,
                 Valor = 2000,
                 Data = DateTime.Now.ToDateBr(),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Despesa",
-                Categoria = Mock.Of<Categoria>().Descricao,                
+                Categoria = Mock.Of<Categoria>().Descricao,
             };
 
             // Act
@@ -128,9 +132,42 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             var lancamentoMap = new LancamentoMap();
             var lancamentoVMs = new List<LancamentoVM>
             {
-                new LancamentoVM { Id = 1,IdUsuario = 1, IdDespesa = 1, IdReceita  = 0, Valor = 2000, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Despesa", Categoria = Mock.Of<Categoria>().Descricao, },
-                new LancamentoVM { Id = 2,IdUsuario = 3, IdDespesa = 0, IdReceita  = 1, Valor = 500, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Receita", Categoria = Mock.Of<Categoria>().Descricao, },
-                new LancamentoVM { Id = 3,IdUsuario = 2, IdDespesa = 1, IdReceita  = 0, Valor = 70000, Data = DateTime.Now.ToString("dd/MM/yyyy"), Descricao = "LancamentoVM Teste", TipoCategoria = "Despesa", Categoria = Mock.Of<Categoria>().Descricao, }
+                new LancamentoVM
+                {
+                    Id = 1,
+                    IdUsuario = 1,
+                    IdDespesa = 1,
+                    IdReceita = 0,
+                    Valor = 2000,
+                    Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Descricao = "LancamentoVM Teste",
+                    TipoCategoria = "Despesa",
+                    Categoria = Mock.Of<Categoria>().Descricao,
+                },
+                new LancamentoVM
+                {
+                    Id = 2,
+                    IdUsuario = 3,
+                    IdDespesa = 0,
+                    IdReceita = 1,
+                    Valor = 500,
+                    Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Descricao = "LancamentoVM Teste",
+                    TipoCategoria = "Receita",
+                    Categoria = Mock.Of<Categoria>().Descricao,
+                },
+                new LancamentoVM
+                {
+                    Id = 3,
+                    IdUsuario = 2,
+                    IdDespesa = 1,
+                    IdReceita = 0,
+                    Valor = 70000,
+                    Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                    Descricao = "LancamentoVM Teste",
+                    TipoCategoria = "Despesa",
+                    Categoria = Mock.Of<Categoria>().Descricao,
+                }
             };
 
             // Act
@@ -142,7 +179,7 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             {
                 Assert.Equal(lancamentoVMs[i].Id, lancamentos[i].Id);
                 //Assert.Equal(lancamentoVMs[i].Descricao, lancamentos[i].Descricao);
-                Assert.Equal(lancamentoVMs[i].IdUsuario, lancamentos[i].UsuarioId);                
+                Assert.Equal(lancamentoVMs[i].IdUsuario, lancamentos[i].UsuarioId);
             }
         }
 
@@ -153,9 +190,42 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             var lancamentoMap = new LancamentoMap();
             var lancamentos = new List<Lancamento>
             {
-                new Lancamento { Id = 1, UsuarioId = 1, DespesaId = 1, ReceitaId = 0, Valor = 2000, Data = DateTime.Now, Descricao = "Lancamento Teste 1", DataCriacao = DateTime.Now,Categoria = Mock.Of<Categoria>() },
-                new Lancamento { Id = 3, UsuarioId = 3, DespesaId = 0, ReceitaId = 1, Valor = 20, Data = DateTime.Now, Descricao = "Lancamento Teste 2", DataCriacao = DateTime.Now,Categoria = Mock.Of<Categoria>() },
-                new Lancamento { Id = 3, UsuarioId = 2, DespesaId = 1, ReceitaId = 0, Valor = 0, Data = DateTime.Now, Descricao = "Lancamento Teste 3", DataCriacao = DateTime.Now,Categoria = Mock.Of<Categoria>() }
+                new Lancamento
+                {
+                    Id = 1,
+                    UsuarioId = 1,
+                    DespesaId = 1,
+                    ReceitaId = 0,
+                    Valor = 2000,
+                    Data = DateTime.Now,
+                    Descricao = "Lancamento Teste 1",
+                    DataCriacao = DateTime.Now,
+                    Categoria = Mock.Of<Categoria>()
+                },
+                new Lancamento
+                {
+                    Id = 3,
+                    UsuarioId = 3,
+                    DespesaId = 0,
+                    ReceitaId = 1,
+                    Valor = 20,
+                    Data = DateTime.Now,
+                    Descricao = "Lancamento Teste 2",
+                    DataCriacao = DateTime.Now,
+                    Categoria = Mock.Of<Categoria>()
+                },
+                new Lancamento
+                {
+                    Id = 3,
+                    UsuarioId = 2,
+                    DespesaId = 1,
+                    ReceitaId = 0,
+                    Valor = 0,
+                    Data = DateTime.Now,
+                    Descricao = "Lancamento Teste 3",
+                    DataCriacao = DateTime.Now,
+                    Categoria = Mock.Of<Categoria>()
+                }
             };
 
             // Act
@@ -177,12 +247,15 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var map = new LancamentoMap();
             var usuario = UsuarioFaker.GetNewFaker(1);
-            var origin = DespesaFaker.GetNewFaker(usuario, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+            var origin = DespesaFaker.GetNewFaker(
+                usuario,
+                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+            );
 
             // Act
             var result = map.Parse(origin);
 
-            // Assert            
+            // Assert
             Assert.Equal(origin.Valor, result.Valor);
             Assert.Equal(origin.Descricao, result.Descricao);
             Assert.Equal(origin.UsuarioId, result.UsuarioId);
@@ -202,7 +275,10 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             // Arrange
             var map = new LancamentoMap();
             var usuario = UsuarioFaker.GetNewFaker(1);
-            var origin = ReceitaFaker.GetNewFaker(usuario, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+            var origin = ReceitaFaker.GetNewFaker(
+                usuario,
+                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+            );
 
             // Act
             var result = map.Parse(origin);

@@ -49,7 +49,7 @@
             var listControleAcesso = new List<ControleAcesso>();
             for (int i = 0; i < 10; i++)
             {
-                var usuario = UsuarioFaker.GetNewFaker(i);
+                var usuario = UsuarioFaker.GetNewFaker();
                 var controleAcesso = GetNewFaker(usuario);
                 listControleAcesso.Add(controleAcesso);
             }

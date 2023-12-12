@@ -1,7 +1,9 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
+namespace Infrastructure.Repositories
 {
+    [Order(214)]
     public class SaldoRepositorioImplTest
     {
         private readonly RegisterContext _context;
@@ -11,62 +13,59 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         private DateTime _mockAnoMes = DateTime.Today;
         public SaldoRepositorioImplTest()
         {
-            _context = Usings.GetRegisterContext();
-            _mockUsuario = UsuarioFaker.GetNewFaker();
+            var options = new DbContextOptionsBuilder<RegisterContext>()
+                .UseInMemoryDatabase(databaseName: "Saldo Repo Database InMemory")
+                .Options;
+            _context = new RegisterContext(options);
+            _mockUsuario = UsuarioFaker.GetNewFaker(null);
             _context.Usuario.AddRange(_mockUsuario);
-            var despesas = DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id);
-            var receitas = ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id);
-            _mockAnoMes = despesas.First().Data;
-            _context.Despesa.AddRange(despesas);
-            _context.Receita.AddRange(receitas);
+            _context.Despesa.AddRange(DespesaFaker.Despesas(_mockUsuario, _mockUsuario.Id));
+            _context.Receita.AddRange(ReceitaFaker.Receitas(_mockUsuario, _mockUsuario.Id));
             _context.SaveChanges();
             _repository = new Mock<SaldoRepositorioImpl>(MockBehavior.Strict, _context);
             _mockRepository = Mock.Get<ISaldoRepositorio>(_repository.Object);
         }
 
-        [Fact]
+        [Fact, Order(1)]
         public void GetSaldo_Should_Returns_Saldo()
         {
             // Arrange
             var idUsuario = _mockUsuario.Id;
 
             // Act
-            var result = _mockRepository.Object.GetSaldo(idUsuario);
+            var result = _repository.Object.GetSaldo(idUsuario);
 
             // Assert            
             Assert.IsType<decimal>(result);
             Assert.True(result != 0);
         }
 
-        [Fact]
+        [Fact, Order(2)]
         public void GetSaldo_Should_Returns_Saldo_Equal_0()
         {
             // Arrange
-            var idUsuario = _mockUsuario.Id;
+            var usuario = UsuarioFaker.GetNewFaker(null);
 
             var options = new DbContextOptionsBuilder<RegisterContext>()
                 .UseInMemoryDatabase(databaseName: "MemoryDatabase GetSaldo")
                 .Options;
 
             var context = new RegisterContext(options);
-            context.Despesa.AddRange(new List<Despesa>());
-            context.Receita.AddRange(new List<Receita>());
-            context.SaveChanges();
             var repository = new SaldoRepositorioImpl(context);
 
             // Act
-            var result = repository.GetSaldo(idUsuario);
+            var result = repository.GetSaldo(usuario.Id);
 
             // Assert            
             Assert.IsType<decimal>(result);
             Assert.True(result == 0);
         }
 
-        [Fact]
+        [Fact, Order(3)]
         public void GetSaldo_Throws_Exception_When_Despesa_Execute_Where()
         {
             // Arrange
-            var idUsuario = 0;
+            var usuario = UsuarioFaker.GetNewFaker(null);
 
             var despesaDbSetMock = new Mock<DbSet<Despesa>>();
             despesaDbSetMock.As<IQueryable<Despesa>>()
@@ -79,24 +78,24 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
 
             var context = new RegisterContext(options);
             context.Despesa = despesaDbSetMock.Object;
-
+            context.SaveChanges();
 
             var repository = new SaldoRepositorioImpl(context);
 
             // Act
-            Action result = () => repository.GetSaldo(idUsuario);
+            Action result = () => repository.GetSaldo(usuario.Id);
 
             // Assert
             Assert.NotNull(result);
-            var exception = Assert.Throws<Exception>(() => repository.GetSaldo(idUsuario));
+            var exception = Assert.Throws<Exception>(() => repository.GetSaldo(usuario.Id));
             Assert.Equal("SaldoRepositorioImpl_GetSaldo_Erro", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(4)]
         public void GetSaldo_Throws_Exception_When_Receita_Execute_Where()
         {
             // Arrange            
-            var idUsuario = 0;
+            var usuario = UsuarioFaker.GetNewFaker(null);
 
             var receitaDbSetMock = new Mock<DbSet<Receita>>();
             receitaDbSetMock.As<IQueryable<Receita>>()
@@ -109,20 +108,21 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
 
             var context = new RegisterContext(options);
             context.Receita = receitaDbSetMock.Object;
+            context.SaveChanges();
 
 
             var repository = new SaldoRepositorioImpl(context);
 
             // Act
-            Action result = () => repository.GetSaldo(idUsuario);
+            Action result = () => repository.GetSaldo(usuario.Id);
 
             // Assert
             Assert.NotNull(result);
-            var exception = Assert.Throws<Exception>(() => repository.GetSaldo(idUsuario));
+            var exception = Assert.Throws<Exception>(() => repository.GetSaldo(usuario.Id));
             Assert.Equal("SaldoRepositorioImpl_GetSaldo_Erro", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(5)]
         public void GetSaldoByAno_Should_Returns_Saldo()
         {
             // Arrange
@@ -136,7 +136,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result != 0);
         }
 
-        [Fact]
+        [Fact, Order(5)]
         public void GetSaldoByAno_Should_Returns_Saldo_Equal_0()
         {
             // Arrange
@@ -160,7 +160,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result == 0);
         }
 
-        [Fact]
+        [Fact, Order(6)]
         public void GetSaldoByAno_Throws_Exception_When_Despesa_Execute_Where()
         {
             // Arrange
@@ -190,7 +190,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.Equal("SaldoRepositorioImpl_GetSaldoByAno_Erro", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(7)]
         public void GetSaldoByAno_Throws_Exception_When_Receita_Execute_Where()
         {
             // Arrange            
@@ -220,7 +220,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.Equal("SaldoRepositorioImpl_GetSaldoByAno_Erro", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(8)]
         public void GetSaldoByMesAno_Should_Returns_Saldo()
         {
             // Arrange
@@ -234,7 +234,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result != 0);
         }
 
-        [Fact]
+        [Fact, Order(9)]
         public void GetSaldoByMesAno_Should_Returns_Saldo_Equal_0()
         {
             // Arrange
@@ -258,7 +258,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.True(result == 0);
         }
 
-        [Fact]
+        [Fact, Order(10)]
         public void GetSaldoByMesAno_Throws_Exception_When_Despesa_Execute_Where()
         {
             // Arrange
@@ -288,7 +288,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             Assert.Equal("SaldoRepositorioImpl_GetSaldoByMesAno_Erro", exception.Message);
         }
 
-        [Fact]
+        [Fact, Order(11)]
         public void GetSaldoByMesAno_Throws_Exception_When_Receita_Execute_Where()
         {
             // Arrange            
