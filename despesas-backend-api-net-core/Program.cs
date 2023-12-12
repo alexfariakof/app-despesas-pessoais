@@ -36,9 +36,8 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
-builder.Services.AddDbContext<RegisterContext>(options =>
-options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
-//builder.Services.CreateDataBaseInMemory();
+//builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+builder.Services.CreateDataBaseInMemory();
 ConfigureAutorization(builder.Services, builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
@@ -73,14 +72,13 @@ app.UseStaticFiles();
 
 app.MapControllers();
 
-/*
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var dataSeeder = services.GetRequiredService<IDataSeeder>();
     dataSeeder.SeedData();
 }
-*/
+
 
 app.Run();
 
