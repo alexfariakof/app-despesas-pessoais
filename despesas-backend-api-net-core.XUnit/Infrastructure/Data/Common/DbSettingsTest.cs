@@ -1,8 +1,8 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using Xunit;
+﻿using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Common
+namespace Infrastructure.Common
 {
+    [Order(200)]
     public class DbSettingsTest
     {
         [Fact]

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Test.XUnit.Domain.VM
+namespace Domain.ViewModel
 {
     public class ImagemPerfilUsuarioVMTest
     {
@@ -14,7 +14,7 @@ namespace Test.XUnit.Domain.VM
             var data = DateTime.Now;
             var dataVencimento = DateTime.Now;
             byte[] arquivoData = new byte[] { 1, 2, 3, 4, 5 };
-            var imagemPerfilUsuarioVM = new ImagemPerfilUsuarioVM
+            var imagemPerfilUsuarioVM = new ImagemPerfilVM
             {
                 Id = id,
                 Url = url,
@@ -22,11 +22,8 @@ namespace Test.XUnit.Domain.VM
                 Type = type,
                 ContentType = contentType,
                 IdUsuario = idUsuario,                
+                Arquivo = arquivoData
             };
-
-            PropertyInfo arquivoProperty = imagemPerfilUsuarioVM.GetType().GetProperty("Arquivo", BindingFlags.NonPublic | BindingFlags.Instance);
-            arquivoProperty.SetValue(imagemPerfilUsuarioVM, arquivoData);
-
             
             // Assert
             Assert.Equal(id, imagemPerfilUsuarioVM.Id);
@@ -35,7 +32,7 @@ namespace Test.XUnit.Domain.VM
             Assert.Equal(type, imagemPerfilUsuarioVM.Type);
             Assert.Equal(contentType, imagemPerfilUsuarioVM.ContentType);
             Assert.Equal(idUsuario, imagemPerfilUsuarioVM.IdUsuario);
-            Assert.Equal(arquivoData, arquivoProperty.GetValue(imagemPerfilUsuarioVM));
+            Assert.Equal(arquivoData, imagemPerfilUsuarioVM.Arquivo);
         }
     }
 }

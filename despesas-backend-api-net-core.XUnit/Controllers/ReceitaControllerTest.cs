@@ -5,14 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Controllers
+namespace Controllers
 {
-    [Order(12)]
+    [Order(8)]
     public class ReceitaControllerTest
     {
         protected Mock<IBusiness<ReceitaVM>> _mockReceitaBusiness;
         protected ReceitaController _receitaController;
         protected List<ReceitaVM> _receitaVMs;
+
         private void SetupBearerToken(int idUsuario)
         {
             var claims = new List<Claim>
@@ -22,12 +23,9 @@ namespace Test.XUnit.Controllers
             var identity = new ClaimsIdentity(claims, "IdUsuario");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-
-            var httpContext = new DefaultHttpContext
-            {
-                User = claimsPrincipal
-            };
-            httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(idUsuario);
+            var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+            httpContext.Request.Headers["Authorization"] =
+                "Bearer " + Usings.GenerateJwtToken(idUsuario);
 
             _receitaController.ControllerContext = new ControllerContext
             {
@@ -37,19 +35,22 @@ namespace Test.XUnit.Controllers
 
         public ReceitaControllerTest()
         {
-            
             _mockReceitaBusiness = new Mock<IBusiness<ReceitaVM>>();
             _receitaController = new ReceitaController(_mockReceitaBusiness.Object);
-            _receitaVMs = ReceitaFaker.ReceitasVMs();    
+            _receitaVMs = ReceitaFaker.ReceitasVMs();
         }
 
         [Fact, Order(1)]
         public void Get_Should_Return_All_Receitas_From_Usuario()
         {
             // Arrange
-            int idUsuario = _receitaVMs.First().IdUsuario.Value;
+
+            int idUsuario = _receitaVMs.First().IdUsuario;
+
             SetupBearerToken(idUsuario);
-            _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs);
+            _mockReceitaBusiness
+                .Setup(business => business.FindAll(idUsuario))
+                .Returns(_receitaVMs);
 
             // Act
             var result = _receitaController.Get() as ObjectResult;
@@ -66,9 +67,14 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs.First();
-            var idUsuario = receitaVM.IdUsuario.Value;
+
+            var idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
-            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns((ReceitaVM)null);
+
+            _mockReceitaBusiness
+                .Setup(business => business.FindById(receitaVM.Id, idUsuario))
+                .Returns((ReceitaVM)null);
 
             // Act
             var result = _receitaController.GetById(receitaVM.Id) as ObjectResult;
@@ -87,11 +93,15 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receita = _receitaVMs.Last();
-            int idUsuario = receita.IdUsuario.Value;
+
+            int idUsuario = receita.IdUsuario;
+
             int receitaId = receita.Id;
             SetupBearerToken(idUsuario);
 
-            _mockReceitaBusiness.Setup(business => business.FindById(receitaId, idUsuario)).Returns(receita);
+            _mockReceitaBusiness
+                .Setup(business => business.FindById(receitaId, idUsuario))
+                .Returns(receita);
 
             // Act
             var result = _receitaController.GetById(receitaId) as ObjectResult;
@@ -100,9 +110,13 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
+
             var _receita = (ReceitaVM)value.GetType().GetProperty("receita").GetValue(value, null);
+
             Assert.NotNull(_receita);
             Assert.IsType<ReceitaVM>(_receita);
             _mockReceitaBusiness.Verify(b => b.FindById(receitaId, idUsuario), Times.Once);
@@ -113,9 +127,13 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs.First();
-            var idUsuario = receitaVM.IdUsuario.Value;
+
+            var idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
-            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Throws(new Exception());
+            _mockReceitaBusiness
+                .Setup(business => business.FindById(receitaVM.Id, idUsuario))
+                .Throws(new Exception());
 
             // Act
             var result = _receitaController.GetById(receitaVM.Id) as ObjectResult;
@@ -134,7 +152,9 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario.Value;
+
+            int idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Returns(receitaVM);
 
@@ -145,9 +165,13 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
+
             var _receita = (ReceitaVM)value.GetType().GetProperty("receita").GetValue(value, null);
+
             Assert.NotNull(_receita);
             Assert.IsType<ReceitaVM>(_receita);
             _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Once());
@@ -158,9 +182,13 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario.Value;
+
+            int idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
-            _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Throws(new Exception());
+            _mockReceitaBusiness
+                .Setup(business => business.Create(receitaVM))
+                .Throws(new Exception());
 
             // Act
             var result = _receitaController.Post(receitaVM) as ObjectResult;
@@ -179,8 +207,10 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[4];
-            int idUsuario = receitaVM.IdUsuario.Value;
-            SetupBearerToken(idUsuario);         
+
+            int idUsuario = receitaVM.IdUsuario;
+
+            SetupBearerToken(idUsuario);
             _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns(receitaVM);
 
             // Act
@@ -190,12 +220,16 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
+
             var _receita = (ReceitaVM)value.GetType().GetProperty("receita").GetValue(value, null);
+
             Assert.NotNull(_receita);
             Assert.IsType<ReceitaVM>(_receita);
-            _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Once);   
+            _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Once);
         }
 
         [Fact, Order(13)]
@@ -203,9 +237,14 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[3];
-            int idUsuario = receitaVM.IdUsuario.Value;
+
+            int idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
-            _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns((ReceitaVM)null);
+
+            _mockReceitaBusiness
+                .Setup(business => business.Update(receitaVM))
+                .Returns((ReceitaVM)null);
 
             // Act
             var result = _receitaController.Put(receitaVM) as ObjectResult;
@@ -224,11 +263,15 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[2];
-            int idUsuario = receitaVM.IdUsuario.Value;
+
+            int idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
-            
+
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
-            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
+            _mockReceitaBusiness
+                .Setup(business => business.FindById(receitaVM.Id, idUsuario))
+                .Returns(receitaVM);
 
             // Act
             var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
@@ -237,11 +280,15 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
-            _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Once);
+            _mockReceitaBusiness.Verify(
+                business => business.FindById(receitaVM.Id, idUsuario),
+                Times.Once
+            );
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);
-            
         }
 
         [Fact, Order(15)]
@@ -249,11 +296,15 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[2];
-            int idUsuario = receitaVM.IdUsuario.Value;
+
+            int idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(0);
 
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
-            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
+            _mockReceitaBusiness
+                .Setup(business => business.FindById(receitaVM.Id, idUsuario))
+                .Returns(receitaVM);
             // Act
             var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
 
@@ -263,7 +314,10 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Usuário não permitido a realizar operação!", message);
-            _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Never);
+            _mockReceitaBusiness.Verify(
+                business => business.FindById(receitaVM.Id, idUsuario),
+                Times.Never
+            );
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Never);
         }
 
@@ -272,11 +326,15 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var receitaVM = _receitaVMs[2];
-            int idUsuario = receitaVM.IdUsuario.Value;
+
+            int idUsuario = receitaVM.IdUsuario;
+
             SetupBearerToken(idUsuario);
 
             _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(false);
-            _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
+            _mockReceitaBusiness
+                .Setup(business => business.FindById(receitaVM.Id, idUsuario))
+                .Returns(receitaVM);
 
             // Act
             var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
@@ -287,7 +345,10 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao excluir Receita!", message);
-            _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Once);
+            _mockReceitaBusiness.Verify(
+                business => business.FindById(receitaVM.Id, idUsuario),
+                Times.Once
+            );
             _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);
         }
     }

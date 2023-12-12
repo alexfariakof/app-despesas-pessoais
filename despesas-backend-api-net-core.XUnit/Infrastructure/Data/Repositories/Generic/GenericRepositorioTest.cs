@@ -1,8 +1,9 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
+namespace Infrastructure.Repositories.Generic
 {
+    [Order(210)]
     public class GenericRepositorioTest
     {
         private Mock<RegisterContext> _dbContextMock;
@@ -59,7 +60,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         public void Get_Should_Return_Item_With_Matching_Id()
         {
             // Arrange
-            var itens = UsuarioFaker.Usuarios();
+            var itens = UsuarioFaker.GetNewFakersUsuarios();
             var item = itens.First();
             var itemId = item.Id;
             
@@ -116,7 +117,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Generic
         public void Delete_Should_Set_Inativo_And_Return_True_When_Usuario_IsDeleted() 
         {
             // Arrange
-            var lstUsuarios = UsuarioFaker.Usuarios();
+            var lstUsuarios = UsuarioFaker.GetNewFakersUsuarios();
             var usuario = lstUsuarios.First();
             var options = new DbContextOptionsBuilder<RegisterContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")

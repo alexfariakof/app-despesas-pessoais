@@ -1,9 +1,11 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(107)]
     public class ReceitaBusinessImplTest
     {
         private readonly Mock<IRepositorio<Receita>> _repositorioMock;
@@ -20,10 +22,11 @@ namespace Test.XUnit.Business.Implementations
         public void Create_Should_Returns_Parsed_ReceitaVM()
         {
             // Arrange
-            var receitaVM = ReceitaFaker.ReceitasVMs().First();
+            var receita = ReceitaFaker.Receitas().First();
+            var receitaVM = new ReceitaMap().Parse(receita);
 
-            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Receita>())).Returns(new ReceitaMap().Parse(receitaVM));
-
+            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Receita>())).Returns(receita);
+            _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(receita.Usuario, receita.UsuarioId));
             // Act
             var result = _receitaBusiness.Create(receitaVM);
 
@@ -97,6 +100,8 @@ namespace Test.XUnit.Business.Implementations
             var receitaVM = new ReceitaMap().Parse(receita);            
 
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Receita>())).Returns(receita);
+            var categorias = CategoriaFaker.Categorias(receita.Usuario, receita.UsuarioId);
+            _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
             // Act
             var result = _receitaBusiness.Update(receitaVM);

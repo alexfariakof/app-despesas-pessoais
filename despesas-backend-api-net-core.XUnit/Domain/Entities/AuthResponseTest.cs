@@ -1,4 +1,4 @@
-﻿namespace Test.XUnit.Domain.Entities
+﻿namespace Domain.Entities
 {
     public class AuthResponseTest
     {

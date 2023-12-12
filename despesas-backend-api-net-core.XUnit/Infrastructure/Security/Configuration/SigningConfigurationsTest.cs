@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Test.XUnit.Infrastructure.Security.Configuration
+namespace Infrastructure.Security.Configuration
 {
     public class SigningConfigurationsTest
     {

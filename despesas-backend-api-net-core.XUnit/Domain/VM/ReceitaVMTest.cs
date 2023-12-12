@@ -1,6 +1,6 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 
-namespace Test.XUnit.Domain.VM
+namespace Domain.ViewModel
 {
     public class ReceitaVMTest
     {

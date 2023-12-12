@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using System.Globalization;
 
-namespace Test.XUnit.Infrastructure.ExtensionMethods
+namespace Infrastructure.ExtensionMethods
 {
     public class ExtensionTest
     {

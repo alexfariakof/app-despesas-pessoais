@@ -2,9 +2,11 @@
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using Microsoft.Extensions.Configuration;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(102)]
     public class ControleAcessoBusinessImplTest
     {
         private readonly Mock<IControleAcessoRepositorio> _repositorioMock;
@@ -23,16 +25,19 @@ namespace Test.XUnit.Business.Implementations
             var tokenConfigurations = new TokenConfiguration();
             configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
 
-
             _repositorioMock = new Mock<IControleAcessoRepositorio>();
-            _controleAcessoBusiness = new ControleAcessoBusinessImpl(_repositorioMock.Object, signingConfigurations, tokenConfigurations);
+            _controleAcessoBusiness = new ControleAcessoBusinessImpl(
+                _repositorioMock.Object,
+                signingConfigurations,
+                tokenConfigurations
+            );
         }
 
         [Fact]
         public void Create_Should_ControleAcesso_Returns_True()
         {
             // Arrange
-            var controleAcesso= new ControleAcesso
+            var controleAcesso = new ControleAcesso
             {
                 Login = "teste@teste.com",
                 Senha = "teste",
@@ -42,7 +47,7 @@ namespace Test.XUnit.Business.Implementations
                     Nome = "Teste Usuário 1",
                     SobreNome = "Teste",
                     Telefone = "(21) 9999-9999",
-                    PerfilUsuario = PerfilUsuario.Usuario                    
+                    PerfilUsuario = PerfilUsuario.Usuario
                 }
             };
 
@@ -60,12 +65,7 @@ namespace Test.XUnit.Business.Implementations
         public void FindByLogin_Should_Return_Valid_Credentials_And_AccessToken()
         {
             // Arrange
-            var controleAcesso = new ControleAcesso
-            {
-                Login = "teste@teste.com",
-                Senha = "teste",
-                
-            };
+            var controleAcesso = new ControleAcesso { Login = "teste@teste.com", Senha = "teste", };
 
             var usuario = new Usuario
             {
@@ -74,11 +74,14 @@ namespace Test.XUnit.Business.Implementations
                 StatusUsuario = StatusUsuario.Ativo
             };
 
-
-            _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login)).Returns(usuario);
+            _repositorioMock
+                .Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login))
+                .Returns(usuario);
             _repositorioMock.Setup(repo => repo.isValidPasssword(controleAcesso)).Returns(true);
-            _repositorioMock.Setup(repo => repo.FindByEmail(controleAcesso)).Returns(controleAcesso);            
-            
+            _repositorioMock
+                .Setup(repo => repo.FindByEmail(controleAcesso))
+                .Returns(controleAcesso);
+
             // Act
             var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
 
@@ -92,7 +95,10 @@ namespace Test.XUnit.Business.Implementations
         {
             // Arrange
             var controleAcesso = new ControleAcesso { Login = "teste@teste.com" };
-            _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login)).Returns((Usuario)null);
+
+            _repositorioMock
+                .Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login))
+                .Returns((Usuario)null);
 
             // Act
             var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
@@ -109,7 +115,9 @@ namespace Test.XUnit.Business.Implementations
             var controleAcesso = new ControleAcesso { Login = "teste@teste.com" };
             var usuarioInativo = new Usuario { StatusUsuario = StatusUsuario.Inativo };
 
-            _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login)).Returns(usuarioInativo);
+            _repositorioMock
+                .Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login))
+                .Returns(usuarioInativo);
 
             // Act
             var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
@@ -123,12 +131,7 @@ namespace Test.XUnit.Business.Implementations
         public void FindByLogin_Should_Returns_Email_Inexistente()
         {
             // Arrange
-            var controleAcesso = new ControleAcesso
-            {
-                Login = "teste@teste.com",
-                Senha = "teste",
-
-            };
+            var controleAcesso = new ControleAcesso { Login = "teste@teste.com", Senha = "teste", };
 
             var usuario = new Usuario
             {
@@ -137,10 +140,14 @@ namespace Test.XUnit.Business.Implementations
                 StatusUsuario = StatusUsuario.Ativo
             };
 
-
-            _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login)).Returns(usuario);
+            _repositorioMock
+                .Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login))
+                .Returns(usuario);
             _repositorioMock.Setup(repo => repo.isValidPasssword(controleAcesso)).Returns(true);
-            _repositorioMock.Setup(repo => repo.FindByEmail(controleAcesso)).Returns((ControleAcesso)null);
+
+            _repositorioMock
+                .Setup(repo => repo.FindByEmail(controleAcesso))
+                .Returns((ControleAcesso)null);
 
             // Act
             var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
@@ -149,17 +156,12 @@ namespace Test.XUnit.Business.Implementations
             Assert.False(result.Authenticated);
             Assert.Contains("Email inexistente!", result.Message);
         }
-        
+
         [Fact]
         public void FindByLogin_Should_Returns_Senha_Invalida()
         {
             // Arrange
-            var controleAcesso = new ControleAcesso
-            {
-                Login = "teste@teste.com",
-                Senha = "teste",
-
-            };
+            var controleAcesso = new ControleAcesso { Login = "teste@teste.com", Senha = "teste", };
 
             var usuario = new Usuario
             {
@@ -168,10 +170,13 @@ namespace Test.XUnit.Business.Implementations
                 StatusUsuario = StatusUsuario.Ativo
             };
 
-
-            _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login)).Returns(usuario);
+            _repositorioMock
+                .Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login))
+                .Returns(usuario);
             _repositorioMock.Setup(repo => repo.isValidPasssword(controleAcesso)).Returns(false);
-            _repositorioMock.Setup(repo => repo.FindByEmail(controleAcesso)).Returns(controleAcesso);
+            _repositorioMock
+                .Setup(repo => repo.FindByEmail(controleAcesso))
+                .Returns(controleAcesso);
 
             // Act
             var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
@@ -185,12 +190,7 @@ namespace Test.XUnit.Business.Implementations
         public void FindByLogin_Should_Returns_Usuario_Invalido()
         {
             // Arrange
-            var controleAcesso = new ControleAcesso
-            {
-                Login = "",
-                Senha = "teste",
-
-            };
+            var controleAcesso = new ControleAcesso { Login = "", Senha = "teste", };
 
             var usuario = new Usuario
             {
@@ -199,10 +199,13 @@ namespace Test.XUnit.Business.Implementations
                 StatusUsuario = StatusUsuario.Ativo
             };
 
-
-            _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login)).Returns(usuario);
+            _repositorioMock
+                .Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Login))
+                .Returns(usuario);
             _repositorioMock.Setup(repo => repo.isValidPasssword(controleAcesso)).Returns(true);
-            _repositorioMock.Setup(repo => repo.FindByEmail(controleAcesso)).Returns(controleAcesso);
+            _repositorioMock
+                .Setup(repo => repo.FindByEmail(controleAcesso))
+                .Returns(controleAcesso);
 
             // Act
             var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
@@ -235,14 +238,19 @@ namespace Test.XUnit.Business.Implementations
             int idUsuario = 1;
             string newPassword = "123456789";
 
-            _repositorioMock.Setup(repo => repo.ChangePassword(idUsuario, newPassword)).Returns(true);
+            _repositorioMock
+                .Setup(repo => repo.ChangePassword(idUsuario, newPassword))
+                .Returns(true);
 
             // Act
             bool result = _controleAcessoBusiness.ChangePassword(idUsuario, newPassword);
 
             // Assert
             Assert.True(result);
-            _repositorioMock.Verify(repo => repo.ChangePassword(idUsuario, newPassword), Times.Once);
+            _repositorioMock.Verify(
+                repo => repo.ChangePassword(idUsuario, newPassword),
+                Times.Once
+            );
         }
     }
 }

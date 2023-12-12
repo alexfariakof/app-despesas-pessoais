@@ -34,7 +34,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 return Instance == null ? new AmazonS3Bucket() : Instance;
             }
         }
-        public async Task<string> WritingAnObjectAsync(ImagemPerfilUsuarioVM perfilFile)
+        public async Task<string> WritingAnObjectAsync(ImagemPerfilVM perfilFile)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Security.Implementation
                 throw new Exception("AmazonS3Bucket_WritingAnObjectAsync_Errro ", ex);
             }
         }
-        public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuarioVM perfilFile)
+        public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilVM perfilFile)
         {
             try
             {

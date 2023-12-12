@@ -21,6 +21,9 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public ReceitaVM Create(ReceitaVM obj)
         {
+            if (!IsCategoriaValid(obj))
+                throw new Exception("Categoria não existe cadastrada para este usuário!");
+
             Receita receita = _repositorio.Insert(_converter.Parse(obj));
             return _converter.Parse(receita);
         }
@@ -43,6 +46,8 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public ReceitaVM Update(ReceitaVM obj)
         {
+            if (!IsCategoriaValid(obj))
+                throw new Exception("Categoria não existe cadastrada para este usuário!");
 
             Receita receita = _repositorio.Update(_converter.Parse(obj));
             return _converter.Parse(receita);
@@ -53,6 +58,11 @@ namespace despesas_backend_api_net_core.Business.Implementations
         {
             Receita receita = _repositorio.Update(_converter.Parse(obj));
             return  _repositorio.Delete(receita);
+        }
+
+        private bool IsCategoriaValid(ReceitaVM obj)
+        {
+            return _repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario) != null ? true : false;
         }
     }
 }

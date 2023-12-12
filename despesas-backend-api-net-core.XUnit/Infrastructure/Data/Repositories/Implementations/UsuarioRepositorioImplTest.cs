@@ -1,29 +1,28 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
-using Microsoft.Extensions.Configuration;
-using Xunit.Extensions.Ordering;
+﻿using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
+namespace Infrastructure.Repositories
 {
+    [Order(215)]
     public class UsuarioRepositorioImplTest
     {
         private Mock<RegisterContext> _mockRegisterContext;
-        private Mock<UsuarioRepositorioImpl> _mockRepository;        
-        
+        private Mock<UsuarioRepositorioImpl> _mockRepository;
+
         public UsuarioRepositorioImplTest()
         {
-
             var options = new DbContextOptionsBuilder<RegisterContext>()
                 .UseInMemoryDatabase(databaseName: "UsuarioRpository")
                 .Options;
 
-            
             _mockRegisterContext = new Mock<RegisterContext>(options);
-            var dbSetMock = Usings.MockDbSet(UsuarioFaker.Usuarios());
+            var dbSetMock = Usings.MockDbSet(UsuarioFaker.GetNewFakersUsuarios());
             var dbSetMockControleAcesso = Usings.MockDbSet(ControleAcessoFaker.ControleAcessos());
             var dbSetMockCategoria = Usings.MockDbSet(new List<Categoria>());
 
             _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
-            _mockRegisterContext.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetMockControleAcesso.Object);
+            _mockRegisterContext
+                .Setup(c => c.Set<ControleAcesso>())
+                .Returns(dbSetMockControleAcesso.Object);
             _mockRegisterContext.Setup(c => c.Set<Categoria>()).Returns(dbSetMockCategoria.Object);
 
             _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext);
@@ -52,15 +51,20 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Insert_Should_Throws_Erro_When_Try_To_Insert_New_Usuario()
         {
             // Arrange
+
             var newUser = (Usuario)null;
+
             var repository = new UsuarioRepositorioImpl(_mockRegisterContext.Object);
 
             // Act
+
             Action result = () => repository.Insert(newUser);
 
             // Assert
             Assert.NotNull(result);
+
             var exception = Assert.Throws<Exception>(() => repository.Insert(newUser));
+
             Assert.Equal("Erro ao inserir um novo usuário!", exception.Message);
             _mockRegisterContext.Verify(c => c.SaveChanges(), Times.Never);
         }
@@ -69,7 +73,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void GetAll_Should_Return_All_Items()
         {
             // Arrange
-            var items = UsuarioFaker.Usuarios();
+            var items = UsuarioFaker.GetNewFakersUsuarios();
             var dataSet = items;
             var dbSetMock = Usings.MockDbSet(dataSet);
             _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
@@ -87,7 +91,10 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void GetAll_Should_Throws_Exception()
         {
             // Arrange
-            _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns((DbSet<Usuario>)null);            
+
+
+            _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns((DbSet<Usuario>)null);
+
             _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext.Object);
 
             // Act
@@ -103,7 +110,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Get_Should_Return_Item_With_Matching_Id()
         {
             // Arrange
-            var itens = UsuarioFaker.Usuarios();
+            var itens = UsuarioFaker.GetNewFakersUsuarios();
             var item = itens.First();
             var itemId = item.Id;
 
@@ -125,11 +132,13 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Update_Should_Update_Item_And_SaveChanges()
         {
             // Arrange
-            var dataSet = UsuarioFaker.Usuarios();
+            var dataSet = UsuarioFaker.GetNewFakersUsuarios();
             var existingItem = dataSet.First();
-            var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options);
+            var dbContext = new RegisterContext(
+                new DbContextOptionsBuilder<RegisterContext>()
+                    .UseInMemoryDatabase(databaseName: "TestDatabase")
+                    .Options
+            );
 
             var _mockRepository = new Mock<UsuarioRepositorioImpl>(dbContext);
 
@@ -143,7 +152,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
                 SobreNome = result.SobreNome,
                 PerfilUsuario = PerfilUsuario.Administrador,
                 StatusUsuario = StatusUsuario.Ativo,
-                Telefone = result.Telefone                
+                Telefone = result.Telefone
             };
 
             result = _mockRepository.Object.Update(updatedItem);
@@ -159,7 +168,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Update_Should_Throws_Exception()
         {
             // Arrange
-            var lstUsuarios = UsuarioFaker.Usuarios();
+            var lstUsuarios = UsuarioFaker.GetNewFakersUsuarios();
             var lstControleAcesso = ControleAcessoFaker.ControleAcessos();
             var existingItem = lstUsuarios.First();
             var options = new DbContextOptionsBuilder<RegisterContext>()
@@ -183,13 +192,15 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
                 StatusUsuario = StatusUsuario.Ativo,
                 Telefone = existingItem.Telefone
             };
-            
+
             // Act
             Action result = () => _mockRepository.Object.Update(updatedItem);
 
             // Assert
             Assert.NotNull(result);
-            var exception = Assert.Throws<Exception>(() => _mockRepository.Object.Update(updatedItem));
+            var exception = Assert.Throws<Exception>(
+                () => _mockRepository.Object.Update(updatedItem)
+            );
             Assert.Equal("Erro ao atualizar usuário!", exception.Message);
             _mockRegisterContext.Verify(c => c.SaveChanges(), Times.Never);
         }
@@ -198,7 +209,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Delete_Should_Set_Inativo_And_Return_True_When_Usuario_IsDeleted()
         {
             // Arrange
-            var lstUsuarios = UsuarioFaker.Usuarios();
+            var lstUsuarios = UsuarioFaker.GetNewFakersUsuarios();
             var usuario = lstUsuarios.First();
             var options = new DbContextOptionsBuilder<RegisterContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
@@ -221,12 +232,14 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Update_Should_Try_Update_Item_And_Return_Null()
         {
             // Arrange
-            var dataSet = UsuarioFaker.Usuarios();
+            var dataSet = UsuarioFaker.GetNewFakersUsuarios();
             var existingItem = dataSet.First();
 
-            var _dbContextMock = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
-                .Options);
+            var _dbContextMock = new RegisterContext(
+                new DbContextOptionsBuilder<RegisterContext>()
+                    .UseInMemoryDatabase(databaseName: "TestDatabase")
+                    .Options
+            );
 
             var _mockRepository = new Mock<UsuarioRepositorioImpl>(_dbContextMock);
 
@@ -241,7 +254,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Delete_With_Non_Existing_Item_Should_Not_Remove_Item_And_Return_False()
         {
             // Arrange
-            var dataSet = UsuarioFaker.Usuarios();
+            var dataSet = UsuarioFaker.GetNewFakersUsuarios();
             var item = new Usuario { Id = 0 };
             var dbSetMock = Usings.MockDbSet(dataSet);
             _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
@@ -251,7 +264,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             // Act
             var result = _mockRepository.Object.Delete(item);
 
-            // Assert            
+            // Assert
             Assert.IsType<bool>(result);
             Assert.False(result);
             _mockRegisterContext.Verify(c => c.SaveChanges(), Times.Never);
@@ -261,29 +274,32 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
         public void Delete_Should_Throw_Exception()
         {
             // Arrange
-            var item = (Usuario)null;            
-            
+
+            var item = (Usuario)null;
+
             _mockRegisterContext.Setup(c => c.Remove(It.IsAny<Usuario>())).Throws<Exception>();
 
             var _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext.Object);
 
             // Act
-            Action  result = () => _mockRepository.Object.Delete(item);
 
+            Action result = () => _mockRepository.Object.Delete(item);
 
             // Assert
-            Assert.NotNull(result);                    
+            Assert.NotNull(result);
+
             var exception = Assert.Throws<Exception>(() => _mockRepository.Object.Delete(item));
+
             Assert.Equal("Erro ao deletar usuário!", exception.Message);
+
             _mockRegisterContext.Verify(c => c.Remove(item), Times.Never);
         }
-
 
         [Fact]
         public void Delete_Should_Returns_False_When_Usuario_IsNull()
         {
             // Arrange
-            var dataSet = UsuarioFaker.Usuarios();
+            var dataSet = UsuarioFaker.GetNewFakersUsuarios();
             var item = new Usuario { Id = 0 };
             var dbSetMock = Usings.MockDbSet(dataSet);
             _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
@@ -293,7 +309,7 @@ namespace Test.XUnit.Infrastructure.Data.Repositories.Implementations
             // Act
             var result = _mockRepository.Object.Delete(item);
 
-            // Assert 
+            // Assert
             Assert.IsType<bool>(result);
             Assert.False(result);
             _mockRegisterContext.Verify(c => c.Remove(item), Times.Never);

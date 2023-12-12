@@ -1,11 +1,12 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Infrastructure.Data.EntityConfig
+namespace Infrastructure.EntityConfig
 {
+    [Order(202)]
     public class CategoriaMapTest
     {
-
         [Fact]
         public void EntityConfiguration_IsValid()
         {
@@ -25,7 +26,9 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 var entityType = model.FindEntityType(typeof(Categoria));
 
                 // Act
+
                 var idProperty = entityType.FindProperty("Id");
+
                 var descricaoProperty = entityType.FindProperty("Descricao");
                 var usuarioIdProperty = entityType.FindProperty("UsuarioId");
                 var tipoCategoriaProperty = entityType.FindProperty("TipoCategoria");
@@ -97,9 +100,27 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             var categoriaMap = new CategoriaMap();
             var categoriaVMs = new List<CategoriaVM>
             {
-                new CategoriaVM { Id = 1, Descricao = "Categoria 1", IdTipoCategoria = 1, IdUsuario = 1 },
-                new CategoriaVM { Id = 2, Descricao = "Categoria 2", IdTipoCategoria = 2, IdUsuario = 2 },
-                new CategoriaVM { Id = 3, Descricao = "Categoria 3", IdTipoCategoria = 1, IdUsuario = 1 }
+                new CategoriaVM
+                {
+                    Id = 1,
+                    Descricao = "Categoria 1",
+                    IdTipoCategoria = 1,
+                    IdUsuario = 1
+                },
+                new CategoriaVM
+                {
+                    Id = 2,
+                    Descricao = "Categoria 2",
+                    IdTipoCategoria = 2,
+                    IdUsuario = 2
+                },
+                new CategoriaVM
+                {
+                    Id = 3,
+                    Descricao = "Categoria 3",
+                    IdTipoCategoria = 1,
+                    IdUsuario = 1
+                }
             };
 
             // Act
@@ -112,7 +133,12 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
                 Assert.Equal(categoriaVMs[i].Id, categorias[i].Id);
                 Assert.Equal(categoriaVMs[i].Descricao, categorias[i].Descricao);
                 Assert.Equal(categoriaVMs[i].IdUsuario, categorias[i].UsuarioId);
-                Assert.Equal(categoriaVMs[i].IdTipoCategoria == 1 ? TipoCategoria.Despesa : TipoCategoria.Receita, categorias[i].TipoCategoria);
+                Assert.Equal(
+                    categoriaVMs[i].IdTipoCategoria == 1
+                        ? TipoCategoria.Despesa
+                        : TipoCategoria.Receita,
+                    categorias[i].TipoCategoria
+                );
             }
         }
 
@@ -123,9 +149,27 @@ namespace Test.XUnit.Infrastructure.Data.EntityConfig
             var categoriaMap = new CategoriaMap();
             var categorias = new List<Categoria>
             {
-                new Categoria { Id = 1, Descricao = "Categoria 1", TipoCategoria = TipoCategoria.Despesa, UsuarioId = 1 },
-                new Categoria { Id = 2, Descricao = "Categoria 2", TipoCategoria = TipoCategoria.Receita, UsuarioId = 2 },
-                new Categoria { Id = 3, Descricao = "Categoria 3", TipoCategoria = TipoCategoria.Despesa, UsuarioId = 1 }
+                new Categoria
+                {
+                    Id = 1,
+                    Descricao = "Categoria 1",
+                    TipoCategoria = TipoCategoria.Despesa,
+                    UsuarioId = 1
+                },
+                new Categoria
+                {
+                    Id = 2,
+                    Descricao = "Categoria 2",
+                    TipoCategoria = TipoCategoria.Receita,
+                    UsuarioId = 2
+                },
+                new Categoria
+                {
+                    Id = 3,
+                    Descricao = "Categoria 3",
+                    TipoCategoria = TipoCategoria.Despesa,
+                    UsuarioId = 1
+                }
             };
 
             // Act
