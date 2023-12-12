@@ -13,7 +13,7 @@ namespace despesas_backend_api_net_core.Controllers
     public class UsuarioController : AuthController
     {
         private IUsuarioBusiness _usuarioBusiness;
-        private IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
+        private readonly IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
         public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
         {
             _usuarioBusiness = usuarioBusiness;
