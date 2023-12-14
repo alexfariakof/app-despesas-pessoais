@@ -2,13 +2,9 @@
 using System.Security.Claims;
 using System.Security.Principal;
 using despesas_backend_api_net_core.Domain.Entities;
-using despesas_backend_api_net_core.Business;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using despesas_backend_api_net_core.Domain.VM;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 
 namespace despesas_backend_api_net_core.Business.Implementations
 {
@@ -26,13 +22,11 @@ namespace despesas_backend_api_net_core.Business.Implementations
             _singingConfiguration = singingConfiguration;
             _tokenConfiguration = tokenConfiguration;
         }
-
         public bool Create(ControleAcesso controleAcesso)
         {
             return _repositorio.Create(controleAcesso);
         }
-
-        public AuthResponse FindByLogin(ControleAcesso controleAcesso)
+        public Authentication FindByLogin(ControleAcesso controleAcesso)
         {
             bool credentialsValid = false;
 
@@ -71,7 +65,6 @@ namespace despesas_backend_api_net_core.Business.Implementations
             }
             return ExceptionObject("Usuário Inválido!");
         }
-
         public bool RecoveryPassword(string email)
         {
             return _repositorio.RecoveryPassword(email);
@@ -81,7 +74,6 @@ namespace despesas_backend_api_net_core.Business.Implementations
         {
             return _repositorio.ChangePassword(idUsuario, password);
         }
-
         private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler, int idUsuario)
         {
             Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
@@ -100,27 +92,24 @@ namespace despesas_backend_api_net_core.Business.Implementations
             
             return token;
         }
-
-        private AuthResponse ExceptionObject(string message)
+        private Authentication ExceptionObject(string message)
         {
-            return new AuthResponse
+            return new Authentication
             {
                 Authenticated = false,
                 Message = message
             };
         }
-
-        private AuthResponse SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
+        private Authentication SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
         {
             Usuario usuario = _repositorio.GetUsuarioByEmail(login);
-            return new AuthResponse
+            return new Authentication
             {
                 Authenticated = true,
                 Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 AccessToken = token,
-                Message = "OK",
-                Usuario = usuario
+                Message = "OK"
             };
         }
     }

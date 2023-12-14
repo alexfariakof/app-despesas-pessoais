@@ -1,4 +1,4 @@
-﻿namespace Test.XUnit.Domain.VM
+﻿namespace Domain.ViewModel
 {
     public class CategoriaVMTest
     {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
 {
-    public class ImagemPerfilUsuarioMap : IParser<ImagemPerfilUsuarioVM, ImagemPerfilUsuario>, IParser<ImagemPerfilUsuario, ImagemPerfilUsuarioVM>, IEntityTypeConfiguration<ImagemPerfilUsuario>
+    public class ImagemPerfilUsuarioMap : IParser<ImagemPerfilVM, ImagemPerfilUsuario>, IParser<ImagemPerfilUsuario, ImagemPerfilVM>, IEntityTypeConfiguration<ImagemPerfilUsuario>
     {
         public void Configure(EntityTypeBuilder<ImagemPerfilUsuario> builder)
         {
@@ -38,7 +38,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             .IsRequired();
 
         }
-        public ImagemPerfilUsuario Parse(ImagemPerfilUsuarioVM origin)
+        public ImagemPerfilUsuario Parse(ImagemPerfilVM origin)
         {
             if (origin == null) return new ImagemPerfilUsuario();
             return new ImagemPerfilUsuario
@@ -50,10 +50,10 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 UsuarioId = origin.IdUsuario,
             };
         }
-        public ImagemPerfilUsuarioVM Parse(ImagemPerfilUsuario origin)
+        public ImagemPerfilVM Parse(ImagemPerfilUsuario origin)
         {
-            if (origin == null) return new ImagemPerfilUsuarioVM();
-            return new ImagemPerfilUsuarioVM
+            if (origin == null) return new ImagemPerfilVM();
+            return new ImagemPerfilVM
             {
                 Id = origin.Id,
                 Name = origin.Name,
@@ -63,15 +63,15 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
             };
         }
 
-        public List<ImagemPerfilUsuario> ParseList(List<ImagemPerfilUsuarioVM> origin)
+        public List<ImagemPerfilUsuario> ParseList(List<ImagemPerfilVM> origin)
         {
             if (origin == null) return new List<ImagemPerfilUsuario>();
             return origin.Select(item => Parse(item)).ToList();
         }
 
-        public List<ImagemPerfilUsuarioVM> ParseList(List<ImagemPerfilUsuario> origin)
+        public List<ImagemPerfilVM> ParseList(List<ImagemPerfilUsuario> origin)
         {
-            if (origin == null) return new List<ImagemPerfilUsuarioVM>();
+            if (origin == null) return new List<ImagemPerfilVM>();
             return origin.Select(item => Parse(item)).ToList();
         }
     }

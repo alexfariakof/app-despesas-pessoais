@@ -1,7 +1,7 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using System.Reflection;
 
-namespace Test.XUnit.Domain.VM
+namespace Test.Domain.ViewModel
 {
     public class DespesaVMTest
     {
@@ -19,7 +19,7 @@ namespace Test.XUnit.Domain.VM
             Assert.Equal(despesa.Valor, despesaVM.Valor);
             Assert.Equal(despesa.DataVencimento, despesaVM.DataVencimento);
             Assert.Equal(despesa.UsuarioId, despesaVM.IdUsuario);
-            Assert.Equal(despesa.Categoria.Id, despesaVM.IdCategoria);
+            Assert.Equal(despesa.Categoria.Id, despesaVM.Categoria.Id);
         }
         
     }

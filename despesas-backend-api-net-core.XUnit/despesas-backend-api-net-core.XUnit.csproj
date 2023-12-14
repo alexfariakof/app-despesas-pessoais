@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -6,8 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
+    <IsTestProject>true</IsTestProject>    
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\alexf\.nuget\packages\microsoft.testplatform.testhost\17.7.2\build\netcoreapp3.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\alexf\.nuget\packages\microsoft.testplatform.testhost\17.7.2\build\netcoreapp3.1\x64\testhost.exe" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="appsettings.json" />

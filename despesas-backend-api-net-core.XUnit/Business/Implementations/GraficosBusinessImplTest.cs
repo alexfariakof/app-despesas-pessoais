@@ -1,9 +1,11 @@
 ﻿
 using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Business.Implementations
+namespace Business
 {
+    [Order(104)]
     public class GraficosBusinessImplTest
     {
         private readonly Mock<IGraficosRepositorio> _repositorioMock;

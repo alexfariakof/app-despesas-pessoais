@@ -1,4 +1,4 @@
-﻿namespace Test.XUnit.Domain.Entities
+﻿namespace Domain.Entities
 {
     public class AuthResponseTest
     {
@@ -11,14 +11,13 @@
             var mockUsuario = Mock.Of<Usuario>();
 
             // Arrange and ACt
-            var authResponse = new AuthResponse 
+            var authResponse = new Authentication 
             { 
                  Authenticated = authenticated,
                  Created = created,
                  Expiration = expiration,
                  AccessToken = accessToken,
-                 Message = message,
-                 Usuario = mockUsuario
+                 Message = message
             };
             
             // Assert
@@ -27,7 +26,6 @@
             Assert.Equal(expiration, authResponse.Expiration);
             Assert.Equal(accessToken, authResponse.AccessToken);
             Assert.Equal(message, authResponse.Message);
-            Assert.Equal(mockUsuario, authResponse.Usuario);
         }
     }
 }

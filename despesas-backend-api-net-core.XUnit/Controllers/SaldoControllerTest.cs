@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Controllers
+namespace Controllers
 {
+    [Order(9)]
     public class SaldoControllerTest
     {
         protected Mock<ISaldoBusiness> _mockSaldoBusiness;
@@ -21,12 +22,9 @@ namespace Test.XUnit.Controllers
             var identity = new ClaimsIdentity(claims, "IdUsuario");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-
-            var httpContext = new DefaultHttpContext
-            {
-                User = claimsPrincipal
-            };
-            httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(idUsuario);
+            var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+            httpContext.Request.Headers["Authorization"] =
+                "Bearer " + Usings.GenerateJwtToken(idUsuario);
 
             _SaldoController.ControllerContext = new ControllerContext
             {
@@ -35,7 +33,7 @@ namespace Test.XUnit.Controllers
         }
 
         public SaldoControllerTest()
-        {            
+        {
             _mockSaldoBusiness = new Mock<ISaldoBusiness>();
             _SaldoController = new SaldoController(_mockSaldoBusiness.Object);
         }
@@ -56,8 +54,12 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = okResult.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var returnedSaldo = (decimal)value?.GetType()?.GetProperty("saldo")?.GetValue(value, null);
+
+            var returnedSaldo = (decimal)
+                value?.GetType()?.GetProperty("saldo")?.GetValue(value, null);
+
             Assert.True(message);
             Assert.IsType<decimal>(returnedSaldo);
             Assert.Equal(saldo, returnedSaldo);
@@ -69,8 +71,12 @@ namespace Test.XUnit.Controllers
             // Arrange
             int idUsuario = 1;
             SetupBearerToken(1);
+
             decimal saldo = 1000m;
-            _mockSaldoBusiness.Setup(business => business.GetSaldo(idUsuario)).Throws(new Exception());
+
+            _mockSaldoBusiness
+                .Setup(business => business.GetSaldo(idUsuario))
+                .Throws(new Exception());
 
             // Act
             var result = _SaldoController.Get() as ObjectResult;
@@ -91,7 +97,9 @@ namespace Test.XUnit.Controllers
             int idUsuario = 1;
             SetupBearerToken(idUsuario);
             decimal saldo = 897.99m;
-            _mockSaldoBusiness.Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario)).Returns(saldo);
+            _mockSaldoBusiness
+                .Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario))
+                .Returns(saldo);
 
             // Act
             var result = _SaldoController.GetSaldoByAno(DateTime.Today) as ObjectResult;
@@ -100,8 +108,12 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = okResult.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var returnedSaldo = (decimal)value?.GetType()?.GetProperty("saldo")?.GetValue(value, null);
+
+            var returnedSaldo = (decimal)
+                value?.GetType()?.GetProperty("saldo")?.GetValue(value, null);
+
             Assert.True(message);
             Assert.IsType<decimal>(returnedSaldo);
             Assert.Equal(saldo, returnedSaldo);
@@ -113,8 +125,12 @@ namespace Test.XUnit.Controllers
             // Arrange
             int idUsuario = 1;
             SetupBearerToken(1);
+
             decimal saldo = 1000m;
-            _mockSaldoBusiness.Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario)).Throws(new Exception());
+
+            _mockSaldoBusiness
+                .Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario))
+                .Throws(new Exception());
 
             // Act
             var result = _SaldoController.GetSaldoByAno(DateTime.Today) as ObjectResult;
@@ -135,7 +151,9 @@ namespace Test.XUnit.Controllers
             int idUsuario = 1;
             SetupBearerToken(idUsuario);
             decimal saldo = 178740.99m;
-            _mockSaldoBusiness.Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario)).Returns(saldo);
+            _mockSaldoBusiness
+                .Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario))
+                .Returns(saldo);
 
             // Act
             var result = _SaldoController.GetSaldoByMesAno(DateTime.Today) as ObjectResult;
@@ -144,8 +162,12 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = okResult.Value;
+
             var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-            var returnedSaldo = (decimal)value?.GetType()?.GetProperty("saldo")?.GetValue(value, null);
+
+            var returnedSaldo = (decimal)
+                value?.GetType()?.GetProperty("saldo")?.GetValue(value, null);
+
             Assert.True(message);
             Assert.IsType<decimal>(returnedSaldo);
             Assert.Equal(saldo, returnedSaldo);
@@ -157,8 +179,12 @@ namespace Test.XUnit.Controllers
             // Arrange
             int idUsuario = 1;
             SetupBearerToken(1);
+
             decimal saldo = 165478.87m;
-            _mockSaldoBusiness.Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario)).Throws(new Exception());
+
+            _mockSaldoBusiness
+                .Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario))
+                .Throws(new Exception());
 
             // Act
             var result = _SaldoController.GetSaldoByMesAno(DateTime.Today) as ObjectResult;
@@ -169,7 +195,10 @@ namespace Test.XUnit.Controllers
             var value = result.Value;
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
             Assert.Equal("Erro ao gerar saldo!", message);
-            _mockSaldoBusiness.Verify(b => b.GetSaldoByMesAno(DateTime.Today, idUsuario), Times.Once);
+            _mockSaldoBusiness.Verify(
+                b => b.GetSaldoByMesAno(DateTime.Today, idUsuario),
+                Times.Once
+            );
         }
     }
 }

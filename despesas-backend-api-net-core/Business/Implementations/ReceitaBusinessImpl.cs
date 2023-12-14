@@ -21,6 +21,9 @@ namespace despesas_backend_api_net_core.Business.Implementations
         }
         public ReceitaVM Create(ReceitaVM obj)
         {
+            if (!IsCategoriaValid(obj))
+                throw new Exception("Categoria não existe cadastrada para este usuário!");
+
             Receita receita = _repositorio.Insert(_converter.Parse(obj));
             return _converter.Parse(receita);
         }
@@ -35,14 +38,18 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public ReceitaVM FindById(int id, int idUsuario)
         {
-            var receita = _converter.Parse(_repositorio.Get(id));
-            if (receita.IdUsuario == idUsuario)
-                return receita;
+            var receita = _repositorio.Get(id);
+            receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
+            var receitaVm = _converter.Parse(receita);
+            if (receitaVm.IdUsuario == idUsuario)
+                return receitaVm;
             return null;
         }
 
         public ReceitaVM Update(ReceitaVM obj)
         {
+            if (!IsCategoriaValid(obj))
+                throw new Exception("Categoria não existe cadastrada para este usuário!");
 
             Receita receita = _repositorio.Update(_converter.Parse(obj));
             return _converter.Parse(receita);
@@ -53,6 +60,11 @@ namespace despesas_backend_api_net_core.Business.Implementations
         {
             Receita receita = _repositorio.Update(_converter.Parse(obj));
             return  _repositorio.Delete(receita);
+        }
+
+        private bool IsCategoriaValid(ReceitaVM obj)
+        {
+            return _repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario) != null ? true : false;
         }
     }
 }

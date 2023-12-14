@@ -1,10 +1,7 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-
-namespace despesas_backend_api_net_core.Domain.VM
+﻿namespace despesas_backend_api_net_core.Domain.VM
 {
-    public class LancamentoVM : BaseModel
+    public class LancamentoVM : BaseModelVM
     {
-        public int IdUsuario { get; set; }
         public int IdDespesa { get; set; }
         public int IdReceita { get; set; }
         public Decimal Valor { get; set; }

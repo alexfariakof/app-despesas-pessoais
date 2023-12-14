@@ -1,6 +1,6 @@
 ﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 
-namespace Test.XUnit.Domain.VM
+namespace Domain.ViewModel
 {
     public class ReceitaVMTest
     {
@@ -17,7 +17,7 @@ namespace Test.XUnit.Domain.VM
             Assert.Equal(receita.Descricao, receitaVM .Descricao);
             Assert.Equal(receita.Valor, receitaVM .Valor);
             Assert.Equal(receita.UsuarioId, receitaVM .IdUsuario);
-            Assert.Equal(receita.CategoriaId, receitaVM .IdCategoria);
+            Assert.Equal(receita.Categoria.Id, receitaVM.Categoria.Id);
         }
     }
 }

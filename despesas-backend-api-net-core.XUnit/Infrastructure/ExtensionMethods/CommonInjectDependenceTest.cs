@@ -10,7 +10,7 @@ using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
 using despesas_backend_api_net_core.Database_In_Memory;
 
-namespace Test.XUnit.Infrastructure.ExtensionMethods
+namespace Test.ExtensionMethods
 {
     public class CommonInjectDependenceTest
     {

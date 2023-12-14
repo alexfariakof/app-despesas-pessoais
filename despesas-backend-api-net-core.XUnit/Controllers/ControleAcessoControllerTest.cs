@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Xunit.Extensions.Ordering;
 
-namespace Test.XUnit.Controllers
+namespace Controllers
 {
-    [Order(2)]
+    [Order(3)]
     public class ControleAcessoControllerTest
     {
         protected readonly Mock<IControleAcessoBusiness> _mockControleAcessoBusiness;
         protected readonly ControleAcessoController _controleAcessoController;
+
         private ControleAcessoVM CreateValidControleAcessoVM()
         {
             return new ControleAcessoVM
@@ -24,6 +25,7 @@ namespace Test.XUnit.Controllers
                 ConfirmaSenha = "!12345"
             };
         }
+
         private void SetupBearerToken(int userId)
         {
             var claims = new List<Claim>
@@ -33,12 +35,9 @@ namespace Test.XUnit.Controllers
             var identity = new ClaimsIdentity(claims, "IdUsuario");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-
-            var httpContext = new DefaultHttpContext
-            {
-                User = claimsPrincipal
-            };
-            httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(userId);
+            var httpContext = new DefaultHttpContext { User = claimsPrincipal };
+            httpContext.Request.Headers["Authorization"] =
+                "Bearer " + Usings.GenerateJwtToken(userId);
 
             _controleAcessoController.ControllerContext = new ControllerContext
             {
@@ -47,9 +46,11 @@ namespace Test.XUnit.Controllers
         }
 
         public ControleAcessoControllerTest()
-        {            
+        {
             _mockControleAcessoBusiness = new Mock<IControleAcessoBusiness>();
-            _controleAcessoController = new ControleAcessoController(_mockControleAcessoBusiness.Object);
+            _controleAcessoController = new ControleAcessoController(
+                _mockControleAcessoBusiness.Object
+            );
         }
 
         [Fact]
@@ -57,7 +58,9 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var controleAcessoVM = CreateValidControleAcessoVM();
-            _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>())).Returns(true);
+            _mockControleAcessoBusiness
+                .Setup(b => b.Create(It.IsAny<ControleAcesso>()))
+                .Returns(true);
 
             // Act
             var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
@@ -66,7 +69,9 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
         }
 
@@ -75,7 +80,9 @@ namespace Test.XUnit.Controllers
         {
             // Arrange
             var controleAcessoVM = CreateValidControleAcessoVM();
-            _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>())).Returns(null);
+            _mockControleAcessoBusiness
+                .Setup(b => b.Create(It.IsAny<ControleAcesso>()))
+                .Returns(null);
 
             // Act
             var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
@@ -142,7 +149,6 @@ namespace Test.XUnit.Controllers
             Assert.Equal("Email inválido!", message);
         }
 
-
         [Fact]
         public void Post_With_NUll_Password_Returns_BadRequest()
         {
@@ -201,12 +207,10 @@ namespace Test.XUnit.Controllers
         public void SignIn_With_ValidData_Returns_ObjectResult()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                Email = "teste@teste.com",
-                Senha = "password"
-            };
-            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new AuthResponse());
+            var loginVM = new LoginVM { Email = "teste@teste.com", Senha = "password" };
+            _mockControleAcessoBusiness
+                .Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>()))
+                .Returns(new Authentication());
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -220,12 +224,10 @@ namespace Test.XUnit.Controllers
         public void SignIn_With_NUll_Login_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                Email = "",
-                Senha = "password"
-            };
-            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new AuthResponse());
+            var loginVM = new LoginVM { Email = "", Senha = "password" };
+            _mockControleAcessoBusiness
+                .Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>()))
+                .Returns(new Authentication());
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -242,12 +244,10 @@ namespace Test.XUnit.Controllers
         public void SignIn_With_NUll_Password_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                Email = "teste@teste.com",
-                Senha = " "
-            };
-            _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>())).Returns(new AuthResponse());
+            var loginVM = new LoginVM { Email = "teste@teste.com", Senha = " " };
+            _mockControleAcessoBusiness
+                .Setup(b => b.FindByLogin(It.IsAny<ControleAcesso>()))
+                .Returns(new Authentication());
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -264,11 +264,7 @@ namespace Test.XUnit.Controllers
         public void SignIn_With_InvalidEmail_Returns_BadRequest_EmailInvalido()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                Email = "email invalido",
-                Senha = "password"
-            };
+            var loginVM = new LoginVM { Email = "email invalido", Senha = "password" };
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -285,11 +281,7 @@ namespace Test.XUnit.Controllers
         public void SignIn_With_InvalidEmail_Returns_BadRequest_Login_Erro()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                Email = "email@invalido.com",
-                Senha = "password"
-            };
+            var loginVM = new LoginVM { Email = "email@invalido.com", Senha = "password" };
 
             // Act
             var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -306,63 +298,32 @@ namespace Test.XUnit.Controllers
         public void ChangePassword_With_ValidData_Returns_OkResult()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 1,
-                Senha = "!12345",
-                ConfirmaSenha = "!12345"
-            };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
             SetupBearerToken(1);
             _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(true);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
-        }
-
-        [Fact]
-        public void ChangePassword_With_InvalidToken_Returns_BadRequest()
-        {
-            // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 1,
-                Senha = "!12345",
-                ConfirmaSenha = "!12345"
-            };
-            SetupBearerToken(0); // Invalid token
-
-            // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<BadRequestObjectResult>(result);
-            var value = result.Value;
-            var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Usuário não permitido a realizar operação!", message);
         }
 
         [Fact]
         public void ChangePassword_With_Usuario_Teste_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 2,
-                Senha = "!12345",
-                ConfirmaSenha = "!12345"
-            };
-            SetupBearerToken(2); 
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+            SetupBearerToken(2);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -376,16 +337,11 @@ namespace Test.XUnit.Controllers
         public void ChangePassword_With_NULL_Password_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 1,
-                Senha = "",
-                ConfirmaSenha = "!12345"
-            };
+            var changePasswordVM = new ChangePasswordVM { Senha = "", ConfirmaSenha = "!12345" };
             SetupBearerToken(1);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -399,16 +355,11 @@ namespace Test.XUnit.Controllers
         public void ChangePassword_With_NULL_ConfirmedPassword_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 1,
-                Senha = "!12345",
-                ConfirmaSenha = ""
-            };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "" };
             SetupBearerToken(1);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -422,24 +373,22 @@ namespace Test.XUnit.Controllers
         public void ChangePassword_With_ValidData_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM
-            {
-                IdUsuario = 1,
-                Senha = "!12345",
-                ConfirmaSenha = "!12345"
-            };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
             SetupBearerToken(1);
             _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(false);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
             Assert.IsType<BadRequestObjectResult>(result);
             var value = result.Value;
             var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-            Assert.Equal("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.", message);
+            Assert.Equal(
+                "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.",
+                message
+            );
         }
 
         [Fact]
@@ -456,7 +405,9 @@ namespace Test.XUnit.Controllers
             Assert.NotNull(result);
             Assert.IsType<OkObjectResult>(result);
             var value = result.Value;
+
             var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+
             Assert.True(message);
         }
 
