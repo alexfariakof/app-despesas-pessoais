@@ -1,19 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace despesas_backend_api_net_core.Domain.VM
 {
-    public class ControleAcessoVM
+    public class ControleAcessoVM : UsuarioVM
     {
-        [Required]
-        public string Nome { get; set; }
-        public string SobreNome { get; set; }
+        [JsonIgnore]
+        public virtual int Id { get; set; }
 
-        [Required]
-        public string Telefone { get; set; }
-
-        [Required]
-        public string Email { get; set; }
-        
         [Required]
         public string Senha { get; set; }
 
