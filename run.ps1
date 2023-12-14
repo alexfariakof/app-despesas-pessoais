@@ -16,6 +16,8 @@ dotnet clean
 # Defina o diretório do projeto (onde o arquivo docker-compose.yml está localizado)
 $projectDirectory = ".\despesas-backend-api-net-core"
 
+Invoke-Expression "dotnet clean"
+
 # Comando para realizar o build
 $buildCommand = "dotnet build -restore"
 
