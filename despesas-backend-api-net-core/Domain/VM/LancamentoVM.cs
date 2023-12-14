@@ -1,5 +1,4 @@
-﻿
-namespace despesas_backend_api_net_core.Domain.VM
+﻿namespace despesas_backend_api_net_core.Domain.VM
 {
     public class LancamentoVM : BaseModelVM
     {

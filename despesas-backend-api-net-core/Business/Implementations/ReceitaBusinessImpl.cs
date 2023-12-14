@@ -38,9 +38,11 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public ReceitaVM FindById(int id, int idUsuario)
         {
-            var receita = _converter.Parse(_repositorio.Get(id));
-            if (receita.IdUsuario == idUsuario)
-                return receita;
+            var receita = _repositorio.Get(id);
+            receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
+            var receitaVm = _converter.Parse(receita);
+            if (receitaVm.IdUsuario == idUsuario)
+                return receitaVm;
             return null;
         }
 

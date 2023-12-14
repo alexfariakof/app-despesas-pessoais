@@ -6,10 +6,12 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
     public class DataSeederDespesa : IDataSeeder
     {
         private readonly RegisterContext _context;
+
         public DataSeederDespesa(RegisterContext context)
         {
             _context = context;
         }
+
         public void SeedData()
         {
             if (!_context.Despesa.Any())
@@ -21,17 +23,17 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 1,
                         Data = new DateTime(2023, 1, 1),
                         Descricao = "Conta de Luz",
-                        Valor = 150.00m,
+                        Valor = 150.95m,
                         DataVencimento = new DateTime(2023, 1, 10),
                         UsuarioId = 2,
-                        CategoriaId = 14
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 2,
                         Data = new DateTime(2023, 1, 2),
                         Descricao = "Compra de mantimentos",
-                        Valor = 50.00m,
+                        Valor = 50.95m,
                         DataVencimento = new DateTime(2023, 1, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -41,7 +43,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 3,
                         Data = new DateTime(2023, 1, 3),
                         Descricao = "Serviço de Limpeza",
-                        Valor = 80.00m,
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2023, 1, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -51,7 +53,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 4,
                         Data = new DateTime(2023, 1, 4),
                         Descricao = "Consulta Médica",
-                        Valor = 200.00m,
+                        Valor = 200.95m,
                         DataVencimento = new DateTime(2023, 1, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -61,7 +63,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 5,
                         Data = new DateTime(2023, 1, 5),
                         Descricao = "Imposto de Renda",
-                        Valor = 300.00m,
+                        Valor = 300.95m,
                         DataVencimento = new DateTime(2023, 1, 5),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -71,7 +73,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 6,
                         Data = new DateTime(2023, 1, 6),
                         Descricao = "Passagem de Ônibus",
-                        Valor = 10.00m,
+                        Valor = 10.95m,
                         DataVencimento = new DateTime(2023, 1, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -100,28 +102,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 9,
                         Data = new DateTime(2023, 1, 9),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 1, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 10,
                         Data = new DateTime(2023, 1, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 1, 5),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 11,
                         Data = new DateTime(2023, 2, 1),
                         Descricao = "Aluguel",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2023, 2, 10),
                         UsuarioId = 2,
                         CategoriaId = 14
@@ -131,7 +133,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 12,
                         Data = new DateTime(2023, 2, 2),
                         Descricao = "Compra de roupas",
-                        Valor = 100.00m,
+                        Valor = 100.95m,
                         DataVencimento = new DateTime(2023, 2, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -141,7 +143,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 13,
                         Data = new DateTime(2023, 2, 3),
                         Descricao = "Serviço de manutenção",
-                        Valor = 150.00m,
+                        Valor = 150.95m,
                         DataVencimento = new DateTime(2023, 2, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -151,7 +153,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 14,
                         Data = new DateTime(2023, 2, 4),
                         Descricao = "Consulta Médica",
-                        Valor = 250.00m,
+                        Valor = 250.95m,
                         DataVencimento = new DateTime(2023, 2, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -161,7 +163,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 15,
                         Data = new DateTime(2023, 2, 5),
                         Descricao = "Imposto de Renda",
-                        Valor = 350.00m,
+                        Valor = 350.95m,
                         DataVencimento = new DateTime(2023, 2, 5),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -171,7 +173,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 16,
                         Data = new DateTime(2023, 2, 6),
                         Descricao = "Passagem de Ônibus",
-                        Valor = 15.00m,
+                        Valor = 15.95m,
                         DataVencimento = new DateTime(2023, 2, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -200,38 +202,38 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 19,
                         Data = new DateTime(2023, 2, 9),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 2, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 20,
                         Data = new DateTime(2023, 2, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 2, 5),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 21,
                         Data = new DateTime(2023, 3, 01),
                         Descricao = "Conta de Água",
-                        Valor = 100.00m,
+                        Valor = 100.95m,
                         DataVencimento = new DateTime(2023, 3, 10),
                         UsuarioId = 2,
-                        CategoriaId = 14
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 22,
                         Data = new DateTime(2023, 3, 02),
                         Descricao = "Compra de Eletrônicos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 3, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -241,7 +243,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 23,
                         Data = new DateTime(2023, 3, 03),
                         Descricao = "Serviço de Jardinagem",
-                        Valor = 120.00m,
+                        Valor = 120.95m,
                         DataVencimento = new DateTime(2023, 3, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -251,7 +253,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 24,
                         Data = new DateTime(2023, 3, 04),
                         Descricao = "Consulta Médica",
-                        Valor = 150.00m,
+                        Valor = 150.95m,
                         DataVencimento = new DateTime(2023, 3, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -261,7 +263,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 25,
                         Data = new DateTime(2023, 3, 05),
                         Descricao = "Imposto de Renda",
-                        Valor = 400.00m,
+                        Valor = 400.95m,
                         DataVencimento = new DateTime(2023, 3, 05),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -271,7 +273,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 26,
                         Data = new DateTime(2023, 3, 06),
                         Descricao = "Passagem de Trem",
-                        Valor = 25.00m,
+                        Valor = 25.95m,
                         DataVencimento = new DateTime(2023, 3, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -281,7 +283,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 27,
                         Data = new DateTime(2023, 3, 07),
                         Descricao = "Teatro",
-                        Valor = 30.00m,
+                        Valor = 30.95m,
                         DataVencimento = new DateTime(2023, 3, 15),
                         UsuarioId = 2,
                         CategoriaId = 20
@@ -300,28 +302,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 29,
                         Data = new DateTime(2023, 3, 09),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 3, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 30,
                         Data = new DateTime(2023, 3, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 3, 05),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 31,
                         Data = new DateTime(2023, 4, 01),
-                        Descricao = "Conta de Telefone",
-                        Valor = 80.00m,
+                        Descricao = "Refeição Ifood",
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2023, 4, 10),
                         UsuarioId = 2,
                         CategoriaId = 14
@@ -331,7 +333,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 32,
                         Data = new DateTime(2023, 4, 02),
                         Descricao = "Compra de Móveis",
-                        Valor = 700.00m,
+                        Valor = 700.95m,
                         DataVencimento = new DateTime(2023, 4, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -341,7 +343,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 33,
                         Data = new DateTime(2023, 4, 03),
                         Descricao = "Serviço de Encanamento",
-                        Valor = 90.00m,
+                        Valor = 90.95m,
                         DataVencimento = new DateTime(2023, 4, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -351,7 +353,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 34,
                         Data = new DateTime(2023, 4, 04),
                         Descricao = "Consulta Médica",
-                        Valor = 180.00m,
+                        Valor = 180.95m,
                         DataVencimento = new DateTime(2023, 4, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -361,7 +363,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 35,
                         Data = new DateTime(2023, 4, 05),
                         Descricao = "Imposto de Renda",
-                        Valor = 200.00m,
+                        Valor = 200.95m,
                         DataVencimento = new DateTime(2023, 4, 05),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -371,7 +373,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 36,
                         Data = new DateTime(2023, 4, 06),
                         Descricao = "Passagem de Metrô",
-                        Valor = 5.00m,
+                        Valor = 5.95m,
                         DataVencimento = new DateTime(2023, 4, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -381,7 +383,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 37,
                         Data = new DateTime(2023, 4, 07),
                         Descricao = "Shows",
-                        Valor = 50.00m,
+                        Valor = 50.95m,
                         DataVencimento = new DateTime(2023, 4, 15),
                         UsuarioId = 2,
                         CategoriaId = 20
@@ -400,28 +402,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 39,
                         Data = new DateTime(2023, 4, 09),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 4, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 40,
                         Data = new DateTime(2023, 4, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 4, 05),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 41,
                         Data = new DateTime(2023, 5, 01),
-                        Descricao = "Conta de Internet",
-                        Valor = 120.00m,
+                        Descricao = "Almoço Restaurante",
+                        Valor = 120.95m,
                         DataVencimento = new DateTime(2023, 5, 10),
                         UsuarioId = 2,
                         CategoriaId = 14
@@ -431,7 +433,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 42,
                         Data = new DateTime(2023, 5, 02),
                         Descricao = "Compra de Eletrodomésticos",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2023, 5, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -441,7 +443,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 43,
                         Data = new DateTime(2023, 5, 03),
                         Descricao = "Serviço de Pintura",
-                        Valor = 200.00m,
+                        Valor = 200.95m,
                         DataVencimento = new DateTime(2023, 5, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -451,7 +453,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 44,
                         Data = new DateTime(2023, 5, 04),
                         Descricao = "Consulta Médica",
-                        Valor = 150.00m,
+                        Valor = 150.95m,
                         DataVencimento = new DateTime(2023, 5, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -461,7 +463,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 45,
                         Data = new DateTime(2023, 5, 05),
                         Descricao = "Imposto de Renda",
-                        Valor = 400.00m,
+                        Valor = 400.95m,
                         DataVencimento = new DateTime(2023, 5, 05),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -471,7 +473,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 46,
                         Data = new DateTime(2023, 5, 06),
                         Descricao = "Passagem de Barco",
-                        Valor = 30.00m,
+                        Valor = 30.95m,
                         DataVencimento = new DateTime(2023, 5, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -481,7 +483,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 47,
                         Data = new DateTime(2023, 5, 07),
                         Descricao = "Exposição de Arte",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 5, 15),
                         UsuarioId = 2,
                         CategoriaId = 20
@@ -500,28 +502,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 49,
                         Data = new DateTime(2023, 5, 09),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 5, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 50,
                         Data = new DateTime(2023, 5, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 5, 05),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 51,
                         Data = new DateTime(2023, 6, 01),
-                        Descricao = "Conta de Gás",
-                        Valor = 90.00m,
+                        Descricao = "Pedido Ifood",
+                        Valor = 90.95m,
                         DataVencimento = new DateTime(2023, 6, 10),
                         UsuarioId = 2,
                         CategoriaId = 14
@@ -531,7 +533,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 52,
                         Data = new DateTime(2023, 6, 02),
                         Descricao = "Compra de Livros",
-                        Valor = 60.00m,
+                        Valor = 60.95m,
                         DataVencimento = new DateTime(2023, 6, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -541,7 +543,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 53,
                         Data = new DateTime(2023, 6, 03),
                         Descricao = "Serviço de Manicure",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 6, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -551,7 +553,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 54,
                         Data = new DateTime(2023, 6, 04),
                         Descricao = "Consulta Médica",
-                        Valor = 120.00m,
+                        Valor = 120.95m,
                         DataVencimento = new DateTime(2023, 6, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -561,7 +563,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 55,
                         Data = new DateTime(2023, 6, 05),
                         Descricao = "Imposto de Renda",
-                        Valor = 300.00m,
+                        Valor = 300.95m,
                         DataVencimento = new DateTime(2023, 6, 05),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -571,7 +573,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 56,
                         Data = new DateTime(2023, 6, 06),
                         Descricao = "Passagem de Avião",
-                        Valor = 200.00m,
+                        Valor = 200.95m,
                         DataVencimento = new DateTime(2023, 6, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -581,7 +583,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 57,
                         Data = new DateTime(2023, 6, 07),
                         Descricao = "Shows",
-                        Valor = 70.00m,
+                        Valor = 70.95m,
                         DataVencimento = new DateTime(2023, 6, 15),
                         UsuarioId = 2,
                         CategoriaId = 20
@@ -600,28 +602,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 59,
                         Data = new DateTime(2023, 6, 09),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 6, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 60,
                         Data = new DateTime(2023, 6, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 6, 05),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 61,
                         Data = new DateTime(2023, 7, 01),
-                        Descricao = "Conta de Energia",
-                        Valor = 150.00m,
+                        Descricao = "Refeição Ifood",
+                        Valor = 150.95m,
                         DataVencimento = new DateTime(2023, 7, 10),
                         UsuarioId = 2,
                         CategoriaId = 14
@@ -631,7 +633,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 62,
                         Data = new DateTime(2023, 7, 02),
                         Descricao = "Compra de Roupas",
-                        Valor = 200.00m,
+                        Valor = 200.95m,
                         DataVencimento = new DateTime(2023, 7, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -641,7 +643,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 63,
                         Data = new DateTime(2023, 7, 03),
                         Descricao = "Serviço de Limpeza",
-                        Valor = 80.00m,
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2023, 7, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -651,7 +653,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 64,
                         Data = new DateTime(2023, 7, 04),
                         Descricao = "Consulta Médica",
-                        Valor = 100.00m,
+                        Valor = 100.95m,
                         DataVencimento = new DateTime(2023, 7, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -661,7 +663,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 65,
                         Data = new DateTime(2023, 7, 05),
                         Descricao = "Imposto de Renda",
-                        Valor = 250.00m,
+                        Valor = 250.95m,
                         DataVencimento = new DateTime(2023, 7, 05),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -671,7 +673,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 66,
                         Data = new DateTime(2023, 7, 06),
                         Descricao = "Passagem de Ônibus",
-                        Valor = 10.00m,
+                        Valor = 10.95m,
                         DataVencimento = new DateTime(2023, 7, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -700,28 +702,28 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 69,
                         Data = new DateTime(2023, 7, 09),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 7, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 70,
                         Data = new DateTime(2023, 7, 10),
                         Descricao = "Gastos Diversos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 7, 05),
                         UsuarioId = 2,
-                        CategoriaId = 23
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 71,
                         Data = new DateTime(2023, 8, 01),
-                        Descricao = "Conta de Água",
-                        Valor = 100.00m,
+                        Descricao = "Almoço no Restaurante",
+                        Valor = 100.95m,
                         DataVencimento = new DateTime(2023, 8, 10),
                         UsuarioId = 2,
                         CategoriaId = 14
@@ -731,7 +733,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 72,
                         Data = new DateTime(2023, 8, 02),
                         Descricao = "Compra de Eletrônicos",
-                        Valor = 500.00m,
+                        Valor = 500.95m,
                         DataVencimento = new DateTime(2023, 8, 15),
                         UsuarioId = 2,
                         CategoriaId = 15
@@ -741,7 +743,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 73,
                         Data = new DateTime(2023, 8, 03),
                         Descricao = "Serviço de Jardinagem",
-                        Valor = 120.00m,
+                        Valor = 120.95m,
                         DataVencimento = new DateTime(2023, 8, 20),
                         UsuarioId = 2,
                         CategoriaId = 16
@@ -751,7 +753,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 74,
                         Data = new DateTime(2023, 8, 04),
                         Descricao = "Consulta Médica",
-                        Valor = 80.00m,
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2023, 8, 25),
                         UsuarioId = 2,
                         CategoriaId = 17
@@ -761,7 +763,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 75,
                         Data = new DateTime(2023, 8, 05),
                         Descricao = "Imposto de Renda",
-                        Valor = 350.00m,
+                        Valor = 350.95m,
                         DataVencimento = new DateTime(2023, 8, 05),
                         UsuarioId = 2,
                         CategoriaId = 18
@@ -771,7 +773,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 76,
                         Data = new DateTime(2023, 8, 06),
                         Descricao = "Passagem de Trem",
-                        Valor = 15.00m,
+                        Valor = 15.95m,
                         DataVencimento = new DateTime(2023, 8, 10),
                         UsuarioId = 2,
                         CategoriaId = 19
@@ -781,7 +783,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 77,
                         Data = new DateTime(2023, 8, 07),
                         Descricao = "Shows",
-                        Valor = 70.00m,
+                        Valor = 70.95m,
                         DataVencimento = new DateTime(2023, 8, 15),
                         UsuarioId = 2,
                         CategoriaId = 20
@@ -791,7 +793,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 78,
                         Data = new DateTime(2023, 8, 08),
                         Descricao = "Outros gastos",
-                        Valor = 30.00m,
+                        Valor = 30.95m,
                         DataVencimento = new DateTime(2023, 8, 20),
                         UsuarioId = 2,
                         CategoriaId = 21
@@ -801,77 +803,77 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                         Id = 79,
                         Data = new DateTime(2023, 9, 01),
                         Descricao = "Conta de Telefone",
-                        Valor = 50.00m,
+                        Valor = 50.95m,
                         DataVencimento = new DateTime(2023, 9, 10),
                         UsuarioId = 2,
-                        CategoriaId = 24
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 80,
                         Data = new DateTime(2023, 9, 02),
                         Descricao = "Aluguel",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2023, 9, 15),
                         UsuarioId = 2,
-                        CategoriaId = 25
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 81,
                         Data = new DateTime(2023, 9, 03),
                         Descricao = "Manutenção do Carro",
-                        Valor = 120.00m,
+                        Valor = 120.95m,
                         DataVencimento = new DateTime(2023, 9, 20),
                         UsuarioId = 2,
-                        CategoriaId = 26
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 82,
                         Data = new DateTime(2023, 9, 04),
                         Descricao = "Material de Escritório",
-                        Valor = 30.00m,
+                        Valor = 30.95m,
                         DataVencimento = new DateTime(2023, 9, 25),
                         UsuarioId = 2,
-                        CategoriaId = 27
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 83,
                         Data = new DateTime(2023, 9, 05),
                         Descricao = "Seguro de Vida",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 9, 05),
                         UsuarioId = 2,
-                        CategoriaId = 28
+                        CategoriaId = 17
                     },
                     new Despesa
                     {
                         Id = 84,
                         Data = new DateTime(2023, 9, 06),
                         Descricao = "Assinatura de Jornal",
-                        Valor = 15.00m,
+                        Valor = 15.95m,
                         DataVencimento = new DateTime(2023, 9, 10),
                         UsuarioId = 2,
-                        CategoriaId = 29
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 85,
                         Data = new DateTime(2023, 9, 07),
                         Descricao = "Presente de Aniversário",
-                        Valor = 50.00m,
+                        Valor = 50.95m,
                         DataVencimento = new DateTime(2023, 9, 15),
                         UsuarioId = 2,
-                        CategoriaId = 30
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 86,
                         Data = new DateTime(2023, 9, 08),
                         Descricao = "Outros gastos",
-                        Valor = 25.00m,
+                        Valor = 25.95m,
                         DataVencimento = new DateTime(2023, 9, 20),
                         UsuarioId = 2,
                         CategoriaId = 21
@@ -880,88 +882,88 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 87,
                         Data = new DateTime(2023, 9, 09),
-                        Descricao = "Salário",
-                        Valor = 1000.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1000.95m,
                         DataVencimento = new DateTime(2023, 9, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 88,
                         Data = new DateTime(2023, 10, 01),
                         Descricao = "Conta de Internet",
-                        Valor = 60.00m,
+                        Valor = 60.95m,
                         DataVencimento = new DateTime(2023, 10, 10),
                         UsuarioId = 2,
-                        CategoriaId = 24
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 89,
                         Data = new DateTime(2023, 10, 02),
                         Descricao = "Aluguel",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2023, 10, 15),
                         UsuarioId = 2,
-                        CategoriaId = 25
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 90,
                         Data = new DateTime(2023, 10, 03),
                         Descricao = "Manutenção do Carro",
-                        Valor = 100.00m,
+                        Valor = 100.95m,
                         DataVencimento = new DateTime(2023, 10, 20),
                         UsuarioId = 2,
-                        CategoriaId = 26
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 91,
                         Data = new DateTime(2023, 10, 04),
                         Descricao = "Material de Escritório",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 10, 25),
                         UsuarioId = 2,
-                        CategoriaId = 27
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 92,
                         Data = new DateTime(2023, 10, 05),
                         Descricao = "Seguro de Vida",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 10, 05),
                         UsuarioId = 2,
-                        CategoriaId = 28
+                        CategoriaId = 17
                     },
                     new Despesa
                     {
                         Id = 93,
                         Data = new DateTime(2023, 10, 06),
                         Descricao = "Assinatura de Revista",
-                        Valor = 20.00m,
+                        Valor = 20.95m,
                         DataVencimento = new DateTime(2023, 10, 10),
                         UsuarioId = 2,
-                        CategoriaId = 29
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 94,
                         Data = new DateTime(2023, 10, 07),
                         Descricao = "Presente de Casamento",
-                        Valor = 70.00m,
+                        Valor = 70.95m,
                         DataVencimento = new DateTime(2023, 10, 15),
                         UsuarioId = 2,
-                        CategoriaId = 30
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 95,
                         Data = new DateTime(2023, 10, 08),
                         Descricao = "Outros gastos",
-                        Valor = 35.00m,
+                        Valor = 35.95m,
                         DataVencimento = new DateTime(2023, 10, 20),
                         UsuarioId = 2,
                         CategoriaId = 21
@@ -970,88 +972,88 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 96,
                         Data = new DateTime(2023, 10, 09),
-                        Descricao = "Salário",
-                        Valor = 1100.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1100.95m,
                         DataVencimento = new DateTime(2023, 10, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 97,
                         Data = new DateTime(2023, 11, 01),
                         Descricao = "Conta de Água",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 11, 10),
                         UsuarioId = 2,
-                        CategoriaId = 24
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 98,
                         Data = new DateTime(2023, 11, 02),
                         Descricao = "Aluguel",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2023, 11, 15),
                         UsuarioId = 2,
-                        CategoriaId = 25
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 99,
                         Data = new DateTime(2023, 11, 03),
                         Descricao = "Manutenção do Carro",
-                        Valor = 80.00m,
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2023, 11, 20),
                         UsuarioId = 2,
-                        CategoriaId = 26
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 100,
                         Data = new DateTime(2023, 11, 04),
                         Descricao = "Material de Escritório",
-                        Valor = 35.00m,
+                        Valor = 35.95m,
                         DataVencimento = new DateTime(2023, 11, 25),
                         UsuarioId = 2,
-                        CategoriaId = 27
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 101,
                         Data = new DateTime(2023, 11, 05),
                         Descricao = "Seguro de Vida",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 11, 05),
                         UsuarioId = 2,
-                        CategoriaId = 28
+                        CategoriaId = 17
                     },
                     new Despesa
                     {
                         Id = 102,
                         Data = new DateTime(2023, 11, 06),
                         Descricao = "Assinatura de Revista",
-                        Valor = 20.00m,
+                        Valor = 20.95m,
                         DataVencimento = new DateTime(2023, 11, 10),
                         UsuarioId = 2,
-                        CategoriaId = 29
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 103,
                         Data = new DateTime(2023, 11, 07),
                         Descricao = "Presente de Casamento",
-                        Valor = 70.00m,
+                        Valor = 70.95m,
                         DataVencimento = new DateTime(2023, 11, 15),
                         UsuarioId = 2,
-                        CategoriaId = 30
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 104,
                         Data = new DateTime(2023, 11, 08),
                         Descricao = "Outros gastos",
-                        Valor = 35.00m,
+                        Valor = 35.95m,
                         DataVencimento = new DateTime(2023, 11, 20),
                         UsuarioId = 2,
                         CategoriaId = 21
@@ -1060,88 +1062,88 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 105,
                         Data = new DateTime(2023, 11, 09),
-                        Descricao = "Salário",
-                        Valor = 1100.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1100.95m,
                         DataVencimento = new DateTime(2023, 11, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 106,
                         Data = new DateTime(2023, 12, 01),
                         Descricao = "Conta de Água",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 12, 10),
                         UsuarioId = 2,
-                        CategoriaId = 24
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 107,
                         Data = new DateTime(2023, 12, 02),
                         Descricao = "Aluguel",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2023, 12, 15),
                         UsuarioId = 2,
-                        CategoriaId = 25
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 108,
                         Data = new DateTime(2023, 12, 03),
                         Descricao = "Manutenção do Carro",
-                        Valor = 80.00m,
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2023, 12, 20),
                         UsuarioId = 2,
-                        CategoriaId = 26
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 109,
                         Data = new DateTime(2023, 12, 04),
                         Descricao = "Material de Escritório",
-                        Valor = 30.00m,
+                        Valor = 30.95m,
                         DataVencimento = new DateTime(2023, 12, 25),
                         UsuarioId = 2,
-                        CategoriaId = 27
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 110,
                         Data = new DateTime(2023, 12, 05),
                         Descricao = "Seguro de Vida",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2023, 12, 05),
                         UsuarioId = 2,
-                        CategoriaId = 28
+                        CategoriaId = 17
                     },
                     new Despesa
                     {
                         Id = 111,
                         Data = new DateTime(2023, 12, 06),
                         Descricao = "Assinatura de Revista",
-                        Valor = 20.00m,
+                        Valor = 20.95m,
                         DataVencimento = new DateTime(2023, 12, 10),
                         UsuarioId = 2,
-                        CategoriaId = 29
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 112,
                         Data = new DateTime(2023, 12, 07),
                         Descricao = "Presente de Casamento",
-                        Valor = 70.00m,
+                        Valor = 70.95m,
                         DataVencimento = new DateTime(2023, 12, 15),
                         UsuarioId = 2,
-                        CategoriaId = 30
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 113,
                         Data = new DateTime(2023, 12, 08),
                         Descricao = "Outros gastos",
-                        Valor = 35.00m,
+                        Valor = 35.95m,
                         DataVencimento = new DateTime(2023, 12, 20),
                         UsuarioId = 2,
                         CategoriaId = 21
@@ -1150,88 +1152,88 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 114,
                         Data = new DateTime(2023, 12, 09),
-                        Descricao = "Salário",
-                        Valor = 1100.00m,
+                        Descricao = "Gastos Diversos",
+                        Valor = 1100.95m,
                         DataVencimento = new DateTime(2023, 12, 25),
                         UsuarioId = 2,
-                        CategoriaId = 22
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 115,
                         Data = new DateTime(2024, 01, 01),
                         Descricao = "Conta de Água",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2024, 01, 10),
                         UsuarioId = 2,
-                        CategoriaId = 24
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 116,
                         Data = new DateTime(2024, 01, 02),
                         Descricao = "Aluguel",
-                        Valor = 800.00m,
+                        Valor = 800.95m,
                         DataVencimento = new DateTime(2024, 01, 15),
                         UsuarioId = 2,
-                        CategoriaId = 25
+                        CategoriaId = 15
                     },
                     new Despesa
                     {
                         Id = 117,
                         Data = new DateTime(2024, 01, 03),
                         Descricao = "Manutenção do Carro",
-                        Valor = 80.00m,
+                        Valor = 80.95m,
                         DataVencimento = new DateTime(2024, 01, 20),
                         UsuarioId = 2,
-                        CategoriaId = 26
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 118,
                         Data = new DateTime(2024, 01, 04),
                         Descricao = "Material de Escritório",
-                        Valor = 30.00m,
+                        Valor = 30.95m,
                         DataVencimento = new DateTime(2024, 01, 25),
                         UsuarioId = 2,
-                        CategoriaId = 27
+                        CategoriaId = 16
                     },
                     new Despesa
                     {
                         Id = 119,
                         Data = new DateTime(2024, 01, 05),
                         Descricao = "Seguro de Vida",
-                        Valor = 40.00m,
+                        Valor = 40.95m,
                         DataVencimento = new DateTime(2024, 01, 05),
                         UsuarioId = 2,
-                        CategoriaId = 28
+                        CategoriaId = 17
                     },
                     new Despesa
                     {
                         Id = 120,
                         Data = new DateTime(2024, 01, 06),
                         Descricao = "Assinatura de Revista",
-                        Valor = 20.00m,
+                        Valor = 20.95m,
                         DataVencimento = new DateTime(2024, 01, 10),
                         UsuarioId = 2,
-                        CategoriaId = 29
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 121,
                         Data = new DateTime(2024, 01, 07),
                         Descricao = "Presente de Casamento",
-                        Valor = 70.00m,
+                        Valor = 70.95m,
                         DataVencimento = new DateTime(2024, 01, 15),
                         UsuarioId = 2,
-                        CategoriaId = 30
+                        CategoriaId = 21
                     },
                     new Despesa
                     {
                         Id = 122,
                         Data = new DateTime(2024, 01, 08),
                         Descricao = "Outros gastos",
-                        Valor = 35.00m,
+                        Valor = 35.95m,
                         DataVencimento = new DateTime(2024, 01, 20),
                         UsuarioId = 2,
                         CategoriaId = 21
