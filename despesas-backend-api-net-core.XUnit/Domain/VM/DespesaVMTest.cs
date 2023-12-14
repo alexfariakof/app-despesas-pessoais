@@ -19,7 +19,7 @@ namespace Test.Domain.ViewModel
             Assert.Equal(despesa.Valor, despesaVM.Valor);
             Assert.Equal(despesa.DataVencimento, despesaVM.DataVencimento);
             Assert.Equal(despesa.UsuarioId, despesaVM.IdUsuario);
-            Assert.Equal(despesa.Categoria.Id, despesaVM.IdCategoria);
+            Assert.Equal(despesa.Categoria.Id, despesaVM.Categoria.Id);
         }
         
     }

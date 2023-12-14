@@ -40,7 +40,7 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Data = origin.Data,
                 Descricao = origin.Descricao,                
                 Valor = origin.Valor,
-                CategoriaId = origin.IdCategoria,
+                CategoriaId = origin.Categoria.Id,
                 UsuarioId = origin.IdUsuario
             };
         }
@@ -53,10 +53,8 @@ namespace despesas_backend_api_net_core.Infrastructure.Data.EntityConfig
                 Id = origin.Id,
                 Data = origin.Data,
                 Descricao = origin.Descricao,
-                Valor = origin.Valor,
-                IdCategoria = origin.CategoriaId,
-                Categoria = origin?.Categoria?.TipoCategoria != TipoCategoria.Receita ? null : origin?.Categoria?.Descricao,
-                _Categoria = new CategoriaMap().Parse(origin.Categoria),
+                Valor = origin.Valor,                
+                Categoria = new CategoriaMap().Parse(origin.Categoria),
                 IdUsuario = origin.UsuarioId,
                 Usuario = new UsuarioMap().Parse(origin.Usuario)                
             };

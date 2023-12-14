@@ -17,7 +17,7 @@ namespace Domain.ViewModel
             Assert.Equal(receita.Descricao, receitaVM .Descricao);
             Assert.Equal(receita.Valor, receitaVM .Valor);
             Assert.Equal(receita.UsuarioId, receitaVM .IdUsuario);
-            Assert.Equal(receita.CategoriaId, receitaVM .IdCategoria);
+            Assert.Equal(receita.Categoria.Id, receitaVM.Categoria.Id);
         }
     }
 }
