@@ -36,10 +36,12 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         public DespesaVM FindById(int id, int idUsuario)
         {
-            var despesa = _converter.Parse(_repositorio.Get(id));
+            var despesa = _repositorio.Get(id);
+            despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
+            var despesaVM = _converter.Parse(despesa);
 
-            if (despesa.IdUsuario == idUsuario)
-                return despesa;
+            if (despesaVM.IdUsuario == idUsuario)
+                return despesaVM;
             return null;
         }
 

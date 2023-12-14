@@ -298,12 +298,12 @@ namespace Controllers
         public void ChangePassword_With_ValidData_Returns_OkResult()
         {
             // Arrange
-            var loginVM = new LoginVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
             SetupBearerToken(1);
             _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(true);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(loginVM.Senha, loginVM.ConfirmaSenha) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -319,11 +319,11 @@ namespace Controllers
         public void ChangePassword_With_Usuario_Teste_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
             SetupBearerToken(2);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(loginVM.Senha, loginVM.ConfirmaSenha) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -337,11 +337,11 @@ namespace Controllers
         public void ChangePassword_With_NULL_Password_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM { Senha = "", ConfirmaSenha = "!12345" };
+            var changePasswordVM = new ChangePasswordVM { Senha = "", ConfirmaSenha = "!12345" };
             SetupBearerToken(1);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(loginVM.Senha, loginVM.ConfirmaSenha) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -355,11 +355,11 @@ namespace Controllers
         public void ChangePassword_With_NULL_ConfirmedPassword_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM { Senha = "!12345", ConfirmaSenha = "" };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "" };
             SetupBearerToken(1);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(loginVM.Senha, loginVM.ConfirmaSenha) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);
@@ -373,12 +373,12 @@ namespace Controllers
         public void ChangePassword_With_ValidData_Returns_BadRequest()
         {
             // Arrange
-            var loginVM = new LoginVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+            var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
             SetupBearerToken(1);
             _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(false);
 
             // Act
-            var result = _controleAcessoController.ChangePassword(loginVM) as ObjectResult;
+            var result = _controleAcessoController.ChangePassword(loginVM.Senha, loginVM.ConfirmaSenha) as ObjectResult;
 
             // Assert
             Assert.NotNull(result);

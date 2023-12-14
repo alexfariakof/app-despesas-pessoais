@@ -19,7 +19,7 @@
                 .RuleFor(r => r.UsuarioId, usuario.Id)
                 .RuleFor(r => r.Usuario, usuario)
                 .RuleFor(r => r.CategoriaId, categoria.Id)
-                .RuleFor(r => r.Categoria, categoria);
+                .RuleFor(r => r.Categoria, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
 
             return despesaFaker.Generate();
         }
@@ -36,7 +36,7 @@
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.IdUsuario, idUsuario)
-                .RuleFor(r => r.IdCategoria, idCategoria);
+                .RuleFor(r => r.Categoria, CategoriaFaker.GetNewFakerVM(UsuarioFaker.GetNewFakerVM(idUsuario), idUsuario));
 
             return despesaFaker.Generate();
         }
