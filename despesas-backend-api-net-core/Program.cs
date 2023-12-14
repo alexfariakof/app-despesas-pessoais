@@ -1,3 +1,4 @@
+using despesas_backend_api_net_core.Database_In_Memory;
 using despesas_backend_api_net_core.Infrastructure.Data.Common;
 using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
 using despesas_backend_api_net_core.Infrastructure.Security.Configuration;

@@ -67,7 +67,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 6,
                         Data = new DateTime(2023, 02, 05),
-                        Descricao = "Salário mÊs de Fevereiro",
+                        Descricao = "Salário mês de Fevereiro",
                         Valor = 2000.36m,
                         UsuarioId = 2,
                         CategoriaId = 22
@@ -382,7 +382,7 @@ namespace despesas_backend_api_net_core.Database_In_Memory.Implementations
                     {
                         Id = 41,
                         Data = new DateTime(2023, 09, 05),
-                        Descricao = "Salário ês de Setembro",
+                        Descricao = "Salário mês de Setembro",
                         Valor = 2000.36m,
                         UsuarioId = 2,
                         CategoriaId = 22
