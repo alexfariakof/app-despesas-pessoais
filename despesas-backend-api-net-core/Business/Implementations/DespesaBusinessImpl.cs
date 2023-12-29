@@ -51,6 +51,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 throw new Exception("Categoria não existe cadastrada para este usuário!");
 
             Despesa despesa = _repositorio.Update(_converter.Parse(obj));
+            despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
             return _converter.Parse(despesa);
         }
 
