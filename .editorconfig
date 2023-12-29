@@ -1,4 +1,4 @@
-﻿[*.cs]
+﻿[ "*.cs" ]
 
 dotnet_diagnostic.CS8618.severity = silent
 dotnet_diagnostic.CS8600.severity = silent
@@ -15,5 +15,6 @@ dotnet_diagnostic.CS0169.severity = silent
 dotnet_diagnostic.CS8601.severity = silent
 dotnet_diagnostic.CS8634.severity = silent
 dotnet_diagnostic.CS0162.severity = silent
+dotnet_diagnostic.CS0114.severity = silent
 dotnet_diagnostic.xUnit2002.severity = silent
 dotnet_diagnostic.SYSLIB0023.severity = silent
