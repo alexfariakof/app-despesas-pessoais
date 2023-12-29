@@ -1,8 +1,0 @@
-Reversão de commit realizados incorretamente 
-
-
-git reset --hard cb1ebb9
-git push --force origin feature/test-xunit-implementation
-
-git reset --hard  810ba07
-git push --force origin feature/test-xunit-implementation
