@@ -20,18 +20,18 @@ services:
     networks:
       - despesas-network
   
-  despesas-backend-api-net-core-db-local:
-    container_name: api-net-core-db-local
-    image: alexfariakof/api-despesas-backend-netcore-db-local-img
+  despesas-backend-api-net-core-prod:
+    container_name: api-net-core-prod
+    image: alexfariakof/api-despesas-backend-netcore-prod-img
     restart: always
     build:
       context: .
-      dockerfile: ./despesas-backend-api-net-core/Dockerfile-Database
+      dockerfile: ./despesas-backend-api-net-core/Dockerfile-Production
     environment:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: Production
     ports:
-      - "42536:42536"      
+      - "42535:42535"      
     depends_on:
       - despesas-backend-local-db
     networks:

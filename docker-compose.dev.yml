@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  despesas-backend-api-net-core:
-    container_name: dev-db-in-memory
+  despesas-backend-api-net-core-dev:
+    container_name: api-in-memory-dev
     image: alexfariakof/api-despesas-backend-netcore-dev-img
     restart: always
     build:
@@ -12,7 +12,9 @@ services:
       - 42534:42534
     networks:
       - despesas-network
-      
+  environment:
+    TZ: America/Sao_Paulo
+    ASPNETCORE_ENVIRONMENT: Development      
 networks:
     despesas-network:
         driver: bridge

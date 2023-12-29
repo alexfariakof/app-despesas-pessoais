@@ -1,4 +1,4 @@
-name: Deploy Production Project In AWS
+name: Build, Test and Publish Project Production In AWS
 on:
   push:
     tags:
@@ -148,5 +148,5 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |            
-            ./scripts/dp-api.dev.sh
+            ./scripts/dp-api.prod.sh
           continue-on-error: false
