@@ -2,10 +2,6 @@ name: .NET Build and Test Unit
 on:
   push:
     branches: 
-      - main
-      - dev
-      - release/*
-      - pre-release
       - hotfix/*
       - feature/*
       - bugfix/*
