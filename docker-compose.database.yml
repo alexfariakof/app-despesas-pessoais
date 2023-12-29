@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  db:
-    container_name: mysql-server-db-container
+  despesas-backend-local-db:
+    container_name: despesas-backend-db
     image: mysql-server-db-img
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci --default-authentication-plugin=mysql_native_password
     restart: always
@@ -23,9 +23,9 @@ services:
     networks:
       - despesas-network
   
-  backend:
-    container_name: api-backend-container
-    image: api-backend-img    
+  despesas-backend-local:
+    container_name: despesas-backend-api
+    image: backend-api-img    
     build:
       context: .
       dockerfile: ./despesas-backend-api-net-core/Dockerfile-Database

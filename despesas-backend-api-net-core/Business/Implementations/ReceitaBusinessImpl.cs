@@ -52,8 +52,8 @@ namespace despesas_backend_api_net_core.Business.Implementations
                 throw new Exception("Categoria não existe cadastrada para este usuário!");
 
             Receita receita = _repositorio.Update(_converter.Parse(obj));
+            receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
             return _converter.Parse(receita);
-
         }
 
         public bool Delete(ReceitaVM obj)
