@@ -1,5 +1,4 @@
 name: Tests End-to-End
-
 on:
   workflow_call:
     secrets:
