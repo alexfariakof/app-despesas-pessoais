@@ -404,3 +404,4 @@ Migrations/*
 despesas-backend-api-net-core/appsettings.Development.json
 despesas-backend-api-net-core/appsettings.json
 despesas-backend-api-net-core/Program.cs
+*Program.cs
