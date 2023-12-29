@@ -156,3 +156,4 @@ jobs:
     name: Tests End-to-End Triggered
     uses: alexfariakof/despesas-backend-api-net-core/.github/workflows/tests_E2E.yml@main
     secrets: inherit
+
