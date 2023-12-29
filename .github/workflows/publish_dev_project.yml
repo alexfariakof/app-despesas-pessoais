@@ -1,7 +1,7 @@
 name: Deploy Development Project in AWS
 on:
   push:
-    branch:
+    branches:
       - database-in-memory
 
 jobs:
