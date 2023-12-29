@@ -7,7 +7,7 @@ on:
 
   push:
     branches:
-      - release/*
+      - dev
 
   pull_request:
     types: [opened, synchronize, reopened]
@@ -28,7 +28,7 @@ jobs:
               -H "Authorization: token ${{ secrets.ENV_PAT }}" \
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
-              https://api.github.com/repos/alexfariakof/despesas-tests-e2e/dispatches \
+              https://api.github.com/repos/alexfariakof/despesas-e2e-tests/dispatches \
               -d "{\"event_type\":\"trigger-api-e2e-tests\", \"client_payload\": {\"unit\": false, \"integration\": true, \"father_workflow_id\": \"${{ github.run_id }}\", \"path\": \"$file_path\", \"repo\": \"$repo\" }}"
         continue-on-error: false
 
@@ -50,7 +50,7 @@ jobs:
                 -H "Accept: application/vnd.github+json" \
                 -H "Authorization: Bearer ${{ secrets.ENV_PAT }}" \
                 -H "X-GitHub-Api-Version: 2022-11-28" \
-                "https://api.github.com/repos/alexfariakof/despesas-tests-e2e/actions/runs/$triggered_workflow_id")
+                "https://api.github.com/repos/alexfariakof/despesas-e2e-tests/actions/runs/$triggered_workflow_id")
 
                 status=$(echo $response | jq -r '.status')
                 echo "Current status: $status"
@@ -73,4 +73,3 @@ jobs:
             fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

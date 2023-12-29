@@ -1,4 +1,4 @@
-name: Test and Analysis Code In Sonar Cloud
+name: Build and Test Code In Sonar Cloud
 on:
   push:
     branches: 
@@ -8,15 +8,50 @@ on:
 
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: 
+    branches:       
+      - main 
+      - dev
       - hotfix/*
       - feature/*
       - bugfix/*  
 
 permissions:
     contents: read 
+
 jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache .NET packages    
+      uses: actions/cache@v3
+      id: dotnet-cache
+      with:
+        path: ~/.nuget/packages
+        key: dotnet-packages-${{ github.repository }}
+        restore-keys: dotnet-packages-${{ github.repository }}
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      if: steps.dotnet-cache.outputs.cache-hit != 'true'
+      with:
+        dotnet-version: 7.0.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+      continue-on-error: false
+
+    - name: Build
+      run: dotnet build  -restore
+      continue-on-error: false
+
+    - name: Test
+      run: dotnet test
+      continue-on-error: false
+
   job_test_code_in_sonar:
+    needs: build_and_test
     name: Test and Analysis Code In Sonar Cloud
     runs-on: windows-latest
     steps:
