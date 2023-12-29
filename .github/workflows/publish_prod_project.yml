@@ -1,8 +1,8 @@
-name: Build, Test and Publish Project Production In AWS
+name: Deploy Production Project In AWS
 on:
   push:
-    branches: 
-      - release/*
+    tags:
+      - v*.*.*
 
 jobs:
   build_and_test_unit:   
@@ -148,14 +148,5 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |            
-            IMAGEM="${{ secrets.DOCKER_IMAGE }}"
-            container_id=$(docker ps -a -q --filter "ancestor=$IMAGEM")
-            image_id=$(docker images --format "{{.ID}}" "$IMAGEM")
-            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
-            docker rm --force $container_id
-            docker rmi --force $image_id
-            docker pull $IMAGEM            
-            docker run -d -p 42535:42535 $IMAGEM
-            container_id=$(docker ps -a -q --filter "ancestor=$IMAGEM")
-            docker cp ${{ secrets.PATH_APPSETTINGS_PROD }} $container_id:/app
-            docker restart $container_id
+            ./scripts/dp-api.dev.sh
+          continue-on-error: false
