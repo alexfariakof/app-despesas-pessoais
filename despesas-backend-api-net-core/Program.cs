@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Version 5",
-            Version = "5.0.1"
+            Version = "5.0.0"
         });
 });
 
