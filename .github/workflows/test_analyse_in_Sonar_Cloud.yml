@@ -2,6 +2,7 @@ name: Build and Test Code In Sonar Cloud
 on:
   push:
     branches: 
+      - dev 
       - hotfix/*
       - feature/*
       - bugfix/*  

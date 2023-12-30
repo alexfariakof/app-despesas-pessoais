@@ -120,7 +120,7 @@ jobs:
         env:
           DOCKER_CLI_AGGREGATE: 1  
         run: |          
-          docker-compose -f docker-compose.dev.yml build
+            docker-compose -f docker-compose.dev.yml build
         continue-on-error: false
 
       - name: Push Docker image to Docker Hub
