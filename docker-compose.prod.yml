@@ -29,7 +29,6 @@ services:
       dockerfile: ./despesas-backend-api-net-core/Dockerfile-Production
     environment:
       TZ: America/Sao_Paulo
-      ASPNETCORE_ENVIRONMENT: Production
     ports:
       - "42535:42535"      
     depends_on:
