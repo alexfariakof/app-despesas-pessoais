@@ -8,12 +8,14 @@ services:
     build:
       context: .
       dockerfile: despesas-backend-api-net-core/Dockerfile-Development
+    environment:
+      TZ: America/Sao_Paulo
+      ASPNETCORE_ENVIRONMENT: Development
     ports:
       - 42534:42534
     networks:
       - despesas-network
-  environment:
-    TZ: America/Sao_Paulo
+
 networks:
     despesas-network:
         driver: bridge

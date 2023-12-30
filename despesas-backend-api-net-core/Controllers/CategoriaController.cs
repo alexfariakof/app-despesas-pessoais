@@ -20,10 +20,6 @@ namespace despesas_backend_api_net_core.Controllers
         public IActionResult Get()
         {
             List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(IdUsuario);
-
-            if (_categoria.Count == 0)
-                return NotFound();
-
             return Ok(_categoria);
         }
     
@@ -33,10 +29,6 @@ namespace despesas_backend_api_net_core.Controllers
         {
 
             CategoriaVM _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-
-            if (_categoria == null)
-                return NotFound();
-
             return Ok(_categoria);
         }
 

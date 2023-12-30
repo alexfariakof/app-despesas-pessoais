@@ -85,8 +85,8 @@ namespace Infrastructure.EntityConfig
             var usuario = UsuarioFaker.GetNewFaker(1);
             var despesa = DespesaFaker.GetNewFaker(
                 usuario,
-                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
-            );
+                CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Despesa, usuario.Id)
+            ); 
             // Act
             var despesaVM = despesaMap.Parse(despesa);
 

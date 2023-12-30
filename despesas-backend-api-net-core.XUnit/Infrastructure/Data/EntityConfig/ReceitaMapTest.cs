@@ -81,7 +81,7 @@ namespace Infrastructure.EntityConfig
             var usuario = UsuarioFaker.GetNewFaker(1);
             var receita = ReceitaFaker.GetNewFaker(
                 usuario,
-                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+                CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Receita, usuario.Id)
             );
 
             // Act

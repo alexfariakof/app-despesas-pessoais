@@ -26,7 +26,7 @@ namespace Business
             var receitaVM = new ReceitaMap().Parse(receita);
 
             _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Receita>())).Returns(receita);
-            _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(receita.Usuario, receita.UsuarioId));
+            _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(receita.Usuario, TipoCategoria.Receita, receita.UsuarioId));
             // Act
             var result = _receitaBusiness.Create(receitaVM);
 
@@ -41,10 +41,12 @@ namespace Business
         public void FindAll_Should_Returns_List_Of_ReceitaVM()
         {
             // Arrange         
-            var idUsuario = ReceitaFaker.ReceitasVMs().First().Id;
-            var lstReceitas = ReceitaFaker.Receitas().FindAll(r => r.UsuarioId.Equals(idUsuario));
+            var receitas = ReceitaFaker.Receitas();
+            var receita = receitas.Last();
+            var idUsuario = receita.UsuarioId;
+            receitas = receitas.FindAll(r => r.UsuarioId == idUsuario);
 
-            _repositorioMock.Setup(repo => repo.GetAll()).Returns(lstReceitas);
+            _repositorioMock.Setup(repo => repo.GetAll()).Returns(receitas);
 
             // Act
             var result = _receitaBusiness.FindAll(idUsuario);
@@ -52,7 +54,7 @@ namespace Business
             // Assert
             Assert.NotNull(result);
             Assert.IsType<List<ReceitaVM>>(result);
-            Assert.Equal(lstReceitas.Count, result.Count);
+            Assert.Equal(receitas.Count, result.Count);
             _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
         }
 
@@ -100,7 +102,7 @@ namespace Business
             var receitaVM = new ReceitaMap().Parse(receita);            
 
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Receita>())).Returns(receita);
-            var categorias = CategoriaFaker.Categorias(receita.Usuario, receita.UsuarioId);
+            var categorias = CategoriaFaker.Categorias(receita.Usuario, TipoCategoria.Despesa, receita.UsuarioId);
             _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
             // Act
@@ -128,6 +130,20 @@ namespace Business
             Assert.IsType<bool>(result);
             Assert.True(result);
             _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Receita>()), Times.Once);
+        }
+        [Fact]
+        public void IsCategoriaValid_Should_Throws_Exeption()
+        {
+            // Arrange
+            var receita = ReceitaFaker.Receitas().First();
+            var receitaVM = new ReceitaMap().Parse(receita);
+
+            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Receita>())).Returns(receita);
+            var categorias = CategoriaFaker.Categorias();
+            _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
+
+            // Act & Assert 
+            Assert.Throws<ArgumentException>(() => _receitaBusiness.Create(receitaVM));
         }
     }
 }
