@@ -39,3 +39,9 @@ jobs:
     - name: Test
       run: dotnet test
       continue-on-error: false
+
+  trigger_tests_sonarcloud:
+    needs: build_and_test
+    name: TTest and Analysis Code In Sonar Cloud
+    uses: alexfariakof/despesas-backend-api-net-core/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
+    secrets: inherit

@@ -13,12 +13,6 @@ on:
       - feature/*
       - bugfix/*  
 
-  workflow_run:
-    workflows: 
-      - Build and Test
-    types:
-      - completed
-
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud
