@@ -6,7 +6,7 @@ namespace despesas_backend_api_net_core.Domain.VM
     public class ControleAcessoVM : UsuarioVM
     {
         [JsonIgnore]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [Required]
         public string Senha { get; set; }

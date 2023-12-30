@@ -64,7 +64,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         private bool IsCategoriaValid(ReceitaVM obj)
         {
-            return _repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario) != null ? true : false;
+            return _repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario && obj.Categoria.IdTipoCategoria.Equals((int)TipoCategoria.Receita)) != null ? true : false;
         }
     }
 }

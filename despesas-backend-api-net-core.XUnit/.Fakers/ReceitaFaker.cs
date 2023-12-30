@@ -16,7 +16,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.UsuarioId, usuario.Id)
                 .RuleFor(r => r.Usuario, usuario)                
-                .RuleFor(r => r.Categoria, CategoriaFaker.GetNewFaker(usuario, usuario.Id));
+                .RuleFor(r => r.Categoria, CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Receita, usuario.Id));
 
             return receitaFaker.Generate();
         }
@@ -29,7 +29,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                 .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
                 .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
                 .RuleFor(r => r.IdUsuario, idUsuario)
-                .RuleFor(r => r.Categoria, CategoriaFaker.GetNewFakerVM(UsuarioFaker.GetNewFakerVM(idUsuario), idUsuario)
+                .RuleFor(r => r.Categoria, CategoriaFaker.GetNewFakerVM(UsuarioFaker.GetNewFakerVM(idUsuario),  TipoCategoria.Receita, idUsuario)
             );
 
             return receitaFaker.Generate();
@@ -62,7 +62,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random().Next(1, 10));
 
-                var categoria = CategoriaFaker.GetNewFaker(usuario, usuario.Id);
+                var categoria = CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Receita, usuario.Id);
 
                 var receita = GetNewFaker(usuario, categoria);
                 listReceita.Add(receita);

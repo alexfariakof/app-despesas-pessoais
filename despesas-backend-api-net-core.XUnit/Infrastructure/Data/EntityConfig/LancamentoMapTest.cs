@@ -249,7 +249,7 @@ namespace Infrastructure.EntityConfig
             var usuario = UsuarioFaker.GetNewFaker(1);
             var origin = DespesaFaker.GetNewFaker(
                 usuario,
-                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+                CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Despesa, usuario.Id)
             );
 
             // Act
@@ -277,7 +277,7 @@ namespace Infrastructure.EntityConfig
             var usuario = UsuarioFaker.GetNewFaker(1);
             var origin = ReceitaFaker.GetNewFaker(
                 usuario,
-                CategoriaFaker.GetNewFaker(usuario, usuario.Id)
+                CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Receita, usuario.Id)
             );
 
             // Act

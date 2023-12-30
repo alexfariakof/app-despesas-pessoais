@@ -27,7 +27,9 @@ namespace Business
             var despesaVM = new DespesaMap().Parse(despesa);
 
             _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Despesa>())).Returns(despesa);
-            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(despesa.Usuario, despesa.UsuarioId));
+            var categorias = CategoriaFaker.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId);
+            categorias.Add(despesa.Categoria);
+            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
             
             // Act
             var result = _despesaBusiness.Create(despesaVM);
@@ -104,7 +106,7 @@ namespace Business
             despesa.Descricao = "Teste Update Despesa";
 
             _repositorioMock.Setup(repo => repo.Update(It.IsAny<Despesa>())).Returns(despesa);
-            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(despesa.Usuario, despesa.UsuarioId));
+            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId));
 
             // Act
             var result = _despesaBusiness.Update(despesaVM);

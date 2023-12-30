@@ -10,18 +10,21 @@
         public void ControleAcessoVM_Should_Set_Properties_Correctly(string nome, string sobreNome, string telefone, string email, string senha, string confirmaSenha)
         {
             // Arrange and Act
+            var id = new Random().Next();
 
             var controleAcessoVM = new ControleAcessoVM
             {
+                Id = id,
                 Nome = nome,
                 SobreNome = sobreNome,
                 Telefone = telefone,
                 Email = email,
                 Senha = senha,
                 ConfirmaSenha = confirmaSenha
-            };        
+            };
 
             // Assert
+            Assert.Equal(id, controleAcessoVM.Id);
             Assert.Equal(nome, controleAcessoVM.Nome);
             Assert.Equal(sobreNome, controleAcessoVM.SobreNome);
             Assert.Equal(telefone, controleAcessoVM.Telefone);
