@@ -1,5 +1,9 @@
 name: Test and Analysis Code In Sonar Cloud
 on:
+  workflow_call:
+    secrets:
+      ENV_PAT:
+        required: true
   push:
     branches: 
       - hotfix/*
