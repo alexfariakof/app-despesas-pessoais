@@ -131,5 +131,19 @@ namespace Business
             Assert.True(result);
             _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Receita>()), Times.Once);
         }
+        [Fact]
+        public void IsCategoriaValid_Should_Throws_Exeption()
+        {
+            // Arrange
+            var receita = ReceitaFaker.Receitas().First();
+            var receitaVM = new ReceitaMap().Parse(receita);
+
+            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Receita>())).Returns(receita);
+            var categorias = CategoriaFaker.Categorias();
+            _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
+
+            // Act & Assert 
+            Assert.Throws<ArgumentException>(() => _receitaBusiness.Create(receitaVM));
+        }
     }
 }

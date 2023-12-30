@@ -1,6 +1,7 @@
 ﻿using despesas_backend_api_net_core.Business.Implementations;
 using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
 using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
+using Moq;
 using Xunit.Extensions.Ordering;
 
 namespace Business
@@ -134,6 +135,21 @@ namespace Business
             Assert.IsType<bool>(result);
             Assert.True(result);
             _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Despesa>()), Times.Once);
+        }
+
+        [Fact]
+        public void IsCategoriaValid_Should_Throws_Exeption()
+        {
+            // Arrange
+            var despesa = DespesaFaker.Despesas().First();
+            var despesaVM = new DespesaMap().Parse(despesa);
+
+            _repositorioMock.Setup(repo => repo.Insert(It.IsAny<Despesa>())).Returns(despesa);
+            var categorias = CategoriaFaker.Categorias();
+            _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
+
+            // Act & Assert 
+            Assert.Throws<ArgumentException>(() => _despesaBusiness.Create(despesaVM));
         }
     }
 }
