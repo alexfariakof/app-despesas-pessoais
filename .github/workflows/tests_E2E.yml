@@ -4,11 +4,7 @@ on:
     secrets:
       ENV_PAT:
         required: true
-
-  push:
-    branches:
-      - dev
-
+  
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
