@@ -2,7 +2,10 @@ name: Build and Test Code In Sonar Cloud
 on:
   push:
     branches: 
-      - dev 
+      - main 
+      - dev
+      - database-in-memory
+      - database
       - hotfix/*
       - feature/*
       - bugfix/*  
@@ -12,6 +15,8 @@ on:
     branches:       
       - main 
       - dev
+      - database-in-memory
+      - database
       - hotfix/*
       - feature/*
       - bugfix/*  
