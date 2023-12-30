@@ -1,5 +1,4 @@
 version: '3.4'
-
 services:
   despesas-backend-local-db:
     container_name: despesas-backend-db
