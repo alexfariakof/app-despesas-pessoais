@@ -33,8 +33,8 @@ namespace Infrastructure.Repositories.Generic
             this.UsuarioVM = new UsuarioMap().Parse(this.Usuario);
             this.ControleAcesso = ControleAcessoFaker.GetNewFaker(this.Usuario);
             this.ControleAcessoVM = ControleAcessoFaker.GetNewFakerVM(this.UsuarioVM);
-            this.ListCategorias = CategoriaFaker.Categorias(this.Usuario, this.Usuario.Id);
-            this.ListCategoriaVMs = CategoriaFaker.CategoriasVMs(this.UsuarioVM, this.Usuario.Id);
+            this.ListCategorias = CategoriaFaker.Categorias(this.Usuario, TipoCategoria.Todas, this.Usuario.Id);
+            this.ListCategoriaVMs = CategoriaFaker.CategoriasVMs(this.UsuarioVM, TipoCategoria.Todas, this.Usuario.Id);
             this.ListDespesas = DespesaFaker.Despesas(this.Usuario, this.Usuario.Id);
             this.ListDespesasVMs = DespesaFaker.DespesasVMs(this.UsuarioVM, this.Usuario.Id);
             this.ListReceitas = ReceitaFaker.Receitas(this.Usuario, this.Usuario.Id);

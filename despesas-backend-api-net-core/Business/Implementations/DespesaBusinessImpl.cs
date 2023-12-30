@@ -20,7 +20,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         public DespesaVM Create(DespesaVM obj)
         {
             if (!IsCategoriaValid(obj))
-                throw new Exception("Categoria não existe cadastrada para este usuário!");
+                throw new Exception("Erro Categoria inexistente ou não cadastrada!");
 
             Despesa despesa = _repositorio.Insert(_converter.Parse(obj));
             return _converter.Parse(despesa);
@@ -48,7 +48,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
         public DespesaVM Update(DespesaVM obj)
         {
             if (!IsCategoriaValid(obj))
-                throw new Exception("Categoria não existe cadastrada para este usuário!");
+                throw new Exception("Erro Categoria inexistente ou não cadastrada!");
 
             Despesa despesa = _repositorio.Update(_converter.Parse(obj));
             despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
@@ -64,7 +64,7 @@ namespace despesas_backend_api_net_core.Business.Implementations
 
         private bool IsCategoriaValid(DespesaVM obj)
         {
-            return _repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario) != null ? true : false;
+            return _repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario && obj.Categoria.IdTipoCategoria == (int)TipoCategoria.Despesa) != null ? true : false;
         }
     }
 }

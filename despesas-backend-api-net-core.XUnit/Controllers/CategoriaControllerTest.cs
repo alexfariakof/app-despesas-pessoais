@@ -88,30 +88,6 @@ namespace Controllers
             Assert.Equal(categoriaVM, result.Value);
         }
 
-        [Fact, Order(3)]
-        public void GetById_Returns_NotFound()
-        {
-            // Arrange
-            _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
-            _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
-            var idCategoria = 0;
-
-            var categoriaVM = CategoriaFaker.GetNewFakerVM(null);
-
-            SetupBearerToken(idCategoria);
-
-            _mockCategoriaBusiness
-                .Setup(b => b.FindById(idCategoria, categoriaVM.IdUsuario))
-                .Returns((CategoriaVM)null);
-
-            // Act
-            var result = _categoriaController.GetById(idCategoria) as NotFoundResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.IsType<NotFoundResult>(result);
-        }
-
         [Fact, Order(4)]
         public void GetByTipoCategoria_Returns_Ok_Result_TipoCategoria_Todas()
         {

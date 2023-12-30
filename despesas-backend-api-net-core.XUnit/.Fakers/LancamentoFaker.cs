@@ -86,7 +86,7 @@ namespace despesas_backend_api_net_core.XUnit.Fakers
                 if (idUsuario == null)
                     usuario = UsuarioFaker.GetNewFaker(new Random(1).Next(1, 10));
 
-                var categoria = CategoriaFaker.GetNewFaker(usuario, usuario.Id);
+                var categoria = CategoriaFaker.GetNewFaker(usuario, TipoCategoria.Todas, usuario.Id);
 
                 var despesa = DespesaFaker.GetNewFaker(usuario, categoria);
                 var receita = ReceitaFaker.GetNewFaker(usuario, categoria);
