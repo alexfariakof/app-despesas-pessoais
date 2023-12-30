@@ -147,7 +147,7 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |            
-            ./scripts/dp-api.prod.sh
+            ./scripts/dp-api.dev.sh
           continue-on-error: false
 
   trigger_e2e_tests:
