@@ -1,11 +1,6 @@
 name: Build and Test Code In Sonar Cloud
-on:
-  workflow_run:
-    workflows: 
-      - Build and Test
-    types:
-      - completed
 
+on:
   push:
     branches: 
       - hotfix/*
@@ -19,8 +14,11 @@ on:
       - feature/*
       - bugfix/*  
 
-permissions:
-    contents: read 
+  workflow_run:
+    workflows: 
+      - Build and Test
+    types:
+      - completed
 
 jobs:
   test_code_in_sonar:
