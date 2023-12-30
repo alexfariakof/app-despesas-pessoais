@@ -1,7 +1,8 @@
 name: Build and Test Code In Sonar Cloud
 on:
   workflow_run:
-    workflows: ["Build and Test"]
+    workflows: 
+      - Build and Test
     types:
       - completed
 
