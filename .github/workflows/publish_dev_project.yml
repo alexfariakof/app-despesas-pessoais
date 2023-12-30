@@ -109,7 +109,7 @@ jobs:
         
   deploy_dev:
     needs: build_analyze_code_in_sonar
-    name: Docker Build and Publish in Production
+    name: Docker Build and Publish in Development
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
