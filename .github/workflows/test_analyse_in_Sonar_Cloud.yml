@@ -1,10 +1,9 @@
-name: Build and Test Code In Sonar Cloud
+name: Test and Analysis Code In Sonar Cloud
 on:
-  workflow_run:
-    workflows: ["Build and Test"]
-    types:
-      - completed
-
+  workflow_call:
+    secrets:
+      ENV_PAT:
+        required: true
   push:
     branches: 
       - hotfix/*
@@ -17,9 +16,6 @@ on:
       - hotfix/*
       - feature/*
       - bugfix/*  
-
-permissions:
-    contents: read 
 
 jobs:
   test_code_in_sonar:

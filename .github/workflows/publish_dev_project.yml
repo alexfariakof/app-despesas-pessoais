@@ -36,7 +36,6 @@ jobs:
     name: Test and Analysis Code In Sonar Cloud
     runs-on: windows-latest
     steps:
-
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
