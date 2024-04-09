@@ -1,6 +1,4 @@
-﻿using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Controllers;
-using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
+﻿using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

@@ -1,5 +1,3 @@
-
-
 # Função para matar processos com base no nome do processo
 function Stop-ProcessesByName {
     $processes = Get-Process | Where-Object { $_.ProcessName -like 'dotnet*' } | Where-Object { $_.MainWindowTitle -eq '' }

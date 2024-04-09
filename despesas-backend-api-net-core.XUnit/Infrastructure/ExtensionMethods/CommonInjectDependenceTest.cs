@@ -1,14 +1,8 @@
-﻿
-using despesas_backend_api_net_core.Business.Generic;
-using despesas_backend_api_net_core.Business;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
+﻿using DataSeeders;
+using despesas_backend_api_net_core.CommonInjectDependence;
+using Domain.Core;
+using Domain.Core.Interface;
 using Microsoft.Extensions.DependencyInjection;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
-using despesas_backend_api_net_core.Infrastructure.Security;
-using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
-using despesas_backend_api_net_core.Database_In_Memory;
 
 namespace Test.ExtensionMethods
 {

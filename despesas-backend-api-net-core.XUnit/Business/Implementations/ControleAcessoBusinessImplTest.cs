@@ -1,6 +1,4 @@
-﻿using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+﻿using Business.Authentication;
 using Microsoft.Extensions.Configuration;
 using Xunit.Extensions.Ordering;
 

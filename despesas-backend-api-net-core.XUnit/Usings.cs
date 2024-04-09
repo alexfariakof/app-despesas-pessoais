@@ -1,20 +1,26 @@
 global using Xunit;
 global using Moq;
 global using Bogus;
-global using despesas_backend_api_net_core.Domain.Entities;
-global using despesas_backend_api_net_core.Domain.VM;
-global using despesas_backend_api_net_core.Infrastructure.Data.Common;
-global using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Implementations;
+global using Domain.Entities;
+global using Domain.VM;
+global using Business;
+global using Business.Generic;
+global using Business.Implementations;
+global using Repository;
+global using Repository.Mapping;
+global using Repository.Persistency;
+global using Repository.Persistency.Generic;
+global using Repository.Persistency.Implementations;
 global using Microsoft.EntityFrameworkCore;
 global using despesas_backend_api_net_core.XUnit.Fakers;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories.Generic;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Data;
+using Domain.Core;
+using Business.Authentication;
 
 public static class Usings
 {
@@ -63,20 +69,9 @@ public static class Usings
             );
 
         _mock.Setup(repo => repo.GetAll()).Returns(() => _dataSet.ToList());
-        _mock.Setup(repo => repo.Insert(It.IsAny<T>())).Returns((T item) => item);
+        _mock.Setup(repo => repo.Insert(ref It.Ref<T>.IsAny));
         _mock
-            .Setup(repo => repo.Update(It.IsAny<T>()))
-            .Returns(
-                (T updatedItem) =>
-                {
-                    var existingItem = _dataSet.FirstOrDefault(item => item.Id == updatedItem.Id);
-                    if (existingItem != null)
-                    {
-                        existingItem = updatedItem;
-                    }
-                    return updatedItem;
-                }
-            );
+            .Setup(repo => repo.Update(ref It.Ref<T>.IsAny));
         _mock
             .Setup(repo => repo.Delete(It.IsAny<T>()))
             .Returns(

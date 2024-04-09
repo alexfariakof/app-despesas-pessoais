@@ -1,6 +1,4 @@
-﻿using despesas_backend_api_net_core.Domain.Entities;
-
-namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace despesas_backend_api_net_core.XUnit.Fakers
 {
     public class ReceitaFaker
     {

@@ -1,7 +1,4 @@
-﻿
-using despesas_backend_api_net_core.Business.Implementations;
-using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
-using Xunit.Extensions.Ordering;
+﻿using Xunit.Extensions.Ordering;
 
 namespace Business
 {

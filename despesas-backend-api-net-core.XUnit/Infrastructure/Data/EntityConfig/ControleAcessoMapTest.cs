@@ -1,5 +1,4 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Xunit.Extensions.Ordering;
 
 namespace Infrastructure.EntityConfig

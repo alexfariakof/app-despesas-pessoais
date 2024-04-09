@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
+﻿using Domain.Core;
+using Domain.Core.Interface;
 
 namespace Infrastructure.Security
 {

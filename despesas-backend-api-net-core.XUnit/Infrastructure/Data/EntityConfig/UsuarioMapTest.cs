@@ -1,5 +1,4 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Data.EntityConfig;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Reflection;
 using Xunit.Extensions.Ordering;
 
@@ -66,12 +65,6 @@ namespace Infrastructure.EntityConfig
             // Arrange
             var map = new UsuarioMap();
             var origin = UsuarioFaker.GetNewFakerVM(1);
-            var originPerfilUsuarioProperty = typeof(UsuarioVM).GetProperty(
-                "PerfilUsuario",
-                BindingFlags.NonPublic | BindingFlags.Instance
-            );
-
-            var originPerfilUsuarioValue = originPerfilUsuarioProperty.GetValue(origin, null);
 
             // Act
             var result = map.Parse(origin);
@@ -82,7 +75,7 @@ namespace Infrastructure.EntityConfig
             Assert.Equal(origin.Nome, result.Nome);
             Assert.Equal(origin.SobreNome, result.SobreNome);
             Assert.Equal(origin.Telefone, result.Telefone);
-            Assert.Equal(originPerfilUsuarioValue, result.PerfilUsuario);
+            Assert.Equal(origin.PerfilUsuario, result.PerfilUsuario);
         }
 
         [Fact]

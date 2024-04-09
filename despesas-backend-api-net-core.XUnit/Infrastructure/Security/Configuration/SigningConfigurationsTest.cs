@@ -1,4 +1,4 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+﻿using Business.Authentication;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Security.Configuration

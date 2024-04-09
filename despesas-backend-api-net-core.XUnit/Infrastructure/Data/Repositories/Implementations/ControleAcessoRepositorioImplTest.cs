@@ -1,6 +1,5 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Data.Repositories;
-using despesas_backend_api_net_core.Infrastructure.Security;
-using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
+﻿using Domain.Core;
+using Domain.Core.Interface;
 using Xunit.Extensions.Ordering;
 
 namespace Infrastructure.Repositories

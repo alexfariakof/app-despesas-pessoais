@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>despesas_backend_api_net_core.XUnit</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\alexf\.nuget\packages\microsoft.testplatform.testhost\17.7.2\build\netcoreapp3.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\alexf\.nuget\packages\microsoft.testplatform.testhost\17.7.2\build\netcoreapp3.1\x64\testhost.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include=".Fakers\CategoriaFaker.cs" />
+    <Compile Include=".Fakers\DespesaFaker.cs" />
+    <Compile Include=".Fakers\GraficoFaker.cs" />
+    <Compile Include=".Fakers\ImagemPerfilUsuarioFaker.cs" />
+    <Compile Include=".Fakers\LancamentoFaker.cs" />
+    <Compile Include=".Fakers\ReceitaFaker.cs" />
+    <Compile Include=".Fakers\ControleAcessoFaker.cs" />
+    <Compile Include=".Fakers\UsuarioFaker.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
+    <PackageReference Include="coverlet.msbuild" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+    <PackageReference Include="Moq.EntityFrameworkCore" Version="7.0.0.2" />
+    <PackageReference Include="xunit" Version="2.5.0" />
+    <PackageReference Include="Xunit.Extensions.Ordering" Version="1.4.5" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\despesas-backend-api-net-core\despesas-backend-api-net-core.csproj" />
+  </ItemGroup>
+</Project>

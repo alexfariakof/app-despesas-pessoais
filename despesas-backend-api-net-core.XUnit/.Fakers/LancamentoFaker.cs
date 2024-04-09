@@ -1,5 +1,4 @@
-﻿using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace despesas_backend_api_net_core.XUnit.Fakers
 {

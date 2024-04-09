@@ -1,4 +1,4 @@
-﻿using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
+﻿using despesas_backend_api_net_core;
 using System.Globalization;
 
 namespace Infrastructure.ExtensionMethods

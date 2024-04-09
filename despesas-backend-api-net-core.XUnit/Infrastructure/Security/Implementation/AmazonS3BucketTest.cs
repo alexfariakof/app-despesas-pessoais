@@ -1,5 +1,5 @@
-﻿using despesas_backend_api_net_core.Infrastructure.Security.Implementation;
-using despesas_backend_api_net_core.Infrastructure.Security;
+﻿using Domain.Core;
+using Domain.Core.Interface;
 using Xunit.Extensions.Ordering;
 
 namespace Infrastructure.Security
