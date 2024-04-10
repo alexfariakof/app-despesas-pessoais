@@ -5,7 +5,7 @@ EXPOSE 42534
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS=http://+:42534
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "."]
 RUN dotnet restore "despesas-backend-api-net-core.csproj"
