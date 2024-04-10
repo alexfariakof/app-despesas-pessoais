@@ -8,9 +8,7 @@ public class SaldoRepositorioImplTest
     private DateTime _mockAnoMes = DateTime.Today;
     public SaldoRepositorioImplTest()
     {
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "Saldo Repo Database InMemory")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Saldo Repo Database InMemory").Options;
         _context = new RegisterContext(options);
         _mockUsuario = UsuarioFaker.Instance.GetNewFaker();
         _context.Usuario.AddRange(_mockUsuario);
