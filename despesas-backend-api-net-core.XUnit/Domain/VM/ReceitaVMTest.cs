@@ -5,7 +5,7 @@ public class ReceitaVMTest
     public void ReceitaVM_Should_Set_Properties_Correctly()
     {
         // Arrange and Act
-        var receita = ReceitaFaker.Receitas().First();
+        var receita = ReceitaFaker.Instance.Receitas().First();
         var receitaVM = new ReceitaMap().Parse(receita);
 
         // Assert

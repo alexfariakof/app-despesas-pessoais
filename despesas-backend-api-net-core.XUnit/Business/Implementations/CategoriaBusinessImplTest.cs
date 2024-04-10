@@ -1,8 +1,5 @@
-﻿using Xunit.Extensions.Ordering;
+﻿namespace Business;
 
-namespace Business;
-
-[Order(101)]
 public class CategoriaBusinessImplTest
 {
     private readonly Mock<IRepositorio<Categoria>> _repositorioMock;
@@ -11,8 +8,8 @@ public class CategoriaBusinessImplTest
 
     public CategoriaBusinessImplTest()
     {
-        var usuario = UsuarioFaker.GetNewFaker();
-        _categorias = CategoriaFaker.Categorias(usuario);
+        var usuario = UsuarioFaker.Instance.GetNewFaker();
+        _categorias = CategoriaFaker.Instance.Categorias(usuario);
         _repositorioMock = Usings.MockRepositorio(_categorias);
         _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);
     }
@@ -97,7 +94,7 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
 
-        var categoriaVM = CategoriaFaker.GetNewFakerVM(null);
+        var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(null);
 
         var categoria = new CategoriaMap().Parse(categoriaVM);
 

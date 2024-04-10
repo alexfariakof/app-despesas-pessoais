@@ -35,7 +35,7 @@ if ($latestDir -ne $null) {
     $guid = $latestDir.Name
   
     # Constrói os caminhos dinamicamente
-    $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core.XUnit"
+    $projectTestPath = ".\despesas-backend-api-net-core.XUnit\"
     $coverageXmlPath = Join-Path -Path (Join-Path -Path $projectTestPath -ChildPath "TestResults") -ChildPath $guid
 
     # Gera o relatório de cobertura usando o GUID capturado

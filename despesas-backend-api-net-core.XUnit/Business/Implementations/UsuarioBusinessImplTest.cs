@@ -1,8 +1,4 @@
-﻿using Xunit.Extensions.Ordering;
-
-namespace Business;
-
-[Order(109)]
+﻿namespace Business;
 public class UsuarioBusinessImplTest
 {
     private readonly Mock<IRepositorio<Usuario>> _repositorioMock;
@@ -13,7 +9,7 @@ public class UsuarioBusinessImplTest
     {
         _repositorioMock = new Mock<IRepositorio<Usuario>>();
         _usuarioBusiness = new UsuarioBusinessImpl(_repositorioMock.Object);
-        _usuarios = UsuarioFaker.GetNewFakersUsuarios();
+        _usuarios = UsuarioFaker.Instance.GetNewFakersUsuarios();
     }
 
     [Fact]

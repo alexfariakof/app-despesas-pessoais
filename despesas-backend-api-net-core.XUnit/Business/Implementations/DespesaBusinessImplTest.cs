@@ -1,8 +1,5 @@
-﻿using Xunit.Extensions.Ordering;
+﻿namespace Business;
 
-namespace Business;
-
-[Order(103)]
 public class DespesaBusinessImplTest
 {
     private readonly Mock<IRepositorio<Despesa>> _repositorioMock;
@@ -20,11 +17,11 @@ public class DespesaBusinessImplTest
     public void Create_Should_Returns_Parsed_Despesa_VM()
     {
         // Arrange
-        var despesa = DespesaFaker.Despesas().First();
+        var despesa = DespesaFaker.Instance.Despesas().First();
         var despesaVM = new DespesaMap().Parse(despesa);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
-        var categorias = CategoriaFaker.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId);
+        var categorias = CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId);
         categorias.Add(despesa.Categoria);
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
         
@@ -42,7 +39,7 @@ public class DespesaBusinessImplTest
     public void FindAll_Should_Returns_List_Of_DespesaVM()
     {
         // Arrange                     
-        var despesas = DespesaFaker.Despesas();
+        var despesas = DespesaFaker.Instance.Despesas();
         var despesa = despesas.First();
         var idUsuario = despesa.UsuarioId;
         despesas = despesas.FindAll(d => d.UsuarioId == idUsuario);
@@ -62,7 +59,7 @@ public class DespesaBusinessImplTest
     public void FindById_Should_Returns_Parsed_DespesaVM()
     {
         // Arrange
-        var despesa = DespesaFaker.Despesas().First();
+        var despesa = DespesaFaker.Instance.Despesas().First();
         var id = despesa.Id;
 
         _repositorioMock.Setup(repo => repo.Get(id)).Returns(despesa);
@@ -81,7 +78,7 @@ public class DespesaBusinessImplTest
     public void FindById_Should_Returns_Null_When_Parsed_DespesaVM()
     {
         // Arrange
-        var despesa = DespesaFaker.Despesas().First();
+        var despesa = DespesaFaker.Instance.Despesas().First();
         var id = despesa.Id;
 
         _repositorioMock.Setup(repo => repo.Get(id)).Returns(despesa);
@@ -98,12 +95,12 @@ public class DespesaBusinessImplTest
     public void Update_Should_Returns_Parsed_DespesaVM()
     {
         // Arrange         
-        var despesa = DespesaFaker.Despesas().First();
+        var despesa = DespesaFaker.Instance.Despesas().First();
         despesa.Descricao = "Teste Update Despesa";
         var despesaVM = new DespesaMap().Parse(despesa);        
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Despesa>.IsAny));
-        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId));
+        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId));
 
         // Act
         var result = _despesaBusiness.Update(despesaVM);
@@ -120,7 +117,7 @@ public class DespesaBusinessImplTest
     public void Delete_Should_Returns_True()
     {
         // Arrange
-        var despesa = DespesaFaker.Despesas().First();
+        var despesa = DespesaFaker.Instance.Despesas().First();
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Despesa>())).Returns(true);
         var despesaVM = new DespesaMap().Parse(despesa);
         
@@ -137,11 +134,11 @@ public class DespesaBusinessImplTest
     public void IsCategoriaValid_Should_Throws_Exeption()
     {
         // Arrange
-        var despesa = DespesaFaker.Despesas().First();
+        var despesa = DespesaFaker.Instance.Despesas().First();
         var despesaVM = new DespesaMap().Parse(despesa);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
-        var categorias = CategoriaFaker.Categorias();
+        var categorias = CategoriaFaker.Instance.Categorias();
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
         // Act & Assert 

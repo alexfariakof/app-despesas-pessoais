@@ -1,24 +1,20 @@
-﻿using System.Collections.Generic;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities;
+public class GraficoTest
 {
-    public class GraficoTest
+    [Fact]
+    public void Grafico_Should_Set_Properties_Correctly()
     {
-        [Fact]
-        public void Grafico_Should_Set_Properties_Correctly()
+        var somatorioDespesasPorAno = new Mock<Dictionary<String, decimal>>().Object;
+
+        var somatorioReceitasPorAno =  new Mock<Dictionary<String, decimal>>().Object;
+
+        var grafico = new Grafico
         {
-            var somatorioDespesasPorAno = new Mock<Dictionary<String, decimal>>().Object;
+            SomatorioDespesasPorAno = somatorioDespesasPorAno,
+            SomatorioReceitasPorAno = somatorioReceitasPorAno
+        };
 
-            var somatorioReceitasPorAno =  new Mock<Dictionary<String, decimal>>().Object;
-
-            var grafico = new Grafico
-            {
-                SomatorioDespesasPorAno = somatorioDespesasPorAno,
-                SomatorioReceitasPorAno = somatorioReceitasPorAno
-            };
-
-            Assert.Equal(grafico.SomatorioDespesasPorAno, somatorioDespesasPorAno);
-            Assert.Equal(grafico.SomatorioReceitasPorAno, somatorioReceitasPorAno);            
-        }
+        Assert.Equal(grafico.SomatorioDespesasPorAno, somatorioDespesasPorAno);
+        Assert.Equal(grafico.SomatorioReceitasPorAno, somatorioReceitasPorAno);            
     }
 }

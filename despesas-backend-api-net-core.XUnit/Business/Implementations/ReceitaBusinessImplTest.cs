@@ -1,8 +1,5 @@
-﻿using Xunit.Extensions.Ordering;
+﻿namespace Business;
 
-namespace Business;
-
-[Order(107)]
 public class ReceitaBusinessImplTest
 {
     private readonly Mock<IRepositorio<Receita>> _repositorioMock;
@@ -19,11 +16,11 @@ public class ReceitaBusinessImplTest
     public void Create_Should_Returns_Parsed_ReceitaVM()
     {
         // Arrange
-        var receita = ReceitaFaker.Receitas().First();
+        var receita = ReceitaFaker.Instance.Receitas().First();
         var receitaVM = new ReceitaMap().Parse(receita);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny));
-        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Categorias(receita.Usuario, TipoCategoria.Receita, receita.UsuarioId));
+        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Receita, receita.UsuarioId));
         // Act
         var result = _receitaBusiness.Create(receitaVM);
 
@@ -38,7 +35,7 @@ public class ReceitaBusinessImplTest
     public void FindAll_Should_Returns_List_Of_ReceitaVM()
     {
         // Arrange         
-        var receitas = ReceitaFaker.Receitas();
+        var receitas = ReceitaFaker.Instance.Receitas();
         var receita = receitas.Last();
         var idUsuario = receita.UsuarioId;
         receitas = receitas.FindAll(r => r.UsuarioId == idUsuario);
@@ -59,8 +56,8 @@ public class ReceitaBusinessImplTest
     public void FindById_Should_Returns_Parsed_ReceitaVM()
     {
         // Arrange
-        var id = ReceitaFaker.ReceitasVMs().First().Id;
-        var receita = ReceitaFaker.Receitas().First();
+        var id = ReceitaFaker.Instance.ReceitasVMs().First().Id;
+        var receita = ReceitaFaker.Instance.Receitas().First();
 
         _repositorioMock.Setup(repo => repo.Get(id)).Returns(receita);
 
@@ -79,7 +76,7 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var id = 0;
-        var receita = ReceitaFaker.Receitas()[0];
+        var receita = ReceitaFaker.Instance.Receitas()[0];
 
         _repositorioMock.Setup(repo => repo.Get(id)).Returns(receita);
 
@@ -95,11 +92,11 @@ public class ReceitaBusinessImplTest
     public void Update_Should_Returns_Parsed_ReceitaVM()
     {
         // Arrange
-        var receita = ReceitaFaker.Receitas().First();
+        var receita = ReceitaFaker.Instance.Receitas().First();
         var receitaVM = new ReceitaMap().Parse(receita);            
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
-        var categorias = CategoriaFaker.Categorias(receita.Usuario, TipoCategoria.Despesa, receita.UsuarioId);
+        var categorias = CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Despesa, receita.UsuarioId);
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
         // Act
@@ -116,7 +113,7 @@ public class ReceitaBusinessImplTest
     public void Delete_Should_Returns_True()
     {
         // Arrange
-        var receita = ReceitaFaker.Receitas().First();
+        var receita = ReceitaFaker.Instance.Receitas().First();
         var receitaVM = new ReceitaMap().Parse(receita);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Receita>())).Returns(true);
         
@@ -132,11 +129,11 @@ public class ReceitaBusinessImplTest
     public void IsCategoriaValid_Should_Throws_Exeption()
     {
         // Arrange
-        var receita = ReceitaFaker.Receitas().First();
+        var receita = ReceitaFaker.Instance.Receitas().First();
         var receitaVM = new ReceitaMap().Parse(receita);
 
-        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny));
-        var categorias = CategoriaFaker.Categorias();
+        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny)).Throws(() => new ArgumentException("Erro InvalidCategorie"));
+        var categorias = CategoriaFaker.Instance.Categorias();
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
         // Act & Assert 
