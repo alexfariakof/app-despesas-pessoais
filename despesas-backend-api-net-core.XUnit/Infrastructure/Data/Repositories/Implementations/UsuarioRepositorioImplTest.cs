@@ -232,7 +232,7 @@ public class UsuarioRepositorioImplTest
     }
 
     [Fact]
-    public void Update_Should_Try_Update_Item_And_Return_Null()
+    public void Update_Should_Try_Update_Item_And_Return_Erro()
     {
         // Arrange
         var dataSet = UsuarioFaker.GetNewFakersUsuarios();
@@ -246,12 +246,9 @@ public class UsuarioRepositorioImplTest
         _dbContextMock.AddRange(dataSet);
         var _mockRepository = new Mock<UsuarioRepositorioImpl>(_dbContextMock);
 
-        // Act
-        _mockRepository.Object.Update(ref existingItem);
-        var result = existingItem;
-
-        // Assert
-        Assert.IsType<Exception>(result);
+        // Act && Assert
+        var exception = Assert.Throws<Exception>(() => _mockRepository.Object.Update(ref existingItem));
+        Assert.Equal("Erro ao atualizar usuário!", exception.Message);
     }
 
     [Fact]
