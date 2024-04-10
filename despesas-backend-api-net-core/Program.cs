@@ -1,12 +1,12 @@
-using despesas_backend_api_net_core.Database_In_Memory;
-using despesas_backend_api_net_core.Infrastructure.Data.Common;
-using despesas_backend_api_net_core.Infrastructure.ExtensionMethods;
-using despesas_backend_api_net_core.Infrastructure.Security.Configuration;
+using Business.Authentication;
+using DataSeeders;
+using despesas_backend_api_net_core.CommonInjectDependence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Repository;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);

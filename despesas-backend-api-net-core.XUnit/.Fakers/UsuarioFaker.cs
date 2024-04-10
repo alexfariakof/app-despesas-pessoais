@@ -1,17 +1,27 @@
-﻿namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace XUnit.Fakers;
+public class UsuarioFaker
 {
-    public class UsuarioFaker
+    static int counter = 1;
+    static int counterVM = 1;
+
+    private static UsuarioFaker? _instance;
+    private static readonly object LockObject = new object();
+    public static UsuarioFaker Instance
     {
-        static int counter = 1;
-        static int counterVM = 1;
+        get
+        {
+            lock (LockObject)
+            {
+                return _instance ??= new UsuarioFaker();
+            }
+        }
+    }
 
-        private UsuarioFaker UsuarioFakerDataset { get; set; }
+    private UsuarioFaker() { }
 
-        public Usuario Usuario { get; set; }
-
-        public UsuarioVM UsuarioVM { get; set; }
-
-        public static Usuario GetNewFaker(int? idUsuario = null)
+    public Usuario GetNewFaker(int? idUsuario = null)
+    {
+        lock (LockObject)
         {
             if (idUsuario == null)
                 idUsuario = counter++;
@@ -27,8 +37,11 @@
 
             return usuarioFaker.Generate();
         }
+    }
 
-        public static UsuarioVM GetNewFakerVM(int? idUsuario = null)
+    public UsuarioVM GetNewFakerVM(int? idUsuario = null)
+    {
+        lock (LockObject)
         {
             if (idUsuario == null)
                 idUsuario = counterVM++;
@@ -42,26 +55,31 @@
 
             return usuarioFaker.Generate();
         }
+    }
 
-        public static List<UsuarioVM> GetNewFakersUsuariosVMs()
+    public List<UsuarioVM> GetNewFakersUsuariosVMs(int count = 3)
+    {
+        lock (LockObject)
         {
+
             var listUsuarioVM = new List<UsuarioVM>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < count; i++)
             {
                 var usuarioVM = GetNewFakerVM();
                 listUsuarioVM.Add(usuarioVM);
             }
-            return listUsuarioVM;
+            return listUsuarioVM;            
         }
+    }
 
-        public static List<Usuario> GetNewFakersUsuarios()
+    public List<Usuario> GetNewFakersUsuarios(int count = 3)
+    {
+        lock (LockObject)
         {
             var listUsuario = new List<Usuario>();
-
-            counter += 10;
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < count; i++)
             {
-                var usuario = UsuarioFaker.GetNewFaker();
+                var usuario = UsuarioFaker.Instance.GetNewFaker();
                 listUsuario.Add(usuario);
             }
             return listUsuario;

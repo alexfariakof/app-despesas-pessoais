@@ -1,4 +1,4 @@
-
+cls 
 
 # Função para matar processos com base no nome do processo
 function Stop-ProcessesByName {
@@ -21,23 +21,25 @@ if (Test-Path $reportPath) {
 }
 
 # Executa o teste e coleta o GUID gerado
-dotnet clean
+dotnet clean > $null 2>&1
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 
 # Encontra o diretório mais recente na pasta TestResults
 $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-$sourceDirs = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core"
+$projectPath =  Join-Path -Path (Get-Location) -ChildPath ""
+$sourceDirs = "$projectPath\Business;$projectPath\Domain;$projectPath\Repository;$projectPath\despesas-backend-api-net-core;"
+$filefilters = "$projectPath\DataSeeders\**;$projectPath\MsMySqlServer.Migrations\**"
 
 # Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
 if ($latestDir -ne $null) {
     $guid = $latestDir.Name
   
     # Constrói os caminhos dinamicamente
-    $baseDirectory = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core.XUnit"
-    $coverageXmlPath = Join-Path -Path (Join-Path -Path $baseDirectory -ChildPath "TestResults") -ChildPath $guid
+    $projectTestPath = ".\despesas-backend-api-net-core.XUnit\"
+    $coverageXmlPath = Join-Path -Path (Join-Path -Path $projectTestPath -ChildPath "TestResults") -ChildPath $guid
 
     # Gera o relatório de cobertura usando o GUID capturado
-    reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$sourceDirs\Database-In-Memory\**
+    reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
     
 
     # Abre a página index.html no navegador padrão do sistema operacional
