@@ -9,31 +9,15 @@ public class DespesaMap : IParser<DespesaVM, Despesa>, IParser<Despesa, DespesaV
 {
     public void Configure(EntityTypeBuilder<Despesa> builder)
     {
+        builder.ToTable(nameof(Despesa));
         builder.HasKey(m => m.Id);
-
-        builder.Property(m => m.Descricao)
-        .IsRequired(false)
-        .HasMaxLength(100);
-        
-        builder.Property(m => m.UsuarioId)
-       .IsRequired();
-
-        builder.Property(m => m.CategoriaId)
-        .IsRequired();
-
-        builder.Property(m => m.Data)
-        .HasColumnType("timestamp")
-        .HasDefaultValueSql<DateTime>("NOW()")
-        .IsRequired();
-        
-
-        builder.Property(m => m.DataVencimento)
-        .HasColumnType("timestamp")
-        .HasDefaultValueSql(null);
-
-        builder.Property(m => m.Valor)
-        .HasColumnType("decimal(10, 2)")
-        .HasDefaultValue(0);               
+        builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.Property(m => m.Descricao).IsRequired(false).HasMaxLength(100);        
+        builder.Property(m => m.UsuarioId).IsRequired();
+        builder.Property(m => m.CategoriaId).IsRequired();
+        builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();
+        builder.Property(m => m.DataVencimento).HasColumnType("timestamp").HasDefaultValueSql(null);
+        builder.Property(m => m.Valor).HasColumnType("decimal(10, 2)").HasDefaultValue(0);               
     }
     public Despesa Parse(DespesaVM origin)
     {

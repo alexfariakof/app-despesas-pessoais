@@ -17,15 +17,14 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
     }
     public UsuarioVM Create(UsuarioVM usuarioVM)
     {
-        var usuario = new Usuario
-        {
-            Id = usuarioVM.Id,
-            Nome = usuarioVM.Nome,
-            SobreNome = usuarioVM.SobreNome,
-            Email = usuarioVM.Email,
-            Telefone = usuarioVM.Telefone,
-            StatusUsuario = StatusUsuario.Ativo
-        };
+        var usuario = new Usuario().CreateUsuario(
+            usuarioVM.Nome,
+            usuarioVM.SobreNome,
+            usuarioVM.Email,
+            usuarioVM.Telefone,
+            StatusUsuario.Ativo,
+            PerfilUsuario.Usuario);
+
         _repositorio.Insert(ref usuario);
         return _converter.Parse(usuario);
     }

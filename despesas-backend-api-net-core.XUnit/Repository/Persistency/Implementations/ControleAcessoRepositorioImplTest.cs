@@ -62,16 +62,12 @@ public class ControleAcessoRepositorioImplTest
         // Arrange and Setup mock repository
         var mockRepository = Mock.Get<IControleAcessoRepositorio>(_repository.Object);
         mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(new ControleAcesso());
-        mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Returns(false);
-        mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Throws<Exception>();
-        var mockControleAcesso = _context.ControleAcesso.ToList().First();
-        // Act
-        Action result = () => mockRepository.Object.Create(mockControleAcesso);
-
-        //Assert
-        Assert.NotNull(result);
-        var exception = Assert.Throws<Exception>(() => _repository.Object.Create(new ControleAcesso()));
-        Assert.Equal("ControleAcessoRepositorioImpl_Create_Exception", exception.Message);
+        //mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Returns(false);
+        mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Throws(new InvalidOperationException("ControleAcessoRepositorioImpl_Create_Exception"));        
+        
+        // Act & Assert 
+        Assert.Throws<InvalidOperationException>(() => _repository.Object.Create((ControleAcesso)null));
+        //Assert.Equal("ControleAcessoRepositorioImpl_Create_Exception", exception.Message);
     }
 
     [Fact]

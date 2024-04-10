@@ -9,17 +9,12 @@ public class CategoriaMap : IParser<CategoriaVM, Categoria>, IParser<Categoria, 
 {
     public void Configure(EntityTypeBuilder<Categoria> builder)
     {
+        builder.ToTable(nameof(Categoria));
         builder.HasKey(m => m.Id);
-
-        builder.Property(m => m.Descricao)
-        .IsRequired(false)
-        .HasMaxLength(100);
-
-        builder.Property(m => m.UsuarioId)
-        .IsRequired();
-
-        builder.Property(m => m.TipoCategoria)
-        .IsRequired();
+        builder.Property(m => m.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.Property(m => m.Descricao).IsRequired(false).HasMaxLength(100);
+        builder.Property(m => m.UsuarioId).IsRequired();
+        builder.Property(m => m.TipoCategoria).IsRequired();
     }
 
     public Categoria Parse(CategoriaVM origin)

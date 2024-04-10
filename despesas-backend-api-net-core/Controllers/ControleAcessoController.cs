@@ -43,15 +43,13 @@ public class ControleAcessoController : AuthController
         {
             Login = controleAcessoVM.Email,
             Senha = controleAcessoVM.Senha,
-            Usuario = new Usuario
-            {
-                Nome = controleAcessoVM.Nome,
-                SobreNome = controleAcessoVM.SobreNome,
-                Email = controleAcessoVM.Email,
-                Telefone = controleAcessoVM.Telefone,
-                StatusUsuario = StatusUsuario.Ativo
-
-            }
+            Usuario = new Usuario().CreateUsuario(
+                controleAcessoVM.Nome,
+                controleAcessoVM.SobreNome,
+                controleAcessoVM.Email,
+                controleAcessoVM.Telefone,
+                StatusUsuario.Ativo,
+                PerfilUsuario.Usuario)
         };
 
         var result = _controleAcessoBusiness.Create(controleAcesso);

@@ -6,20 +6,15 @@ using Repository.Persistency.Generic;
 namespace Repository.Persistency.Implementations;
 public class UsuarioRepositorioImpl : IRepositorio<Usuario>
 {
-    private readonly RegisterContext _context;
-    private DbSet<Usuario> dataSet;
+    private readonly RegisterContext _context;    
     public UsuarioRepositorioImpl(RegisterContext context)
     {
         _context = context;
-        dataSet = context.Set<Usuario>();
     }
     public void Insert(ref Usuario item)
     {
         try
         {
-            dataSet.Add(item);
-            DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();
-            DbSet<Categoria> dsCategoria = _context.Set<Categoria>();
 
             var controleAcesso = new ControleAcesso
             {
@@ -28,81 +23,7 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
                 Usuario = item,
                 Senha = Crypto.GetInstance.Encrypt(Guid.NewGuid().ToString().Substring(0, 8))
             };
-            dsControleACesso.Add(controleAcesso);
-
-            List<Categoria> lstCategoria = new List<Categoria>();
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Alimentação",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Casa",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Serviços",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Saúde",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Imposto",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Transporte",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Lazer",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Outros",
-                TipoCategoria = TipoCategoria.Despesa
-            });
-
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Salário",
-                TipoCategoria = TipoCategoria.Receita
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Prêmio",
-                TipoCategoria = TipoCategoria.Receita
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Investimento",
-                TipoCategoria = TipoCategoria.Receita
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Benefício",
-                TipoCategoria = TipoCategoria.Receita
-            });
-            lstCategoria.Add(new Categoria
-            {
-                Descricao = "Outros",
-                TipoCategoria = TipoCategoria.Receita
-            });
-            foreach (Categoria categoria in lstCategoria)
-            {
-                categoria.Usuario = controleAcesso.Usuario;
-                dsCategoria.Add(categoria);
-            }
-
+            _context.Add(controleAcesso);
             _context.SaveChanges();
         }
         catch 
@@ -114,7 +35,7 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     {
         try
         {
-            return dataSet.ToList();
+            return _context.Usuario.ToList();
         }
         catch 
         {
@@ -123,7 +44,7 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     }
     public Usuario Get(int id)
     {
-        return dataSet.Single(prop => prop.Id.Equals(id));
+        return _context.Usuario.Single(prop => prop.Id.Equals(id));
     }
     public void Update(ref Usuario obj)
     {
@@ -137,7 +58,7 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
 
             controleAcesso.Login = obj.Email;
             _context.Entry(controleAcesso).CurrentValues.SetValues(controleAcesso);
-            var usaurio = dataSet.SingleOrDefault(prop => prop.Id.Equals(usuarioId));
+            var usaurio = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(usuarioId));
             _context?.Entry(usaurio).CurrentValues.SetValues(obj);
             _context?.SaveChanges();
         }
@@ -150,7 +71,7 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     {            
         try
         {
-            var result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+            var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             if (result != null)
             {
                 result.StatusUsuario = StatusUsuario.Inativo;
@@ -167,6 +88,6 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     }
     public bool Exists(int? id)
     {
-        return dataSet.Any(prop => prop.Id.Equals(id));
+        return _context.Usuario.Any(prop => prop.Id.Equals(id));
     }
 }

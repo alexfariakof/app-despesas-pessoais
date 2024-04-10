@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Repository;
+using Repository.CommonInjectDependence;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
