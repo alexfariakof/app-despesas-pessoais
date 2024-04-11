@@ -1,4 +1,6 @@
-﻿namespace Domain.ViewModel;
+﻿using Business.Dtos.Parser;
+
+namespace Domain.ViewModel;
 public class ReceitaVMTest
 {
     [Fact]
@@ -6,7 +8,7 @@ public class ReceitaVMTest
     {
         // Arrange and Act
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaMap().Parse(receita);
+        var receitaVM = new ReceitaParser().Parse(receita);
 
         // Assert
         Assert.Equal(receita.Id, receitaVM .Id);

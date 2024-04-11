@@ -1,7 +1,7 @@
 ﻿using Domain.Core;
 using System.Text.Json.Serialization;
 
-namespace Domain.VM;
+namespace Business.Dtos;
 public class BaseModelVM: BaseModel
 {
     [JsonIgnore]

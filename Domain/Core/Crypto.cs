@@ -1,4 +1,4 @@
-﻿using Domain.Core.Interface;
+﻿using Domain.Core.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;

@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Controllers;
+﻿using Business.Dtos.Parser;
+using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -76,7 +77,7 @@ public class DespesaControllerTest
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaMap().Parse(despesa);
+        var despesaVM = new DespesaParser().Parse(despesa);
         int idUsuario = despesaVM.IdUsuario;
         int despesaId = despesa.Id;
         SetupBearerToken(idUsuario);

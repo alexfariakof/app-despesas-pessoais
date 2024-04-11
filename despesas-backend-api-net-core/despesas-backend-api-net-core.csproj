@@ -12,23 +12,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include=".documents\configureMigrations.txt" />
-    <None Include=".documents\dump\DespesasPessoaisDB_Categoria.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_ControleAcesso.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_Despesa.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_ImagemPerfilUsuario.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_Lancamento.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_Receita.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_routines.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB_Usuario.sql" />
-    <None Include=".documents\dump\DespesasPessoaisDB___EFMigrationsHistory.sql" />
-    <None Include=".documents\dump_script.sql" />
-    <None Include=".documents\IISExpress-Local-Configuration\config\applicationhost.config" />
-    <None Include=".documents\IISExpress-Local-Configuration\config\aspnet.config" />
-    <None Include=".documents\IISExpress-Local-Configuration\config\redirection.config" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.4" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />

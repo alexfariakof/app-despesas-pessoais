@@ -1,7 +1,7 @@
-﻿using Business.Generic;
+﻿using Business.Dtos;
+using Business.Dtos.Parser;
+using Business.Generic;
 using Domain.Entities;
-using Domain.VM;
-using Repository.Mapping;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
@@ -9,12 +9,12 @@ public class DespesaBusinessImpl : IBusiness<DespesaVM>
 {
     private readonly IRepositorio<Despesa> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
-    private readonly DespesaMap _converter;
+    private readonly DespesaParser _converter;
     public DespesaBusinessImpl(IRepositorio<Despesa> repositorio, IRepositorio<Categoria> repoCategoria)
     {
         _repositorio = repositorio;
         _repoCategoria = repoCategoria;
-        _converter = new DespesaMap();
+        _converter = new DespesaParser();
     }
     public DespesaVM Create(DespesaVM obj)
     {

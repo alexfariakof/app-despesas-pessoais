@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Domain.VM;
+namespace Business.Dtos;
 public class ControleAcessoVM : UsuarioVM
 {
     [JsonIgnore]

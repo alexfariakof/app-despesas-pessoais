@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using Domain.Core.Interface;
+using Domain.Core.Interfaces;
 using Domain.Entities;
 using Newtonsoft.Json.Linq;
 

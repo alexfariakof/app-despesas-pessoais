@@ -1,4 +1,4 @@
-﻿namespace Domain.VM;
+﻿namespace Business.Dtos;
 public class LancamentoVM : BaseModelVM
 {
     public int IdDespesa { get; set; }

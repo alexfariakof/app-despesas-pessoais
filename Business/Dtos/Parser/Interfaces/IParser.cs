@@ -1,4 +1,4 @@
-﻿namespace Repository.Mapping.Parser;
+﻿namespace Business.Dtos.Parser.Interfaces;
 public interface IParser<O, D>
 {
     D Parse(O origin);

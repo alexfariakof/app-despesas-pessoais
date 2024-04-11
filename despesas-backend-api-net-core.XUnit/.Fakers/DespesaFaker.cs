@@ -70,10 +70,10 @@ public class DespesaFaker
         return listDespesaVM;
     }
 
-    public List<Despesa> Despesas(Usuario? usuario = null, int? idUsurio = null)
+    public List<Despesa> Despesas(Usuario? usuario = null, int? idUsurio = null, int count = 10)
     {
         var listDespesa = new List<Despesa>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < count; i++)
         {
             if (idUsurio == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));

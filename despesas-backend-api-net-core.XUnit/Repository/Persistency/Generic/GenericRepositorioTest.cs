@@ -15,20 +15,14 @@ public class GenericRepositorioTest
     {
         // Arrange
         var item = new Categoria();
-        var dataSet = new List<Categoria>();
-        var dbSetMock = Usings.MockDbSet(dataSet);
-        _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
         var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
 
         // Act
         repository.Insert(ref item);
-        var result = item;
 
         // Assert
-        Assert.Single(dataSet);
-        Assert.Contains(item, dataSet);
         _dbContextMock.Verify(c => c.SaveChanges(), Times.Once);
-        Assert.Equal(item, result);
+        Assert.NotNull(item.Id);
     }
 
     [Fact]

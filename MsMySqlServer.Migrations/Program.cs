@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.CommonInjectDependence;
-
 using Repository;
+using DataSeeders;
+using DataSeeders.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,15 @@ builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(build
 b => b.MigrationsAssembly("MsMySqlServer.Migrations")));
 
 builder.Services.AddRepositories();
-
+builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dataSeeder = services.GetRequiredService<IDataSeeder>();
+    dataSeeder.SeedData();
+}
+
 app.Run();

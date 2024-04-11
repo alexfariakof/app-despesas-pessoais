@@ -1,18 +1,18 @@
-﻿using Domain.Entities;
-using Domain.VM;
-using Repository.Mapping;
+﻿using Business.Dtos;
+using Business.Dtos.Parser;
+using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
 public class UsuarioBusinessImpl : IUsuarioBusiness
 {
     private IRepositorio<Usuario> _repositorio;
-    private readonly UsuarioMap _converter;
+    private readonly UsuarioParser _converter;
 
     public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
     {
         _repositorio = repositorio;
-        _converter = new UsuarioMap();
+        _converter = new UsuarioParser();
 
     }
     public UsuarioVM Create(UsuarioVM usuarioVM)

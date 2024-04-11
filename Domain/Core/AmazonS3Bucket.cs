@@ -1,8 +1,8 @@
 ﻿using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Domain.Core.Interface;
-using Domain.VM;
+using Domain.Core.Interfaces;
+using Domain.Entities;
 using Newtonsoft.Json.Linq;
 
 namespace Domain.Core;
@@ -38,11 +38,11 @@ public class AmazonS3Bucket : IAmazonS3Bucket
             return Instance == null ? new AmazonS3Bucket() : Instance;
         }
     }
-    public async Task<string> WritingAnObjectAsync(ImagemPerfilVM perfilFile)
+    public async Task<string> WritingAnObjectAsync(ImagemPerfilUsuario perfilFile, byte[]? file)
     {
         try
         {
-            string? fileContentType = perfilFile.ContentType;
+            string? fileContentType = perfilFile.Type;
             AmazonS3Config config = new AmazonS3Config();
             config.ServiceURL = S3ServiceUrl;
 
@@ -53,8 +53,8 @@ public class AmazonS3Bucket : IAmazonS3Bucket
                 CannedACL = fileCannedACL,
                 BucketName = BucketName,
                 Key = perfilFile.Name,
-                ContentType = perfilFile.ContentType,
-                InputStream = new MemoryStream(perfilFile.Arquivo ?? throw new ArgumentException("Erro Imagem de perfil nula!"))
+                ContentType = perfilFile.Type,
+                InputStream = new MemoryStream(file ?? throw new ArgumentException("Erro no arquivo!"))
             };
             PutObjectResponse response = await client.PutObjectAsync(putRquest);
             var url = $"https://{BucketName}.s3.amazonaws.com/{perfilFile.Name}";
@@ -66,7 +66,7 @@ public class AmazonS3Bucket : IAmazonS3Bucket
             throw new Exception("AmazonS3Bucket_WritingAnObjectAsync_Errro ", ex);
         }
     }
-    public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilVM perfilFile)
+    public async Task<bool> DeleteObjectNonVersionedBucketAsync(ImagemPerfilUsuario perfilFile)
     {
         try
         {

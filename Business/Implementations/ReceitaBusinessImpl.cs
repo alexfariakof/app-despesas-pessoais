@@ -1,7 +1,7 @@
-﻿using Business.Generic;
+﻿using Business.Dtos;
+using Business.Dtos.Parser;
+using Business.Generic;
 using Domain.Entities;
-using Domain.VM;
-using Repository.Mapping;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
@@ -9,13 +9,13 @@ public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
 {
     private readonly IRepositorio<Receita> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
-    private readonly ReceitaMap _converter;
+    private readonly ReceitaParser _converter;
 
     public ReceitaBusinessImpl(IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria)
     {
         _repositorio = repositorio;
         _repoCategoria = repoCategoria;
-        _converter = new ReceitaMap();
+        _converter = new ReceitaParser();
         _repoCategoria = repoCategoria;
     }
     public ReceitaVM Create(ReceitaVM obj)

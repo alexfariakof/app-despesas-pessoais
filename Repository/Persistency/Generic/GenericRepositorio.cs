@@ -1,47 +1,43 @@
 ﻿using Domain.Core;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Generic;
 public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel
 {
     protected readonly RegisterContext _context;
 
-    private DbSet<T> dataSet;
-
     public GenericRepositorio(RegisterContext context)
     {
         _context = context;
-        dataSet = context.Set<T>();
     }
-    public void Insert(ref T item)
+    public virtual void Insert(ref T item)
     {
         try
         {
-            dataSet.Add(item);
-            _context.SaveChanges();
+            this._context.Add(item);
+            this._context.SaveChanges();
         }
         catch (Exception ex)
         {
             throw new Exception("GenericRepositorio_Insert", ex); ;
         }
     }
-    public List<T> GetAll()
+    public virtual List<T> GetAll()
     {
         try
         {
-            return dataSet.ToList();
+            return this._context.Set<T>().ToList();
         }
         catch(Exception ex)
         {
             throw new Exception("GenericRepositorio_GetAll", ex);
         }
     }
-    public T Get(int id)
+    public virtual T Get(int id)
     {
-        return dataSet.SingleOrDefault(prop => prop.Id.Equals(id));
+        return this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(id));
     }
-    public void Update(ref T obj)
+    public virtual void Update(ref T obj)
     {
         try
         {
@@ -53,11 +49,11 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel
             throw new Exception("GenericRepositorio_Update", ex);
         }
     }
-    public bool Delete(T obj)
+    public virtual bool Delete(T obj)
     {
         try
         {
-            T result = dataSet.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+            T result = this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(obj.Id));
             if (result != null)
             {                    
                 if (result.GetType().Equals(typeof(Usuario)))
@@ -84,8 +80,8 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel
             throw new Exception("GenericRepositorio_Delete", ex);
         }
     }
-    public bool Exists(int? id)
+    public virtual bool Exists(int? id)
     {
-        return dataSet.Any(prop => prop.Id.Equals(id));
+        return this._context.Set<T>().Any(prop => prop.Id.Equals(id));
     }
 }

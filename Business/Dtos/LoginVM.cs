@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.VM;
+namespace Business.Dtos;
 public class LoginVM
 {
     [Required]

@@ -1,5 +1,5 @@
 ﻿using Domain.Core;
-using Domain.Core.Interface;
+using Domain.Core.Interfaces;
 using Domain.Entities;
 
 namespace Repository.Persistency.Implementations;
@@ -90,8 +90,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
         {
             throw new Exception("ChangePassword_Erro", ex);
         }
-    }
-    
+    }    
     public bool isValidPasssword(ControleAcesso controleAcesso)
     {
         ControleAcesso _controleAcesso = FindByEmail(controleAcesso);

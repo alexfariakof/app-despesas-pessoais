@@ -1,11 +1,9 @@
 ﻿using Domain.Entities;
-using Domain.VM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Repository.Mapping.Parser;
 
 namespace Repository.Mapping;
-public class UsuarioMap : IParser<UsuarioVM, Usuario>, IParser<Usuario, UsuarioVM>, IEntityTypeConfiguration<Usuario>
+public class UsuarioMap: IEntityTypeConfiguration<Usuario>
 {
     public void Configure(EntityTypeBuilder<Usuario> builder)
     {
@@ -18,45 +16,5 @@ public class UsuarioMap : IParser<UsuarioVM, Usuario>, IParser<Usuario, UsuarioV
         builder.Property(m => m.SobreNome).HasMaxLength(50).IsRequired();
         builder.Property(m => m.Telefone).HasMaxLength(15).IsRequired(false);        
         builder.Property(m => m.PerfilUsuario).IsRequired().HasDefaultValue(PerfilUsuario.Usuario);
-
-    }
-    public Usuario Parse(UsuarioVM origin)
-    {
-        if (origin == null) return new Usuario();
-        return new Usuario
-        {
-            Id  = origin.Id,
-            Email = origin.Email,
-            Nome = origin.Nome,
-            SobreNome = origin.SobreNome,
-            Telefone = origin.Telefone,
-            PerfilUsuario = origin.PerfilUsuario                
-        };
-    }
-
-    public UsuarioVM Parse(Usuario origin)
-    {
-        if (origin == null) return new UsuarioVM();
-        return new UsuarioVM
-        {
-            Id = origin.Id,
-            Email = origin.Email,
-            Nome = origin.Nome,
-            SobreNome = origin.SobreNome,
-            Telefone = origin.Telefone,
-            PerfilUsuario = origin.PerfilUsuario
-        };
-    }
-
-    public List<Usuario> ParseList(List<UsuarioVM> origin)
-    {
-        if (origin == null) return new List<Usuario>();
-        return origin.Select(item => Parse(item)).ToList();
-    }
-
-    public List<UsuarioVM> ParseList(List<Usuario> origin)
-    {
-        if (origin == null) return new List<UsuarioVM>();
-        return origin.Select(item => Parse(item)).ToList();
     }
 }

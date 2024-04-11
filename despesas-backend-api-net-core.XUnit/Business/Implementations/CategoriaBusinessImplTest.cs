@@ -1,4 +1,6 @@
-﻿namespace Business;
+﻿using Business.Dtos.Parser;
+
+namespace Business;
 
 public class CategoriaBusinessImplTest
 {
@@ -19,7 +21,7 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
         var categoria = _categorias.First();
-        var categoriaVM = new CategoriaMap().Parse(categoria);
+        var categoriaVM = new CategoriaParser().Parse(categoria);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Categoria>.IsAny));
 
@@ -96,7 +98,7 @@ public class CategoriaBusinessImplTest
 
         var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(null);
 
-        var categoria = new CategoriaMap().Parse(categoriaVM);
+        var categoria = new CategoriaParser().Parse(categoriaVM);
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Categoria>.IsAny));
 
@@ -115,7 +117,7 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
         var categoria = _categorias.First();
-        var objToDelete = new CategoriaMap().Parse(categoria);
+        var objToDelete = new CategoriaParser().Parse(categoria);
 
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>())).Returns(true);
 

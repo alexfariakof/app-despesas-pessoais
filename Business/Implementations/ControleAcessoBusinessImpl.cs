@@ -1,6 +1,6 @@
 ﻿using Business.Authentication;
+using Business.Dtos.Parser;
 using Domain.Entities;
-using Repository.Mapping;
 using Repository.Persistency;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -13,7 +13,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 
     private SigningConfigurations _singingConfiguration;
     private TokenConfiguration _tokenConfiguration;
-    private readonly ControleAcessoMap _converter;
+    private readonly ControleAcessoParser _converter;
 
     public ControleAcessoBusinessImpl(IControleAcessoRepositorio repositorio, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration)
     {

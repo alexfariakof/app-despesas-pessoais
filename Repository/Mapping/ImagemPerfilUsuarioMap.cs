@@ -1,11 +1,9 @@
 ﻿using Domain.Entities;
-using Domain.VM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Repository.Mapping.Parser;
 
 namespace Repository.Mapping;
-public class ImagemPerfilUsuarioMap : IParser<ImagemPerfilVM, ImagemPerfilUsuario>, IParser<ImagemPerfilUsuario, ImagemPerfilVM>, IEntityTypeConfiguration<ImagemPerfilUsuario>
+public class ImagemPerfilUsuarioMap:  IEntityTypeConfiguration<ImagemPerfilUsuario>
 {
     public void Configure(EntityTypeBuilder<ImagemPerfilUsuario> builder)
     {
@@ -20,41 +18,5 @@ public class ImagemPerfilUsuarioMap : IParser<ImagemPerfilVM, ImagemPerfilUsuari
         builder.Property(m => m.Type).IsRequired().HasMaxLength(4);
         builder.HasIndex(m => m.UsuarioId).IsUnique(true);
         builder.Property(m => m.UsuarioId).IsRequired();
-    }
-    public ImagemPerfilUsuario Parse(ImagemPerfilVM origin)
-    {
-        if (origin == null) return new ImagemPerfilUsuario();
-        return new ImagemPerfilUsuario
-        {
-            Id = origin.Id,
-            Name = origin.Name,
-            Type = origin.Type,          
-            Url = origin.Url,
-            UsuarioId = origin.IdUsuario,
-        };
-    }
-    public ImagemPerfilVM Parse(ImagemPerfilUsuario origin)
-    {
-        if (origin == null) return new ImagemPerfilVM();
-        return new ImagemPerfilVM
-        {
-            Id = origin.Id,
-            Name = origin.Name,
-            Type = origin.Type,
-            Url = origin.Url,
-            IdUsuario = origin.UsuarioId,
-        };
-    }
-
-    public List<ImagemPerfilUsuario> ParseList(List<ImagemPerfilVM> origin)
-    {
-        if (origin == null) return new List<ImagemPerfilUsuario>();
-        return origin.Select(item => Parse(item)).ToList();
-    }
-
-    public List<ImagemPerfilVM> ParseList(List<ImagemPerfilUsuario> origin)
-    {
-        if (origin == null) return new List<ImagemPerfilVM>();
-        return origin.Select(item => Parse(item)).ToList();
     }
 }

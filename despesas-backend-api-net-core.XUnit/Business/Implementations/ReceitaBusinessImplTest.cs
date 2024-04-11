@@ -1,4 +1,6 @@
-﻿namespace Business;
+﻿using Business.Dtos.Parser;
+
+namespace Business;
 
 public class ReceitaBusinessImplTest
 {
@@ -17,7 +19,7 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaMap().Parse(receita);
+        var receitaVM = new ReceitaParser().Parse(receita);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny));
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Receita, receita.UsuarioId));
@@ -93,7 +95,7 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaMap().Parse(receita);            
+        var receitaVM = new ReceitaParser().Parse(receita);            
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
         var categorias = CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Despesa, receita.UsuarioId);
@@ -114,7 +116,7 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaMap().Parse(receita);
+        var receitaVM = new ReceitaParser().Parse(receita);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Receita>())).Returns(true);
         
         // Act
@@ -130,7 +132,7 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaMap().Parse(receita);
+        var receitaVM = new ReceitaParser().Parse(receita);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny)).Throws(() => new ArgumentException("Erro InvalidCategorie"));
         var categorias = CategoriaFaker.Instance.Categorias();

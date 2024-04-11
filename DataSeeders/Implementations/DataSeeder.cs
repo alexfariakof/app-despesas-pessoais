@@ -10,11 +10,18 @@ public class DataSeeder : IDataSeeder
     }
     public void SeedData()
     {
-        new DataSeederUsuario(_context).SeedData();
-        new DataSeederControleAcesso(_context).SeedData();
-        new DataSeederCategoria(_context).SeedData();
-        new DataSeederDespesa(_context).SeedData();
-        new DataSeederReceita(_context).SeedData();
-        new DataSeederImagemPerfilUsuario(_context).SeedData();
+        try
+        {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
+
+            new DataSeederUsuario(_context).SeedData();
+            new DataSeederControleAcesso(_context).SeedData();
+            new DataSeederCategoria(_context).SeedData();
+            new DataSeederDespesa(_context).SeedData();
+            new DataSeederReceita(_context).SeedData();
+            new DataSeederImagemPerfilUsuario(_context).SeedData();
+        }
+        catch { throw; } 
     }
 }

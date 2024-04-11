@@ -1,4 +1,6 @@
-﻿namespace Business;
+﻿using Business.Dtos.Parser;
+
+namespace Business;
 public class UsuarioBusinessImplTest
 {
     private readonly Mock<IRepositorio<Usuario>> _repositorioMock;
@@ -21,7 +23,7 @@ public class UsuarioBusinessImplTest
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Usuario>.IsAny));
 
         // Act
-        var result = _usuarioBusiness.Create(new UsuarioMap().Parse(usuario));
+        var result = _usuarioBusiness.Create(new UsuarioParser().Parse(usuario));
 
         // Assert
         Assert.NotNull(result);
@@ -98,7 +100,7 @@ public class UsuarioBusinessImplTest
     {
         // Arrange            
         var usuario = _usuarios.First();
-        var usuarioVM = new UsuarioMap().Parse(usuario);
+        var usuarioVM = new UsuarioParser().Parse(usuario);
         usuario.Nome = "Teste Usuario Update";                       
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Usuario>.IsAny));
@@ -117,7 +119,7 @@ public class UsuarioBusinessImplTest
     public void Delete_Should_Returns_True()
     {
         // Arrange
-        var obj = new UsuarioMap().Parse(_usuarios.First());
+        var obj = new UsuarioParser().Parse(_usuarios.First());
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(true);
 
         // Act

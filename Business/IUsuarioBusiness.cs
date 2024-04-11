@@ -1,4 +1,4 @@
-﻿using Domain.VM;
+﻿using Business.Dtos;
 
 namespace Business;
 public interface IUsuarioBusiness

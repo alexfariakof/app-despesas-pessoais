@@ -5,7 +5,7 @@ public class AuthResponseTest
     [InlineData(true, "20231006", "31536000", "0123456789ABCDEF", "Acesso realizado com sucesso")]
     [InlineData(false, "", "", "", "Acesso não realizado")]
     [InlineData(false, null, null, null, "Acesso não realizado")]
-    public void AuthResponse_Should_Set_Properties_Correctly(bool authenticated, string created, string expiration, string accessToken, string message)
+    public void AuthResponse_Should_Set_Properties_Correctly(bool authenticated, string? created, string? expiration, string? accessToken, string message)
     {
         var mockUsuario = Mock.Of<Usuario>();
 

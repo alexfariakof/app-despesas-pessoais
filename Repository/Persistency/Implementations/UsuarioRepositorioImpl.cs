@@ -1,6 +1,5 @@
 ﻿using Domain.Core;
 using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Repository.Persistency.Generic;
 
 namespace Repository.Persistency.Implementations;
@@ -48,11 +47,10 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
     }
     public void Update(ref Usuario obj)
     {
-        DbSet<ControleAcesso> dsControleACesso = _context.Set<ControleAcesso>();        
         try
         {
             var usuarioId = obj.Id;
-            var controleAcesso = dsControleACesso.Single(prop => prop.UsuarioId.Equals(usuarioId));
+            var controleAcesso = _context.ControleAcesso.Single(prop => prop.UsuarioId.Equals(usuarioId));
             if (controleAcesso == null)
                 throw new Exception();
 

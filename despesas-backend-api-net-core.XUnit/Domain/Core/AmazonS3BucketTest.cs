@@ -1,4 +1,5 @@
-﻿using Domain.Core.Interface;
+﻿using Business.Dtos.Parser;
+using Domain.Core.Interfaces;
 
 namespace Domain.Core;
 public class AmazonS3BucketTest
@@ -24,17 +25,19 @@ public class AmazonS3BucketTest
     public async Task WritingAnObjectAsync_Should_Return_Url()
     {
         // Arrange
-        var perfilFile = new ImagemPerfilVM
+        var perfilFileVM = new ImagemPerfilVM
         {
             Name = "test-image.jpg",
             ContentType = "image/jpeg",
-            //  Arquivo = new byte[] { 0x01, 0x02, 0x03 } // Sample image data
+            Arquivo = new byte[] { 0x01, 0x02, 0x03 } 
         };
+      
+
         var mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>(MockBehavior.Strict);
-        mockAmazonS3Bucket.Setup(s => s.WritingAnObjectAsync(perfilFile)).ReturnsAsync($"https://{_bucketName}.s3.amazonaws.com/{perfilFile.Name}");
+        mockAmazonS3Bucket.Setup(s => s.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync($"https://{_bucketName}.s3.amazonaws.com/{perfilFileVM.Name}");
 
         // Act
-        var url = await mockAmazonS3Bucket.Object.WritingAnObjectAsync(perfilFile);
+        var url = await mockAmazonS3Bucket.Object.WritingAnObjectAsync(new ImagemPerfilUsuarioParser().Parse(perfilFileVM), perfilFileVM.Arquivo);
 
         // Assert
         Assert.NotNull(url);
@@ -45,14 +48,15 @@ public class AmazonS3BucketTest
     public async Task WritingAnObjectAsync_Should_Throws_Exception()
     {
         // Arrange
-        var perfilFile = new ImagemPerfilVM
+        var perfilFileVM = new ImagemPerfilVM
         {
             Name = "test-image.jpg",
             ContentType = "image/jpeg",
-            //Arquivo = new byte[] { 0x01, 0x02, 0x03 } // Sample image data
+            Arquivo = new byte[] { 0x01, 0x02, 0x03 } // Sample image data
         };
+
         // Act & Assert
-        var exception = await Assert.ThrowsAsync<Exception>(async () => await _amazonS3Bucket.WritingAnObjectAsync(perfilFile));
+        var exception = await Assert.ThrowsAsync<Exception>(async () => await _amazonS3Bucket.WritingAnObjectAsync(new ImagemPerfilUsuarioParser().Parse(perfilFileVM), perfilFileVM.Arquivo));
         Assert.NotNull(exception);
         Assert.IsType<Exception>(exception);
         Assert.Equal("AmazonS3Bucket_WritingAnObjectAsync_Errro ", exception.Message);
@@ -62,7 +66,7 @@ public class AmazonS3BucketTest
     public async Task DeleteObjectNonVersionedBucketAsync_Should_Return_True()
     {
         // Arrange
-        var perfilFile = new ImagemPerfilVM { Name = "test-image.jpg" };
+        var perfilFile = new ImagemPerfilUsuario { Name = "test-image.jpg" };
         var mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>(MockBehavior.Strict);
         mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(perfilFile)).ReturnsAsync(true);
 
@@ -77,7 +81,7 @@ public class AmazonS3BucketTest
     public async Task DeleteObjectNonVersionedBucketAsync_Should_Throws_Erro_And_Return_False()
     {
         // Arrange
-        var perfilFile = new ImagemPerfilVM { Name = "non-existing-file.jpg" };
+        var perfilFile = new ImagemPerfilUsuario { Name = "non-existing-file.jpg" };
 
         // Act
         var result = await _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(perfilFile);

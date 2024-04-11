@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Controllers;
+﻿using Business.Dtos.Parser;
+using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -38,8 +39,8 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
-        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
-        var usuarioVM = new UsuarioMap().Parse(_imagemPerfilUsuarios.First().Usuario);
+        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
+        var usuarioVM = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
         int idUsuario = usuarioVM.Id;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioVMs);
@@ -63,8 +64,8 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
-        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
-        var usuarioVM = new UsuarioMap().Parse(_imagemPerfilUsuarios.First().Usuario);
+        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
+        var usuarioVM = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
         int idUsuario = 987654;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioVMs);
@@ -86,7 +87,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
-        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioMap().ParseList(_imagemPerfilUsuarios);
+        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
         var imagemPerfilUsuarioVM = _imagemPerfilUsuarioVMs.First();
         int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
 

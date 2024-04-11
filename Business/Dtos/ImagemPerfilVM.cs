@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Domain.VM;
+namespace Business.Dtos;
 public class ImagemPerfilVM : BaseModelVM
 {
     public string? Url { get; set; }

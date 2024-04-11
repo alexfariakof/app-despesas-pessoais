@@ -65,10 +65,10 @@ public class ReceitaFaker
         return listReceitaVM;
     }
 
-    public List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null)
+    public List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null, int count = 10 )
     {
         var listReceita = new List<Receita>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < count; i++)
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));

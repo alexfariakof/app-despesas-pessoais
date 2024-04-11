@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Core.Interface;
+namespace Domain.Core.Interfaces;
 public interface IEmailSender
 {
     bool SendEmailPassword(Usuario usuario, string senha);

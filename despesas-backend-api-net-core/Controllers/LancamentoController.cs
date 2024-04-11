@@ -1,5 +1,5 @@
 ﻿using Business;
-using Domain.VM;
+using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Core;
-using Domain.Core.Interface;
+using Domain.Core.Interfaces;
 
 namespace Repository.Persistency.Implementations;
 public class ControleAcessoRepositorioImplTest

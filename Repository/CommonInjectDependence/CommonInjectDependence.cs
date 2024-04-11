@@ -1,5 +1,5 @@
 ﻿using Domain.Core;
-using Domain.Core.Interface;
+using Domain.Core.Interfaces;
 using Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Persistency;

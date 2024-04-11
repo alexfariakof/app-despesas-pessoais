@@ -1,4 +1,4 @@
-﻿namespace Domain.Core.Interface;
+﻿namespace Domain.Core.Interfaces;
 public interface ICrypto
 {
     string Encrypt(string password);

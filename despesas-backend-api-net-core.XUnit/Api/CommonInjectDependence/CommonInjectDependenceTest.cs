@@ -1,13 +1,13 @@
 ﻿using DataSeeders;
 using despesas_backend_api_net_core.CommonInjectDependence;
 using Domain.Core;
-using Domain.Core.Interface;
+using Domain.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.CommonInjectDependence;
+using Business.CommonInjectDependence;
 
 namespace Api.CommonInjectDependence;
-#pragma warning disable xUnit2002 // Do not use null check on value type
 public class CommonInjectDependenceTest
 {
     [Fact]
@@ -67,4 +67,3 @@ public class CommonInjectDependenceTest
         Assert.NotNull(dataSeeder);
     }
 }
-#pragma warning restore xUnit2002 // Do not use null check on value type
