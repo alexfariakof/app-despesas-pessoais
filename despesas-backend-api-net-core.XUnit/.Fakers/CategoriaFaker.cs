@@ -46,12 +46,12 @@ public class CategoriaFaker
         return categoriaFaker.Generate();
     }
 
-    public List<CategoriaVM> CategoriasVMs(UsuarioVM? usuarioVM = null, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsaurio = null)
+    public List<CategoriaVM> CategoriasVMs(UsuarioVM? usuarioVM = null, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsuario = null)
     {
         var listCategoriaVM = new List<CategoriaVM>();
         for (int i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random(1).Next(1, 10));
 
             var categoriaVM = GetNewFakerVM(usuarioVM, tipoCategoria);

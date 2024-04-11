@@ -34,7 +34,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
     }
     public ControleAcesso FindByEmail(ControleAcesso controleAcesso)
     {
-        var result = _context?.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
+        var result =_context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
         return result;
     }
     public Usuario GetUsuarioByEmail(string email)
@@ -56,8 +56,8 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
                 controleAcesso.Senha = _crypto.Encrypt(senhaNova);
                 if (_emailSender.SendEmailPassword(controleAcesso.Usuario, senhaNova))
                 {
-                    _context?.Entry(result).CurrentValues.SetValues(controleAcesso);
-                    _context?.SaveChanges();
+                   _context.Entry(result).CurrentValues.SetValues(controleAcesso);
+                   _context.SaveChanges();
                     return true;
                 }
                 return false;                    
@@ -80,10 +80,10 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
         {
             var result = _context.ControleAcesso.Single(prop => prop.Id.Equals(controleAcesso.Id));
             controleAcesso.Senha = _crypto.Encrypt(password);
-            _context?.Entry(result).CurrentValues.SetValues(controleAcesso);
+           _context.Entry(result).CurrentValues.SetValues(controleAcesso);
             usuario.StatusUsuario = StatusUsuario.Ativo;
-            _context?.Entry(usuario).CurrentValues.SetValues(usuario);
-            _context?.SaveChanges();
+           _context.Entry(usuario).CurrentValues.SetValues(usuario);
+           _context.SaveChanges();
             return true;
         }
         catch (Exception ex)

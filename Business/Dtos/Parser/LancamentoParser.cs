@@ -67,8 +67,8 @@ public class LancamentoParser : IParser<LancamentoVM, Lancamento>, IParser<Lanca
         return new LancamentoVM
         {
             Id = origin.Id,
-            IdDespesa = origin?.DespesaId.Value ?? 0,
-            IdReceita = origin?.ReceitaId.Value ?? 0,
+            IdDespesa = origin.DespesaId.Value,
+            IdReceita = origin.ReceitaId.Value,
             IdUsuario = origin.UsuarioId,
             Data = origin.Data.ToShortDateString(),
             Valor = origin.Valor,

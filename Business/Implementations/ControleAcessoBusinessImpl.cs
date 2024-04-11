@@ -1,5 +1,4 @@
 ﻿using Business.Authentication;
-using Business.Dtos.Parser;
 using Domain.Entities;
 using Repository.Persistency;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,11 +8,9 @@ using System.Security.Principal;
 namespace Business.Implementations;
 public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 {
-    private IControleAcessoRepositorio _repositorio;
-
-    private SigningConfigurations _singingConfiguration;
-    private TokenConfiguration _tokenConfiguration;
-    private readonly ControleAcessoParser _converter;
+    private readonly IControleAcessoRepositorio _repositorio;
+    private readonly SigningConfigurations _singingConfiguration;
+    private readonly TokenConfiguration _tokenConfiguration;   
 
     public ControleAcessoBusinessImpl(IControleAcessoRepositorio repositorio, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration)
     {
@@ -21,10 +18,12 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _singingConfiguration = singingConfiguration;
         _tokenConfiguration = tokenConfiguration;
     }
+
     public bool Create(ControleAcesso controleAcesso)
     {
         return _repositorio.Create(controleAcesso);
     }
+
     public Domain.Entities.Authentication FindByLogin(ControleAcesso controleAcesso)
     {
         bool credentialsValid = false;
@@ -35,7 +34,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         else if (usuario.StatusUsuario == StatusUsuario.Inativo)
             return ExceptionObject("Usuário Inativo!");
 
-        if (controleAcesso != null && !string.IsNullOrWhiteSpace(controleAcesso.Login))
+        if (!string.IsNullOrWhiteSpace(controleAcesso.Login))
         {
             ControleAcesso baseLogin = _repositorio.FindByEmail(controleAcesso);
             if (baseLogin == null)
@@ -68,11 +67,11 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
     {
         return _repositorio.RecoveryPassword(email);
     }
-
     public bool ChangePassword(int idUsuario, string password)
     {
         return _repositorio.ChangePassword(idUsuario, password);
     }
+
     private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler, int idUsuario)
     {
         Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
@@ -91,6 +90,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         
         return token;
     }
+
     private Domain.Entities.Authentication ExceptionObject(string message)
     {
         return new Domain.Entities.Authentication
@@ -99,6 +99,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
             Message = message
         };
     }
+
     private Domain.Entities.Authentication SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
     {
         Usuario usuario = _repositorio.GetUsuarioByEmail(login);

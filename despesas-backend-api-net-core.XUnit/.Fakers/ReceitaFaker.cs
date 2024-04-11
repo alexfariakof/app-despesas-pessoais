@@ -48,13 +48,13 @@ public class ReceitaFaker
 
     public List<ReceitaVM> ReceitasVMs(
         UsuarioVM? usuarioVM = null,
-        int? idUsaurio = null
+        int? idUsuario = null
     )
     {
         var listReceitaVM = new List<ReceitaVM>();
         for (int i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
             var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(usuarioVM);

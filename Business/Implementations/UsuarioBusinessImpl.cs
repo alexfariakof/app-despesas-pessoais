@@ -6,15 +6,15 @@ using Repository.Persistency.Generic;
 namespace Business.Implementations;
 public class UsuarioBusinessImpl : IUsuarioBusiness
 {
-    private IRepositorio<Usuario> _repositorio;
+    private readonly IRepositorio<Usuario> _repositorio;
     private readonly UsuarioParser _converter;
 
     public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
     {
         _repositorio = repositorio;
         _converter = new UsuarioParser();
-
     }
+
     public UsuarioVM Create(UsuarioVM usuarioVM)
     {
         var usuario = new Usuario().CreateUsuario(
@@ -42,7 +42,6 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         var usuario = _repositorio.Get(id);
         return _converter.Parse(usuario);
     }
-
     public UsuarioVM Update(UsuarioVM usuarioVM)
     {
         var usuario = new Usuario

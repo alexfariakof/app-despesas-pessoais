@@ -12,8 +12,8 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
     {
         try
         {
-            decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor);
-            decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor);
+            decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor);
+            decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor);
 
             return (sumReceita - sumDespesa);
         }
@@ -22,14 +22,14 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
             throw new Exception("SaldoRepositorioImpl_GetSaldo_Erro");
         }
     }
-    public decimal GetSaldoByAno(DateTime data, int idUsuario)
+    public decimal GetSaldoByAno(DateTime mesAno, int idUsuario)
     {
-        int ano = data.Year;
+        int ano = mesAno.Year;
 
         try
         {
-            decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario && d.Data.Year == ano).ToList().Sum(d => d.Valor);
-            decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario && r.Data.Year ==  ano).ToList().Sum(r => r.Valor);
+            decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario && d.Data.Year == ano).AsEnumerable().Sum(d => d.Valor);
+            decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario && r.Data.Year ==  ano).AsEnumerable().Sum(r => r.Valor);
 
             return (sumReceita - sumDespesa);
         }
@@ -38,15 +38,15 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
             throw new Exception("SaldoRepositorioImpl_GetSaldoByAno_Erro");
         }
     }
-    public decimal GetSaldoByMesAno(DateTime data, int idUsuario)
+    public decimal GetSaldoByMesAno(DateTime mesAno, int idUsuario)
     {
-        int mes = data.Month;
-        int ano = data.Year;
+        int mes = mesAno.Month;
+        int ano = mesAno.Year;
 
         try
         {
-            decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario && d.Data.Year == ano && d.Data.Month == mes).ToList().Sum(d => d.Valor);
-            decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario && r.Data.Year == ano && r.Data.Month == mes).ToList().Sum(r => r.Valor);
+            decimal sumDespesa = _context.Despesa.Where(d => d.UsuarioId == idUsuario && d.Data.Year == ano && d.Data.Month == mes).AsEnumerable().Sum(d => d.Valor);
+            decimal sumReceita = _context.Receita.Where(r => r.UsuarioId == idUsuario && r.Data.Year == ano && r.Data.Month == mes).AsEnumerable().Sum(r => r.Valor);
 
             return (sumReceita - sumDespesa);
         }

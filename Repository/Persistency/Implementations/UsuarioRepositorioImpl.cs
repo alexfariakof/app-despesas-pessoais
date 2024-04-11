@@ -57,8 +57,8 @@ public class UsuarioRepositorioImpl : IRepositorio<Usuario>
             controleAcesso.Login = obj.Email;
             _context.Entry(controleAcesso).CurrentValues.SetValues(controleAcesso);
             var usaurio = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(usuarioId));
-            _context?.Entry(usaurio).CurrentValues.SetValues(obj);
-            _context?.SaveChanges();
+           _context.Entry(usaurio).CurrentValues.SetValues(obj);
+           _context.SaveChanges();
         }
         catch 
         {

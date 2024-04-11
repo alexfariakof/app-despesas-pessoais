@@ -3,9 +3,9 @@
 namespace Business;
 public interface IUsuarioBusiness
 {
-    UsuarioVM Create(UsuarioVM obj);
+    UsuarioVM Create(UsuarioVM usuarioVM);
     UsuarioVM FindById(int id);
     List<UsuarioVM> FindAll(int idUsuario);
-    UsuarioVM Update(UsuarioVM obj);
+    UsuarioVM Update(UsuarioVM usuarioVM);
     bool Delete(UsuarioVM usuarioVM);
 }

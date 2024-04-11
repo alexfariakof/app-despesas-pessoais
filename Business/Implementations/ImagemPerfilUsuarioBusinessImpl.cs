@@ -71,7 +71,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         {
             var validImagemPerfil = _repositorio.GetAll().Find(prop => prop.Usuario.Id.Equals(obj.IdUsuario));
             if (validImagemPerfil == null)
-                throw new NullReferenceException("ImagemPerfilUsuarioVM");
+                throw new ArgumentException("Erro ao atualizar iamgem do perfil!");
 
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
             var imagemPerfilUsuario = new ImagemPerfilVM 

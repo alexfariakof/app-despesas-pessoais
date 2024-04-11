@@ -53,12 +53,12 @@ public class DespesaFaker
         return despesaFaker.Generate();
     }
 
-    public List<DespesaVM> DespesasVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
+    public List<DespesaVM> DespesasVMs(UsuarioVM? usuarioVM = null, int? idUsuario = null)
     {
         var listDespesaVM = new List<DespesaVM>();
         for (int i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
             var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(usuarioVM, TipoCategoria.Despesa);

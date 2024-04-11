@@ -23,9 +23,9 @@ public class CategoriaBusinessImpl : IBusiness<CategoriaVM>
         return _converter.Parse(categoria);
     }
 
-    public List<CategoriaVM> FindAll(int idUsaurio)
+    public List<CategoriaVM> FindAll(int idUsuario)
     {
-        var lstCategoria = _repositorio.GetAll().FindAll(c => c.UsuarioId == idUsaurio);
+        var lstCategoria = _repositorio.GetAll().FindAll(c => c.UsuarioId == idUsuario);
         return _converter.ParseList(lstCategoria);
     }    
     

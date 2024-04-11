@@ -50,13 +50,13 @@ public class ImagemPerfilUsuarioFaker
 
     public static List<ImagemPerfilVM> ImagensPerfilUsuarioVMs(
         UsuarioVM? usuarioVM = null,
-        int? idUsaurio = null
+        int? idUsuario = null
     )
     {
         var imagensVM = new List<ImagemPerfilVM>();
         for (var i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM();
 
             var imagemVM = GetNewFakerVM(usuarioVM);
