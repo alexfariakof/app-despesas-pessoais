@@ -8,20 +8,6 @@ public class ControleAcessoControllerTest
 {
     protected readonly Mock<IControleAcessoBusiness> _mockControleAcessoBusiness;
     protected readonly ControleAcessoController _controleAcessoController;
-
-    private ControleAcessoVM CreateValidControleAcessoVM()
-    {
-        return new ControleAcessoVM
-        {
-            Nome = "Teste ",
-            SobreNome = "Controle Acesso",
-            Email = "teste@teste.com",
-            Telefone = "(21) 9999-9999",
-            Senha = "!12345",
-            ConfirmaSenha = "!12345"
-        };
-    }
-
     private void SetupBearerToken(int userId)
     {
         var claims = new List<Claim>
@@ -46,7 +32,7 @@ public class ControleAcessoControllerTest
     public void Post_With_ValidData_Returns_OkResult()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>())).Returns(true);
 
         // Act
@@ -64,7 +50,7 @@ public class ControleAcessoControllerTest
     public void Post_With_ValidData_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>())).Returns(null);
 
         // Act
@@ -82,7 +68,7 @@ public class ControleAcessoControllerTest
     public void Post_With_Null_Telefone_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoVM.Telefone = string.Empty;
 
         // Act
@@ -100,7 +86,7 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_Email_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoVM.Email = string.Empty;
 
         // Act
@@ -118,7 +104,7 @@ public class ControleAcessoControllerTest
     public void Post_With_InvalidEmail_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoVM.Email = "email Inválido";
 
         // Act
@@ -136,7 +122,7 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_Password_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoVM.Senha = string.Empty;
 
         // Act
@@ -154,7 +140,7 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_ConfirmedPassword_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoVM.ConfirmaSenha = string.Empty;
 
         // Act
@@ -172,7 +158,7 @@ public class ControleAcessoControllerTest
     public void Post_With_Password_Mismatch_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = CreateValidControleAcessoVM();
+        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoVM.ConfirmaSenha = "senha Errada";
 
         // Act

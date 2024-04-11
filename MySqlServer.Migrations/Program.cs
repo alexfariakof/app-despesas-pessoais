@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"),
-b => b.MigrationsAssembly("MsMySqlServer.Migrations")));
+b => b.MigrationsAssembly("MySqlServer.Migrations")));
 
 builder.Services.AddRepositories();
 builder.Services.AddTransient<IDataSeeder, DataSeeder>();

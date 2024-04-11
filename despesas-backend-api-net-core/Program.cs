@@ -70,7 +70,9 @@ app.UseSwaggerUI(c =>
 app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.UseStaticFiles();
+
+// Not existis folder  wwwroot for SPA projects
+//app.UseStaticFiles();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())

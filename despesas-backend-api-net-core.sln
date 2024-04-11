@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSeeders", "DataSeeders\DataSeeders.csproj", "{623EA096-87D0-4F7C-A0AD-CEB7B9283207}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MsMySqlServer.Migrations", "MsMySqlServer.Migrations\MsMySqlServer.Migrations.csproj", "{A49F68B3-93B2-4821-8637-42DE20F2A8D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySqlServer.Migrations", "MySqlServer.Migrations\MySqlServer.Migrations.csproj", "{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +53,10 @@ Global
 		{623EA096-87D0-4F7C-A0AD-CEB7B9283207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{623EA096-87D0-4F7C-A0AD-CEB7B9283207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{623EA096-87D0-4F7C-A0AD-CEB7B9283207}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A49F68B3-93B2-4821-8637-42DE20F2A8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A49F68B3-93B2-4821-8637-42DE20F2A8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A49F68B3-93B2-4821-8637-42DE20F2A8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A49F68B3-93B2-4821-8637-42DE20F2A8D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
