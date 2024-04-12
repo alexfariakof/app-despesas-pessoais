@@ -44,7 +44,7 @@ public class CommonInjectDependenceTest
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<ReceitaVM>) && descriptor.ImplementationType == typeof(GenericRepositorio<ReceitaVM>)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<CategoriaVM>) && descriptor.ImplementationType == typeof(GenericRepositorio<CategoriaVM>)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Usuario>) && descriptor.ImplementationType == typeof(UsuarioRepositorioImpl)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IControleAcessoRepositorio) && descriptor.ImplementationType == typeof(ControleAcessoRepositorioImpl)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IControleAcessoRepositorioImpl) && descriptor.ImplementationType == typeof(ControleAcessoRepositorioImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IEmailSender) && descriptor.ImplementationType == typeof(EmailSender)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(ILancamentoRepositorio) && descriptor.ImplementationType == typeof(LancamentoRepositorioImpl)));
     }

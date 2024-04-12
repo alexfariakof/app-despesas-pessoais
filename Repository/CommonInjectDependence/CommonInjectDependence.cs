@@ -14,7 +14,7 @@ public static class CommonInjectDependence
     {
         services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
         services.AddScoped(typeof(IRepositorio<Usuario>), typeof(UsuarioRepositorioImpl));
-        services.AddScoped<IControleAcessoRepositorio, ControleAcessoRepositorioImpl>();
+        services.AddScoped<IControleAcessoRepositorioImpl, ControleAcessoRepositorioImpl>();
         services.AddScoped<IEmailSender, EmailSender>();
         services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));
         services.AddScoped(typeof(ISaldoRepositorio), typeof(SaldoRepositorioImpl));

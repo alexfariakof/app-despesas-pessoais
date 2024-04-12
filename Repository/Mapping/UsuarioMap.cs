@@ -15,6 +15,6 @@ public class UsuarioMap: IEntityTypeConfiguration<Usuario>
         builder.Property(m => m.Nome).HasMaxLength(50).IsRequired();
         builder.Property(m => m.SobreNome).HasMaxLength(50).IsRequired();
         builder.Property(m => m.Telefone).HasMaxLength(15).IsRequired(false);        
-        builder.Property(m => m.PerfilUsuario).IsRequired().HasDefaultValue(PerfilUsuario.Usuario);
+        builder.Property(m => m.PerfilUsuario).IsRequired().ValueGeneratedOnAdd().HasDefaultValue(PerfilUsuario.Usuario);
     }
 }

@@ -1,30 +1,25 @@
 ﻿using Domain.Core;
-using Domain.Core.Interfaces;
 using Domain.Entities;
 
 namespace Repository.Persistency.Implementations;
-public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
+public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 {
     private readonly RegisterContext? _context;
-    private readonly ICrypto _crypto = Crypto.GetInstance;
-    private readonly IEmailSender _emailSender;
-    public ControleAcessoRepositorioImpl(RegisterContext context, IEmailSender emailSender)
+
+    public ControleAcessoRepositorioImpl(RegisterContext context)
     {
         _context = context;
-        _emailSender = emailSender;
     }
-    public bool Create(ControleAcesso controleAcesso)
+    public void Create(ControleAcesso controleAcesso)
     {
-        if (FindByEmail(controleAcesso) != null) return false;            
+        if (FindByEmail(controleAcesso) != null) throw new AggregateException("Usuário já cadastrado!"); ;            
         
         using (_context)
         {
             try
             {
-                controleAcesso.Senha = _crypto.Encrypt(controleAcesso.Senha);
                 _context.Add(controleAcesso);
                 _context.SaveChanges();
-                return true;
             }
             catch (Exception ex)
             {
@@ -44,23 +39,15 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
     public bool RecoveryPassword(string email)
     {
         ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
-        controleAcesso.Usuario = GetUsuarioByEmail(email);
-
         using (_context)
         {
-
             var result = _context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
             try
             {
-                var senhaNova = Guid.NewGuid().ToString().Substring(0, 8);
-                controleAcesso.Senha = _crypto.Encrypt(senhaNova);
-                if (_emailSender.SendEmailPassword(controleAcesso.Usuario, senhaNova))
-                {
-                   _context.Entry(result).CurrentValues.SetValues(controleAcesso);
-                   _context.SaveChanges();
-                    return true;
-                }
-                return false;                    
+                controleAcesso.Senha = Guid.NewGuid().ToString().Substring(0, 8);
+                _context.ControleAcesso.Update(controleAcesso);
+               _context.SaveChanges();
+               return true;
             }
             catch 
             {
@@ -70,19 +57,14 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
     }
     public bool ChangePassword(int idUsuario, string password)
     {
-        Usuario? usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
-        
-        if (usuario is null) 
-            return false;
+        Usuario? usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));                
+        if (usuario is null)  return false;
 
-        ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
         try
         {
-            var result = _context.ControleAcesso.Single(prop => prop.Id.Equals(controleAcesso.Id));
-            controleAcesso.Senha = _crypto.Encrypt(password);
-           _context.Entry(result).CurrentValues.SetValues(controleAcesso);
-            usuario.StatusUsuario = StatusUsuario.Ativo;
-           _context.Entry(usuario).CurrentValues.SetValues(usuario);
+            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = usuario.Email });
+            controleAcesso.Senha = password;
+            _context.ControleAcesso.Update(controleAcesso);
            _context.SaveChanges();
             return true;
         }
@@ -90,15 +72,11 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorio
         {
             throw new Exception("ChangePassword_Erro", ex);
         }
-    }    
-    public bool isValidPasssword(ControleAcesso controleAcesso)
+    }
+
+    public bool IsValidPasssword(string email, string senha)
     {
-        ControleAcesso _controleAcesso = FindByEmail(controleAcesso);
-        
-        if (_crypto.Decrypt(_controleAcesso.Senha).Equals(controleAcesso.Senha))
-        {
-            return true;
-        }
-        return false;
+        var senhaToCompare = _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(email)).Senha;
+        return senha.Equals(Crypto.GetInstance.Decrypt(senhaToCompare));
     }
 }

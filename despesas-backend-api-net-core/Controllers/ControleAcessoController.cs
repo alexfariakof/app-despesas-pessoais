@@ -39,25 +39,29 @@ public class ControleAcessoController : AuthController
         if (controleAcessoVM.Senha != controleAcessoVM.ConfirmaSenha)
             return BadRequest(new { message = "Senha e Confirma Senha são diferentes!" });
 
-        ControleAcesso controleAcesso = new ControleAcesso
-        {
-            Login = controleAcessoVM.Email,
-            Senha = controleAcessoVM.Senha,
-            Usuario = new Usuario().CreateUsuario(
+        ControleAcesso controleAcesso = new ControleAcesso();
+        controleAcesso
+            .CreateAccount(
+            new Usuario().CreateUsuario(
                 controleAcessoVM.Nome,
                 controleAcessoVM.SobreNome,
                 controleAcessoVM.Email,
                 controleAcessoVM.Telefone,
                 StatusUsuario.Ativo,
-                PerfilUsuario.Usuario)
-        };
+                PerfilUsuario.Usuario),
+            controleAcessoVM.Email,
+            controleAcessoVM.Senha
+            );
 
-        var result = _controleAcessoBusiness.Create(controleAcesso);
-
-        if (result)
-            return  Ok(new { message = result });
-        else
+        try
+        {
+            _controleAcessoBusiness.Create(controleAcesso);
+            return Ok(new { message = true });
+        }
+        catch
+        {
             return BadRequest(new { message = "Não foi possível realizar o cadastro." });
+        }
     }
     
     [AllowAnonymous]
@@ -75,7 +79,7 @@ public class ControleAcessoController : AuthController
         if (String.IsNullOrEmpty(controleAcesso.Senha) || String.IsNullOrWhiteSpace(controleAcesso.Senha))
             return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
-        var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+        var result = _controleAcessoBusiness.FindByLogin(new ControleAcessoVM { Email = login.Email, Senha = login.Senha });
         
         if (result == null)
             return BadRequest(new { message = "Erro ao realizar login!" });
