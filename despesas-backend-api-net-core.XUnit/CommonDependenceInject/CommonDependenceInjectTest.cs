@@ -1,14 +1,14 @@
 ﻿using DataSeeders;
-using despesas_backend_api_net_core.CommonInjectDependence;
+using despesas_backend_api_net_core.CommonDependenceInject;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
-using Repository.CommonInjectDependence;
-using Business.CommonInjectDependence;
+using Repository.CommonDependenceInject;
+using Business.CommonDependenceInject;
 
-namespace Api.CommonInjectDependence;
-public class CommonInjectDependenceTest
+namespace CommonDependenceInject;
+public class CommonDependenceInjectTest
 {
     [Fact]
     public void AddServices_Should_Register_Services()

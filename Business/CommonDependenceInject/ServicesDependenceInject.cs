@@ -7,8 +7,8 @@ using Domain.Entities.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Persistency.UnitOfWork;
 
-namespace Business.CommonInjectDependence;
-public static class ServicesInjectDependence
+namespace Business.CommonDependenceInject;
+public static class ServicesDependenceInject
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {

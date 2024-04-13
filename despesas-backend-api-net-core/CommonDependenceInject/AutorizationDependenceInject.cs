@@ -7,8 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Repository;
 
-namespace despesas_backend_api_net_core.CommonInjectDependence;
-public static class AutorizationInjectDependence
+namespace despesas_backend_api_net_core.CommonDependenceInject;
+public static class AutorizationDependenceInject
 {
     public static void CreateDataBaseInMemory(this IServiceCollection services)
     {

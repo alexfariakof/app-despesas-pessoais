@@ -1,7 +1,7 @@
-using despesas_backend_api_net_core.CommonInjectDependence;
-using Business.CommonInjectDependence;
+using despesas_backend_api_net_core.CommonDependenceInject;
+using Business.CommonDependenceInject;
 using Repository;
-using Repository.CommonInjectDependence;
+using Repository.CommonDependenceInject;
 using DataSeeders;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;

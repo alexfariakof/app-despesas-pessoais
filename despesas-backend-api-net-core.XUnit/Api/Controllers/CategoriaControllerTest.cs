@@ -1,4 +1,6 @@
-﻿using despesas_backend_api_net_core.Controllers;
+﻿using Business.Abstractions;
+using despesas_backend_api_net_core.Controllers;
+using Domain.Entities.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -6,7 +8,7 @@ using System.Security.Claims;
 namespace Api.Controllers;
 public class CategoriaControllerTest
 {
-    protected Mock<IBusiness<CategoriaVM>> _mockCategoriaBusiness;
+    protected Mock<BusinessBase<CategoriaVM, Categoria>> _mockCategoriaBusiness;
     protected CategoriaController _categoriaController;
 
     private void SetupBearerToken(int userId)
@@ -24,7 +26,7 @@ public class CategoriaControllerTest
 
     public CategoriaControllerTest()
     {
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
     }
 
@@ -32,7 +34,7 @@ public class CategoriaControllerTest
     public void Get_Returns_Ok_Result()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaVMs = CategoriaFaker.Instance.CategoriasVMs();
 
@@ -57,7 +59,7 @@ public class CategoriaControllerTest
     public void GetById_Returns_Ok_Result()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaVM = CategoriaFaker.Instance.CategoriasVMs().First();
 
@@ -80,7 +82,7 @@ public class CategoriaControllerTest
     public void GetByTipoCategoria_Returns_Ok_Result_TipoCategoria_Todas()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var listCategoriaVM = CategoriaFaker.Instance.CategoriasVMs();
 
@@ -103,7 +105,7 @@ public class CategoriaControllerTest
     public void GetByTipoCategoria_Returns_Ok_Result()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         List<CategoriaVM> listCategoriaVM = CategoriaFaker.Instance.CategoriasVMs();
 
@@ -126,7 +128,7 @@ public class CategoriaControllerTest
     public void Post_Returns_Ok_Result()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().First();
         var categoriaVM = new CategoriaVM
@@ -158,7 +160,7 @@ public class CategoriaControllerTest
     public void Post_Returns_Bad_Request_When_TipoCategoria_Todas()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().First();
         var categoriaVM = new CategoriaVM
@@ -188,7 +190,7 @@ public class CategoriaControllerTest
     public void Post_Returns_Bad_Request_When_TryCatch_ThrowError()
     {
         // Arrange Para ocorrer esta situação o tipo de categotia não pode ser == Todas
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaVM = CategoriaFaker.Instance.CategoriasVMs().First();
         categoriaVM.IdTipoCategoria = (int)TipoCategoria.Receita;
@@ -212,7 +214,7 @@ public class CategoriaControllerTest
     public void Put_Returns_Ok_Result()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().FindAll(c => c.IdTipoCategoria != 0).First();
         var categoriaVM = new CategoriaVM
@@ -245,7 +247,7 @@ public class CategoriaControllerTest
     public void Put_Returns_Bad_Request_TipoCategoria_Todas()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaVM = CategoriaFaker.Instance.CategoriasVMs().First();
         categoriaVM.IdTipoCategoria = 0;
@@ -269,7 +271,7 @@ public class CategoriaControllerTest
     public void Put_Returns_Bad_Request_Categoria_Null()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaVM = CategoriaFaker.Instance.CategoriasVMs().First();
         categoriaVM.IdTipoCategoria = 1;
@@ -293,7 +295,7 @@ public class CategoriaControllerTest
     public void Delete_Returns_Ok_Result()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().Last();
         var categoriaVM = new CategoriaVM
@@ -324,7 +326,7 @@ public class CategoriaControllerTest
     public void Delete_Returns_OK_Result_Message_False()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().Last();
         var categoriaVM = new CategoriaVM
@@ -355,7 +357,7 @@ public class CategoriaControllerTest
     public void Delete_Returns_BadRequest()
     {
         // Arrange
-        _mockCategoriaBusiness = new Mock<IBusiness<CategoriaVM>>();
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaVM, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaVM = CategoriaFaker.Instance.CategoriasVMs().First();
         SetupBearerToken(0);

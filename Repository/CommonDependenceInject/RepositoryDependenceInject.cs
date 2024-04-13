@@ -1,15 +1,13 @@
 ﻿using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
-using Domain.Entities.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Persistency;
 using Repository.Persistency.Generic;
 using Repository.Persistency.Implementations;
-using Repository.UnitOfWork;
 
-namespace Repository.CommonInjectDependence;
-public static class RepositoryInjectDependence
+namespace Repository.CommonDependenceInject;
+public static class RepositoryDependenceInject
 {
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {

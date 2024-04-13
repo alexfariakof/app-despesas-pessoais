@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Repository.CommonInjectDependence;
+using Repository.CommonDependenceInject;
 using Repository;
 using DataSeeders;
 using DataSeeders.Implementations;
