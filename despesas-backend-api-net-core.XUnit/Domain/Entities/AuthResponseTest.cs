@@ -10,7 +10,7 @@ public class AuthResponseTest
         var mockUsuario = Mock.Of<Usuario>();
 
         // Arrange and ACt
-        var authResponse = new Authentication 
+        var authResponse = new AuthenticationDto 
         { 
              Authenticated = authenticated,
              Created = created,

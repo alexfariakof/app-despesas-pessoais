@@ -10,7 +10,7 @@ public class LancamentoVMTest
         var data = DateTime.Now.ToString("yyyy-MM-dd");
         var mockCategoria = Mock.Of<Categoria>();
 
-        var lancamentoVM = new LancamentoVM
+        var lancamentoVM = new LancamentoDto
         {
             Id = id,
             IdUsuario = idUsuario,

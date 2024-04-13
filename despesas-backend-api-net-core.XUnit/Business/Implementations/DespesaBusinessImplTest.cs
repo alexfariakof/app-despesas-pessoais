@@ -32,7 +32,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<DespesaVM>(result);
+        Assert.IsType<DespesaDto>(result);
         Assert.Equal(despesaVM.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Despesa>.IsAny), Times.Once);
     }
@@ -52,7 +52,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<DespesaVM>>(result);
+        Assert.IsType<List<DespesaDto>>(result);
         Assert.Equal(despesas.Count, result.Count);
         _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
     }
@@ -71,7 +71,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<DespesaVM>(result);
+        Assert.IsType<DespesaDto>(result);
         Assert.Equal(despesa.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
     }
@@ -109,7 +109,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<DespesaVM>(result);
+        Assert.IsType<DespesaDto>(result);
         Assert.Equal(despesa.Id, result.Id);
         Assert.Equal(despesa.Descricao, result.Descricao);
         _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Despesa>.IsAny), Times.Once);

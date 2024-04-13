@@ -6,7 +6,7 @@ public class ImagemPerfilUsuarioParserTest
     {
         // Arrange
         var parser = new ImagemPerfilUsuarioParser();
-        var origin = new ImagemPerfilVM
+        var origin = new ImagemPerfilDto
         {
             Id = 1,
             Name = "example.jpg",

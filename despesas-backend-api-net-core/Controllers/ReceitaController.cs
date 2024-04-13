@@ -10,8 +10,8 @@ namespace despesas_backend_api_net_core.Controllers;
 [Authorize("Bearer")]
 public class ReceitaController : AuthController
 {
-    private IBusiness<ReceitaVM> _receitaBusiness;
-    public ReceitaController(IBusiness<ReceitaVM> receitaBusiness)
+    private IBusiness<ReceitaDto> _receitaBusiness;
+    public ReceitaController(IBusiness<ReceitaDto> receitaBusiness)
     {
         _receitaBusiness = receitaBusiness;
     }
@@ -44,7 +44,7 @@ public class ReceitaController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    public IActionResult Post([FromBody] ReceitaVM receita)
+    public IActionResult Post([FromBody] ReceitaDto receita)
     {
         try
         {
@@ -59,7 +59,7 @@ public class ReceitaController : AuthController
 
     [HttpPut]
     [Authorize("Bearer")]
-    public IActionResult Put([FromBody] ReceitaVM receita)
+    public IActionResult Put([FromBody] ReceitaDto receita)
     {
 
         receita.IdUsuario = IdUsuario;
@@ -75,7 +75,7 @@ public class ReceitaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Delete(int idReceita)
     {
-        ReceitaVM receita = _receitaBusiness.FindById(idReceita, IdUsuario);
+        ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
         if (receita == null || IdUsuario != receita.IdUsuario)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });

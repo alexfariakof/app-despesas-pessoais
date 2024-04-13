@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos;
-public class ChangePasswordVM
+public class ChangePasswordDto
 {
     [Required]
     public string? Senha { get; set; }    

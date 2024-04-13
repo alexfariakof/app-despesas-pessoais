@@ -1,4 +1,4 @@
-﻿using Business;
+﻿using Business.Abstractions;
 using Business.Dtos;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -37,7 +37,7 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     public IActionResult GetUsuario()
     {
-        UsuarioVM _usuario = _usuarioBusiness.FindById(IdUsuario);
+        UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
         if (_usuario == null)
             return BadRequest(new { message ="Usuário não encontrado!" });
 
@@ -46,7 +46,7 @@ public class UsuarioController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    public IActionResult Post([FromBody] UsuarioVM usuarioVM)
+    public IActionResult Post([FromBody] UsuarioDto usuarioVM)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
         if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
@@ -68,7 +68,7 @@ public class UsuarioController : AuthController
 
     [HttpPut]
     [Authorize("Bearer")]
-    public IActionResult Put([FromBody] UsuarioVM usuarioVM)
+    public IActionResult Put([FromBody] UsuarioDto usuarioVM)
     {
         if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
             return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
@@ -79,7 +79,7 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioVM.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioVM updateUsuario = _usuarioBusiness.Update(usuarioVM);
+        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioVM);
         if (updateUsuario == null)
             return  BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -88,7 +88,7 @@ public class UsuarioController : AuthController
 
     [HttpPut("UpdateUsuario")]
     [Authorize("Bearer")]
-    public IActionResult PutAdministrador([FromBody] UsuarioVM usuarioVM)
+    public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioVM)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
         if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
@@ -105,7 +105,7 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioVM.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioVM updateUsuario = _usuarioBusiness.Update(usuarioVM);
+        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioVM);
         if (updateUsuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -114,7 +114,7 @@ public class UsuarioController : AuthController
 
     [HttpDelete]
     [Authorize("Bearer")]
-    public IActionResult Delete([FromBody] UsuarioVM usuarioVM)
+    public IActionResult Delete([FromBody] UsuarioDto usuarioVM)
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
         if (adm.PerfilUsuario != PerfilUsuario.Administrador)
@@ -148,7 +148,7 @@ public class UsuarioController : AuthController
         try
         {
             var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
-            ImagemPerfilVM? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+            ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
             if (_imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
             else
@@ -195,7 +195,7 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
         }
     }
-    private async Task<ImagemPerfilVM> ConvertFileToImagemPerfilUsuarioVMAsync(IFormFile file, int idUsuario)
+    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioVMAsync(IFormFile file, int idUsuario)
     {
         string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
         string typeFile = "";
@@ -209,7 +209,7 @@ public class UsuarioController : AuthController
             {
                 await file.CopyToAsync(memoryStream);
 
-                ImagemPerfilVM imagemPerfilUsuario = new ImagemPerfilVM {
+                ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto {
 
                     Name = fileName,
                     Type = typeFile,

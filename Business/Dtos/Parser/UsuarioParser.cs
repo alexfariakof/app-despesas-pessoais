@@ -2,9 +2,9 @@
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
-public class UsuarioParser : IParser<UsuarioVM, Usuario>, IParser<Usuario, UsuarioVM>
+public class UsuarioParser : IParser<UsuarioDto, Usuario>, IParser<Usuario, UsuarioDto>
 {
-    public Usuario Parse(UsuarioVM origin)
+    public Usuario Parse(UsuarioDto origin)
     {
         if (origin == null) return new Usuario();
         return new Usuario
@@ -18,10 +18,10 @@ public class UsuarioParser : IParser<UsuarioVM, Usuario>, IParser<Usuario, Usuar
         };
     }
 
-    public UsuarioVM Parse(Usuario origin)
+    public UsuarioDto Parse(Usuario origin)
     {
-        if (origin == null) return new UsuarioVM();
-        return new UsuarioVM
+        if (origin == null) return new UsuarioDto();
+        return new UsuarioDto
         {
             Id = origin.Id,
             Email = origin.Email,
@@ -32,15 +32,15 @@ public class UsuarioParser : IParser<UsuarioVM, Usuario>, IParser<Usuario, Usuar
         };
     }
 
-    public List<Usuario> ParseList(List<UsuarioVM> origin)
+    public List<Usuario> ParseList(List<UsuarioDto> origin)
     {
         if (origin == null) return new List<Usuario>();
         return origin.Select(item => Parse(item)).ToList();
     }
 
-    public List<UsuarioVM> ParseList(List<Usuario> origin)
+    public List<UsuarioDto> ParseList(List<Usuario> origin)
     {
-        if (origin == null) return new List<UsuarioVM>();
+        if (origin == null) return new List<UsuarioDto>();
         return origin.Select(item => Parse(item)).ToList();
     }
 }

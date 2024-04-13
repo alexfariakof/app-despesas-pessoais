@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos;
-public class CategoriaVM : BaseModelVM
+public class CategoriaDto : BaseModelDto
 {
     [Required]
     public string? Descricao { get; set; }    

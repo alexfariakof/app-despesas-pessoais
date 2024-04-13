@@ -6,7 +6,7 @@ public class LancamentoParserTest
     {
         // Arrange
         var lancamentoParser = new LancamentoParser();
-        var lancamentoVM = new LancamentoVM
+        var lancamentoVM = new LancamentoDto
         {
             Id = 1,
             IdUsuario = 1,
@@ -68,9 +68,9 @@ public class LancamentoParserTest
     {
         // Arrange
         var lancamentoParser = new LancamentoParser();
-        var lancamentoVMs = new List<LancamentoVM>
+        var lancamentoVMs = new List<LancamentoDto>
         {
-            new LancamentoVM
+            new LancamentoDto
             {
                 Id = 1,
                 IdUsuario = 1,
@@ -82,7 +82,7 @@ public class LancamentoParserTest
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
             },
-            new LancamentoVM
+            new LancamentoDto
             {
                 Id = 2,
                 IdUsuario = 3,
@@ -94,7 +94,7 @@ public class LancamentoParserTest
                 TipoCategoria = "Receita",
                 Categoria = Mock.Of<Categoria>().Descricao,
             },
-            new LancamentoVM
+            new LancamentoDto
             {
                 Id = 3,
                 IdUsuario = 2,

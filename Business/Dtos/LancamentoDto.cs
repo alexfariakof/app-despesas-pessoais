@@ -1,5 +1,5 @@
 ﻿namespace Business.Dtos;
-public class LancamentoVM : BaseModelVM
+public class LancamentoDto : BaseModelDto
 {
     public int IdDespesa { get; set; }
     public int IdReceita { get; set; }

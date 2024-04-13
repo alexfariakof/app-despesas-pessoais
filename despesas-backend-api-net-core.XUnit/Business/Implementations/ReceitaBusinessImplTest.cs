@@ -28,7 +28,7 @@ public class ReceitaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ReceitaVM>(result);
+        Assert.IsType<ReceitaDto>(result);
         Assert.Equal(receitaVM.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Receita>.IsAny), Times.Once());
     }
@@ -49,7 +49,7 @@ public class ReceitaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<ReceitaVM>>(result);
+        Assert.IsType<List<ReceitaDto>>(result);
         Assert.Equal(receitas.Count, result.Count);
         _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
     }
@@ -68,7 +68,7 @@ public class ReceitaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ReceitaVM>(result);
+        Assert.IsType<ReceitaDto>(result);
         Assert.Equal(receita.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
     }
@@ -106,7 +106,7 @@ public class ReceitaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ReceitaVM>(result);
+        Assert.IsType<ReceitaDto>(result);
         Assert.Equal(receita.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Receita>.IsAny), Times.Once);
     }

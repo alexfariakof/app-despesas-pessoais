@@ -1,4 +1,4 @@
-﻿namespace Business;
+﻿namespace Business.Abstractions;
 public interface ISaldoBusiness
 {
     decimal GetSaldo(int idUsuario);

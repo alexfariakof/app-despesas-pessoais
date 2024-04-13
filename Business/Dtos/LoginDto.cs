@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos;
-public class LoginVM
+public class LoginDto
 {
     [Required]
     public string? Email { get; set; }

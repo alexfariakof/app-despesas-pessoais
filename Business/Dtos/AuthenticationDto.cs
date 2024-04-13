@@ -1,5 +1,5 @@
 ﻿namespace Business.Dtos;
-public class Authentication
+public class AuthenticationDto
 {
     public bool Authenticated { get; set; }
     public string? Created { get; set; }

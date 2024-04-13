@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos;
-public class DespesaVM : BaseModelVM
+public class DespesaDto : BaseModelDto
 {
     [Required]
     public DateTime Data { get; set; }    
@@ -11,6 +11,6 @@ public class DespesaVM : BaseModelVM
     public decimal Valor { get; set; }
     public DateTime? DataVencimento { get; set; }           
     [Required]
-    public CategoriaVM? Categoria { get; set; }
-    public UsuarioVM? Usuario { get; set; }
+    public CategoriaDto? Categoria { get; set; }
+    public UsuarioDto? Usuario { get; set; }
 }

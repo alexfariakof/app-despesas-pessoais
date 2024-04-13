@@ -36,9 +36,9 @@ public class DespesaFaker
         return despesaFaker.Generate();
     }
 
-    public DespesaVM GetNewFakerVM(int idUsuario, int idCategoria)
+    public DespesaDto GetNewFakerVM(int idUsuario, int idCategoria)
     {
-        var despesaFaker = new Faker<DespesaVM>()
+        var despesaFaker = new Faker<DespesaDto>()
             .RuleFor(r => r.Id, f => counterVM++)
             .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
             .RuleFor(
@@ -53,9 +53,9 @@ public class DespesaFaker
         return despesaFaker.Generate();
     }
 
-    public List<DespesaVM> DespesasVMs(UsuarioVM? usuarioVM = null, int? idUsuario = null)
+    public List<DespesaDto> DespesasVMs(UsuarioDto? usuarioVM = null, int? idUsuario = null)
     {
-        var listDespesaVM = new List<DespesaVM>();
+        var listDespesaVM = new List<DespesaDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)

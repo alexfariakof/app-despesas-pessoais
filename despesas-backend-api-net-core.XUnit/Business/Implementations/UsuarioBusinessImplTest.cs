@@ -27,7 +27,7 @@ public class UsuarioBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<UsuarioVM>(result);
+        Assert.IsType<UsuarioDto>(result);
         //Assert.Equal(usuario.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Usuario>.IsAny), Times.Once);
     }
@@ -49,7 +49,7 @@ public class UsuarioBusinessImplTest
 
         // Assert
         Assert.NotNull(result);            
-        Assert.IsType<List<UsuarioVM>>(result);
+        Assert.IsType<List<UsuarioDto>>(result);
         Assert.Equal(_usuarios.Count, result.Count);
         _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
         _repositorioMock.Verify(repo => repo.Get(idUsuario), Times.Once);
@@ -90,7 +90,7 @@ public class UsuarioBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<UsuarioVM>(result);
+        Assert.IsType<UsuarioDto>(result);
         Assert.Equal(usuario.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Get(idUsuario), Times.Once);
     }
@@ -110,7 +110,7 @@ public class UsuarioBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<UsuarioVM>(result);
+        Assert.IsType<UsuarioDto>(result);
         Assert.Equal(usuarioVM.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Usuario>.IsAny), Times.Once);
     }

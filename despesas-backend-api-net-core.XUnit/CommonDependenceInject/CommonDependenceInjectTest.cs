@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.CommonDependenceInject;
 using Business.CommonDependenceInject;
+using Business.Abstractions;
 
 namespace CommonDependenceInject;
 public class CommonDependenceInjectTest
@@ -21,9 +22,9 @@ public class CommonDependenceInjectTest
 
         // Assert
 
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IBusiness<DespesaVM>) && descriptor.ImplementationType == typeof(DespesaBusinessImpl)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IBusiness<ReceitaVM>) && descriptor.ImplementationType == typeof(ReceitaBusinessImpl)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IBusiness<CategoriaVM>) && descriptor.ImplementationType == typeof(CategoriaBusinessImpl)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IBusiness<DespesaDto>) && descriptor.ImplementationType == typeof(DespesaBusinessImpl)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IBusiness<ReceitaDto>) && descriptor.ImplementationType == typeof(ReceitaBusinessImpl)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IBusiness<CategoriaDto>) && descriptor.ImplementationType == typeof(CategoriaBusinessImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IControleAcessoBusiness) && descriptor.ImplementationType == typeof(ControleAcessoBusinessImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(ILancamentoBusiness) && descriptor.ImplementationType == typeof(LancamentoBusinessImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IUsuarioBusiness) && descriptor.ImplementationType == typeof(UsuarioBusinessImpl)));
@@ -40,9 +41,9 @@ public class CommonDependenceInjectTest
         services.AddRepositories();
 
         // Assert
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<DespesaVM>) && descriptor.ImplementationType == typeof(GenericRepositorio<DespesaVM>)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<ReceitaVM>) && descriptor.ImplementationType == typeof(GenericRepositorio<ReceitaVM>)));
-        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<CategoriaVM>) && descriptor.ImplementationType == typeof(GenericRepositorio<CategoriaVM>)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<DespesaDto>) && descriptor.ImplementationType == typeof(GenericRepositorio<DespesaDto>)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<ReceitaDto>) && descriptor.ImplementationType == typeof(GenericRepositorio<ReceitaDto>)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<CategoriaDto>) && descriptor.ImplementationType == typeof(GenericRepositorio<CategoriaDto>)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Usuario>) && descriptor.ImplementationType == typeof(UsuarioRepositorioImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IControleAcessoRepositorioImpl) && descriptor.ImplementationType == typeof(ControleAcessoRepositorioImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IEmailSender) && descriptor.ImplementationType == typeof(EmailSender)));

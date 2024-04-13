@@ -10,7 +10,7 @@ public class UsuarioVMTest
     {
         // Arrange and Act
 
-        var usuarioVM = new UsuarioVM
+        var usuarioVM = new UsuarioDto
         {
             Id = id,
             Nome = nome,

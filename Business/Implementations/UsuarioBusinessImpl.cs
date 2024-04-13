@@ -1,4 +1,5 @@
-﻿using Business.Dtos;
+﻿using Business.Abstractions;
+using Business.Dtos;
 using Business.Dtos.Parser;
 using Domain.Entities;
 using Repository.Persistency.Generic;
@@ -15,7 +16,7 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         _converter = new UsuarioParser();
     }
 
-    public UsuarioVM Create(UsuarioVM usuarioVM)
+    public UsuarioDto Create(UsuarioDto usuarioVM)
     {
         var usuario = new Usuario().CreateUsuario(
             usuarioVM.Nome,
@@ -29,7 +30,7 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         return _converter.Parse(usuario);
     }
 
-    public List<UsuarioVM> FindAll(int idUsuario)
+    public List<UsuarioDto> FindAll(int idUsuario)
     {
         var usuario = FindById(idUsuario);
         if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
@@ -37,12 +38,12 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         return null;
     }      
 
-    public UsuarioVM FindById(int id)
+    public UsuarioDto FindById(int id)
     {
         var usuario = _repositorio.Get(id);
         return _converter.Parse(usuario);
     }
-    public UsuarioVM Update(UsuarioVM usuarioVM)
+    public UsuarioDto Update(UsuarioDto usuarioVM)
     {
         var usuario = new Usuario
         {
@@ -58,7 +59,7 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         return _converter.Parse(usuario);
     }
 
-    public bool Delete(UsuarioVM usuarioVM)
+    public bool Delete(UsuarioDto usuarioVM)
     {
         return _repositorio.Delete(new Usuario{ Id = usuarioVM.Id });
     }

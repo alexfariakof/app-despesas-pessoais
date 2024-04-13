@@ -33,7 +33,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ImagemPerfilVM>(result);
+        Assert.IsType<ImagemPerfilDto>(result);
     }
 
     [Fact]
@@ -64,7 +64,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<ImagemPerfilVM>>(result);
+        Assert.IsType<List<ImagemPerfilDto>>(result);
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ImagemPerfilVM>(result);
+        Assert.IsType<ImagemPerfilDto>(result);
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<UsuarioVM>(result);
+        Assert.IsType<UsuarioDto>(result);
     }
 
     [Fact]
@@ -141,7 +141,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ImagemPerfilVM>(result);
+        Assert.IsType<ImagemPerfilDto>(result);
     }
 
     [Fact]

@@ -33,13 +33,13 @@ public class ControleAcessoFaker
         }
     }
 
-    public ControleAcessoVM GetNewFakerVM(Usuario? usuario = null)
+    public ControleAcessoDto GetNewFakerVM(Usuario? usuario = null)
     {
         lock (LockObject)
         {
             if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker();
 
-            var controleAcessoVMFaker = new Faker<ControleAcessoVM>()
+            var controleAcessoVMFaker = new Faker<ControleAcessoDto>()
             .RuleFor(ca => ca.Nome, usuario.Nome)
             .RuleFor(ca => ca.SobreNome, usuario.SobreNome)
             .RuleFor(ca => ca.Email, usuario.Email)
@@ -52,9 +52,9 @@ public class ControleAcessoFaker
         }
     }
 
-    public List<ControleAcessoVM> ControleAcessoVMs(int count = 3)
+    public List<ControleAcessoDto> ControleAcessoVMs(int count = 3)
     {           
-        var listControleAcessoVM = new List<ControleAcessoVM>();                        
+        var listControleAcessoVM = new List<ControleAcessoDto>();                        
         for (int i = 0; i < count; i++)
         {
             var usuario = UsuarioFaker.Instance.GetNewFaker();

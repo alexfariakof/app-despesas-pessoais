@@ -5,7 +5,7 @@ using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-public class DespesaBusinessImpl : IBusiness<DespesaVM>
+public class DespesaBusinessImpl : IBusiness<DespesaDto>
 {
     private readonly IRepositorio<Despesa> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
@@ -16,7 +16,7 @@ public class DespesaBusinessImpl : IBusiness<DespesaVM>
         _repoCategoria = repoCategoria;
         _converter = new DespesaParser();
     }
-    public DespesaVM Create(DespesaVM obj)
+    public DespesaDto Create(DespesaDto obj)
     {
         IsCategoriaValid(obj);
         Despesa despesa = _converter.Parse(obj);
@@ -24,7 +24,7 @@ public class DespesaBusinessImpl : IBusiness<DespesaVM>
         return _converter.Parse(despesa);
     }
 
-    public List<DespesaVM> FindAll(int idUsuario)
+    public List<DespesaDto> FindAll(int idUsuario)
     {
         var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
         foreach( var despesa in despesas)
@@ -32,7 +32,7 @@ public class DespesaBusinessImpl : IBusiness<DespesaVM>
         return _converter.ParseList(despesas);
     }
 
-    public DespesaVM FindById(int id, int idUsuario)
+    public DespesaDto FindById(int id, int idUsuario)
     {
         var despesa = _repositorio.Get(id);
         despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
@@ -43,7 +43,7 @@ public class DespesaBusinessImpl : IBusiness<DespesaVM>
         return null;
     }
 
-    public DespesaVM Update(DespesaVM obj)
+    public DespesaDto Update(DespesaDto obj)
     {
         IsCategoriaValid(obj);
         Despesa despesa = _converter.Parse(obj);
@@ -51,12 +51,12 @@ public class DespesaBusinessImpl : IBusiness<DespesaVM>
         return _converter.Parse(despesa);
     }
 
-    public bool Delete(DespesaVM obj)
+    public bool Delete(DespesaDto obj)
     {
         Despesa despesa = _converter.Parse(obj);
         return _repositorio.Delete(despesa);
     }
-    private void IsCategoriaValid(DespesaVM obj)
+    private void IsCategoriaValid(DespesaDto obj)
     {
         if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario && obj.Categoria.IdTipoCategoria == (int)TipoCategoria.Despesa) == null)
             throw new ArgumentException("Erro Categoria inexistente ou não cadastrada!");

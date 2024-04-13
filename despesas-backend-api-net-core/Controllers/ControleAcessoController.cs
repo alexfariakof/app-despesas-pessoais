@@ -1,4 +1,4 @@
-﻿using Business;
+﻿using Business.Abstractions;
 using Business.Dtos;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +19,7 @@ public class ControleAcessoController : AuthController
     
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult Post([FromBody] ControleAcessoVM controleAcessoVM)
+    public IActionResult Post([FromBody] ControleAcessoDto controleAcessoVM)
     {
         if (String.IsNullOrEmpty(controleAcessoVM.Telefone) || String.IsNullOrWhiteSpace(controleAcessoVM.Telefone))
             return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
@@ -66,7 +66,7 @@ public class ControleAcessoController : AuthController
     
     [AllowAnonymous]
     [HttpPost("SignIn")]
-    public IActionResult SignIn([FromBody] LoginVM login)
+    public IActionResult SignIn([FromBody] LoginDto login)
     {
         var controleAcesso = new ControleAcesso { Login = login.Email , Senha = login.Senha };
 
@@ -79,7 +79,7 @@ public class ControleAcessoController : AuthController
         if (String.IsNullOrEmpty(controleAcesso.Senha) || String.IsNullOrWhiteSpace(controleAcesso.Senha))
             return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
-        var result = _controleAcessoBusiness.FindByLogin(new ControleAcessoVM { Email = login.Email, Senha = login.Senha });
+        var result = _controleAcessoBusiness.FindByLogin(new ControleAcessoDto { Email = login.Email, Senha = login.Senha });
         
         if (result == null)
             return BadRequest(new { message = "Erro ao realizar login!" });
@@ -89,7 +89,7 @@ public class ControleAcessoController : AuthController
 
     [HttpPost("ChangePassword")]
     [Authorize("Bearer")]        
-    public IActionResult ChangePassword([FromBody] ChangePasswordVM changePasswordVM)
+    public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordVM)
     {
 
         if (IdUsuario.Equals(2))

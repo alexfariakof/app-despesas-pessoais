@@ -1,8 +1,8 @@
 ﻿using despesas_backend_api_net_core.Controllers;
-using Business.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Business.Abstractions;
 
 namespace Api.Controllers;
 public class ControleAcessoControllerTest
@@ -179,8 +179,8 @@ public class ControleAcessoControllerTest
     public void SignIn_With_ValidData_Returns_ObjectResult()
     {
         // Arrange
-        var loginVM = new LoginVM { Email = "teste@teste.com", Senha = "password" };
-        _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcessoVM>())).Returns(new Authentication());
+        var loginVM = new LoginDto { Email = "teste@teste.com", Senha = "password" };
+        _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcessoDto>())).Returns(new AuthenticationDto());
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -194,7 +194,7 @@ public class ControleAcessoControllerTest
     public void SignIn_With_InvalidEmail_Returns_BadRequest_EmailInvalido()
     {
         // Arrange
-        var loginVM = new LoginVM { Email = "email@invalido.com", Senha = "password" };
+        var loginVM = new LoginDto { Email = "email@invalido.com", Senha = "password" };
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -211,7 +211,7 @@ public class ControleAcessoControllerTest
     public void SignIn_With_InvalidEmail_Returns_BadRequest_Login_Erro()
     {
         // Arrange
-        var loginVM = new LoginVM { Email = "email@invalido.com", Senha = "password" };
+        var loginVM = new LoginDto { Email = "email@invalido.com", Senha = "password" };
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -228,7 +228,7 @@ public class ControleAcessoControllerTest
     public void ChangePassword_With_ValidData_Returns_OkResult()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+        var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
         _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(true);
 
@@ -249,7 +249,7 @@ public class ControleAcessoControllerTest
     public void ChangePassword_With_Usuario_Teste_Returns_BadRequest()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+        var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(2);
 
         // Act
@@ -267,7 +267,7 @@ public class ControleAcessoControllerTest
     public void ChangePassword_With_NULL_Password_Returns_BadRequest()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordVM { Senha = "", ConfirmaSenha = "!12345" };
+        var changePasswordVM = new ChangePasswordDto { Senha = "", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
 
         // Act
@@ -285,7 +285,7 @@ public class ControleAcessoControllerTest
     public void ChangePassword_With_NULL_ConfirmedPassword_Returns_BadRequest()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "" };
+        var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "" };
         SetupBearerToken(1);
 
         // Act
@@ -303,7 +303,7 @@ public class ControleAcessoControllerTest
     public void ChangePassword_With_ValidData_Returns_BadRequest()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordVM { Senha = "!12345", ConfirmaSenha = "!12345" };
+        var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
         _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(false);
 

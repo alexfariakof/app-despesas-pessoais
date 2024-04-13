@@ -12,10 +12,10 @@ public static class ServicesDependenceInject
 {
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IBusiness<DespesaVM>), typeof(DespesaBusinessImpl));
-        services.AddScoped(typeof(IBusiness<ReceitaVM>), typeof(ReceitaBusinessImpl));
+        services.AddScoped(typeof(IBusiness<DespesaDto>), typeof(DespesaBusinessImpl));
+        services.AddScoped(typeof(IBusiness<ReceitaDto>), typeof(ReceitaBusinessImpl));
         services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-        services.AddScoped(typeof(BusinessBase<CategoriaVM, Categoria>), typeof(CategoriaBusinessImpl));
+        services.AddScoped(typeof(BusinessBase<CategoriaDto, Categoria>), typeof(CategoriaBusinessImpl));
         services.AddScoped(typeof(IControleAcessoBusiness), typeof(ControleAcessoBusinessImpl));
         services.AddScoped(typeof(ILancamentoBusiness), typeof(LancamentoBusinessImpl));
         services.AddScoped(typeof(IUsuarioBusiness), typeof(UsuarioBusinessImpl));

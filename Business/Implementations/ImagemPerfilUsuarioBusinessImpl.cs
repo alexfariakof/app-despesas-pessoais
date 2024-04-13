@@ -1,4 +1,5 @@
-﻿using Business.Dtos;
+﻿using Business.Abstractions;
+using Business.Dtos;
 using Business.Dtos.Parser;
 using Domain.Core;
 using Domain.Core.Interfaces;
@@ -19,7 +20,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         _amazonS3Bucket = amazonS3Bucket == null ? AmazonS3Bucket.GetInstance : amazonS3Bucket; 
     }
 
-    public ImagemPerfilVM Create(ImagemPerfilVM obj)
+    public ImagemPerfilDto Create(ImagemPerfilDto obj)
     {
         ImagemPerfilUsuario? perfilFile = _converter.Parse(obj);
         try
@@ -37,13 +38,13 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         return null;
     }
 
-    public List<ImagemPerfilVM> FindAll(int idUsuario)
+    public List<ImagemPerfilDto> FindAll(int idUsuario)
     {
         var lstPerfilFile = _repositorio.GetAll();
         return _converter.ParseList(lstPerfilFile);
     }
 
-    public ImagemPerfilVM FindById(int id, int idUsuario)
+    public ImagemPerfilDto FindById(int id, int idUsuario)
     {
         var imagemPerfilUsuario = _converter.Parse(_repositorio.Get(id));
         if (imagemPerfilUsuario.IdUsuario != idUsuario)
@@ -52,7 +53,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         return imagemPerfilUsuario;
     }
 
-    public UsuarioVM FindByIdUsuario(int idUsuario)
+    public UsuarioDto FindByIdUsuario(int idUsuario)
     {
         try
         {
@@ -65,7 +66,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         }            
     }
 
-    public ImagemPerfilVM Update(ImagemPerfilVM obj)
+    public ImagemPerfilDto Update(ImagemPerfilDto obj)
     {        
         try
         {
@@ -74,7 +75,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
                 throw new ArgumentException("Erro ao atualizar iamgem do perfil!");
 
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
-            var imagemPerfilUsuario = new ImagemPerfilVM 
+            var imagemPerfilUsuario = new ImagemPerfilDto 
             {
 
                 Id = validImagemPerfil.Id,

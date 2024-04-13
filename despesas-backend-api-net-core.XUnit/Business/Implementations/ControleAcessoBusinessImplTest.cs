@@ -57,7 +57,7 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Return_Valid_Credentials_And_AccessToken()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoVM { Email = "teste@teste.com", Senha = "teste", };
+        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
 
         var usuario = new Usuario
         {
@@ -82,7 +82,7 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Returns_Usaurio_Inexistente()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoVM { Email = "teste@teste.com" };
+        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com" };
         _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns((Usuario)null);
 
         // Act
@@ -97,7 +97,7 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Returns_Usuario_Inativo()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoVM  { Email = "teste@teste.com" };
+        var controleAcesso = new ControleAcessoDto  { Email = "teste@teste.com" };
         var usuarioInativo = new Usuario { StatusUsuario = StatusUsuario.Inativo };
         _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuarioInativo);
 
@@ -113,7 +113,7 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Returns_Email_Inexistente()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoVM { Email = "teste@teste.com", Senha = "teste", };
+        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
         var usuario = new Usuario
         {
             Id = 1,
@@ -137,7 +137,7 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Returns_Senha_Invalida()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoVM  { Email = "teste@teste.com", Senha = "teste", };
+        var controleAcesso = new ControleAcessoDto  { Email = "teste@teste.com", Senha = "teste", };
 
         var usuario = new Usuario
         {
@@ -162,7 +162,7 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Returns_Usuario_Invalido()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoVM  { Email = "teste@teste.com", Senha = "teste", };
+        var controleAcesso = new ControleAcessoDto  { Email = "teste@teste.com", Senha = "teste", };
 
         var usuario = new Usuario
         {

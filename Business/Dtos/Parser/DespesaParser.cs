@@ -2,9 +2,9 @@
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
-public class DespesaParser: IParser<DespesaVM, Despesa>, IParser<Despesa, DespesaVM>
+public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, DespesaDto>
 {    
-    public Despesa Parse(DespesaVM origin)
+    public Despesa Parse(DespesaDto origin)
     {
         if (origin == null) return new Despesa();
         return new Despesa
@@ -19,10 +19,10 @@ public class DespesaParser: IParser<DespesaVM, Despesa>, IParser<Despesa, Despes
         };
     }
 
-    public DespesaVM Parse(Despesa origin)
+    public DespesaDto Parse(Despesa origin)
     {
-        if (origin == null) return new DespesaVM();
-        return new DespesaVM
+        if (origin == null) return new DespesaDto();
+        return new DespesaDto
         {
             Id = origin.Id,
             Data = origin.Data,
@@ -35,15 +35,15 @@ public class DespesaParser: IParser<DespesaVM, Despesa>, IParser<Despesa, Despes
         };
     }
 
-    public List<Despesa> ParseList(List<DespesaVM> origin)
+    public List<Despesa> ParseList(List<DespesaDto> origin)
     {
         if (origin == null) return new List<Despesa>();
         return origin.Select(item => Parse(item)).ToList();
     }
 
-    public List<DespesaVM> ParseList(List<Despesa> origin)
+    public List<DespesaDto> ParseList(List<Despesa> origin)
     {
-        if (origin == null) return new List<DespesaVM>();
+        if (origin == null) return new List<DespesaDto>();
         return origin.Select(item => Parse(item)).ToList();
     }
 }

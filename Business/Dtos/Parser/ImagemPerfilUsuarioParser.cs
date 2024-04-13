@@ -2,9 +2,9 @@
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
-public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilVM, ImagemPerfilUsuario>, IParser<ImagemPerfilUsuario, ImagemPerfilVM>
+public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilDto, ImagemPerfilUsuario>, IParser<ImagemPerfilUsuario, ImagemPerfilDto>
 {
-    public ImagemPerfilUsuario Parse(ImagemPerfilVM origin)
+    public ImagemPerfilUsuario Parse(ImagemPerfilDto origin)
     {
         if (origin == null) return new ImagemPerfilUsuario();
         return new ImagemPerfilUsuario
@@ -17,10 +17,10 @@ public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilVM, ImagemPerfilUsu
         };
     }
 
-    public ImagemPerfilVM Parse(ImagemPerfilUsuario origin)
+    public ImagemPerfilDto Parse(ImagemPerfilUsuario origin)
     {
-        if (origin == null) return new ImagemPerfilVM();
-        return new ImagemPerfilVM
+        if (origin == null) return new ImagemPerfilDto();
+        return new ImagemPerfilDto
         {
             Id = origin.Id,
             Name = origin.Name,
@@ -30,15 +30,15 @@ public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilVM, ImagemPerfilUsu
         };
     }
 
-    public List<ImagemPerfilUsuario> ParseList(List<ImagemPerfilVM> origin)
+    public List<ImagemPerfilUsuario> ParseList(List<ImagemPerfilDto> origin)
     {
         if (origin == null) return new List<ImagemPerfilUsuario>();
         return origin.Select(item => Parse(item)).ToList();
     }
 
-    public List<ImagemPerfilVM> ParseList(List<ImagemPerfilUsuario> origin)
+    public List<ImagemPerfilDto> ParseList(List<ImagemPerfilUsuario> origin)
     {
-        if (origin == null) return new List<ImagemPerfilVM>();
+        if (origin == null) return new List<ImagemPerfilDto>();
         return origin.Select(item => Parse(item)).ToList();
     }
 }

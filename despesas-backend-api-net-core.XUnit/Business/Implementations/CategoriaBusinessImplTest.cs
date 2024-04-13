@@ -33,7 +33,7 @@ public class CategoriaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CategoriaVM>(result);
+        Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoriaVM.Id, result.Id);
         _unitOfWorkMock.Verify(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny), Times.Once);
     }
@@ -51,7 +51,7 @@ public class CategoriaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<CategoriaVM>>(result);
+        Assert.IsType<List<CategoriaDto>>(result);
         Assert.Equal(mockCategorias.Count, result.Count);
         _unitOfWorkMock.Verify(repo => repo.Repository.GetAll(), Times.Once);
     }
@@ -71,7 +71,7 @@ public class CategoriaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CategoriaVM>(result);
+        Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoria.Id, result.Id);
         _unitOfWorkMock.Verify(repo => repo.Repository.GetById(id), Times.Once);
     }
@@ -106,11 +106,11 @@ public class CategoriaBusinessImplTest
         _unitOfWorkMock.Setup(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny));
 
         // Act
-        var result = _categoriaBusiness.Update(categoriaVM) as CategoriaVM;
+        var result = _categoriaBusiness.Update(categoriaVM) as CategoriaDto;
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CategoriaVM>(result);
+        Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoria.Id, result.Id);
         _unitOfWorkMock.Verify(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny), Times.Once);
     }

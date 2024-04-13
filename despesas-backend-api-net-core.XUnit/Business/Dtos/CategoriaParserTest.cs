@@ -6,7 +6,7 @@ public class CategoriaParserTest
     {
         // Arrange
         var categoriaParser = new CategoriaParser();
-        var categoriaVM = new CategoriaVM
+        var categoriaVM = new CategoriaDto
         {
             Id = 1,
             Descricao = "Categoria Teste",
@@ -52,23 +52,23 @@ public class CategoriaParserTest
     {
         // Arrange
         var categoriaParser = new CategoriaParser();
-        var categoriaVMs = new List<CategoriaVM>
+        var categoriaVMs = new List<CategoriaDto>
         {
-            new CategoriaVM
+            new CategoriaDto
             {
                 Id = 1,
                 Descricao = "Categoria 1",
                 IdTipoCategoria = 1,
                 IdUsuario = 1
             },
-            new CategoriaVM
+            new CategoriaDto
             {
                 Id = 2,
                 Descricao = "Categoria 2",
                 IdTipoCategoria = 2,
                 IdUsuario = 2
             },
-            new CategoriaVM
+            new CategoriaDto
             {
                 Id = 3,
                 Descricao = "Categoria 3",

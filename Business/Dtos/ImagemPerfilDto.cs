@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
 namespace Business.Dtos;
-public class ImagemPerfilVM : BaseModelVM
+public class ImagemPerfilDto : BaseModelDto
 {
     public string? Url { get; set; }
     

@@ -32,9 +32,9 @@ public class ReceitaFaker
         return receitaFaker.Generate();
     }
 
-    public ReceitaVM GetNewFakerVM(int idUsuario, int idCategoria)
+    public ReceitaDto GetNewFakerVM(int idUsuario, int idCategoria)
     {
-        var receitaFaker = new Faker<ReceitaVM>()
+        var receitaFaker = new Faker<ReceitaDto>()
             .RuleFor(r => r.Id, f => counterVM++)
             .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
             .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
@@ -46,12 +46,12 @@ public class ReceitaFaker
         return receitaFaker.Generate();
     }
 
-    public List<ReceitaVM> ReceitasVMs(
-        UsuarioVM? usuarioVM = null,
+    public List<ReceitaDto> ReceitasVMs(
+        UsuarioDto? usuarioVM = null,
         int? idUsuario = null
     )
     {
-        var listReceitaVM = new List<ReceitaVM>();
+        var listReceitaVM = new List<ReceitaDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)

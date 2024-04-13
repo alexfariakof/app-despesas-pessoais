@@ -1,4 +1,5 @@
-﻿using Business.Dtos;
+﻿using Business.Abstractions;
+using Business.Dtos;
 using Business.Dtos.Parser;
 using Repository.Persistency;
 
@@ -12,7 +13,7 @@ public class LancamentoBusinessImpl : ILancamentoBusiness
         _repositorio = repositorio;
         _converter = new LancamentoParser();
     }
-    public List<LancamentoVM> FindByMesAno(DateTime data, int idUsuario)
+    public List<LancamentoDto> FindByMesAno(DateTime data, int idUsuario)
     {
        return  _converter.ParseList(_repositorio.FindByMesAno(data, idUsuario));
     }

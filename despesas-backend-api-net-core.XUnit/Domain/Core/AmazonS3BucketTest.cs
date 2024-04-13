@@ -25,7 +25,7 @@ public class AmazonS3BucketTest
     public async Task WritingAnObjectAsync_Should_Return_Url()
     {
         // Arrange
-        var perfilFileVM = new ImagemPerfilVM
+        var perfilFileVM = new ImagemPerfilDto
         {
             Name = "test-image.jpg",
             ContentType = "image/jpeg",
@@ -48,7 +48,7 @@ public class AmazonS3BucketTest
     public async Task WritingAnObjectAsync_Should_Throws_Exception()
     {
         // Arrange
-        var perfilFileVM = new ImagemPerfilVM
+        var perfilFileVM = new ImagemPerfilDto
         {
             Name = "test-image.jpg",
             ContentType = "image/jpeg",

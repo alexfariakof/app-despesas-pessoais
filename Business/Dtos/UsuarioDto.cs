@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos;
-public class UsuarioVM : BaseModelVM
+public class UsuarioDto : BaseModelDto
 {
     [Required]
     public string? Nome { get; set; }

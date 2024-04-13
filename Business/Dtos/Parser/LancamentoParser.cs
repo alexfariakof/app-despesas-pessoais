@@ -3,7 +3,7 @@ using Domain.Entities;
 using Business.Dtos.Parser.Interfaces;
 
 namespace Business.Dtos.Parser;
-public class LancamentoParser : IParser<LancamentoVM, Lancamento>, IParser<Lancamento, LancamentoVM>
+public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lancamento, LancamentoDto>
 {    
     public Lancamento Parse(Despesa origin)
     {
@@ -45,7 +45,7 @@ public class LancamentoParser : IParser<LancamentoVM, Lancamento>, IParser<Lanca
             DataCriacao = DateTime.Now
         };
     }
-    public Lancamento Parse(LancamentoVM origin)
+    public Lancamento Parse(LancamentoDto origin)
     {
         if (origin == null) return new Lancamento();
         return new Lancamento
@@ -61,10 +61,10 @@ public class LancamentoParser : IParser<LancamentoVM, Lancamento>, IParser<Lanca
             Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao }
         };
     }
-    public LancamentoVM Parse(Lancamento origin)
+    public LancamentoDto Parse(Lancamento origin)
     {
-        if (origin == null) return new LancamentoVM();
-        return new LancamentoVM
+        if (origin == null) return new LancamentoDto();
+        return new LancamentoDto
         {
             Id = origin.Id,
             IdDespesa = origin.DespesaId.Value,
@@ -77,15 +77,15 @@ public class LancamentoParser : IParser<LancamentoVM, Lancamento>, IParser<Lanca
             Categoria = origin.Categoria.Descricao
         };
     }
-    public List<Lancamento> ParseList(List<LancamentoVM> origin)
+    public List<Lancamento> ParseList(List<LancamentoDto> origin)
     {
         if (origin == null) return new List<Lancamento>();
         return origin.Select(item => Parse(item)).ToList();
     }
 
-    public List<LancamentoVM> ParseList(List<Lancamento> origin)
+    public List<LancamentoDto> ParseList(List<Lancamento> origin)
     {
-        if (origin == null) return new List<LancamentoVM>();
+        if (origin == null) return new List<LancamentoDto>();
         return origin.Select(item => Parse(item)).ToList();
     }
     public List<Lancamento> ParseList(List<Despesa> origin)

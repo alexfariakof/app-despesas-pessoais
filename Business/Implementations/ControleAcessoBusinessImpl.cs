@@ -1,4 +1,5 @@
-﻿using Business.Authentication;
+﻿using Business.Abstractions;
+using Business.Authentication;
 using Business.Dtos;
 using Domain.Core;
 using Domain.Core.Interfaces;
@@ -29,7 +30,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _repositorio.Create(controleAcesso);
     }
 
-    public Dtos.Authentication FindByLogin(ControleAcessoVM controleAcesso)
+    public Dtos.AuthenticationDto FindByLogin(ControleAcessoDto controleAcesso)
     {
         bool credentialsValid = false;
 
@@ -100,19 +101,19 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         return token;
     }
 
-    private Dtos.Authentication ExceptionObject(string message)
+    private Dtos.AuthenticationDto ExceptionObject(string message)
     {
-        return new Business.Dtos.Authentication
+        return new Business.Dtos.AuthenticationDto
         {
             Authenticated = false,
             Message = message
         };
     }
 
-    private Dtos.Authentication SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
+    private Dtos.AuthenticationDto SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
     {
         Usuario usuario = _repositorio.GetUsuarioByEmail(login);
-        return new Business.Dtos.Authentication
+        return new Business.Dtos.AuthenticationDto
         {
             Authenticated = true,
             Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),

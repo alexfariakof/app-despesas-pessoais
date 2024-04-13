@@ -9,8 +9,8 @@ namespace despesas_backend_api_net_core.Controllers;
 [ApiController]
 public class DespesaController : AuthController
 {
-    private IBusiness<DespesaVM> _despesaBusiness;
-    public DespesaController(IBusiness<DespesaVM> despesaBusiness)
+    private IBusiness<DespesaDto> _despesaBusiness;
+    public DespesaController(IBusiness<DespesaDto> despesaBusiness)
     {
         _despesaBusiness = despesaBusiness;
     }
@@ -43,7 +43,7 @@ public class DespesaController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    public IActionResult Post([FromBody] DespesaVM despesa)
+    public IActionResult Post([FromBody] DespesaDto despesa)
     {
         try
         {
@@ -58,7 +58,7 @@ public class DespesaController : AuthController
 
     [HttpPut]
     [Authorize("Bearer")]
-    public IActionResult Put([FromBody] DespesaVM despesa)
+    public IActionResult Put([FromBody] DespesaDto despesa)
     {
         despesa.IdUsuario = IdUsuario;
         var updateDespesa = _despesaBusiness.Update(despesa);
@@ -72,7 +72,7 @@ public class DespesaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Delete(int idDespesa)
     {
-        DespesaVM despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
+        DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
         if (despesa == null || IdUsuario != despesa.IdUsuario)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });

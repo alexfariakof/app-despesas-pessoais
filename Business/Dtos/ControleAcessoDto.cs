@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos;
-public class ControleAcessoVM : UsuarioVM
+public class ControleAcessoDto : UsuarioDto
 {
     [JsonIgnore]
     public override int Id { get; set; }

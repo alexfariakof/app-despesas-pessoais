@@ -1,4 +1,5 @@
-﻿using Business.Dtos.Parser;
+﻿using Business.Abstractions;
+using Business.Dtos.Parser;
 using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,9 @@ public class UsuarioControllerTest
     protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
     protected Mock<IImagemPerfilUsuarioBusiness> _mockImagemPerfilBusiness;
     protected UsuarioController _usuarioController;
-    protected List<UsuarioVM> _usuarioVMs;
-    private UsuarioVM administrador;
-    private UsuarioVM usuarioNormal;
+    protected List<UsuarioDto> _usuarioVMs;
+    private UsuarioDto administrador;
+    private UsuarioDto usuarioNormal;
 
     private void SetupBearerToken(int idUsuario)
     {
@@ -77,7 +78,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.IsType<List<UsuarioVM>>(result.Value);
+        Assert.IsType<List<UsuarioDto>>(result.Value);
         Assert.Equal(_usuarioVMs.FindAll(u => u.Id == idUsuario), result.Value);
         _mockUsuarioBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
@@ -88,7 +89,7 @@ public class UsuarioControllerTest
         // Arrange
         int idUsuario = usuarioNormal.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioVM)null);
+        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioDto)null);
 
         // Act
         var result = _usuarioController.GetUsuario() as ObjectResult;
@@ -116,7 +117,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.IsType<UsuarioVM>(result.Value);
+        Assert.IsType<UsuarioDto>(result.Value);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
     }
 
@@ -164,7 +165,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.IsType<UsuarioVM>(result.Value);
+        Assert.IsType<UsuarioDto>(result.Value);
         _mockUsuarioBusiness.Verify(b => b.Create(usuarioVM), Times.Once);
     }
 
@@ -183,7 +184,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.IsType<UsuarioVM>(result.Value);
+        Assert.IsType<UsuarioDto>(result.Value);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Once);
     }
 
@@ -404,7 +405,7 @@ public class UsuarioControllerTest
         var usuarioVM = _usuarioVMs.First();
         int idUsuario = usuarioVM.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+        _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioDto)null);
 
         // Act
         var result = _usuarioController.Put(usuarioVM) as ObjectResult;
@@ -487,7 +488,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.IsType<UsuarioVM>(result.Value);
+        Assert.IsType<UsuarioDto>(result.Value);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioVM), Times.Once);
     }
 
@@ -602,7 +603,7 @@ public class UsuarioControllerTest
         int idUsuario = usuarioVM.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+        _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioDto)null);
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioVM) as ObjectResult;
@@ -613,7 +614,7 @@ public class UsuarioControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Usuário não encontrado!", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioVM>()), Times.Once);
+        _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioDto>()), Times.Once);
     }
 
     [Fact]
@@ -626,7 +627,7 @@ public class UsuarioControllerTest
         int idUsuario = usuarioVM.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioVM)null);
+        _mockUsuarioBusiness.Setup(business => business.Update(usuarioVM)).Returns((UsuarioDto)null);
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioVM) as ObjectResult;

@@ -2,9 +2,9 @@
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
-public class CategoriaParser: IParser<CategoriaVM, Categoria>, IParser<Categoria, CategoriaVM>
+public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categoria, CategoriaDto>
 {
-    public Categoria Parse(CategoriaVM origin)
+    public Categoria Parse(CategoriaDto origin)
     {
         if (origin == null) return new Categoria();
         return new Categoria
@@ -16,10 +16,10 @@ public class CategoriaParser: IParser<CategoriaVM, Categoria>, IParser<Categoria
         };
     }
 
-    public CategoriaVM Parse(Categoria origin)
+    public CategoriaDto Parse(Categoria origin)
     {
-        if (origin == null) return new CategoriaVM();
-        return new CategoriaVM
+        if (origin == null) return new CategoriaDto();
+        return new CategoriaDto
         {
             Id = origin.Id,
             Descricao = origin.Descricao,
@@ -28,15 +28,15 @@ public class CategoriaParser: IParser<CategoriaVM, Categoria>, IParser<Categoria
         };
     }
 
-    public List<Categoria> ParseList(List<CategoriaVM> origin)
+    public List<Categoria> ParseList(List<CategoriaDto> origin)
     {
         if (origin == null) return new List<Categoria>();
         return origin.Select(item => Parse(item)).ToList();
     }
 
-    public List<CategoriaVM> ParseList(List<Categoria> origin)
+    public List<CategoriaDto> ParseList(List<Categoria> origin)
     {
-        if (origin == null) return new List<CategoriaVM>();
+        if (origin == null) return new List<CategoriaDto>();
         return origin.Select(item => Parse(item)).ToList();
     }
 }

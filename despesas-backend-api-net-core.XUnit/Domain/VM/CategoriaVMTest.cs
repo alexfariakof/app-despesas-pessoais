@@ -9,7 +9,7 @@ public class CategoriaVMTest
     public void CategoriaVM_Should_Set_Properties_Correctly(int id, string descricao, int idUsuario, TipoCategoria tipoCategoria)
     {
         // Arrange
-        var categoriaVM = new CategoriaVM();
+        var categoriaVM = new CategoriaDto();
 
         // Act
         categoriaVM.Id = id;
