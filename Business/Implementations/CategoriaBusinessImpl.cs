@@ -1,52 +1,61 @@
-﻿using Business.Dtos;
+﻿using Business.Abstractions;
+using Business.Dtos;
 using Business.Dtos.Parser;
-using Business.Generic;
 using Domain.Entities;
-using Repository.Persistency.Generic;
+using Domain.Entities.Abstractions;
 
 namespace Business.Implementations;
-public class CategoriaBusinessImpl : IBusiness<CategoriaVM>
+public class CategoriaBusinessImpl: BusinessBase<CategoriaVM, Categoria>
 {
-    private readonly IRepositorio<Categoria> _repositorio;
+    private readonly IUnitOfWork<Categoria> _unitOfWork;
     private readonly CategoriaParser _converter;        
 
-    public CategoriaBusinessImpl(IRepositorio<Categoria> repositorio)
+    public CategoriaBusinessImpl(IUnitOfWork<Categoria> unitOfWork): base (unitOfWork)
     {
-        _repositorio = repositorio;
+        _unitOfWork = unitOfWork;
         _converter = new CategoriaParser();
     }
 
-    public CategoriaVM Create(CategoriaVM obj)
+    public override CategoriaVM Create(CategoriaVM obj)
     {
         Categoria categoria = _converter.Parse(obj);
-        _repositorio.Insert(ref categoria);
+        _unitOfWork.Repository.Insert(ref categoria);
         return _converter.Parse(categoria);
     }
 
-    public List<CategoriaVM> FindAll(int idUsuario)
+    public override IList<CategoriaVM> FindAll(int idUsuario)
     {
-        var lstCategoria = _repositorio.GetAll().FindAll(c => c.UsuarioId == idUsuario);
+        var lstCategoria = _unitOfWork.Repository.GetAll().Result.Where(c => c.UsuarioId == idUsuario).ToList();
         return _converter.ParseList(lstCategoria);
     }    
     
-    public CategoriaVM FindById(int id, int idUsuario)
+    public override CategoriaVM FindById(int id, int idUsuario)
     {
-        var categoria = _converter.Parse(_repositorio.Get(id));
+        var categoria = _converter.Parse(_unitOfWork.Repository.GetById(id).Result);
         if (idUsuario == categoria.IdUsuario)
             return categoria;
         return null;
     }
 
-    public CategoriaVM Update(CategoriaVM obj)
+    public override CategoriaVM Update(CategoriaVM obj)
     {
         Categoria categoria = _converter.Parse(obj);
-        _repositorio.Update(ref categoria);
+        _unitOfWork.Repository.Update(ref categoria);
         return _converter.Parse(categoria);
     }
 
-    public bool Delete(CategoriaVM obj)
+    public override bool Delete(CategoriaVM obj)
     {
-        Categoria categoria = _converter.Parse(obj);
-        return _repositorio.Delete(categoria);
+        try
+        {
+            Categoria categoria = _converter.Parse(obj);
+            _unitOfWork.Repository.Delete(categoria.Id);
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }

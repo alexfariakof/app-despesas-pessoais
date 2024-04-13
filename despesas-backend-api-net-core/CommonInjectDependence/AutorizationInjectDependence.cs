@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Repository;
 
 namespace despesas_backend_api_net_core.CommonInjectDependence;
-public static class CommonInjectDependence
+public static class AutorizationInjectDependence
 {
     public static void CreateDataBaseInMemory(this IServiceCollection services)
     {

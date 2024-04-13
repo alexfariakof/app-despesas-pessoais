@@ -1,5 +1,6 @@
-﻿using Business.Dtos;
-using Business.Generic;
+﻿using Business.Abstractions;
+using Business.Dtos;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +10,17 @@ namespace despesas_backend_api_net_core.Controllers
     [ApiController]
     public class CategoriaController : AuthController
     {
-        private IBusiness<CategoriaVM> _categoriaBusiness;
-        public CategoriaController(IBusiness<CategoriaVM> categoriaBusiness)
+        private BusinessBase<CategoriaVM, Categoria> _categoriaBusiness;
+        public CategoriaController(BusinessBase<CategoriaVM, Categoria> categoriaBusiness)
         {
-            _categoriaBusiness = categoriaBusiness;
+            _categoriaBusiness = categoriaBusiness;        
         }
 
         [HttpGet]
         [Authorize("Bearer")]
         public IActionResult Get()
         {
-            List<CategoriaVM> _categoria = _categoriaBusiness.FindAll(IdUsuario);
+            IList<CategoriaVM> _categoria = _categoriaBusiness.FindAll(IdUsuario);
             return Ok(_categoria);
         }
     
@@ -39,13 +40,13 @@ namespace despesas_backend_api_net_core.Controllers
             if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
             {
                 var _categoria = _categoriaBusiness.FindAll(IdUsuario)
-                                 .FindAll(prop => prop.IdUsuario.Equals(IdUsuario));
+                                 .Where(prop => prop.IdUsuario.Equals(IdUsuario));
                 return Ok(_categoria);
             }
             else
             {
                 var _categoria = _categoriaBusiness.FindAll(IdUsuario)
-                                .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
+                                .Where(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
                 return Ok(_categoria);
             }           
         }
