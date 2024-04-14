@@ -10,7 +10,7 @@ namespace despesas_backend_api_net_core.Controllers;
 [ApiController]
 public class CategoriaController : AuthController
 {
-    private BusinessBase<CategoriaDto, Categoria> _categoriaBusiness;
+    private readonly BusinessBase<CategoriaDto, Categoria> _categoriaBusiness;
     public CategoriaController(BusinessBase<CategoriaDto, Categoria> categoriaBusiness)
     {
         _categoriaBusiness = categoriaBusiness;        

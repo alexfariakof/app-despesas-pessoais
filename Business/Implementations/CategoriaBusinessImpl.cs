@@ -20,6 +20,7 @@ public class CategoriaBusinessImpl: BusinessBase<CategoriaDto, Categoria>
     {
         Categoria categoria = _converter.Parse(obj);
         _unitOfWork.Repository.Insert(ref categoria);
+        _unitOfWork.CommitAsync();
         return _converter.Parse(categoria);
     }
 
@@ -41,6 +42,7 @@ public class CategoriaBusinessImpl: BusinessBase<CategoriaDto, Categoria>
     {
         Categoria categoria = _converter.Parse(obj);
         _unitOfWork.Repository.Update(ref categoria);
+        _unitOfWork.CommitAsync();
         return _converter.Parse(categoria);
     }
 
@@ -50,7 +52,7 @@ public class CategoriaBusinessImpl: BusinessBase<CategoriaDto, Categoria>
         {
             Categoria categoria = _converter.Parse(obj);
             _unitOfWork.Repository.Delete(categoria.Id);
-
+            _unitOfWork.CommitAsync();
             return true;
         }
         catch

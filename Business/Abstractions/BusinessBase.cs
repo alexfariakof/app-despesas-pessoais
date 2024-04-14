@@ -4,7 +4,7 @@ namespace Business.Abstractions;
 public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
 {
     protected IUnitOfWork<Entity> _unitOfWork;
-    public BusinessBase(IUnitOfWork<Entity> unitOfWork)
+    protected BusinessBase(IUnitOfWork<Entity> unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -18,5 +18,4 @@ public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity :
     public abstract  Dto Update(Dto usuario);
 
     public abstract  bool Delete(Dto usuario);
-
 }

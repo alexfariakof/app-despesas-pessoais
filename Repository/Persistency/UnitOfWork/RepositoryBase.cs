@@ -23,20 +23,20 @@ public sealed class UnitOfWork<T>: IRepositoy<T> where T : BaseModel
         return await this.Context.Set<T>().ToListAsync();
     }
 
-    public void Insert(ref T entity)
+    public Task Insert(ref T entity)
     {
         if (entity == null) 
             throw new ArgumentNullException(nameof(entity));
 
-        this.Context.AddAsync(entity); 
+        return this.Context.AddAsync(entity).AsTask(); 
     }
 
-    public void Update(ref T entity)
+    public Task Update(ref T entity)
     {
         if (entity == null)
             throw new ArgumentNullException(nameof(entity));
 
-        this.Context.Update(entity);
+        return this.Context.Update(entity) as Task;
     }
 
     public async void Delete(int entityId)
