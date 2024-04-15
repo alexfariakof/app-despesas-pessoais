@@ -1,4 +1,6 @@
-﻿namespace Business.Dtos.Parser;
+﻿using System.Globalization;
+
+namespace Business.Dtos.Parser;
 public class LancamentoParserTest
 {
     [Fact]
@@ -28,7 +30,7 @@ public class LancamentoParserTest
         Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
         Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoVM.Valor, lancamento.Valor);
-        Assert.Equal(lancamentoVM.Data, lancamento.Data.ToShortDateString());
+        Assert.Equal(DateTime.Parse(lancamentoVM.Data, new CultureInfo("pt-BR")), lancamento.Data);
     }
 
     [Fact]
@@ -77,7 +79,7 @@ public class LancamentoParserTest
                 IdDespesa = 1,
                 IdReceita = 0,
                 Valor = 2000,
-                Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                Data = DateTime.Now.ToString(new CultureInfo("pt-BR")),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
@@ -89,7 +91,7 @@ public class LancamentoParserTest
                 IdDespesa = 0,
                 IdReceita = 1,
                 Valor = 500,
-                Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                Data = DateTime.Now.ToString(new CultureInfo("pr-BR")),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Receita",
                 Categoria = Mock.Of<Categoria>().Descricao,
@@ -101,7 +103,7 @@ public class LancamentoParserTest
                 IdDespesa = 1,
                 IdReceita = 0,
                 Valor = 70000,
-                Data = DateTime.Now.ToString("dd/MM/yyyy"),
+                Data = DateTime.Now.ToString(new CultureInfo("pr-BR")),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
