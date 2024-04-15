@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Business.Dtos.Parser.Interfaces;
 
 namespace Business.Dtos.Parser;
@@ -12,7 +11,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         {
             Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
             Valor = origin.Valor,
-            Data = DateTime.Parse(origin.Data.ToString(), new CultureInfo("pt-BR")),
+            Data = DateTime.Parse(origin.Data.ToString()),
             Descricao = origin.Descricao,
             UsuarioId = origin.UsuarioId,
             Usuario = origin.Usuario,
@@ -32,7 +31,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         {
             Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
             Valor = origin.Valor,
-            Data = DateTime.Parse(origin.Data.ToString(), new CultureInfo("pt-BR")),
+            Data = DateTime.Parse(origin.Data.ToString()),
             Descricao = origin.Descricao,
             UsuarioId = origin.UsuarioId,
             Usuario = origin.Usuario,
@@ -54,7 +53,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             DespesaId = origin.IdDespesa,
             ReceitaId = origin.IdReceita,
             UsuarioId = origin.IdUsuario,
-            Data = DateTime.Parse(origin.Data, new CultureInfo("pt-BR")),
+            Data = DateTime.Parse(origin.Data),
             DataCriacao = DateTime.Now,
             Valor = origin.Valor,
             Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
