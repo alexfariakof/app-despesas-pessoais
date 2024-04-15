@@ -13,7 +13,7 @@ public class LancamentoParserTest
             IdDespesa = 1,
             IdReceita = 0,
             Valor = 2000,
-            Data = DateTime.Now.ToLocalTime().ToShortDateString(),
+            Data = DateTime.Now.ToShortDateString(),
             Descricao = "LancamentoVM Teste",
             TipoCategoria = "Despesa",
             Categoria = Mock.Of<Categoria>().Descricao,
@@ -28,7 +28,7 @@ public class LancamentoParserTest
         Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
         Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoVM.Valor, lancamento.Valor);
-        Assert.Equal(lancamentoVM.Data, lancamento.Data.ToLocalTime().ToShortDateString());
+        Assert.Equal(lancamentoVM.Data, lancamento.Data.ToShortDateString());
     }
 
     [Fact]
