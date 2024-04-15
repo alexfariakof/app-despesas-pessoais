@@ -14,7 +14,7 @@ public static class ServicesDependenceInject
     {
         services.AddScoped(typeof(IBusiness<DespesaDto>), typeof(DespesaBusinessImpl));
         services.AddScoped(typeof(IBusiness<ReceitaDto>), typeof(ReceitaBusinessImpl));
-        services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+        services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));        
         services.AddScoped(typeof(BusinessBase<CategoriaDto, Categoria>), typeof(CategoriaBusinessImpl));
         services.AddScoped(typeof(IControleAcessoBusiness), typeof(ControleAcessoBusinessImpl));
         services.AddScoped(typeof(ILancamentoBusiness), typeof(LancamentoBusinessImpl));

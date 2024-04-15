@@ -1,19 +1,20 @@
-﻿using Domain.Entities.Abstractions;
+﻿using CrossCutting.CQRS.Queries;
+using Domain.Entities.Abstractions;
 
 namespace Business.Abstractions;
 public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
 {
-    protected IUnitOfWork<Entity> _unitOfWork;
+    protected IUnitOfWork<Entity> UnitOfWork { get;  }
     protected BusinessBase(IUnitOfWork<Entity> unitOfWork)
     {
-        _unitOfWork = unitOfWork;
+        UnitOfWork = unitOfWork;
     }
 
     public abstract Dto Create(Dto usuarioVM);
 
     public abstract Dto FindById(int id, int idUsuario);
 
-    public abstract IList<Dto> FindAll(int idUsuario);
+    public abstract Task<IList<Dto>> FindAll(int idUsuario);
 
     public abstract  Dto Update(Dto usuario);
 

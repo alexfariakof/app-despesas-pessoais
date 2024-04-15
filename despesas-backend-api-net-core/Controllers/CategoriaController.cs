@@ -20,7 +20,7 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Get()
     {
-        IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario);
+        IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario).Result;
         return Ok(_categoria);
     }
 
@@ -35,17 +35,17 @@ public class CategoriaController : AuthController
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
     [Authorize("Bearer")]
-    public IActionResult GetByTipoCategoria([FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
+    public IActionResult GetByTipoCategoria([FromRoute] TipoCategoria tipoCategoria)
     {
-        if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
+        if (tipoCategoria == TipoCategoria.Todas)
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario)
+            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Result
                              .Where(prop => prop.IdUsuario.Equals(IdUsuario)).ToList();
             return Ok(_categoria);
         }
         else
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario)
+            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Result
                             .Where(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria))).ToList();
             return Ok(_categoria);
         }           
@@ -56,7 +56,7 @@ public class CategoriaController : AuthController
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
+        if (categoria.IdTipoCategoria == (int)TipoCategoria.Todas)
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!"});
 
         try
@@ -75,7 +75,7 @@ public class CategoriaController : AuthController
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
+        if (categoria.TipoCategoria == TipoCategoria.Todas)
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
         categoria.IdUsuario = IdUsuario;

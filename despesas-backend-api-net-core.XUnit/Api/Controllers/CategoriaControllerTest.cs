@@ -42,7 +42,7 @@ public class CategoriaControllerTest
 
         SetupBearerToken(idUsuario);
         _mockCategoriaBusiness
-            .Setup(b => b.FindAll(idUsuario))
+            .Setup(b => b.FindAll(idUsuario).Result)
             .Returns(categoriaVMs.FindAll(c => c.IdUsuario == idUsuario));
 
         // Act
@@ -90,7 +90,7 @@ public class CategoriaControllerTest
 
         SetupBearerToken(idUsuario);
         var tipoCategoria = TipoCategoria.Todas;
-        _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(listCategoriaVM);
+        _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario).Result).Returns(listCategoriaVM);
 
         // Act
         var result = _categoriaController.GetByTipoCategoria(tipoCategoria) as ObjectResult;
@@ -113,7 +113,7 @@ public class CategoriaControllerTest
 
         SetupBearerToken(idUsuario);
         var tipoCategoria = TipoCategoria.Despesa;
-        _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario)).Returns(listCategoriaVM);
+        _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario).Result).Returns(listCategoriaVM);
 
         // Act
         var result = _categoriaController.GetByTipoCategoria(tipoCategoria) as ObjectResult;

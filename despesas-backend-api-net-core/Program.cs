@@ -6,6 +6,7 @@ using DataSeeders;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using CrossCutting.CommonDependenceInject;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +48,8 @@ else
 builder.Services.ConfigureAutorization(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+builder.Services.AddCrossCuttingConfiguration();
+
 
 var app = builder.Build();
 

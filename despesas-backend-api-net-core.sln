@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSeeders", "DataSeeders\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySqlServer.Migrations", "MySqlServer.Migrations\MySqlServer.Migrations.csproj", "{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrossCutting", "CrossCutting\CrossCutting.csproj", "{A16A3A27-6A70-442B-92E2-D08A4A79C356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossCutting", "CrossCutting\CrossCutting.csproj", "{5293BAFB-F63D-400D-946E-E83B27FFBB5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,10 +59,10 @@ Global
 		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2973BF5-E36B-4E1A-B02D-B12D554A72FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A16A3A27-6A70-442B-92E2-D08A4A79C356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A16A3A27-6A70-442B-92E2-D08A4A79C356}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A16A3A27-6A70-442B-92E2-D08A4A79C356}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A16A3A27-6A70-442B-92E2-D08A4A79C356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5293BAFB-F63D-400D-946E-E83B27FFBB5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5293BAFB-F63D-400D-946E-E83B27FFBB5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5293BAFB-F63D-400D-946E-E83B27FFBB5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5293BAFB-F63D-400D-946E-E83B27FFBB5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

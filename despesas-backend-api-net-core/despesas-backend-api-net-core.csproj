@@ -23,6 +23,7 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
+    <ProjectReference Include="..\CrossCutting\CrossCutting.csproj" />
     <ProjectReference Include="..\DataSeeders\DataSeeders.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
