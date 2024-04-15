@@ -28,6 +28,8 @@ dotnet_diagnostic.S2094.severity = silent
 dotnet_diagnostic.S2933.severity = silent
 dotnet_diagnostic.S2068.severity = silent
 dotnet_diagnostic.S5332.severity = silent
+dotnet_diagnostic.CS1998.severity = silent
+dotnet_diagnostic.xUnit1031.severity = silent
 
 csharp_using_directive_placement = outside_namespace:silent
 csharp_prefer_simple_using_statement = true:suggestion
