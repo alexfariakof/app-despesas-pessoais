@@ -27,8 +27,8 @@ public class DespesaBusinessImpl : IBusiness<DespesaDto>
     public List<DespesaDto> FindAll(int idUsuario)
     {
         var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
-        foreach( var despesa in despesas)
-            despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);            
+        foreach (var despesa in despesas)
+            despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
         return _converter.ParseList(despesas);
     }
 

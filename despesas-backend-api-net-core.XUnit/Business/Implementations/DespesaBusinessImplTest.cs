@@ -138,10 +138,9 @@ public class DespesaBusinessImplTest
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
         var despesaVM = new DespesaParser().Parse(despesa);
-
-        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
         var categorias = CategoriaFaker.Instance.Categorias();
-        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
+        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny)).Throws<Exception>();        
+        _repositorioCategoria.Setup(repo => repo.GetAll()).Throws(new ArgumentException("Erro Categoria inexistente ou não cadastrada!"));
 
         // Act & Assert 
         Assert.Throws<ArgumentException>(() => _despesaBusiness.Create(despesaVM));

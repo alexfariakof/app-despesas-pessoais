@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace Business.Dtos.Parser;
+﻿namespace Business.Dtos.Parser;
 public class LancamentoParserTest
 {
     [Fact]
@@ -30,7 +28,7 @@ public class LancamentoParserTest
         Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
         Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoVM.Valor, lancamento.Valor);
-        Assert.Equal(DateTime.Parse(lancamentoVM.Data, new CultureInfo("pt-BR")), lancamento.Data);
+        Assert.Equal(DateTime.Parse(lancamentoVM.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
     }
 
     [Fact]
@@ -61,7 +59,7 @@ public class LancamentoParserTest
         Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
         Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoVM.Valor, lancamento.Valor);
-        //Assert.Equal(lancamentoVM.Data, lancamento.Data.ToString("dd/MM/yyyy"));
+        Assert.Equal(DateTime.Parse(lancamentoVM.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
         //Assert.Equal(lancamentoVM.Descricao, lancamento.Descricao);
     }
 
@@ -79,7 +77,7 @@ public class LancamentoParserTest
                 IdDespesa = 1,
                 IdReceita = 0,
                 Valor = 2000,
-                Data = DateTime.Now.ToString(new CultureInfo("pt-BR")),
+                Data = DateTime.Now.ToLocalTime().ToShortDateString(),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
@@ -91,7 +89,7 @@ public class LancamentoParserTest
                 IdDespesa = 0,
                 IdReceita = 1,
                 Valor = 500,
-                Data = DateTime.Now.ToString(new CultureInfo("pr-BR")),
+                Data = DateTime.Now.ToLocalTime().ToShortDateString(),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Receita",
                 Categoria = Mock.Of<Categoria>().Descricao,
@@ -103,7 +101,7 @@ public class LancamentoParserTest
                 IdDespesa = 1,
                 IdReceita = 0,
                 Valor = 70000,
-                Data = DateTime.Now.ToString(new CultureInfo("pr-BR")),
+                Data = DateTime.Now.ToLocalTime().ToShortDateString(),
                 Descricao = "LancamentoVM Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
