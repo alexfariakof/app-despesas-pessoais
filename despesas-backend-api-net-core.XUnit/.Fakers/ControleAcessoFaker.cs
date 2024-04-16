@@ -1,55 +1,79 @@
-﻿namespace despesas_backend_api_net_core.XUnit.Fakers
+﻿namespace XUnit.Fakers;
+public class ControleAcessoFaker
 {
-    public class ControleAcessoFaker
+    static int counter = 1;
+    private static ControleAcessoFaker? _instance;
+    private static readonly object LockObject = new object();
+
+    public static ControleAcessoFaker Instance
     {
-        static int counter = 1;
-        public static ControleAcesso GetNewFaker(Usuario usuario)
+        get
         {
+            lock (LockObject)
+            {
+                return _instance ??= new ControleAcessoFaker();
+            }
+        }
+    }
+
+    public ControleAcesso GetNewFaker(Usuario? usuario = null)
+    {
+        lock (LockObject)
+        {
+            if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker(); 
 
             var controleAcessoFaker = new Faker<ControleAcesso>()
-                .RuleFor(ca => ca.Id, counter++)
-                .RuleFor(ca => ca.Login, usuario.Email)
-                .RuleFor(ca => ca.Senha, "!12345")
-                .RuleFor(ca => ca.UsuarioId, usuario.Id)
-                .RuleFor(ca => ca.Usuario, usuario);
+            .RuleFor(ca => ca.Id, counter++)
+            .RuleFor(ca => ca.Login, usuario.Email)
+            .RuleFor(ca => ca.Senha, "!12345")
+            .RuleFor(ca => ca.UsuarioId, usuario.Id)
+            .RuleFor(ca => ca.Usuario, usuario);
 
             return controleAcessoFaker.Generate();
         }
+    }
 
-        public static ControleAcessoVM GetNewFakerVM(UsuarioVM usuarioVM)
+    public ControleAcessoDto GetNewFakerVM(Usuario? usuario = null)
+    {
+        lock (LockObject)
         {
-            var controleAcessoVMFaker = new Faker<ControleAcessoVM>()
-                .RuleFor(ca => ca.Nome, usuarioVM.Nome)
-                .RuleFor(ca => ca.SobreNome, usuarioVM.SobreNome)
-                .RuleFor(ca => ca.Email, usuarioVM.Email)
-                .RuleFor(ca => ca.Telefone, usuarioVM.Telefone)
-                .RuleFor(ca => ca.Senha, "!12345")
-                .RuleFor(ca => ca.ConfirmaSenha, "!12345");               
-                
+            if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker();
+
+            var controleAcessoVMFaker = new Faker<ControleAcessoDto>()
+            .RuleFor(ca => ca.Nome, usuario.Nome)
+            .RuleFor(ca => ca.SobreNome, usuario.SobreNome)
+            .RuleFor(ca => ca.Email, usuario.Email)
+            .RuleFor(ca => ca.Telefone, usuario.Telefone)
+            .RuleFor(ca => ca.Senha, "!12345")
+            .RuleFor(ca => ca.ConfirmaSenha, "!12345");
+
 
             return controleAcessoVMFaker.Generate();
         }
+    }
 
-        public static List<ControleAcessoVM> ControleAcessoVMs()
-        {   
-            
-            var listControleAcessoVM = new List<ControleAcessoVM>();                        
-            for (int i = 0; i < 10; i++)
-            {
-                var usuarioVM = UsuarioFaker.GetNewFakerVM(i);
-                var controleAcessoVM = GetNewFakerVM(usuarioVM);
-                listControleAcessoVM.Add(controleAcessoVM);                
-            }
-
-            return listControleAcessoVM;
+    public List<ControleAcessoDto> ControleAcessoVMs(int count = 3)
+    {           
+        var listControleAcessoVM = new List<ControleAcessoDto>();                        
+        for (int i = 0; i < count; i++)
+        {
+            var usuario = UsuarioFaker.Instance.GetNewFaker();
+            var controleAcessoVM = GetNewFakerVM(usuario);
+            listControleAcessoVM.Add(controleAcessoVM);                
         }
-        public static List<ControleAcesso> ControleAcessos()
+
+        return listControleAcessoVM;
+    }
+
+    public List<ControleAcesso> ControleAcessos(int count = 3)
+    {
+        lock (LockObject)
         {
 
             var listControleAcesso = new List<ControleAcesso>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < count; i++)
             {
-                var usuario = UsuarioFaker.GetNewFaker();
+                var usuario = UsuarioFaker.Instance.GetNewFaker();
                 var controleAcesso = GetNewFaker(usuario);
                 listControleAcesso.Add(controleAcesso);
             }
