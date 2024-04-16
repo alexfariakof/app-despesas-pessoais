@@ -3,7 +3,7 @@ WORKDIR /app
 
 EXPOSE 42534
 ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_URLS=http://+:42534
+ENV ASPNETCORE_URLS=http://+:42536
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src

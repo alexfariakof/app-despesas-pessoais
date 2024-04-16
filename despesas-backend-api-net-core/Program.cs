@@ -78,7 +78,7 @@ app.UseAuthorization();
 //app.UseStaticFiles();
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 { 
     using (var scope = app.Services.CreateScope())
     {
