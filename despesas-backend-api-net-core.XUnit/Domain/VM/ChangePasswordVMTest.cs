@@ -8,7 +8,7 @@ public class ChangePasswordVMTest
     public void ChangePasswordVM_Should_Set_Properties_Correctly(string senha, string confirmaSenha)
     {
         // Arrange and Act
-        var changePasswordVM = new ChangePasswordVM
+        var changePasswordVM = new ChangePasswordDto
         {
             Senha = senha,
             ConfirmaSenha = confirmaSenha

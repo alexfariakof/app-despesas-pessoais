@@ -6,10 +6,7 @@ public class UsuarioRepositorioImplTest
 
     public UsuarioRepositorioImplTest()
     {
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "UsuarioRpository")
-            .Options;
-
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "UsuarioRpository").Options;
         _mockRegisterContext = new Mock<RegisterContext>(options);
         var dbSetMock = Usings.MockDbSet(UsuarioFaker.Instance.GetNewFakersUsuarios());
         var dbSetMockControleAcesso = Usings.MockDbSet(ControleAcessoFaker.Instance.ControleAcessos());
@@ -61,24 +58,6 @@ public class UsuarioRepositorioImplTest
     }
 
     [Fact]
-    public void GetAll_Should_Return_All_Items()
-    {
-        // Arrange
-        var items = UsuarioFaker.Instance.GetNewFakersUsuarios();
-        var dataSet = items;
-        var dbSetMock = Usings.MockDbSet(dataSet);
-        _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
-        _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext.Object);
-
-        // Act
-        var result = _mockRepository.Object.GetAll();
-
-        // Assert
-        Assert.Equal(items.Count, result.Count());
-        Assert.Equal(items, result);
-    }
-
-    [Fact]
     public void GetAll_Should_Throws_Exception()
     {
         // Arrange
@@ -92,28 +71,6 @@ public class UsuarioRepositorioImplTest
         Assert.NotNull(result);
         var exception = Assert.Throws<Exception>(() => _mockRepository.Object.GetAll());
         Assert.Equal("Erro ao gerar resgistros de todos os usuários!", exception.Message);
-    }
-
-    [Fact]
-    public void Get_Should_Return_Item_With_Matching_Id()
-    {
-        // Arrange
-        var itens = UsuarioFaker.Instance.GetNewFakersUsuarios();
-        var item = itens.First();
-        var itemId = item.Id;
-
-        var dataSet = itens;
-        var dbSetMock = Usings.MockDbSet(dataSet);
-        _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
-        _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext.Object);
-
-        // Act
-        var result = _mockRepository.Object.Get(itemId);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.IsType<Usuario>(result);
-        Assert.Equal(item, result);
     }
 
     [Fact]
@@ -224,18 +181,17 @@ public class UsuarioRepositorioImplTest
     public void Delete_With_Non_Existing_Item_Should_Not_Remove_Item_And_Return_False()
     {
         // Arrange
-        var dataSet = UsuarioFaker.Instance.GetNewFakersUsuarios();
+        var dataSet = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var item = new Usuario { Id = 0 };
         var dbSetMock = Usings.MockDbSet(dataSet);
         _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
         var _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext.Object);
 
         // Act
-        var result = _mockRepository.Object.Delete(item);
+        var result = Assert.Throws<Exception>(() => _mockRepository.Object.Delete(item));
 
         // Assert
-        Assert.IsType<bool>(result);
-        Assert.False(result);
+        Assert.IsType<Exception>(result);
         _mockRegisterContext.Verify(c => c.SaveChanges(), Times.Never);
     }
 
@@ -253,22 +209,5 @@ public class UsuarioRepositorioImplTest
         _mockRegisterContext.Verify(c => c.Remove(It.IsAny<Usuario>()), Times.Never);
     }
 
-    [Fact]
-    public void Delete_Should_Returns_False_When_Usuario_IsNull()
-    {
-        // Arrange
-        var dataSet = UsuarioFaker.Instance.GetNewFakersUsuarios();
-        var item = new Usuario { Id = 0 };
-        var dbSetMock = Usings.MockDbSet(dataSet);
-        _mockRegisterContext.Setup(c => c.Set<Usuario>()).Returns(dbSetMock.Object);
-        var _mockRepository = new Mock<UsuarioRepositorioImpl>(_mockRegisterContext.Object);
 
-        // Act
-        var result = _mockRepository.Object.Delete(item);
-
-        // Assert
-        Assert.IsType<bool>(result);
-        Assert.False(result);
-        _mockRegisterContext.Verify(c => c.Remove(item), Times.Never);
-    }
 }

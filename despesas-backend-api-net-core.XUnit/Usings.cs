@@ -3,8 +3,8 @@ global using XUnit.Fakers;
 global using Moq;
 global using Bogus;
 global using Domain.Entities;
-global using Domain.VM;
 global using Business;
+global using Business.Dtos;
 global using Business.Generic;
 global using Business.Implementations;
 global using Repository.Mapping;
@@ -20,8 +20,13 @@ using System.Text;
 using Domain.Core;
 using Business.Authentication;
 
-public static class Usings
+public  class Usings
 {
+    private Usings()
+    {
+
+    }
+
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
         where T : class
     {

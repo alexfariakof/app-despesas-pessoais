@@ -1,36 +1,36 @@
-﻿using Domain.Entities;
-using Domain.VM;
-using Repository.Mapping;
+﻿using Business.Abstractions;
+using Business.Dtos;
+using Business.Dtos.Parser;
+using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
 public class UsuarioBusinessImpl : IUsuarioBusiness
 {
-    private IRepositorio<Usuario> _repositorio;
-    private readonly UsuarioMap _converter;
+    private readonly IRepositorio<Usuario> _repositorio;
+    private readonly UsuarioParser _converter;
 
     public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
     {
         _repositorio = repositorio;
-        _converter = new UsuarioMap();
-
+        _converter = new UsuarioParser();
     }
-    public UsuarioVM Create(UsuarioVM usuarioVM)
+
+    public UsuarioDto Create(UsuarioDto usuarioVM)
     {
-        var usuario = new Usuario
-        {
-            Id = usuarioVM.Id,
-            Nome = usuarioVM.Nome,
-            SobreNome = usuarioVM.SobreNome,
-            Email = usuarioVM.Email,
-            Telefone = usuarioVM.Telefone,
-            StatusUsuario = StatusUsuario.Ativo
-        };
+        var usuario = new Usuario().CreateUsuario(
+            usuarioVM.Nome,
+            usuarioVM.SobreNome,
+            usuarioVM.Email,
+            usuarioVM.Telefone,
+            StatusUsuario.Ativo,
+            PerfilUsuario.Usuario);
+
         _repositorio.Insert(ref usuario);
         return _converter.Parse(usuario);
     }
 
-    public List<UsuarioVM> FindAll(int idUsuario)
+    public List<UsuarioDto> FindAll(int idUsuario)
     {
         var usuario = FindById(idUsuario);
         if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
@@ -38,13 +38,12 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         return null;
     }      
 
-    public UsuarioVM FindById(int id)
+    public UsuarioDto FindById(int id)
     {
         var usuario = _repositorio.Get(id);
         return _converter.Parse(usuario);
     }
-
-    public UsuarioVM Update(UsuarioVM usuarioVM)
+    public UsuarioDto Update(UsuarioDto usuarioVM)
     {
         var usuario = new Usuario
         {
@@ -60,7 +59,7 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         return _converter.Parse(usuario);
     }
 
-    public bool Delete(UsuarioVM usuarioVM)
+    public bool Delete(UsuarioDto usuarioVM)
     {
         return _repositorio.Delete(new Usuario{ Id = usuarioVM.Id });
     }

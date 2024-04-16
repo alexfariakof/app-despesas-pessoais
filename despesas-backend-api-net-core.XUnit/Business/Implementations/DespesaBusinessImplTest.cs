@@ -1,4 +1,6 @@
-﻿namespace Business;
+﻿using Business.Dtos.Parser;
+
+namespace Business;
 
 public class DespesaBusinessImplTest
 {
@@ -18,7 +20,7 @@ public class DespesaBusinessImplTest
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaMap().Parse(despesa);
+        var despesaVM = new DespesaParser().Parse(despesa);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
         var categorias = CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId);
@@ -30,7 +32,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<DespesaVM>(result);
+        Assert.IsType<DespesaDto>(result);
         Assert.Equal(despesaVM.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Despesa>.IsAny), Times.Once);
     }
@@ -50,7 +52,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<DespesaVM>>(result);
+        Assert.IsType<List<DespesaDto>>(result);
         Assert.Equal(despesas.Count, result.Count);
         _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
     }
@@ -69,7 +71,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<DespesaVM>(result);
+        Assert.IsType<DespesaDto>(result);
         Assert.Equal(despesa.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
     }
@@ -97,7 +99,7 @@ public class DespesaBusinessImplTest
         // Arrange         
         var despesa = DespesaFaker.Instance.Despesas().First();
         despesa.Descricao = "Teste Update Despesa";
-        var despesaVM = new DespesaMap().Parse(despesa);        
+        var despesaVM = new DespesaParser().Parse(despesa);        
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Despesa>.IsAny));
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId));
@@ -107,7 +109,7 @@ public class DespesaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<DespesaVM>(result);
+        Assert.IsType<DespesaDto>(result);
         Assert.Equal(despesa.Id, result.Id);
         Assert.Equal(despesa.Descricao, result.Descricao);
         _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Despesa>.IsAny), Times.Once);
@@ -119,7 +121,7 @@ public class DespesaBusinessImplTest
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Despesa>())).Returns(true);
-        var despesaVM = new DespesaMap().Parse(despesa);
+        var despesaVM = new DespesaParser().Parse(despesa);
         
         // Act
         var result = _despesaBusiness.Delete(despesaVM);
@@ -135,11 +137,10 @@ public class DespesaBusinessImplTest
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaMap().Parse(despesa);
-
-        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
+        var despesaVM = new DespesaParser().Parse(despesa);
         var categorias = CategoriaFaker.Instance.Categorias();
-        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
+        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny)).Throws<Exception>();        
+        _repositorioCategoria.Setup(repo => repo.GetAll()).Throws(new ArgumentException("Erro Categoria inexistente ou não cadastrada!"));
 
         // Act & Assert 
         Assert.Throws<ArgumentException>(() => _despesaBusiness.Create(despesaVM));

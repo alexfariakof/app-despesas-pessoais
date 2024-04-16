@@ -12,8 +12,8 @@ public class SaldoRepositorioImplTest
         _context = new RegisterContext(options);
         _mockUsuario = UsuarioFaker.Instance.GetNewFaker();
         _context.Usuario.AddRange(_mockUsuario);
-        _context.Despesa.AddRange(DespesaFaker.Instance.Despesas(_mockUsuario, _mockUsuario.Id));
-        _context.Receita.AddRange(ReceitaFaker.Instance.Receitas(_mockUsuario, _mockUsuario.Id));
+        _context.Despesa.AddRange(DespesaFaker.Instance.Despesas(_mockUsuario, _mockUsuario.Id, 60));
+        _context.Receita.AddRange(ReceitaFaker.Instance.Receitas(_mockUsuario, _mockUsuario.Id, 60));
         _context.SaveChanges();
         _repository = new Mock<SaldoRepositorioImpl>(MockBehavior.Strict, _context);
         _mockRepository = Mock.Get<ISaldoRepositorio>(_repository.Object);

@@ -1,4 +1,5 @@
-﻿using Domain.Core.Interface;
+﻿using Business.Dtos.Parser;
+using Domain.Core.Interfaces;
 
 namespace Business;
 public class ImagemPerfilUsuarioBusinessImplTests
@@ -23,8 +24,8 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var imagemPerfilVM = ImagemPerfilUsuarioFaker.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM());
-        var imagemPerfil = new ImagemPerfilUsuarioMap().Parse(imagemPerfilVM);
-        _mockAmazonS3Bucket.Setup(a => a.WritingAnObjectAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync("http://teste.url");
+        var imagemPerfil = new ImagemPerfilUsuarioParser().Parse(imagemPerfilVM);
+        _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync("http://teste.url");
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<ImagemPerfilUsuario>.IsAny));
 
         // Act
@@ -32,7 +33,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ImagemPerfilVM>(result);
+        Assert.IsType<ImagemPerfilDto>(result);
     }
 
     [Fact]
@@ -40,8 +41,8 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var imagemPerfilVM = ImagemPerfilUsuarioFaker.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM());
-        var imagemPerfil = new ImagemPerfilUsuarioMap().Parse(imagemPerfilVM);
-        _mockAmazonS3Bucket.Setup(a => a.WritingAnObjectAsync(It.IsAny<ImagemPerfilVM>())).Throws<Exception>();
+        var imagemPerfil = new ImagemPerfilUsuarioParser().Parse(imagemPerfilVM);
+        _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).Throws<Exception>();
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<ImagemPerfilUsuario>.IsAny));
 
         // Act
@@ -55,7 +56,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public void FindAll_Should_Return_List_Of_ImagemPerfilUsuarioVM()
     {
         // Arrange
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil);
 
         // Act
@@ -63,14 +64,14 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<ImagemPerfilVM>>(result);
+        Assert.IsType<List<ImagemPerfilDto>>(result);
     }
 
     [Fact]
     public void FindById_Should_Returns_ImagemPerfilUsuarioVM()
     {
         // Arrange
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
         _repositorioMock.Setup(repo => repo.Get(imagemPerfilVM.Id)).Returns(_imagensPerfil.Find(obj => obj.Id == imagemPerfilVM.Id) ?? new());
 
         // Act
@@ -78,14 +79,14 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ImagemPerfilVM>(result);
+        Assert.IsType<ImagemPerfilDto>(result);
     }
 
     [Fact]
     public void FindById_Should_Returns_Null()
     {
         // Arrange
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
         _repositorioMock.Setup(repo => repo.Get(imagemPerfilVM.Id)).Returns((ImagemPerfilUsuario)null);
 
         // Act
@@ -107,7 +108,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<UsuarioVM>(result);
+        Assert.IsType<UsuarioDto>(result);
     }
 
     [Fact]
@@ -115,7 +116,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var usuario = new Usuario { Id = 0 };
-        _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil);
+        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(null);
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.FindByIdUsuario(usuario.Id);
@@ -129,18 +130,18 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var imagemPerfil = _imagensPerfil.First();
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(imagemPerfil);
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(imagemPerfil);
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil.FindAll(obj => obj.Usuario.Id == imagemPerfilVM.IdUsuario));
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<ImagemPerfilUsuario>.IsAny));
-        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(true);
-        _mockAmazonS3Bucket.Setup(a => a.WritingAnObjectAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync("http://teste.url");
+        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuario>())).ReturnsAsync(true);
+        _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync("http://teste.url");
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM);
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<ImagemPerfilVM>(result);
+        Assert.IsType<ImagemPerfilDto>(result);
     }
 
     [Fact]
@@ -148,11 +149,8 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var imagemPerfil = _imagensPerfil.First();
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(imagemPerfil);
-        _repositorioMock.Setup(repo => repo.GetAll()).Returns((List<ImagemPerfilUsuario>)null);
-        _repositorioMock.Setup(repo => repo.Update(ref It.Ref<ImagemPerfilUsuario>.IsAny));
-        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(true);
-        _mockAmazonS3Bucket.Setup(a => a.WritingAnObjectAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync("http://teste.url");
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(imagemPerfil);
+        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(null);
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM);
@@ -166,11 +164,11 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var imagemPerfil = _imagensPerfil.First();
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(imagemPerfil);
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(imagemPerfil);
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil.FindAll(obj => obj.Usuario.Id == imagemPerfilVM.IdUsuario));
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<ImagemPerfilUsuario>.IsAny));
-        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).Throws<Exception>();
-        _mockAmazonS3Bucket.Setup(a => a.WritingAnObjectAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync("http://teste.url");
+        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuario>())).Throws<Exception>();
+        _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync("http://teste.url");
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM);
@@ -183,10 +181,10 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public void Delete_Should_Return_True()
     {
         // Arrange
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil.FindAll(obj => obj.Usuario.Id == imagemPerfilVM.IdUsuario));
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<ImagemPerfilUsuario>())).Returns(true);
-        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(true);
+        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuario>())).ReturnsAsync(true);
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario);
@@ -199,26 +197,10 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public void Delete_Should_Return_False_When_Try_To_Delete()
     {
         // Arrange
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
+        var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_imagensPerfil.FindAll(obj => obj.Usuario.Id == imagemPerfilVM.IdUsuario));
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<ImagemPerfilUsuario>())).Returns(true);
-        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(false);
-
-        // Act
-        var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario);
-
-        // Assert
-        Assert.False(result);
-    }
-
-    [Fact]
-    public void Delete_Should_Return_Null()
-    {
-        // Arrange
-        var imagemPerfilVM = new ImagemPerfilUsuarioMap().Parse(_imagensPerfil.First());
-        _repositorioMock.Setup(repo => repo.GetAll()).Returns((List<ImagemPerfilUsuario>)null);
-        _repositorioMock.Setup(repo => repo.Delete(It.IsAny<ImagemPerfilUsuario>())).Returns(true);
-        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilVM>())).ReturnsAsync(true);
+        _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuario>())).ReturnsAsync(false);
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.Delete(imagemPerfilVM.IdUsuario);

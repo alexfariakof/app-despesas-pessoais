@@ -1,7 +1,13 @@
-﻿namespace Business;
+﻿using Business.Dtos.Parser;
+using Domain.Entities.Abstractions;
+using MediatR;
+
+namespace Business;
 
 public class CategoriaBusinessImplTest
 {
+    private readonly Mock<IUnitOfWork<Categoria>> _unitOfWorkMock;
+    private readonly Mock<IMediator> _mediator;
     private readonly Mock<IRepositorio<Categoria>> _repositorioMock;
     private readonly CategoriaBusinessImpl _categoriaBusiness;
     private readonly List<Categoria> _categorias;
@@ -11,7 +17,9 @@ public class CategoriaBusinessImplTest
         var usuario = UsuarioFaker.Instance.GetNewFaker();
         _categorias = CategoriaFaker.Instance.Categorias(usuario);
         _repositorioMock = Usings.MockRepositorio(_categorias);
-        _categoriaBusiness = new CategoriaBusinessImpl(_repositorioMock.Object);
+        _unitOfWorkMock  = new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default);
+        _mediator = new Mock<IMediator>(MockBehavior.Default);
+        _categoriaBusiness = new CategoriaBusinessImpl(_mediator.Object, _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -19,36 +27,36 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
         var categoria = _categorias.First();
-        var categoriaVM = new CategoriaMap().Parse(categoria);
+        var categoriaVM = new CategoriaParser().Parse(categoria);
 
-        _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Categoria>.IsAny));
+        _unitOfWorkMock.Setup(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny));
 
         // Act
         var result = _categoriaBusiness.Create(categoriaVM);
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CategoriaVM>(result);
+        Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoriaVM.Id, result.Id);
-        _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Categoria>.IsAny), Times.Once);
+        _unitOfWorkMock.Verify(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny), Times.Once);
     }
 
     [Fact]
-    public void FindAll_Should_Returns_List_Of_CategoriaVM()
+    public async void FindAll_Should_Returns_List_Of_CategoriaVM()
     {
         // Arrange
         var categoria = _categorias.First();
         var mockCategorias = _categorias.FindAll(obj => obj.UsuarioId == categoria.UsuarioId);
-        _repositorioMock.Setup(repo => repo.GetAll()).Returns(mockCategorias);
+        _unitOfWorkMock.Setup(repo => repo.Repository.GetAll()).Returns(async  () => mockCategorias);
 
         // Act
         var result = _categoriaBusiness.FindAll(categoria.UsuarioId);
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<CategoriaVM>>(result);
-        Assert.Equal(mockCategorias.Count, result.Count);
-        _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
+        Assert.IsType<List<CategoriaDto>>(result.Result);
+        Assert.Equal(mockCategorias.Count, result.Result.Count);
+        _unitOfWorkMock.Verify(repo => repo.Repository.GetAll(), Times.Once);
     }
 
     [Fact]
@@ -59,34 +67,34 @@ public class CategoriaBusinessImplTest
         var id = categoria.Id;
         var idUsuario = categoria.UsuarioId;
 
-        _repositorioMock.Setup(repo => repo.Get(id)).Returns(categoria);
+        _unitOfWorkMock.Setup(repo => repo.Repository.GetById(id)).Returns(async () => categoria);
 
         // Act
         var result = _categoriaBusiness.FindById(id, idUsuario);
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CategoriaVM>(result);
+        Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoria.Id, result.Id);
-        _repositorioMock.Verify(repo => repo.Get(id), Times.Once);
+        _unitOfWorkMock.Verify(repo => repo.Repository.GetById(id), Times.Once);
     }
 
     [Fact]
-    public void FindById_Should_Returns_Null()
+    public async void FindById_Should_Returns_Null()
     {
         // Arrange
         var categoria = _categorias.First();
         var id = categoria.Id;
         var idUsuario = categoria.UsuarioId;
 
-        _repositorioMock.Setup(repo => repo.Get(id)).Returns((Categoria)null);
+        _unitOfWorkMock.Setup(repo => repo.Repository.GetById(id)).Returns(async () => (Categoria)null);
 
         // Act
         var result = _categoriaBusiness.FindById(0, idUsuario);
 
         // Assert
         Assert.Null(result);
-        _repositorioMock.Verify(repo => repo.Get(id), Times.Never);
+        _unitOfWorkMock.Verify(repo => repo.Repository.GetById(id), Times.Never);
     }
 
     [Fact]
@@ -96,18 +104,18 @@ public class CategoriaBusinessImplTest
 
         var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(null);
 
-        var categoria = new CategoriaMap().Parse(categoriaVM);
+        var categoria = new CategoriaParser().Parse(categoriaVM);
 
-        _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Categoria>.IsAny));
+        _unitOfWorkMock.Setup(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny));
 
         // Act
-        var result = _categoriaBusiness.Update(categoriaVM) as CategoriaVM;
+        var result = _categoriaBusiness.Update(categoriaVM) as CategoriaDto;
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<CategoriaVM>(result);
+        Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoria.Id, result.Id);
-        _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Categoria>.IsAny), Times.Once);
+        _unitOfWorkMock.Verify(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny), Times.Once);
     }
 
     [Fact]
@@ -115,15 +123,15 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
         var categoria = _categorias.First();
-        var objToDelete = new CategoriaMap().Parse(categoria);
+        var objToDelete = new CategoriaParser().Parse(categoria);
 
-        _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>())).Returns(true);
+        _unitOfWorkMock.Setup(repo => repo.Repository.Delete(It.IsAny<int>()));
 
         // Act
         var result = _categoriaBusiness.Delete(objToDelete);
 
         // Assert
         Assert.True(result);
-        _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Categoria>()), Times.Once);
+        _unitOfWorkMock.Verify(repo => repo.Repository.Delete(It.IsAny<int>()), Times.Once);
     }
 }

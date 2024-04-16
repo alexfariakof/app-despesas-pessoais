@@ -36,9 +36,9 @@ public class DespesaFaker
         return despesaFaker.Generate();
     }
 
-    public DespesaVM GetNewFakerVM(int idUsuario, int idCategoria)
+    public DespesaDto GetNewFakerVM(int idUsuario, int idCategoria)
     {
-        var despesaFaker = new Faker<DespesaVM>()
+        var despesaFaker = new Faker<DespesaDto>()
             .RuleFor(r => r.Id, f => counterVM++)
             .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
             .RuleFor(
@@ -53,12 +53,12 @@ public class DespesaFaker
         return despesaFaker.Generate();
     }
 
-    public List<DespesaVM> DespesasVMs(UsuarioVM? usuarioVM = null, int? idUsaurio = null)
+    public List<DespesaDto> DespesasVMs(UsuarioDto? usuarioVM = null, int? idUsuario = null)
     {
-        var listDespesaVM = new List<DespesaVM>();
+        var listDespesaVM = new List<DespesaDto>();
         for (int i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
             var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(usuarioVM, TipoCategoria.Despesa);
@@ -70,10 +70,10 @@ public class DespesaFaker
         return listDespesaVM;
     }
 
-    public List<Despesa> Despesas(Usuario? usuario = null, int? idUsurio = null)
+    public List<Despesa> Despesas(Usuario? usuario = null, int? idUsurio = null, int count = 10)
     {
         var listDespesa = new List<Despesa>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < count; i++)
         {
             if (idUsurio == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));

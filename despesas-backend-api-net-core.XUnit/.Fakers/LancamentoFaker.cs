@@ -28,14 +28,14 @@ public class LancamentoFaker
         return LancamentoFaker.Generate();
     }
 
-    public static LancamentoVM GetNewFakerVM(
+    public static LancamentoDto GetNewFakerVM(
         int idusuario,
         int idDespesa,
         int idReceita,
         Categoria categoria
     )
     {
-        var lancamentoVMFaker = new Faker<LancamentoVM>()
+        var lancamentoVMFaker = new Faker<LancamentoDto>()
             .RuleFor(l => l.Id, f => counterVM++)
             .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
             .RuleFor(
@@ -52,12 +52,12 @@ public class LancamentoFaker
         return lancamentoVMFaker.Generate();
     }
 
-    public static List<LancamentoVM> LancamentoVMs(
+    public static List<LancamentoDto> LancamentoVMs(
         Usuario? usuario = null,
         int? idUsuario = null
     )
     {
-        var listLancamentoVM = new List<LancamentoVM>();
+        var listLancamentoVM = new List<LancamentoDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)

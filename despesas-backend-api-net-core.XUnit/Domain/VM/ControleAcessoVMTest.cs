@@ -11,7 +11,7 @@ public class ControleAcessoVMTest
         // Arrange and Act
         var id = new Random().Next();
 
-        var controleAcessoVM = new ControleAcessoVM
+        var controleAcessoVM = new ControleAcessoDto
         {
             Id = id,
             Nome = nome,

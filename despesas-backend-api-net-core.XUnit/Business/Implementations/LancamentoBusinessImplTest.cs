@@ -25,7 +25,7 @@ public class LancamentoBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<LancamentoVM>>(result);            
+        Assert.IsType<List<LancamentoDto>>(result);            
         Assert.Equal(lancamentos.FindAll(l => l.UsuarioId == idUsuario).Count, result.Count);
         _repositorioMock.Verify(r => r.FindByMesAno(data, idUsuario), Times.Once);
     }

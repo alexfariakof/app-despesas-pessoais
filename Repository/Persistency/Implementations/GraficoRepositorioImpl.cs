@@ -51,33 +51,33 @@ public class GraficosRepositorioImpl : IGraficosRepositorio
             {
                 SomatorioDespesasPorAno = new Dictionary<string, decimal>
                 {
-                    { "Janeiro", _context.Despesa.Where(d => d.Data.Month == 1 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor) },
-                    { "Fevereiro", _context.Despesa.Where(d => d.Data.Month == 2 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Março", _context.Despesa.Where(d => d.Data.Month == 3 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Abril", _context.Despesa.Where(d => d.Data.Month == 4 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Maio", _context.Despesa.Where(d => d.Data.Month == 5 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor) },
-                    { "Junho", _context.Despesa.Where(d => d.Data.Month == 6 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Julho", _context.Despesa.Where(d => d.Data.Month == 7 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Agosto", _context.Despesa.Where(d => d.Data.Month == 8 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Setembro", _context.Despesa.Where(d => d.Data.Month == 9 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Outubro", _context.Despesa.Where(d => d.Data.Month == 10 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Novembro", _context.Despesa.Where(d => d.Data.Month == 11 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
-                    { "Dezembro", _context.Despesa.Where(d => d.Data.Month == 12 && d.Data.Year == ano && d.UsuarioId == idUsuario).ToList().Sum(d => d.Valor)  },
+                    { "Janeiro", _context.Despesa.Where(d => d.Data.Month == 1 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor) },
+                    { "Fevereiro", _context.Despesa.Where(d => d.Data.Month == 2 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Março", _context.Despesa.Where(d => d.Data.Month == 3 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Abril", _context.Despesa.Where(d => d.Data.Month == 4 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Maio", _context.Despesa.Where(d => d.Data.Month == 5 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor) },
+                    { "Junho", _context.Despesa.Where(d => d.Data.Month == 6 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Julho", _context.Despesa.Where(d => d.Data.Month == 7 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Agosto", _context.Despesa.Where(d => d.Data.Month == 8 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Setembro", _context.Despesa.Where(d => d.Data.Month == 9 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Outubro", _context.Despesa.Where(d => d.Data.Month == 10 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Novembro", _context.Despesa.Where(d => d.Data.Month == 11 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
+                    { "Dezembro", _context.Despesa.Where(d => d.Data.Month == 12 && d.Data.Year == ano && d.UsuarioId == idUsuario).AsEnumerable().Sum(d => d.Valor)  },
                 },
                 SomatorioReceitasPorAno = new Dictionary<string, decimal>
                 {
-                    { "Janeiro", _context.Receita.Where(r => r.Data.Month == 1 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Fevereiro", _context.Receita.Where(r => r.Data.Month == 2 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Março", _context.Receita.Where(r => r.Data.Month == 3 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Abril", _context.Receita.Where(r => r.Data.Month == 4 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Maio", _context.Receita.Where(r => r.Data.Month == 5 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Junho", _context.Receita.Where(r => r.Data.Month == 6 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Julho", _context.Receita.Where(r => r.Data.Month == 7 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Agosto", _context.Receita.Where(r => r.Data.Month == 8 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Setembro", _context.Receita.Where(r => r.Data.Month == 9 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Outubro", _context.Receita.Where(r => r.Data.Month == 10 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Novembro", _context.Receita.Where(r => r.Data.Month == 11 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) },
-                    { "Dezembro", _context.Receita.Where(r => r.Data.Month == 12 && r.Data.Year == ano && r.UsuarioId == idUsuario).ToList().Sum(r => r.Valor) }
+                    { "Janeiro", _context.Receita.Where(r => r.Data.Month == 1 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Fevereiro", _context.Receita.Where(r => r.Data.Month == 2 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Março", _context.Receita.Where(r => r.Data.Month == 3 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Abril", _context.Receita.Where(r => r.Data.Month == 4 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Maio", _context.Receita.Where(r => r.Data.Month == 5 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Junho", _context.Receita.Where(r => r.Data.Month == 6 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Julho", _context.Receita.Where(r => r.Data.Month == 7 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Agosto", _context.Receita.Where(r => r.Data.Month == 8 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Setembro", _context.Receita.Where(r => r.Data.Month == 9 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Outubro", _context.Receita.Where(r => r.Data.Month == 10 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Novembro", _context.Receita.Where(r => r.Data.Month == 11 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
+                    { "Dezembro", _context.Receita.Where(r => r.Data.Month == 12 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) }
                 }
             };                
 

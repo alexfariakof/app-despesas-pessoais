@@ -1,4 +1,6 @@
-﻿namespace Domain.ViewModel;
+﻿using Business.Dtos.Parser;
+
+namespace Domain.ViewModel;
 public class DespesaVMTest
 {
     [Fact]
@@ -6,7 +8,7 @@ public class DespesaVMTest
     {
         // Arrange and Act
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaMap().Parse(despesa);
+        var despesaVM = new DespesaParser().Parse(despesa);
 
         // Assert
         Assert.Equal(despesa.Id, despesaVM.Id);

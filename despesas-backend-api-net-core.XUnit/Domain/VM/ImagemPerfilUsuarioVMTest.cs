@@ -11,7 +11,7 @@ public class ImagemPerfilUsuarioVMTest
         var data = DateTime.Now;
         var dataVencimento = DateTime.Now;
         byte[] arquivoData = new byte[] { 1, 2, 3, 4, 5 };
-        var imagemPerfilUsuarioVM = new ImagemPerfilVM
+        var imagemPerfilUsuarioVM = new ImagemPerfilDto
         {
             Id = id,
             Url = url,

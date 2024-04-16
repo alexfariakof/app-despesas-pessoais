@@ -1,4 +1,4 @@
-﻿using Domain.Core.Interface;
+﻿using Domain.Core.Interfaces;
 
 namespace Domain.Core;
 public class CryptoTest

@@ -32,9 +32,9 @@ public class ReceitaFaker
         return receitaFaker.Generate();
     }
 
-    public ReceitaVM GetNewFakerVM(int idUsuario, int idCategoria)
+    public ReceitaDto GetNewFakerVM(int idUsuario, int idCategoria)
     {
-        var receitaFaker = new Faker<ReceitaVM>()
+        var receitaFaker = new Faker<ReceitaDto>()
             .RuleFor(r => r.Id, f => counterVM++)
             .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
             .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
@@ -46,15 +46,15 @@ public class ReceitaFaker
         return receitaFaker.Generate();
     }
 
-    public List<ReceitaVM> ReceitasVMs(
-        UsuarioVM? usuarioVM = null,
-        int? idUsaurio = null
+    public List<ReceitaDto> ReceitasVMs(
+        UsuarioDto? usuarioVM = null,
+        int? idUsuario = null
     )
     {
-        var listReceitaVM = new List<ReceitaVM>();
+        var listReceitaVM = new List<ReceitaDto>();
         for (int i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
             var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(usuarioVM);
@@ -65,10 +65,10 @@ public class ReceitaFaker
         return listReceitaVM;
     }
 
-    public List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null)
+    public List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null, int count = 10 )
     {
         var listReceita = new List<Receita>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < count; i++)
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));

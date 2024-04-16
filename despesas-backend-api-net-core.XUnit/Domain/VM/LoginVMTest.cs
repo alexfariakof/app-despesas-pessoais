@@ -8,7 +8,7 @@ public class LoginVMTest
     public void LoginVM_Should_Set_Properties_Correctly(string email, string senha)
     {
         // Arrange and Act
-        var loginVM = new LoginVM
+        var loginVM = new LoginDto
         {
             Email = email,
             Senha = senha

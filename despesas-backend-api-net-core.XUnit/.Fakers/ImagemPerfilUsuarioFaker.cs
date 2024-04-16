@@ -17,9 +17,9 @@ public class ImagemPerfilUsuarioFaker
         return imagemFaker.Generate();
     }
 
-    public static ImagemPerfilVM GetNewFakerVM(UsuarioVM usuarioVM)
+    public static ImagemPerfilDto GetNewFakerVM(UsuarioDto usuarioVM)
     {
-        var imagemFaker = new Faker<ImagemPerfilVM>()
+        var imagemFaker = new Faker<ImagemPerfilDto>()
             .RuleFor(i => i.Id, f => counterVM++)
             .RuleFor(i => i.Url, f => f.Internet.Url())
             .RuleFor(i => i.Name, f => f.System.FileName())
@@ -48,15 +48,15 @@ public class ImagemPerfilUsuarioFaker
         return imagens;
     }
 
-    public static List<ImagemPerfilVM> ImagensPerfilUsuarioVMs(
-        UsuarioVM? usuarioVM = null,
-        int? idUsaurio = null
+    public static List<ImagemPerfilDto> ImagensPerfilUsuarioVMs(
+        UsuarioDto? usuarioVM = null,
+        int? idUsuario = null
     )
     {
-        var imagensVM = new List<ImagemPerfilVM>();
+        var imagensVM = new List<ImagemPerfilDto>();
         for (var i = 0; i < 10; i++)
         {
-            if (idUsaurio == null)
+            if (idUsuario == null)
                 usuarioVM = UsuarioFaker.Instance.GetNewFakerVM();
 
             var imagemVM = GetNewFakerVM(usuarioVM);

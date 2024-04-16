@@ -1,12 +1,12 @@
 ﻿using Domain.Entities;
 
 namespace Repository.Persistency;
-public interface IControleAcessoRepositorio
+public interface IControleAcessoRepositorioImpl
 {
-    bool Create(ControleAcesso controleAcesso);
+    void Create(ControleAcesso controleAcesso);
     ControleAcesso FindByEmail(ControleAcesso controleAcesso);
     Usuario GetUsuarioByEmail(string login);
     bool ChangePassword(int idUsuario, string password);
     bool RecoveryPassword(string email);
-    bool isValidPasssword(ControleAcesso controleAcesso);
+    bool IsValidPasssword(string login, string password);
 }

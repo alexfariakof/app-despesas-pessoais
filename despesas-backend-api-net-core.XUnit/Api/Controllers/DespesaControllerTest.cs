@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Controllers;
+﻿using Business.Dtos.Parser;
+using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -7,7 +8,7 @@ namespace Api.Controllers;
 
 public class DespesaControllerTest
 {
-    protected Mock<IBusiness<DespesaVM>> _mockDespesaBusiness;
+    protected Mock<IBusiness<DespesaDto>> _mockDespesaBusiness;
     protected DespesaController _despesaController;
 
     private void SetupBearerToken(int idUsuario)
@@ -25,7 +26,7 @@ public class DespesaControllerTest
 
     public DespesaControllerTest()
     {
-        _mockDespesaBusiness = new Mock<IBusiness<DespesaVM>>();
+        _mockDespesaBusiness = new Mock<IBusiness<DespesaDto>>();
         _despesaController = new DespesaController(_mockDespesaBusiness.Object);
     }
 
@@ -57,7 +58,7 @@ public class DespesaControllerTest
         var despesaVM = DespesaFaker.Instance.DespesasVMs().First();
         int idUsuario = despesaVM.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns((DespesaVM)null);
+        _mockDespesaBusiness.Setup(business => business.FindById(despesaVM.Id, idUsuario)).Returns((DespesaDto)null);
 
         // Act
         var result = _despesaController.Get(despesaVM.Id) as ObjectResult;
@@ -76,7 +77,7 @@ public class DespesaControllerTest
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaMap().Parse(despesa);
+        var despesaVM = new DespesaParser().Parse(despesa);
         int idUsuario = despesaVM.IdUsuario;
         int despesaId = despesa.Id;
         SetupBearerToken(idUsuario);
@@ -92,9 +93,9 @@ public class DespesaControllerTest
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
 
         Assert.True(message);
-        var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaVM;
+        var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaDto;
         Assert.NotNull(_despesa);
-        Assert.IsType<DespesaVM>(_despesa);
+        Assert.IsType<DespesaDto>(_despesa);
         _mockDespesaBusiness.Verify(b => b.FindById(despesaId, idUsuario), Times.Once);
     }
 
@@ -139,9 +140,9 @@ public class DespesaControllerTest
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
 
         Assert.True(message);
-        var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaVM;
+        var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaDto;
         Assert.NotNull(_despesa);
-        Assert.IsType<DespesaVM>(_despesa);
+        Assert.IsType<DespesaDto>(_despesa);
         _mockDespesaBusiness.Verify(b => b.Create(despesaVM), Times.Once());
     }
 
@@ -187,9 +188,9 @@ public class DespesaControllerTest
         var value = result.Value;
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
         Assert.True(message);
-        var _despesa = (DespesaVM?)value?.GetType()?.GetProperty("despesa")?.GetValue(value, null);
+        var _despesa = (DespesaDto?)value?.GetType()?.GetProperty("despesa")?.GetValue(value, null);
         Assert.NotNull(_despesa);
-        Assert.IsType<DespesaVM>(_despesa);
+        Assert.IsType<DespesaDto>(_despesa);
         _mockDespesaBusiness.Verify(b => b.Update(despesaVM), Times.Once);
     }
 
@@ -201,7 +202,7 @@ public class DespesaControllerTest
         var despesaVM = _despesaVMs[3];
         int idUsuario = despesaVM.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockDespesaBusiness.Setup(business => business.Update(despesaVM)).Returns((DespesaVM)null);
+        _mockDespesaBusiness.Setup(business => business.Update(despesaVM)).Returns((DespesaDto)null);
 
         // Act
         var result = _despesaController.Put(despesaVM) as ObjectResult;

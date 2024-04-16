@@ -39,14 +39,14 @@ public class UsuarioFaker
         }
     }
 
-    public UsuarioVM GetNewFakerVM(int? idUsuario = null)
+    public UsuarioDto GetNewFakerVM(int? idUsuario = null)
     {
         lock (LockObject)
         {
             if (idUsuario == null)
                 idUsuario = counterVM++;
 
-            var usuarioFaker = new Faker<UsuarioVM>()
+            var usuarioFaker = new Faker<UsuarioDto>()
                 .RuleFor(u => u.Id, idUsuario)
                 .RuleFor(u => u.Nome, f => f.Name.FullName())
                 .RuleFor(u => u.SobreNome, f => f.Name.LastName())
@@ -57,12 +57,12 @@ public class UsuarioFaker
         }
     }
 
-    public List<UsuarioVM> GetNewFakersUsuariosVMs(int count = 3)
+    public List<UsuarioDto> GetNewFakersUsuariosVMs(int count = 3)
     {
         lock (LockObject)
         {
 
-            var listUsuarioVM = new List<UsuarioVM>();
+            var listUsuarioVM = new List<UsuarioDto>();
             for (int i = 0; i < count; i++)
             {
                 var usuarioVM = GetNewFakerVM();

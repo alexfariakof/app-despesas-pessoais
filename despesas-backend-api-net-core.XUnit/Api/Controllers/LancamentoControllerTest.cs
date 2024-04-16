@@ -1,4 +1,5 @@
-﻿using despesas_backend_api_net_core.Controllers;
+﻿using Business.Abstractions;
+using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,7 +10,7 @@ public class LancamentoControllerTest
 {
     protected Mock<ILancamentoBusiness> _mockLancamentoBusiness;
     protected LancamentoController _lancamentoController;
-    protected List<LancamentoVM> _lancamentoVMs;
+    protected List<LancamentoDto> _lancamentoVMs;
 
     private void SetupBearerToken(int idUsuario)
     {
@@ -51,11 +52,11 @@ public class LancamentoControllerTest
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var lancamentos = (List<LancamentoVM>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
         Assert.True(message);
         Assert.NotNull(lancamentos);
         Assert.NotEmpty(lancamentos);
-        var returnedLancamentoVMs = Assert.IsType<List<LancamentoVM>>(lancamentos);
+        var returnedLancamentoVMs = Assert.IsType<List<LancamentoDto>>(lancamentos);
         Assert.Equal(lancamentoVMs.FindAll(l => l.IdUsuario == idUsuario),returnedLancamentoVMs);
         _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
     }
@@ -68,7 +69,7 @@ public class LancamentoControllerTest
         int idUsuario = _lancamentoVMs.First().IdUsuario;
         DateTime anoMes = DateTime.Now;
         SetupBearerToken(idUsuario);
-        _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns((List<LancamentoVM>)null);
+        _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns((List<LancamentoDto>)null);
 
         // Act
         var result = _lancamentoController.Get(anoMes) as ObjectResult;
@@ -80,7 +81,7 @@ public class LancamentoControllerTest
 
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
 
-        var lancamentos = (List<LancamentoVM>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
         Assert.True(message);
         Assert.NotNull(lancamentos);
         Assert.Empty(lancamentos);
@@ -95,7 +96,7 @@ public class LancamentoControllerTest
         int idUsuario = _lancamentoVMs.First().IdUsuario;
         DateTime anoMes = DateTime.Now;
         SetupBearerToken(idUsuario);
-        _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(new List<LancamentoVM>());
+        _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(new List<LancamentoDto>());
         
        // Act
         var result = _lancamentoController.Get(anoMes) as ObjectResult;
@@ -105,7 +106,7 @@ public class LancamentoControllerTest
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var lancamentos = (List<LancamentoVM>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
         Assert.True(message);
         Assert.NotNull(lancamentos);
         Assert.Empty(lancamentos);
@@ -130,7 +131,7 @@ public class LancamentoControllerTest
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var lancamentos = (List<LancamentoVM>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
+        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
         Assert.True(message);
         Assert.NotNull(lancamentos);
         Assert.Empty(lancamentos);

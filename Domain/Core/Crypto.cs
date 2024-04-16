@@ -1,4 +1,4 @@
-﻿using Domain.Core.Interface;
+﻿using Domain.Core.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -26,12 +26,12 @@ public class Crypto : ICrypto
     }
     private Crypto()
     {
-        var key = getHashKey();
+        var key = GetHashKey();
         var keyByte = Convert.FromBase64String(key);
         Key = keyByte;
     }
 
-    private string? getHashKey()
+    private string? GetHashKey()
     {
         var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
 
