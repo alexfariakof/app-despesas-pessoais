@@ -18,7 +18,6 @@ jobs:
         run: |
             repo=${{ github.repository }}
             file_path=$(echo "workflow_tests_e2e")
-            echo ${{ secrets.ENV_PAT }}
 
             curl -X POST \
               -H "Authorization: token ${{ secrets.ENV_PAT }}" \
