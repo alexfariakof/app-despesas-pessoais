@@ -35,16 +35,12 @@ jobs:
       with:
         dotnet-version: 8.0.x
     
-    - name: Restore dependencies
-      run: dotnet restore
+    - name: Build and Restore App 
+      run: dotnet build  ./despesas-backend-api-net-core/despesas-backend-api-net-core.csproj --restore
       continue-on-error: false
 
-    - name: Build
-      run: dotnet build  -restore
-      continue-on-error: false
-
-    - name: Test
-      run: dotnet test
+    - name:  Test .Net App
+      run: dotnet test ./despesas-backend-api-net-core.XUnit/XUnit.Tests.csproj
       continue-on-error: false
 
   trigger_tests_sonarcloud:
