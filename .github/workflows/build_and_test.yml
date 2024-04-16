@@ -1,9 +1,16 @@
 name: Build and Test
 on:
+  workflow_call:
+
   push:
     branches: 
       - main 
       - dev
+
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:       
+      - main
 
 permissions:
     contents: read 

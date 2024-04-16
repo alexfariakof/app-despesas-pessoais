@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "."]
 RUN dotnet restore "despesas-backend-api-net-core.csproj"
 COPY . .
+
 RUN rm --force ./despesas-backend-api-net-core/appsettings.json
 RUN rm --force ./despesas-backend-api-net-core/appsettings.development.json
 RUN mv ./despesas-backend-api-net-core/appsettings.docker.json ./despesas-backend-api-net-core/appsettings.json

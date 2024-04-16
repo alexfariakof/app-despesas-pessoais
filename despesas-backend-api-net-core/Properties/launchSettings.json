@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "despesas_backend_api_net_core": {
+    "Default": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

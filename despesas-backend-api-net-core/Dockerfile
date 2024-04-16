@@ -1,21 +1,28 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-WORKDIR /app
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-EXPOSE 42535
-ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_URLS=http://+:42535
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
+WORKDIR /app
+EXPOSE 8080
+EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "."]
-RUN dotnet restore "despesas-backend-api-net-core.csproj"
+COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "despesas-backend-api-net-core/"]
+COPY ["Business/Business.csproj", "Business/"]
+COPY ["CrossCutting/CrossCutting.csproj", "CrossCutting/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Repository/Repository.csproj", "Repository/"]
+COPY ["DataSeeders/DataSeeders.csproj", "DataSeeders/"]
+RUN dotnet restore "./despesas-backend-api-net-core/./despesas-backend-api-net-core.csproj"
 COPY . .
-
-WORKDIR "/src/."
-RUN dotnet build "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/build
+WORKDIR "/src/despesas-backend-api-net-core"
+RUN dotnet build "./despesas-backend-api-net-core.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/publish /p:UseAppHost=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./despesas-backend-api-net-core.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
