@@ -2,113 +2,20 @@ name: Deploy Development Project in AWS
 on:
   push:
     branches:
-      - database-in-memory
+      - staging
+
+permissions:
+    contents: read 
 
 jobs:
-  build_and_test_unit:   
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
+  trigger_build_and_test:
+    name: Triggered Deploy Dev
+    uses: alexfariakof/despesas-backend-api-net-core/.github/workflows/build_and_test.yml@main
+    secrets: inherit     
 
-    - name: Cache .NET packages    
-      uses: actions/cache@v3
-      id: dotnet-cache
-      with:
-        path: ~/.nuget/packages
-        key: dotnet-packages-${{ github.repository }}
-        restore-keys: dotnet-packages-${{ github.repository }}
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      if: steps.dotnet-cache.outputs.cache-hit != 'true'
-      with:
-        dotnet-version: 8.0.x
-
-    - name: Restore Build and Test 
-      run: | 
-        dotnet restore
-        dotnet build > /dev/null 2>&1
-        dotnet test
-      continue-on-error: false
-
-  build_analyze_code_in_sonar:
-    needs: build_and_test_unit
-    name: Test and Analysis Code In Sonar Cloud
-    runs-on: windows-latest
-    steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: 'zulu' # Alternative distribution options are available.
-      
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      
-      - name: Cache SonarCloud packages
-        id: cache-sonar
-        uses: actions/cache@v3        
-        with:        
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Create if not Exist Cache Sonar Packages
-        if: steps.cache-sonar.outputs.cache-hit != 'true'
-        shell: powershell
-        run: |
-          New-Item -Path ~\sonar\cache -ItemType Directory    
-            
-      - name: Cache SonarCloud scanner
-        id: cache-sonar-scanner
-        uses: actions/cache@v3
-        with:
-          path: .\.sonar\scanner
-          key: ${{ runner.os }}-sonar-scanner
-          restore-keys: ${{ runner.os }}-sonar-scanner      
-        
-      - name: Install SonarCloud scanner
-        if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-        shell: powershell
-        run: |
-          New-Item -Path ./.sonar/scanner -ItemType Directory
-          dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-
-      - name: Build and analyze
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: |          
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="despesas-backend-api-net-core.XUnit/**,  **/Database-local/**,**/.documents/**, *.sql, **/Program.cs, **/Database-In-Memory/**" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
-          
-          # Executa o teste e coleta o GUID gerado          
-          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-            
-            # Encontra o diretório mais recente na pasta TestResults
-            $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-            $sourceDirs = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core"
-            
-            # Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
-            if ($latestDir -ne $null) {
-              $guid = $latestDir.Name
-          
-              # Constrói os caminhos dinamicamente
-              $baseDirectory = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core.XUnit"
-              $coverageXmlPath = Join-Path -Path (Join-Path -Path $baseDirectory -ChildPath "TestResults") -ChildPath $guid
-              
-              # Gera o relatório de cobertura usando o GUID capturado
-              
-              dotnet tool install -g dotnet-reportgenerator-globaltool 
-              reportgenerator -reports:$baseDirectory\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"lcov;" -sourcedirs:$sourceDirs -filefilters:-$sourceDirs\Database-In-Memory\**
-            }
-          
-          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
-        continue-on-error: false
         
   deploy_dev:
-    needs: build_analyze_code_in_sonar
+    needs: trigger_build_and_test
     name: Docker Build and Publish in Development
     runs-on: ubuntu-latest
     steps:

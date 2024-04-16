@@ -8,7 +8,7 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
-      - database-in-memory
+      - staging
 
 jobs:
   trigger-tests-e2e:

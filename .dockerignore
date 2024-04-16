@@ -21,6 +21,10 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
-**/.documents*
+**/.editorconfig
+**/MsMySqlServer.Migrations
+**/MySqlServer.Migrations
+**/despesas-backend-api-net-core.XUnit
+**/.documents
 LICENSE
 README.md
