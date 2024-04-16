@@ -12,7 +12,7 @@ services:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: Development
     ports:
-      - 42534:42534
+      - 42536:42536
     networks:
       - despesas-network
 
