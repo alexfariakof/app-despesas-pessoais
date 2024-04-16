@@ -28,14 +28,14 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:
 $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 $projectPath =  Join-Path -Path (Get-Location) -ChildPath ""
 $sourceDirs = "$projectPath\Business;$projectPath\Domain;$projectPath\Repository;$projectPath\despesas-backend-api-net-core;"
-$filefilters = "$projectPath\DataSeeders\**;$projectPath\MsMySqlServer.Migrations\**"
+$filefilters = "$projectPath\DataSeeders\**;$projectPath\MySqlServer.Migrations\**"
 
 # Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
 if ($latestDir -ne $null) {
     $guid = $latestDir.Name
   
     # Constrói os caminhos dinamicamente
-    $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "despesas-backend-api-net-core.XUnit"
+    $projectTestPath = ".\despesas-backend-api-net-core.XUnit\"
     $coverageXmlPath = Join-Path -Path (Join-Path -Path $projectTestPath -ChildPath "TestResults") -ChildPath $guid
 
     # Gera o relatório de cobertura usando o GUID capturado

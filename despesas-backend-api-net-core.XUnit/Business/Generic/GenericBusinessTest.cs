@@ -1,8 +1,4 @@
-﻿using Xunit.Extensions.Ordering;
-
-namespace Business.Generic;
-
-[Order(100)]
+﻿namespace Business.Generic;
 public class GenericBusinessTests
 {
     private Mock<IRepositorio<Categoria>> _mockRepositorio;
@@ -13,7 +9,7 @@ public class GenericBusinessTests
     {
         _mockRepositorio = new Mock<IRepositorio<Categoria>>(MockBehavior.Default);
         _genericBusiness = new GenericBusiness<Categoria>(_mockRepositorio.Object);
-        _categorias = CategoriaFaker.Categorias();
+        _categorias = CategoriaFaker.Instance.Categorias();
     }
 
     [Fact]
@@ -45,7 +41,7 @@ public class GenericBusinessTests
     public void FindAll_Should_Return_All_Objects()
     {
         // Arrange
-        var objects = UsuarioFaker.GetNewFakersUsuarios();
+        var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();
         var repositoryMock = new Mock<IRepositorio<Usuario>>();
         repositoryMock.Setup(repo => repo.GetAll()).Returns(objects);
         var business = new GenericBusiness<Usuario>(repositoryMock.Object);
@@ -65,7 +61,7 @@ public class GenericBusinessTests
     {
         // Arrange
         var id = 1;
-        var obj = DespesaFaker.Despesas().First();
+        var obj = DespesaFaker.Instance.Despesas().First();
         var repositoryMock = new Mock<IRepositorio<Despesa>>();
         repositoryMock.Setup(repo => repo.Get(id)).Returns(obj);
         var business = new GenericBusiness<Despesa>(repositoryMock.Object);
@@ -84,7 +80,7 @@ public class GenericBusinessTests
     public void Update_Should_Return_Updated_Object()
     {
         // Arrange
-        var obj = ReceitaFaker.Receitas().First() ;
+        var obj = ReceitaFaker.Instance.Receitas().First() ;
         var repositoryMock = new Mock<IRepositorio<Receita>>();
         repositoryMock.Setup(repo => repo.Update(ref obj));
         var business = new GenericBusiness<Receita>(repositoryMock.Object);
@@ -103,7 +99,7 @@ public class GenericBusinessTests
     public void Delete_Should_Return_True_If_Deleted_Successfully()
     {
         // Arrange
-        var objects = UsuarioFaker.GetNewFakersUsuarios();
+        var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();
         var obj = objects.First();
         var repositoryMock = Usings.MockRepositorio(objects);
         repositoryMock.Setup(repo => repo.Delete(obj)).Returns(true);

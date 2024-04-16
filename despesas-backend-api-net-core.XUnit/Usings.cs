@@ -1,29 +1,32 @@
 global using Xunit;
+global using XUnit.Fakers;
 global using Moq;
 global using Bogus;
 global using Domain.Entities;
-global using Domain.VM;
 global using Business;
+global using Business.Dtos;
 global using Business.Generic;
 global using Business.Implementations;
-global using Repository;
 global using Repository.Mapping;
 global using Repository.Persistency;
 global using Repository.Persistency.Generic;
 global using Repository.Persistency.Implementations;
 global using Microsoft.EntityFrameworkCore;
-global using despesas_backend_api_net_core.XUnit.Fakers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Data;
 using Domain.Core;
 using Business.Authentication;
 
-public static class Usings
+public  class Usings
 {
+    private Usings()
+    {
+
+    }
+
     public static Mock<DbSet<T>> MockDbSet<T>(List<T> data, DbContext? context = null)
         where T : class
     {

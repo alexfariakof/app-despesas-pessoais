@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
-
 namespace despesas_backend_api_net_core.Controllers
 {
     [Authorize("Bearer")]

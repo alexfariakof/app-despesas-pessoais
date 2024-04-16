@@ -1,13 +1,12 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using Domain.Core.Interface;
+using Domain.Core.Interfaces;
 using Domain.Entities;
 using Newtonsoft.Json.Linq;
 
 namespace Domain.Core;
 public class EmailSender : IEmailSender
 {
-    private readonly int _lengthPassword;
     private readonly string? _hostSmpt;
     private readonly NetworkCredential? _Credentials;
     public EmailSender()
@@ -18,9 +17,7 @@ public class EmailSender : IEmailSender
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);
-            var cryptoKey = config["Crypto"]?["Key"]?.ToString();
 
-            int.TryParse(config["EmailConfigurations"]?["lengthPassword"]?.ToString(), out _lengthPassword);
             _hostSmpt = config["EmailConfigurations"]?["host"]?.ToString();
             var login = config["EmailConfigurations"]?["login"]?.ToString();
             var senha = config["EmailConfigurations"]?["senha"]?.ToString();

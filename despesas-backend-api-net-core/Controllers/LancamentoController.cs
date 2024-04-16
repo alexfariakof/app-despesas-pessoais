@@ -1,5 +1,5 @@
-﻿using Business;
-using Domain.VM;
+﻿using Business.Abstractions;
+using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,13 +25,13 @@ public class LancamentoController : AuthController
             var list = _lancamentoBusiness.FindByMesAno(anoMes, IdUsuario);
 
             if (list == null || list.Count == 0)
-                return Ok(new { message = true, lancamentos = new List<LancamentoVM>() });
+                return Ok(new { message = true, lancamentos = new List<LancamentoDto>() });
 
             return Ok(new { message = true, lancamentos = list });
         }
         catch
         {
-            return Ok(new { message = true, lancamentos = new List<LancamentoVM>() });
+            return Ok(new { message = true, lancamentos = new List<LancamentoDto>() });
         }
     }    
 }

@@ -1,24 +1,24 @@
-﻿using Business.Generic;
+﻿using Business.Dtos;
+using Business.Dtos.Parser;
+using Business.Generic;
 using Domain.Entities;
-using Domain.VM;
-using Repository.Mapping;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
+public class ReceitaBusinessImpl : IBusiness<ReceitaDto>
 {
     private readonly IRepositorio<Receita> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
-    private readonly ReceitaMap _converter;
+    private readonly ReceitaParser _converter;
 
     public ReceitaBusinessImpl(IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria)
     {
         _repositorio = repositorio;
         _repoCategoria = repoCategoria;
-        _converter = new ReceitaMap();
+        _converter = new ReceitaParser();
         _repoCategoria = repoCategoria;
     }
-    public ReceitaVM Create(ReceitaVM obj)
+    public ReceitaDto Create(ReceitaDto obj)
     {
         IsCategoriaValid(obj);
         Receita receita = _converter.Parse(obj);
@@ -26,7 +26,7 @@ public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
         return _converter.Parse(receita);
     }
 
-    public List<ReceitaVM> FindAll(int idUsuario)
+    public List<ReceitaDto> FindAll(int idUsuario)
     {
         var receitas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
         foreach (var receita in receitas)
@@ -34,7 +34,7 @@ public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
         return _converter.ParseList(receitas);
     }      
 
-    public ReceitaVM FindById(int id, int idUsuario)
+    public ReceitaDto FindById(int id, int idUsuario)
     {
         var receita = _repositorio.Get(id);
         receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
@@ -44,7 +44,7 @@ public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
         return null;
     }
 
-    public ReceitaVM Update(ReceitaVM obj)
+    public ReceitaDto Update(ReceitaDto obj)
     {
         IsCategoriaValid(obj);
         Receita receita = _converter.Parse(obj);
@@ -52,13 +52,13 @@ public class ReceitaBusinessImpl : IBusiness<ReceitaVM>
         return _converter.Parse(receita);
     }
 
-    public bool Delete(ReceitaVM obj)
+    public bool Delete(ReceitaDto obj)
     {
         Receita receita = _converter.Parse(obj);
         return  _repositorio.Delete(receita);
     }
 
-    private void IsCategoriaValid(ReceitaVM obj)
+    private void IsCategoriaValid(ReceitaDto obj)
     {
         if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario && obj.Categoria.IdTipoCategoria.Equals((int)TipoCategoria.Receita)) == null)
             throw new ArgumentException("Categoria não existe cadastrada para este usuário!");
