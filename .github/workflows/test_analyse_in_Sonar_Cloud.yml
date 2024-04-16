@@ -71,7 +71,7 @@ jobs:
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="despesas-backend-api-net-core.XUnit/**,  **/MsMySqlServer.Migrations/**, **/.documents/**, *.sql, **/Program.cs, **/DataSeeders/**" /d:sonar.cs.lcov.reportPaths="**/lcov.info"
           dotnet tool install -g dotnet-reportgenerator-globaltool
           # Executa Build Restore com Teste e coleta o GUID gerado          
-          dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+          dotnet test ./despesas-backend-api-net-core.XUnit/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
             
           # Encontra o diretório mais recente na pasta TestResults
           $latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
