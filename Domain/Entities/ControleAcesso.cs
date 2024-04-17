@@ -18,6 +18,10 @@ public class ControleAcesso : BaseModel
         set => _senha = Crypto.GetInstance.Encrypt(value);
     }
     public int UsuarioId { get; set; }
+    public string? RefreshToken { get; set; }
+
+    public DateTime? RefreshTokenExpiry { get; set; }
+
     public virtual Usuario? Usuario { get; set; }
     public void CreateAccount(Usuario usuario, string email, string senha)
     {

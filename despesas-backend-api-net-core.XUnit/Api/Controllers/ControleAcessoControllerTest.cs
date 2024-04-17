@@ -180,7 +180,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var loginVM = new LoginDto { Email = "teste@teste.com", Senha = "password" };
-        _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcessoDto>())).Returns(new AuthenticationDto());
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<ControleAcessoDto>())).Returns(new AuthenticationDto());
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;

@@ -79,4 +79,23 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         var senhaToCompare = _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(email)).Senha;
         return senha.Equals(Crypto.GetInstance.Decrypt(senhaToCompare));
     }
+    public bool RevokeToken(int  idUsuario)
+    {
+        var controleAcesso = _context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(idUsuario));        
+        if (controleAcesso is null) return false;
+        controleAcesso.RefreshToken = null;
+        _context.SaveChanges();
+        return true;
+    }
+
+    public void RefreshTokenInfo(ControleAcesso controleAcesso)
+    {
+        _context.ControleAcesso.Update(controleAcesso);
+        _context.SaveChanges();
+    }
+
+    public ControleAcesso FindById(int idUsuario)
+    {
+        return  _context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
+    }
 }

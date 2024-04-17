@@ -13,5 +13,7 @@ public class ControleAcessoMap : IEntityTypeConfiguration<ControleAcesso>
         builder.HasIndex(m => m.Login).IsUnique(true);
         builder.Property(x => x.UsuarioId).IsRequired();
         builder.Property(m => m.Login).IsRequired().HasMaxLength(100) ;
+        builder.Property(m => m.RefreshToken).HasDefaultValue(null);
+        builder.Property(m => m.RefreshTokenExpiry).HasDefaultValue(null);
     }
 }

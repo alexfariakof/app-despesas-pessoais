@@ -71,7 +71,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(new ControleAcesso { Login = controleAcesso.Email});
 
         // Act
-        var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
 
         // Assert
         Assert.True(result.Authenticated);
@@ -86,7 +86,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns((Usuario)null);
 
         // Act
-        var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
 
         // Assert
         Assert.False(result.Authenticated);
@@ -102,7 +102,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuarioInativo);
 
         // Act
-        var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
 
         // Assert
         Assert.False(result.Authenticated);
@@ -126,7 +126,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
 
         // Act
-        var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
 
         // Assert
         Assert.False(result.Authenticated);
@@ -151,7 +151,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(new ControleAcesso { Login = controleAcesso.Email });
 
         // Act
-        var result = _controleAcessoBusiness.FindByLogin(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
 
         // Assert
         Assert.False(result.Authenticated);
@@ -176,7 +176,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Throws(new ArgumentException("Usuário Inválido!"));
 
         // Act &  Assert
-        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.FindByLogin(controleAcesso));
+        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.ValidateCredentials(controleAcesso));
     }
 
     [Fact]

@@ -30,9 +30,10 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _repositorio.Create(controleAcesso);
     }
 
-    public Dtos.AuthenticationDto FindByLogin(ControleAcessoDto controleAcesso)
+    public AuthenticationDto ValidateCredentials(ControleAcessoDto controleAcesso)
     {
         bool credentialsValid = false;
+        ControleAcesso? baseLogin = null;
 
         var usuario = _repositorio.GetUsuarioByEmail(controleAcesso.Email);
         if (usuario == null)
@@ -42,7 +43,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 
         if (!string.IsNullOrWhiteSpace(controleAcesso.Email))
         {
-            ControleAcesso baseLogin = _repositorio.FindByEmail( new ControleAcesso { Login = controleAcesso.Email });
+            baseLogin = _repositorio.FindByEmail( new ControleAcesso { Login = controleAcesso.Email });
             if (baseLogin == null)
                 return ExceptionObject("Email inexistente!");
             if (!_repositorio.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha))
@@ -50,6 +51,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 
             credentialsValid = baseLogin != null && controleAcesso.Email == baseLogin.Login;
         }
+
         if (credentialsValid)
         {
             ClaimsIdentity identity = new ClaimsIdentity(
@@ -62,13 +64,47 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 
             DateTime createDate = DateTime.Now;
             DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);
+            string token = CreateToken(identity, createDate, expirationDate, usuario.Id);
+            baseLogin.RefreshToken = CreateRefreshToken();
+            baseLogin.RefreshTokenExpiry = DateTime.Now.AddDays(_tokenConfiguration.DaysToExpiry);
+            
+            _repositorio.RefreshTokenInfo(baseLogin);
 
-            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            string token = CreateToken(identity, createDate, expirationDate, handler, usuario.Id);
-            return SuccessObject(createDate, expirationDate, token, controleAcesso.Email);
+            return SuccessObject(createDate, expirationDate, token, controleAcesso.Email, baseLogin.RefreshToken);
         }
         return ExceptionObject("Usuário Inválido!");
     }
+
+    public AuthenticationDto ValidateCredentials(AuthenticationDto authenticationDto, int idUsuario)
+    {
+        var baseLogin = _repositorio.FindById(idUsuario);
+        var credentialsValid = baseLogin != null && baseLogin.RefreshTokenExpiry >= DateTime.Now;
+
+        if (credentialsValid)
+        {
+            ClaimsIdentity identity = new ClaimsIdentity(
+                new GenericIdentity(baseLogin.Login, "Login"),
+                new[]
+                {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, baseLogin.Login)
+                });
+
+            baseLogin.RefreshToken = CreateRefreshToken();
+            baseLogin.RefreshTokenExpiry = DateTime.Now.AddDays(_tokenConfiguration.DaysToExpiry);
+
+            _repositorio.RefreshTokenInfo(baseLogin);
+            authenticationDto.RefreshToken = baseLogin.RefreshToken;
+            return authenticationDto;
+        }
+        return ExceptionObject("Token Inválido!");
+    }
+
+    public bool RevokeToken(int idUsuario)
+    {
+        return _repositorio.RevokeToken(idUsuario);
+    }
+
     public bool RecoveryPassword(string email)
     {        
         var result = _repositorio.RecoveryPassword(email);
@@ -84,8 +120,9 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         return _repositorio.ChangePassword(idUsuario, password);
     }
 
-    private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler, int idUsuario)
+    private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, int idUsuario)
     {
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
         Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
         {
             Issuer = _tokenConfiguration.Issuer,
@@ -101,25 +138,33 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         return token;
     }
 
-    private Dtos.AuthenticationDto ExceptionObject(string message)
+    private string CreateRefreshToken()
     {
-        return new Business.Dtos.AuthenticationDto
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor());
+        return handler.WriteToken(securityToken);
+    }
+
+    private AuthenticationDto ExceptionObject(string message)
+    {
+        return new AuthenticationDto
         {
             Authenticated = false,
             Message = message
         };
     }
 
-    private Dtos.AuthenticationDto SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
+    private AuthenticationDto SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login, string refreshToken)
     {
         Usuario usuario = _repositorio.GetUsuarioByEmail(login);
-        return new Business.Dtos.AuthenticationDto
+        return new AuthenticationDto
         {
             Authenticated = true,
             Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
             Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
             AccessToken = token,
+            RefreshToken = refreshToken,
             Message = "OK"
         };
-    }
+    }    
 }
