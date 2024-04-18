@@ -1,8 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using Business.Authentication.Abstractions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Authentication;
-public class TokenConfiguration
+public class TokenConfiguration: ITokenConfiguration
 {
     public string? Audience { get; set; }
     public string? Issuer { get; set; }

@@ -281,4 +281,107 @@ public class ControleAcessoRepositorioImplTest
         Assert.IsType<bool>(result);
         Assert.False(result);
     }
+
+    [Fact]
+    public void Create_Should_Throw_Exception_When_User_Already_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new Mock<ControleAcessoRepositorioImpl>(_context);
+        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
+        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
+
+        // Act & Assert
+        Assert.Throws<AggregateException>(() => repository.Object.Create(mockControleAcesso));
+    }
+
+    [Fact]
+    public void Create_Should_Not_Add_User_When_Not_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var repository = new Mock<ControleAcessoRepositorioImpl>(_context);
+        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
+        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
+
+        // Act
+        repository.Object.Create(mockControleAcesso);
+
+        // Assert
+        mockRepository.Verify(repo => repo.Create(mockControleAcesso), Times.Never);
+    }
+
+    [Fact]
+    public void FindById_Should_Return_ControleAcesso_When_User_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        var result = repository.FindById(mockControleAcesso.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(mockControleAcesso, result);
+    }
+
+    [Fact]
+    public void FindById_Should_Return_Null_When_User_Not_Exists()
+    {
+        // Arrange
+        var nonExistingId = -1; // assuming -1 is an invalid ID
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        var result = repository.FindById(nonExistingId);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void RevokeToken_Should_Throw_Exception_When_User_Not_Exists()
+    {
+        // Arrange
+        var nonExistingId = -1; // assuming -1 is an invalid ID
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => repository.RevokeToken(nonExistingId));
+    }
+
+    [Fact]
+    public void RevokeToken_Should_Remove_Token_When_User_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        repository.RevokeToken(mockControleAcesso.Id);
+
+        // Assert
+        Assert.Null(mockControleAcesso.RefreshToken);
+        Assert.Null(mockControleAcesso.RefreshTokenExpiry);
+    }
+
+    [Fact]
+    public void RefreshTokenInfo_Should_Update_Token_Info()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        mockControleAcesso.RefreshToken = "new_token";
+        mockControleAcesso.RefreshTokenExpiry = DateTime.UtcNow.AddHours(1);
+        repository.RefreshTokenInfo(mockControleAcesso);
+
+        // Assert
+        Assert.NotNull(mockControleAcesso.RefreshToken);
+        Assert.NotNull(mockControleAcesso.RefreshTokenExpiry);
+        Assert.Equal("new_token", mockControleAcesso.RefreshToken);
+    }
+
 }
