@@ -10,4 +10,5 @@ public class ControleAcessoDto : UsuarioDto
     public string? Senha { get; set; }
     [Required]
     public string? ConfirmaSenha { get; set; }
+    public string? RefreshToken { get; set; }
 }

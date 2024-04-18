@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using CrossCutting.CommonDependenceInject;
+using DataSeeders.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddCors(c =>
     });
 });
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,7 +37,7 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsProduction() || builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 }
@@ -45,9 +47,11 @@ else
 }
 
 // Add CommonInjectDependences 
+builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 builder.Services.ConfigureAutorization(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+
 builder.Services.AddCrossCuttingConfiguration();
 
 
@@ -78,14 +82,11 @@ app.UseAuthorization();
 //app.UseStaticFiles();
 app.MapControllers();
 
-if (!app.Environment.IsProduction())
-{ 
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var dataSeeder = services.GetRequiredService<IDataSeeder>();
-        dataSeeder.SeedData();
-    }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dataSeeder = services.GetRequiredService<IDataSeeder>();
+    dataSeeder.SeedData();
 }
 
 app.Run();

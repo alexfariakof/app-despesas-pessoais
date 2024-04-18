@@ -30,95 +30,96 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _repositorio.Create(controleAcesso);
     }
 
-    public Dtos.AuthenticationDto FindByLogin(ControleAcessoDto controleAcesso)
+    public AuthenticationDto ValidateCredentials(ControleAcessoDto controleAcesso)
     {
-        bool credentialsValid = false;
+        ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = controleAcesso.Email });
 
-        var usuario = _repositorio.GetUsuarioByEmail(controleAcesso.Email);
-        if (usuario == null)
-            return ExceptionObject("Usuário inexistente!");
-        else if (usuario.StatusUsuario == StatusUsuario.Inativo)
-            return ExceptionObject("Usuário Inativo!");
+        if (baseLogin == null)
+            return AuthenticationException("Usuário inexistente!");                
+        else if (baseLogin.Usuario.StatusUsuario == StatusUsuario.Inativo)
+            return AuthenticationException("Usuário Inativo!");
 
-        if (!string.IsNullOrWhiteSpace(controleAcesso.Email))
-        {
-            ControleAcesso baseLogin = _repositorio.FindByEmail( new ControleAcesso { Login = controleAcesso.Email });
-            if (baseLogin == null)
-                return ExceptionObject("Email inexistente!");
-            if (!_repositorio.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha))
-                return ExceptionObject("Senha inválida!");
 
-            credentialsValid = baseLogin != null && controleAcesso.Email == baseLogin.Login;
-        }
+        if (!_repositorio.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha))
+            return AuthenticationException("Senha inválida!");
+
+        bool credentialsValid = baseLogin != null && controleAcesso.Email == baseLogin.Login;
         if (credentialsValid)
         {
-            ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(controleAcesso.Email, "Login"),
-                new[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                    new Claim(JwtRegisteredClaimNames.UniqueName, controleAcesso.Email)
-                });
-
-            DateTime createDate = DateTime.Now;
-            DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);
-
-            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-            string token = CreateToken(identity, createDate, expirationDate, handler, usuario.Id);
-            return SuccessObject(createDate, expirationDate, token, controleAcesso.Email);
+            baseLogin.RefreshToken = _tokenConfiguration.GenerateRefreshToken();
+            baseLogin.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_tokenConfiguration.DaysToExpiry);         
+            _repositorio.RefreshTokenInfo(baseLogin);
+            return AuthenticationSuccess(baseLogin);
         }
-        return ExceptionObject("Usuário Inválido!");
+        return AuthenticationException("Usuário Inválido!");
     }
-    public bool RecoveryPassword(string email)
+
+    public AuthenticationDto ValidateCredentials(AuthenticationDto authenticationDto,  int idUsuario)
+    {
+        var baseLogin = _repositorio.FindById(idUsuario);
+        var credentialsValid = 
+            baseLogin != null 
+            && baseLogin.RefreshTokenExpiry >= DateTime.UtcNow
+            && authenticationDto.RefreshToken.Equals(baseLogin.RefreshToken)
+            && _tokenConfiguration.ValidateRefreshToken(authenticationDto.RefreshToken);
+
+        if (credentialsValid)
+            return AuthenticationSuccess(baseLogin);
+        else
+            this.RevokeToken(idUsuario);
+
+        return AuthenticationException("Token Inválido!");
+    }
+    public void RevokeToken(int idUsuario)
+    {
+        _repositorio.RevokeToken(idUsuario);
+    }
+
+    public void RecoveryPassword(string email)
     {        
         var result = _repositorio.RecoveryPassword(email);
         ControleAcesso controleAcesso = _repositorio.FindByEmail(new ControleAcesso { Login = email });
 
         if (result && _emailSender.SendEmailPassword(controleAcesso.Usuario, Crypto.GetInstance.Decrypt(controleAcesso.Senha)))
-            return true;
-
-        return false;
-    }
-    public bool ChangePassword(int idUsuario, string password)
-    {
-        return _repositorio.ChangePassword(idUsuario, password);
+            throw new ArgumentException("Usuário não encontrado  ");
     }
 
-    private string CreateToken(ClaimsIdentity identity, DateTime createDate, DateTime expirationDate, JwtSecurityTokenHandler handler, int idUsuario)
+    public void ChangePassword(int idUsuario, string password)
     {
-        Microsoft.IdentityModel.Tokens.SecurityToken securityToken = handler.CreateToken(new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
-        {
-            Issuer = _tokenConfiguration.Issuer,
-            Audience = _tokenConfiguration.Audience,
-            SigningCredentials = _singingConfiguration.SigningCredentials,
-            Subject = identity,
-            NotBefore = createDate,
-            Expires = expirationDate,
-            Claims = new Dictionary<string, object> { { "IdUsuario", idUsuario } },
-        });
-
-        string token = handler.WriteToken(securityToken);        
-        return token;
+        _repositorio.ChangePassword(idUsuario, password);
     }
 
-    private Dtos.AuthenticationDto ExceptionObject(string message)
+    private AuthenticationDto AuthenticationException(string message)
     {
-        return new Business.Dtos.AuthenticationDto
+        return new AuthenticationDto
         {
             Authenticated = false,
             Message = message
         };
     }
 
-    private Dtos.AuthenticationDto SuccessObject(DateTime createDate, DateTime expirationDate, string token, string login)
+    private AuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
     {
-        Usuario usuario = _repositorio.GetUsuarioByEmail(login);
-        return new Business.Dtos.AuthenticationDto
+
+        ClaimsIdentity identity = new ClaimsIdentity(
+            new GenericIdentity(controleAcesso.Login, "Login"),
+            new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+                new Claim(JwtRegisteredClaimNames.UniqueName, controleAcesso.Login)
+            });
+
+        DateTime createDate = DateTime.Now;
+        DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);        
+        string token = _singingConfiguration.GenerateAccessToken(identity, _tokenConfiguration, controleAcesso.Usuario.Id);
+
+        return new AuthenticationDto
         {
             Authenticated = true,
             Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),
             Expiration = expirationDate.ToString("yyyy-MM-dd HH:mm:ss"),
             AccessToken = token,
+            RefreshToken = controleAcesso.RefreshToken,
             Message = "OK"
         };
     }

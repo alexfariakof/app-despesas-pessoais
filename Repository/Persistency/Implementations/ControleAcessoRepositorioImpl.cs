@@ -1,5 +1,6 @@
 ﻿using Domain.Core;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Implementations;
 public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
@@ -27,20 +28,23 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
             }
         }
     }
+
+    public ControleAcesso FindById(int idUsuario)
+    {
+        return _context.ControleAcesso.Include(x => x.Usuario).SingleOrDefault(prop => prop.Id.Equals(idUsuario));
+    }
+
     public ControleAcesso FindByEmail(ControleAcesso controleAcesso)
     {
-        var result =_context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
+        var result =_context.ControleAcesso.Include(x => x.Usuario).SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
         return result;
     }
-    public Usuario GetUsuarioByEmail(string email)
-    {
-        return _context.Usuario.SingleOrDefault(prop => prop.Email.Equals(email));
-    }
+
     public bool RecoveryPassword(string email)
     {
-        ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
         using (_context)
         {
+            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
             var result = _context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
             try
             {
@@ -55,6 +59,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
             }
         }            
     }
+
     public bool ChangePassword(int idUsuario, string password)
     {
         Usuario? usuario = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(idUsuario));                
@@ -79,4 +84,20 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         var senhaToCompare = _context.ControleAcesso.SingleOrDefault(prop => prop.Login.Equals(email)).Senha;
         return senha.Equals(Crypto.GetInstance.Decrypt(senhaToCompare));
     }
+
+    public void RevokeToken(int idUsuario)
+    {
+        var controleAcesso = _context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(idUsuario));        
+        if (controleAcesso is null) throw new ArgumentException("Token inexistente!");
+        controleAcesso.RefreshToken = null;
+        controleAcesso.RefreshTokenExpiry = null;
+        _context.SaveChanges();
+    }
+
+    public void RefreshTokenInfo(ControleAcesso controleAcesso)
+    {
+        _context.ControleAcesso.Update(controleAcesso);
+        _context.SaveChanges();
+    }
+
 }
