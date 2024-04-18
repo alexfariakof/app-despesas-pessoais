@@ -1,4 +1,5 @@
 ﻿using Domain.Core;
+using Moq;
 
 namespace Repository.Persistency.Implementations;
 public class ControleAcessoRepositorioImplTest
@@ -140,39 +141,23 @@ public class ControleAcessoRepositorioImplTest
     [Fact]
     public void RecoveryPassword_Should_Returns_False_When_Thorws_Exception()
     {
-        // Arrange And Setup Mock
-        var mockControleAcesso = _context.ControleAcesso.ToList().First();
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_repository.Object);
-        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
-        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Throws<Exception>();
-        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Returns(false);
-        
-
-        /*
-        // Simule o comportamento do método EnviarEmail Através de Reflection
-        MethodInfo enviarEmailMethod = typeof(ControleAcessoRepositorioImpl).GetMethod("EnviarEmail", BindingFlags.NonPublic | BindingFlags.Instance);
-        object instance = mockRepository.Object;
-        Action erroEnviarEmail = () =>  enviarEmailMethod.Invoke(instance, new object[] { mockControleAcesso, "EnviarEmail_Erro" });
-        */
+        // Arrange
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RecoveryPassword_Should_Returns_False_When_Thorws_Exception").Options;
+        var mockContext = new RegisterContext(options);
+        var dataset = _context.ControleAcesso.ToList();
+        mockContext.ControleAcesso = Usings.MockDbSet(dataset).Object;
+        mockContext.SaveChanges();
+        var repository = new Mock<ControleAcessoRepositorioImpl>(mockContext);
+        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
+        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Throws(new Exception());
+        var mockControleAcesso = dataset.First();
 
         // Act
         var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
-        //Assert 1
-
 
         //Assert
         Assert.IsType<bool>(result);
-        Assert.True(result);
-
-        /*
-        //Act Whem expect erro from a private Mehod
-        Action act = () => mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
-
-        // Assert 2
-        Assert.NotNull(act);
-        var exception = Assert.Throws<Exception>(() => _repository.Object.RecoveryPassword(mockControleAcesso.Login));
-        Assert.Equal("Erro ao Enviar Email!", exception.Message);
-        */
+        Assert.False(result);
     }
 
     [Fact]

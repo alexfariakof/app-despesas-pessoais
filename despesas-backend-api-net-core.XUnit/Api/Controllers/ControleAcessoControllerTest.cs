@@ -404,4 +404,78 @@ public class ControleAcessoControllerTest
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email não pode ser enviado, tente novamente mais tarde.", message);
     }
+
+    [Fact]
+    public void Refresh_With_ValidData_Returns_OkResult()
+    {
+        // Arrange
+        var authenticationDto = new AuthenticationDto();
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(authenticationDto, It.IsAny<int>())).Returns(new AuthenticationDto());
+
+        // Act
+        var result = _controleAcessoController.Refresh(authenticationDto) as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public void Refresh_With_InvalidData_Returns_BadRequest()
+    {
+        // Arrange
+        var authenticationDto = new AuthenticationDto();
+        _controleAcessoController.ModelState.AddModelError("Key", "Error");
+
+        // Act
+        var result = _controleAcessoController.Refresh(authenticationDto) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(400, result.StatusCode);
+    }
+
+    [Fact]
+    public void Refresh_With_Null_Result_Returns_BadRequest()
+    {
+        // Arrange
+        var authenticationDto = new AuthenticationDto();
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(authenticationDto, It.IsAny<int>())).Returns<AuthenticationDto>(null);
+
+        // Act
+        var result = _controleAcessoController.Refresh(authenticationDto) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(400, result.StatusCode);
+    }
+
+    [Fact]
+    public void Revoke_With_ValidData_Returns_NoContentResult()
+    {
+        // Arrange
+        SetupBearerToken(1);
+
+        // Act
+        var result = _controleAcessoController.Revoke() as NoContentResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public void Revoke_Throws_Exception_Returns_BadRequest()
+    {
+        // Arrange
+        _mockControleAcessoBusiness.Setup(b => b.RevokeToken(It.IsAny<int>())).Throws(new Exception());
+
+        // Act
+        var result = _controleAcessoController.Revoke() as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(400, result.StatusCode);
+    }
+
 }

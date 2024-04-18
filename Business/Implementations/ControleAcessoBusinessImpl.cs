@@ -70,7 +70,6 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 
         return AuthenticationException("Token Inválido!");
     }
-
     public void RevokeToken(int idUsuario)
     {
         _repositorio.RevokeToken(idUsuario);
@@ -124,6 +123,4 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
             Message = "OK"
         };
     }
-
-
 }

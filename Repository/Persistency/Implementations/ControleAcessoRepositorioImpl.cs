@@ -42,9 +42,9 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 
     public bool RecoveryPassword(string email)
     {
-        ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
         using (_context)
         {
+            ControleAcesso controleAcesso = FindByEmail(new ControleAcesso { Login = email });
             var result = _context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(controleAcesso.Id));
             try
             {
