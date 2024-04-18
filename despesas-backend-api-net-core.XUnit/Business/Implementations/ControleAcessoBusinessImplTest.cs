@@ -1,5 +1,6 @@
 ﻿using Business.Authentication;
 using Business.Dtos;
+using Business.Dtos.Parser;
 using Domain.Core;
 using Microsoft.Extensions.Configuration;
 
@@ -66,9 +67,8 @@ public class ControleAcessoBusinessImplTest
             StatusUsuario = StatusUsuario.Ativo
         };
 
-        _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuario);
         _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha)).Returns(true);
-        _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(new ControleAcesso { Login = controleAcesso.Email});
+        _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(new ControleAcesso { Login = controleAcesso.Email, Usuario = usuario });
 
         // Act
         var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
@@ -83,7 +83,7 @@ public class ControleAcessoBusinessImplTest
     {
         // Arrange
         var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com" };
-        _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns((Usuario)null);
+        _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
 
         // Act
         var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
@@ -97,12 +97,14 @@ public class ControleAcessoBusinessImplTest
     public void FindByLogin_Should_Returns_Usuario_Inativo()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoDto  { Email = "teste@teste.com" };
-        var usuarioInativo = new Usuario { StatusUsuario = StatusUsuario.Inativo };
-        _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuarioInativo);
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();        
+        var usuarioInativo = UsuarioFaker.Instance.GetNewFaker();        
+        usuarioInativo.StatusUsuario = StatusUsuario.Inativo;
+        controleAcesso.Usuario = usuarioInativo;
+        _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(controleAcesso);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(new ControleAcessoParser().Parse(controleAcesso));
 
         // Assert
         Assert.False(result.Authenticated);
@@ -121,7 +123,6 @@ public class ControleAcessoBusinessImplTest
             StatusUsuario = StatusUsuario.Ativo
         };
 
-        _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuario);
         _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha)).Returns(true);
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
 
@@ -130,28 +131,21 @@ public class ControleAcessoBusinessImplTest
 
         // Assert
         Assert.False(result.Authenticated);
-        Assert.Contains("Email inexistente!", result.Message);
+        Assert.Contains("Usuário inexistente!", result.Message);
     }
 
     [Fact]
     public void FindByLogin_Should_Returns_Senha_Invalida()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoDto  { Email = "teste@teste.com", Senha = "teste", };
-
-        var usuario = new Usuario
-        {
-            Id = 1,
-            Email = "teste@teste.com",
-            StatusUsuario = StatusUsuario.Ativo
-        };
-
-        _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuario);
-        _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha)).Returns(false);
-        _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(new ControleAcesso { Login = controleAcesso.Email });
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        controleAcesso.Usuario.StatusUsuario = StatusUsuario.Ativo;
+        
+        _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Login, controleAcesso.Senha)).Returns(false);
+        _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(controleAcesso);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(new ControleAcessoParser().Parse(controleAcesso));
 
         // Assert
         Assert.False(result.Authenticated);
@@ -171,7 +165,6 @@ public class ControleAcessoBusinessImplTest
             StatusUsuario = StatusUsuario.Ativo
         };
 
-        _repositorioMock.Setup(repo => repo.GetUsuarioByEmail(controleAcesso.Email)).Returns(usuario);
         _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha)).Returns(true);
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Throws(new ArgumentException("Usuário Inválido!"));
 
@@ -205,10 +198,9 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.ChangePassword(idUsuario, newPassword)).Returns(true);
 
         // Act
-        bool result = _controleAcessoBusiness.ChangePassword(idUsuario, newPassword);
+        _controleAcessoBusiness.ChangePassword(idUsuario, newPassword);
 
-        // Assert
-        Assert.True(result);
-        _repositorioMock.Verify(repo => repo.ChangePassword(idUsuario, newPassword),Times.Once);
+        // Assert        
+        _repositorioMock.Verify(repo => repo.ChangePassword(It.IsAny<int>(), It.IsAny<string>()),Times.Once);
     }
 }

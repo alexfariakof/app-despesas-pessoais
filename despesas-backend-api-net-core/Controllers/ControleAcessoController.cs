@@ -100,11 +100,16 @@ public class ControleAcessoController : AuthController
 
         if (String.IsNullOrEmpty(changePasswordVM.ConfirmaSenha) | String.IsNullOrWhiteSpace(changePasswordVM.ConfirmaSenha))
             return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
-        
-        if (_controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha))
-                return Ok(new { message = true });
 
-        return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
+        try
+        {
+            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha);
+            return Ok(new { message = true });
+        }
+        catch
+        {
+            return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
+        }        
     }
 
     [HttpPost("RecoveryPassword")]
@@ -118,10 +123,16 @@ public class ControleAcessoController : AuthController
         if (!IsValidEmail(email))
             return BadRequest(new { message = "Email inválido!" });
 
-        if (_controleAcessoBusiness.RecoveryPassword(email))
+        try
+        {
+            _controleAcessoBusiness.RecoveryPassword(email);
             return Ok(new { message = true });
-        else
+        }
+        catch
+        {
+
             return BadRequest(new { message = "Email não pode ser enviado, tente novamente mais tarde." });
+        }
     }
     private bool IsValidEmail(string email)
     {
@@ -135,28 +146,40 @@ public class ControleAcessoController : AuthController
         return regex.IsMatch(email);
     }
 
-    [HttpGet("refresh")]
+    [AllowAnonymous]
+    [HttpGet("refresh")]    
     public IActionResult Refresh([FromBody] AuthenticationDto authenticationDto)
     {
-        if (authenticationDto is not null)
-            return BadRequest("Request do Cliente Inválida!");
+        if (ModelState is { IsValid: false })
+            return BadRequest("Invalid Client Request!");
 
-        var result = _controleAcessoBusiness.ValidateCredentials(authenticationDto, IdUsuario);
-        if (result is not null)
-            return BadRequest("Request do Cliente Inválida!");
+        try
+        {
+            var result = _controleAcessoBusiness.ValidateCredentials(authenticationDto,  GetIdUsuarioFromBearerToken(authenticationDto.AccessToken).Value);
+            if (result is null)
+                throw new NullReferenceException();
+            
+            return Ok(result);
+        }
+        catch
+        {
+           return BadRequest("Invalid Client Request!");
+        }
 
-        return Ok(result);
     }
 
     [HttpGet("revoke")]
     [Authorize("Bearer")]
     public IActionResult Revoke()
     {
-        var result = _controleAcessoBusiness.RevokeToken(IdUsuario);
-        if (!result)
-            return BadRequest("Cliente Inválido!");
-
-        return NoContent();
+        try
+        {
+            _controleAcessoBusiness.RevokeToken(IdUsuario);
+            return NoContent();
+        }
+        catch
+        {
+            return BadRequest("Invalid Client Request!");
+        }       
     }
 }
-

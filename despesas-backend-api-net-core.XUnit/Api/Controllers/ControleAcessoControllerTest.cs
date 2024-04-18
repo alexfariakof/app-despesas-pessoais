@@ -230,7 +230,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
-        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(true);
+        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345"));
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
@@ -305,7 +305,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
-        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(false);
+        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Throws(new Exception());
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
@@ -323,7 +323,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "teste@teste.com";
-        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(email)).Returns(true);
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(email));
 
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
@@ -392,7 +392,8 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "email@invalido.com";
-
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws(new Exception());
+        
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
 

@@ -27,7 +27,7 @@ public class AuthControllerTest
 
     public AuthControllerTest()
     {
-        _authController = new AuthController();
+        _authController = new Mock<AuthController>().Object;
     }
 
     public void IdUsuario_ShouldReturnCorrectUserId()
