@@ -42,7 +42,7 @@ public class AmazonS3Bucket : IAmazonS3Bucket
     {
         try
         {
-            string? fileContentType = perfilFile.Type;
+            string? fileContentType = perfilFile.ContentType;
             AmazonS3Config config = new AmazonS3Config();
             config.ServiceURL = S3ServiceUrl;
 
@@ -53,7 +53,7 @@ public class AmazonS3Bucket : IAmazonS3Bucket
                 CannedACL = fileCannedACL,
                 BucketName = BucketName,
                 Key = perfilFile.Name,
-                ContentType = perfilFile.Type,
+                ContentType = perfilFile.ContentType,
                 InputStream = new MemoryStream(file ?? throw new ArgumentException("Erro no arquivo!"))
             };
             PutObjectResponse response = await client.PutObjectAsync(putRquest);

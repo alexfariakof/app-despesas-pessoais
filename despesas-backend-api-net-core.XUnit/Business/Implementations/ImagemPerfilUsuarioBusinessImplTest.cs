@@ -5,6 +5,7 @@ namespace Business;
 public class ImagemPerfilUsuarioBusinessImplTests
 {
     private readonly Mock<IRepositorio<ImagemPerfilUsuario>> _repositorioMock;
+    private readonly Mock<IRepositorio<Usuario>> _repositorioUsuarioMock;
     private readonly ImagemPerfilUsuarioBusinessImpl _imagemPerfilUsuarioBusiness;
     private readonly Mock<IAmazonS3Bucket> _mockAmazonS3Bucket;
     private List<ImagemPerfilUsuario> _imagensPerfil;
@@ -12,10 +13,11 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public ImagemPerfilUsuarioBusinessImplTests()
     {
         _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
+        
         _repositorioMock = Usings.MockRepositorio(_imagensPerfil);
+        _repositorioUsuarioMock = new Mock<IRepositorio<Usuario>>(MockBehavior.Default);
         _mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>();
-
-        _imagemPerfilUsuarioBusiness = new ImagemPerfilUsuarioBusinessImpl(_repositorioMock.Object, _mockAmazonS3Bucket.Object);
+        _imagemPerfilUsuarioBusiness = new ImagemPerfilUsuarioBusinessImpl(_repositorioMock.Object, _repositorioUsuarioMock.Object, _mockAmazonS3Bucket.Object);
         _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
     }
 
