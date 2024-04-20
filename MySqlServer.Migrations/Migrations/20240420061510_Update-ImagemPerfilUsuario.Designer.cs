@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -10,9 +11,11 @@ using Repository;
 namespace MsMySqlServer.Migrations.Migrations
 {
     [DbContext(typeof(RegisterContext))]
-    partial class RegisterContextModelSnapshot : ModelSnapshot
+    [Migration("20240420061510_Update-ImagemPerfilUsuario")]
+    partial class UpdateImagemPerfilUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
