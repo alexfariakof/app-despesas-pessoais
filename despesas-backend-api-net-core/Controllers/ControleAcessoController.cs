@@ -19,38 +19,38 @@ public class ControleAcessoController : AuthController
     
     [AllowAnonymous]
     [HttpPost]
-    public IActionResult Post([FromBody] ControleAcessoDto controleAcessoVM)
+    public IActionResult Post([FromBody] ControleAcessoDto controleAcessoDto)
     {
-        if (String.IsNullOrEmpty(controleAcessoVM.Telefone) || String.IsNullOrWhiteSpace(controleAcessoVM.Telefone))
+        if (String.IsNullOrEmpty(controleAcessoDto.Telefone) || String.IsNullOrWhiteSpace(controleAcessoDto.Telefone))
             return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
-        if (String.IsNullOrEmpty(controleAcessoVM.Email) || String.IsNullOrWhiteSpace(controleAcessoVM.Email))
+        if (String.IsNullOrEmpty(controleAcessoDto.Email) || String.IsNullOrWhiteSpace(controleAcessoDto.Email))
             return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
-        if (!IsValidEmail(controleAcessoVM.Email))
+        if (!IsValidEmail(controleAcessoDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        if (String.IsNullOrEmpty(controleAcessoVM.Senha) || String.IsNullOrWhiteSpace(controleAcessoVM.Senha))
+        if (String.IsNullOrEmpty(controleAcessoDto.Senha) || String.IsNullOrWhiteSpace(controleAcessoDto.Senha))
             return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo" });
 
-        if (String.IsNullOrEmpty(controleAcessoVM.ConfirmaSenha) | String.IsNullOrWhiteSpace(controleAcessoVM.ConfirmaSenha))
+        if (String.IsNullOrEmpty(controleAcessoDto.ConfirmaSenha) | String.IsNullOrWhiteSpace(controleAcessoDto.ConfirmaSenha))
             return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo" });
 
-        if (controleAcessoVM.Senha != controleAcessoVM.ConfirmaSenha)
+        if (controleAcessoDto.Senha != controleAcessoDto.ConfirmaSenha)
             return BadRequest(new { message = "Senha e Confirma Senha são diferentes!" });
 
         ControleAcesso controleAcesso = new ControleAcesso();
         controleAcesso
             .CreateAccount(
             new Usuario().CreateUsuario(
-                controleAcessoVM.Nome,
-                controleAcessoVM.SobreNome,
-                controleAcessoVM.Email,
-                controleAcessoVM.Telefone,
+                controleAcessoDto.Nome,
+                controleAcessoDto.SobreNome,
+                controleAcessoDto.Email,
+                controleAcessoDto.Telefone,
                 StatusUsuario.Ativo,
                 PerfilUsuario.Usuario),
-            controleAcessoVM.Email,
-            controleAcessoVM.Senha
+            controleAcessoDto.Email,
+            controleAcessoDto.Senha
             );
 
         try
@@ -79,7 +79,7 @@ public class ControleAcessoController : AuthController
         if (String.IsNullOrEmpty(controleAcesso.Senha) || String.IsNullOrWhiteSpace(controleAcesso.Senha))
             return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
-        var result = _controleAcessoBusiness.FindByLogin(new ControleAcessoDto { Email = login.Email, Senha = login.Senha });
+        var result = _controleAcessoBusiness.ValidateCredentials(new ControleAcessoDto { Email = login.Email, Senha = login.Senha });
         
         if (result == null)
             return BadRequest(new { message = "Erro ao realizar login!" });
@@ -100,14 +100,18 @@ public class ControleAcessoController : AuthController
 
         if (String.IsNullOrEmpty(changePasswordVM.ConfirmaSenha) | String.IsNullOrWhiteSpace(changePasswordVM.ConfirmaSenha))
             return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
-        
-        if (_controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha))
-                return Ok(new { message = true });
 
-        return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
+        try
+        {
+            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha);
+            return Ok(new { message = true });
+        }
+        catch
+        {
+            return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
+        }        
     }
 
-    [AllowAnonymous]
     [HttpPost("RecoveryPassword")]
     [Authorize("Bearer")]
     public IActionResult RecoveryPassword([FromBody]  string email)
@@ -119,10 +123,16 @@ public class ControleAcessoController : AuthController
         if (!IsValidEmail(email))
             return BadRequest(new { message = "Email inválido!" });
 
-        if (_controleAcessoBusiness.RecoveryPassword(email))
+        try
+        {
+            _controleAcessoBusiness.RecoveryPassword(email);
             return Ok(new { message = true });
-        else
+        }
+        catch
+        {
+
             return BadRequest(new { message = "Email não pode ser enviado, tente novamente mais tarde." });
+        }
     }
     private bool IsValidEmail(string email)
     {
@@ -135,5 +145,41 @@ public class ControleAcessoController : AuthController
         Regex regex = new Regex(pattern);
         return regex.IsMatch(email);
     }
-}
 
+    [AllowAnonymous]
+    [HttpGet("refresh/{refreshToken}")]    
+    public IActionResult Refresh([FromRoute] string refreshToken)
+    {
+        if (ModelState is { IsValid: false })
+            return BadRequest("Invalid Client Request!");
+
+        try
+        {
+            var result = _controleAcessoBusiness.ValidateCredentials(refreshToken);
+            if (result is null)
+                throw new NullReferenceException();
+            
+            return Ok(result);
+        }
+        catch
+        {
+           return BadRequest("Invalid Client Request!");
+        }
+
+    }
+
+    [HttpGet("revoke")]
+    [Authorize("Bearer")]
+    public IActionResult Revoke()
+    {
+        try
+        {
+            _controleAcessoBusiness.RevokeToken(IdUsuario);
+            return NoContent();
+        }
+        catch
+        {
+            return BadRequest("Invalid Client Request!");
+        }       
+    }
+}

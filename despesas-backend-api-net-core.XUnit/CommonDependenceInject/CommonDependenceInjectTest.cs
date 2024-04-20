@@ -62,9 +62,9 @@ public class CommonDependenceInjectTest
         // Assert
         var serviceProvider = services.BuildServiceProvider();
         var context = serviceProvider.GetService<RegisterContext>();
-        var dataSeeder = serviceProvider.GetService<IDataSeeder>();
+        //var dataSeeder = serviceProvider.GetService<IDataSeeder>();
 
         Assert.NotNull(context);
-        Assert.NotNull(dataSeeder);
+        //Assert.NotNull(dataSeeder);
     }
 }

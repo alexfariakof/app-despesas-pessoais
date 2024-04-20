@@ -9,7 +9,7 @@ if [ -d "$reportPath" ]; then
 fi
 
 # Executa o teste e coleta o GUID gerado
-dotnet build -restore
+dotnet build ./despesas-backend-api-net-core/despesas-backend-api-net-core.csproj --restore
 dotnet test ./despesas-backend-api-net-core.XUnit/despesas-backend-api-net-core.XUnit.csproj -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 
 # Encontra o diretório mais recente na pasta TestResults

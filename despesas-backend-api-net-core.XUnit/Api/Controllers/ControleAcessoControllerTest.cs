@@ -180,7 +180,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var loginVM = new LoginDto { Email = "teste@teste.com", Senha = "password" };
-        _mockControleAcessoBusiness.Setup(b => b.FindByLogin(It.IsAny<ControleAcessoDto>())).Returns(new AuthenticationDto());
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<ControleAcessoDto>())).Returns(new AuthenticationDto());
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -230,7 +230,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
-        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(true);
+        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345"));
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
@@ -305,7 +305,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
-        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Returns(false);
+        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Throws(new Exception());
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
@@ -323,7 +323,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "teste@teste.com";
-        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(email)).Returns(true);
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(email));
 
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
@@ -392,7 +392,8 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "email@invalido.com";
-
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws(new Exception());
+        
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
 
@@ -403,4 +404,78 @@ public class ControleAcessoControllerTest
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email não pode ser enviado, tente novamente mais tarde.", message);
     }
+
+    [Fact]
+    public void Refresh_With_ValidData_Returns_OkResult()
+    {
+        // Arrange
+        var authenticationDto = new AuthenticationDto();
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns(new AuthenticationDto());
+
+        // Act
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public void Refresh_With_InvalidData_Returns_BadRequest()
+    {
+        // Arrange
+        var authenticationDto = new AuthenticationDto();
+        _controleAcessoController.ModelState.AddModelError("Key", "Error");
+
+        // Act
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(400, result.StatusCode);
+    }
+
+    [Fact]
+    public void Refresh_With_Null_Result_Returns_BadRequest()
+    {
+        // Arrange
+        var authenticationDto = new AuthenticationDto();
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns<AuthenticationDto>(null);
+
+        // Act
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(400, result.StatusCode);
+    }
+
+    [Fact]
+    public void Revoke_With_ValidData_Returns_NoContentResult()
+    {
+        // Arrange
+        SetupBearerToken(1);
+
+        // Act
+        var result = _controleAcessoController.Revoke() as NoContentResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<NoContentResult>(result);
+    }
+
+    [Fact]
+    public void Revoke_Throws_Exception_Returns_BadRequest()
+    {
+        // Arrange
+        _mockControleAcessoBusiness.Setup(b => b.RevokeToken(It.IsAny<int>())).Throws(new Exception());
+
+        // Act
+        var result = _controleAcessoController.Revoke() as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(400, result.StatusCode);
+    }
+
 }

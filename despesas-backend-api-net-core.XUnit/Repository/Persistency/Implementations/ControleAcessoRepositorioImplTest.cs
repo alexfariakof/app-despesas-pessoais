@@ -1,4 +1,5 @@
 ﻿using Domain.Core;
+using Moq;
 
 namespace Repository.Persistency.Implementations;
 public class ControleAcessoRepositorioImplTest
@@ -81,20 +82,6 @@ public class ControleAcessoRepositorioImplTest
     }
 
     [Fact]
-    public void GetUsuarioByEmail_Should_Returns_Usuario()
-    {
-        // Arrange and Setup Repository
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_repository.Object);
-        var mockControleAcesso = _context.ControleAcesso.ToList().First();
-        // Act
-        var result = mockRepository.Object.GetUsuarioByEmail(mockControleAcesso.Login);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.IsType<Usuario>(result);
-    }
-
-    [Fact]
     public void RecoveryPassword_Should_Returns_True() // Metodo não pode ser Testado por motivo do Enviar Email
     {
         // Arrange
@@ -102,7 +89,6 @@ public class ControleAcessoRepositorioImplTest
         _repository = new Mock<ControleAcessoRepositorioImpl>(MockBehavior.Strict, _context);
         var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_repository.Object);
         mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
-        mockRepository.Setup(repo => repo.GetUsuarioByEmail(mockControleAcesso.Login)).Returns(mockControleAcesso.Usuario);
         mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Returns(true);
         
 
@@ -141,7 +127,6 @@ public class ControleAcessoRepositorioImplTest
         var repository = new Mock<ControleAcessoRepositorioImpl>(mockContext);
         var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
         mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
-        mockRepository.Setup(repo => repo.GetUsuarioByEmail(mockControleAcesso.Login)).Returns(mockUsuario);
         mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Returns(false);
         
 
@@ -156,40 +141,23 @@ public class ControleAcessoRepositorioImplTest
     [Fact]
     public void RecoveryPassword_Should_Returns_False_When_Thorws_Exception()
     {
-        // Arrange And Setup Mock
-        var mockControleAcesso = _context.ControleAcesso.ToList().First();
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_repository.Object);
-        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
-        mockRepository.Setup(repo => repo.GetUsuarioByEmail(mockControleAcesso.Login)).Returns(mockControleAcesso.Usuario);
-        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Throws<Exception>();
-        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Returns(false);
-        
-
-        /*
-        // Simule o comportamento do método EnviarEmail Através de Reflection
-        MethodInfo enviarEmailMethod = typeof(ControleAcessoRepositorioImpl).GetMethod("EnviarEmail", BindingFlags.NonPublic | BindingFlags.Instance);
-        object instance = mockRepository.Object;
-        Action erroEnviarEmail = () =>  enviarEmailMethod.Invoke(instance, new object[] { mockControleAcesso, "EnviarEmail_Erro" });
-        */
+        // Arrange
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RecoveryPassword_Should_Returns_False_When_Thorws_Exception").Options;
+        var mockContext = new RegisterContext(options);
+        var dataset = _context.ControleAcesso.ToList();
+        mockContext.ControleAcesso = Usings.MockDbSet(dataset).Object;
+        mockContext.SaveChanges();
+        var repository = new Mock<ControleAcessoRepositorioImpl>(mockContext);
+        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
+        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Throws(new Exception());
+        var mockControleAcesso = dataset.First();
 
         // Act
         var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
-        //Assert 1
-
 
         //Assert
         Assert.IsType<bool>(result);
-        Assert.True(result);
-
-        /*
-        //Act Whem expect erro from a private Mehod
-        Action act = () => mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
-
-        // Assert 2
-        Assert.NotNull(act);
-        var exception = Assert.Throws<Exception>(() => _repository.Object.RecoveryPassword(mockControleAcesso.Login));
-        Assert.Equal("Erro ao Enviar Email!", exception.Message);
-        */
+        Assert.False(result);
     }
 
     [Fact]
@@ -313,4 +281,107 @@ public class ControleAcessoRepositorioImplTest
         Assert.IsType<bool>(result);
         Assert.False(result);
     }
+
+    [Fact]
+    public void Create_Should_Throw_Exception_When_User_Already_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new Mock<ControleAcessoRepositorioImpl>(_context);
+        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
+        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
+
+        // Act & Assert
+        Assert.Throws<AggregateException>(() => repository.Object.Create(mockControleAcesso));
+    }
+
+    [Fact]
+    public void Create_Should_Not_Add_User_When_Not_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var repository = new Mock<ControleAcessoRepositorioImpl>(_context);
+        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(repository.Object);
+        mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
+
+        // Act
+        repository.Object.Create(mockControleAcesso);
+
+        // Assert
+        mockRepository.Verify(repo => repo.Create(mockControleAcesso), Times.Never);
+    }
+
+    [Fact]
+    public void FindById_Should_Return_ControleAcesso_When_User_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        var result = repository.FindById(mockControleAcesso.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(mockControleAcesso, result);
+    }
+
+    [Fact]
+    public void FindById_Should_Return_Null_When_User_Not_Exists()
+    {
+        // Arrange
+        var nonExistingId = -1; // assuming -1 is an invalid ID
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        var result = repository.FindById(nonExistingId);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public void RevokeToken_Should_Throw_Exception_When_User_Not_Exists()
+    {
+        // Arrange
+        var nonExistingId = -1; // assuming -1 is an invalid ID
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => repository.RevokeToken(nonExistingId));
+    }
+
+    [Fact]
+    public void RevokeToken_Should_Remove_Token_When_User_Exists()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        repository.RevokeToken(mockControleAcesso.Id);
+
+        // Assert
+        Assert.Null(mockControleAcesso.RefreshToken);
+        Assert.Null(mockControleAcesso.RefreshTokenExpiry);
+    }
+
+    [Fact]
+    public void RefreshTokenInfo_Should_Update_Token_Info()
+    {
+        // Arrange
+        var mockControleAcesso = _context.ControleAcesso.ToList().First();
+        var repository = new ControleAcessoRepositorioImpl(_context);
+
+        // Act
+        mockControleAcesso.RefreshToken = "new_token";
+        mockControleAcesso.RefreshTokenExpiry = DateTime.UtcNow.AddHours(1);
+        repository.RefreshTokenInfo(mockControleAcesso);
+
+        // Assert
+        Assert.NotNull(mockControleAcesso.RefreshToken);
+        Assert.NotNull(mockControleAcesso.RefreshTokenExpiry);
+        Assert.Equal("new_token", mockControleAcesso.RefreshToken);
+    }
+
 }

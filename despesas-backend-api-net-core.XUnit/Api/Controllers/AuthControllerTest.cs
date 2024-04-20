@@ -1,35 +1,50 @@
 ﻿using despesas_backend_api_net_core.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 
 namespace Api.Controllers;
 public class AuthControllerTest
 {
-    protected readonly AuthController _authController;
+    private readonly AuthController _authController;
+
+    public AuthControllerTest()
+    {
+        _authController = new Mock<AuthController>().Object;
+    }
 
     private void SetupBearerToken(int userId)
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
+            new Claim("IdUsuario", userId.ToString())
         };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
+        var identity = new ClaimsIdentity(claims, "Bearer");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers["Authorization"] =
-            "Bearer " + Usings.GenerateJwtToken(userId);
+        httpContext.Request.Headers["Authorization"] = "Bearer " + GenerateJwtToken(userId);
 
         _authController.ControllerContext = new ControllerContext { HttpContext = httpContext };
     }
 
-    public AuthControllerTest()
+    private string GenerateJwtToken(int userId)
     {
-        _authController = new AuthController();
+
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        var key = Guid.NewGuid();
+        var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim("IdUsuario", userId.ToString()) }),
+            Expires = DateTime.UtcNow.AddDays(1),
+        });
+        return handler.WriteToken(securityToken);
     }
 
+    [Fact]
     public void IdUsuario_ShouldReturnCorrectUserId()
     {
         // Arrange
