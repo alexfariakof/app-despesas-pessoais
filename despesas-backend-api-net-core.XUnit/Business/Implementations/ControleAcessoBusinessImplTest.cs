@@ -234,11 +234,11 @@ public class ControleAcessoBusinessImplTest
         {
             RefreshToken = validToken
         };
-        _repositorioMock.Setup(repo => repo.FindById(idUsuario)).Returns(baseLogin);
-        _tokenConfigurationMock.Setup(config => config.ValidateRefreshToken(authenticationDto.RefreshToken)).Returns(true);
+        _repositorioMock.Setup(repo => repo.FindByRefreshToken(It.IsAny<string>())).Returns(baseLogin);
+        _tokenConfigurationMock.Setup(config => config.ValidateRefreshToken(validToken)).Returns(true);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(authenticationDto, idUsuario);
+        var result = _controleAcessoBusiness.ValidateCredentials(validToken);
 
         // Assert
         Assert.True(result.Authenticated);
@@ -260,11 +260,11 @@ public class ControleAcessoBusinessImplTest
         {
             RefreshToken = "expired_refresh_token"
         };
-        _repositorioMock.Setup(repo => repo.FindById(idUsuario)).Returns(baseLogin);
+        _repositorioMock.Setup(repo => repo.FindByRefreshToken(It.IsAny<string>())).Returns(baseLogin);
         _tokenConfigurationMock.Setup(config => config.ValidateRefreshToken(authenticationDto.RefreshToken)).Returns(true);
 
         // Act
-        _controleAcessoBusiness.ValidateCredentials(authenticationDto, idUsuario);
+        _controleAcessoBusiness.ValidateCredentials("expired_refresh_token");
 
         // Assert
         _repositorioMock.Verify(repo => repo.RevokeToken(idUsuario), Times.Once);
@@ -282,7 +282,7 @@ public class ControleAcessoBusinessImplTest
         _tokenConfigurationMock.Setup(config => config.ValidateRefreshToken(authenticationDto.RefreshToken)).Returns(false);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(authenticationDto, idUsuario);
+        var result = _controleAcessoBusiness.ValidateCredentials("invalid_refresh_token");
 
         // Assert
         Assert.False(result.Authenticated);
@@ -293,18 +293,15 @@ public class ControleAcessoBusinessImplTest
     public void ValidateCredentials_Should_Revoke_Token_When_RefreshToken_Is_Invalid()
     {
         // Arrange
-        int idUsuario = 1;
-        var authenticationDto = new AuthenticationDto
-        {
-            RefreshToken = "invalid_refresh_token"
-        };
-        _tokenConfigurationMock.Setup(config => config.ValidateRefreshToken(authenticationDto.RefreshToken)).Returns(false);
+        var mockControleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        _repositorioMock.Setup(repo => repo.FindByRefreshToken(It.IsAny<string>())).Returns(mockControleAcesso);
+        _tokenConfigurationMock.Setup(config => config.ValidateRefreshToken(It.IsAny<string>())).Returns(false);
 
         // Act
-        _controleAcessoBusiness.ValidateCredentials(authenticationDto, idUsuario);
+        _controleAcessoBusiness.ValidateCredentials("invalid_refresh_token");
 
         // Assert
-        _repositorioMock.Verify(repo => repo.RevokeToken(idUsuario), Times.Once);
+        _repositorioMock.Verify(repo => repo.RevokeToken(It.IsAny<int>()), Times.Once);
     }
 
 }

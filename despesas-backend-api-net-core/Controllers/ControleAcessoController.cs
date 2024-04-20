@@ -147,15 +147,15 @@ public class ControleAcessoController : AuthController
     }
 
     [AllowAnonymous]
-    [HttpGet("refresh")]    
-    public IActionResult Refresh([FromBody] AuthenticationDto authenticationDto)
+    [HttpGet("refresh/{refreshToken}")]    
+    public IActionResult Refresh([FromRoute] string refreshToken)
     {
         if (ModelState is { IsValid: false })
             return BadRequest("Invalid Client Request!");
 
         try
         {
-            var result = _controleAcessoBusiness.ValidateCredentials(authenticationDto,  GetIdUsuarioFromBearerToken(authenticationDto.AccessToken).Value);
+            var result = _controleAcessoBusiness.ValidateCredentials(refreshToken);
             if (result is null)
                 throw new NullReferenceException();
             

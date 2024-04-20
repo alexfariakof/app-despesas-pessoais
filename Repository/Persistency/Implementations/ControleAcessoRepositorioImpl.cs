@@ -34,6 +34,11 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         return _context.ControleAcesso.Include(x => x.Usuario).SingleOrDefault(prop => prop.Id.Equals(idUsuario));
     }
 
+    public ControleAcesso FindByRefreshToken(string refreshToken)
+    {
+        return _context.ControleAcesso.Include(x => x.Usuario).SingleOrDefault(prop => prop.RefreshToken.Equals(refreshToken));
+    }
+
     public ControleAcesso FindByEmail(ControleAcesso controleAcesso)
     {
         var result =_context.ControleAcesso.Include(x => x.Usuario).SingleOrDefault(prop => prop.Login.Equals(controleAcesso.Login));
@@ -99,5 +104,4 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         _context.ControleAcesso.Update(controleAcesso);
         _context.SaveChanges();
     }
-
 }

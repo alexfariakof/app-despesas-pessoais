@@ -54,19 +54,19 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         return AuthenticationException("Usuário Inválido!");
     }
 
-    public AuthenticationDto ValidateCredentials(AuthenticationDto authenticationDto,  int idUsuario)
+    public AuthenticationDto ValidateCredentials(string refreshToken)
     {
-        var baseLogin = _repositorio.FindById(idUsuario);
+        var baseLogin = _repositorio.FindByRefreshToken(refreshToken);
         var credentialsValid = 
             baseLogin != null 
             && baseLogin.RefreshTokenExpiry >= DateTime.UtcNow
-            && authenticationDto.RefreshToken.Equals(baseLogin.RefreshToken)
-            && _tokenConfiguration.ValidateRefreshToken(authenticationDto.RefreshToken);
+            && refreshToken.Equals(baseLogin.RefreshToken)
+            && _tokenConfiguration.ValidateRefreshToken(refreshToken);
 
         if (credentialsValid)
             return AuthenticationSuccess(baseLogin);
-        else
-            this.RevokeToken(idUsuario);
+        else if (baseLogin != null)
+            this.RevokeToken(baseLogin.Id);
 
         return AuthenticationException("Token Inválido!");
     }
