@@ -410,10 +410,10 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var authenticationDto = new AuthenticationDto();
-        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(authenticationDto, It.IsAny<int>())).Returns(new AuthenticationDto());
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns(new AuthenticationDto());
 
         // Act
-        var result = _controleAcessoController.Refresh(authenticationDto) as ObjectResult;
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -428,7 +428,7 @@ public class ControleAcessoControllerTest
         _controleAcessoController.ModelState.AddModelError("Key", "Error");
 
         // Act
-        var result = _controleAcessoController.Refresh(authenticationDto) as BadRequestObjectResult;
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as BadRequestObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -440,10 +440,10 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var authenticationDto = new AuthenticationDto();
-        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(authenticationDto, It.IsAny<int>())).Returns<AuthenticationDto>(null);
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns<AuthenticationDto>(null);
 
         // Act
-        var result = _controleAcessoController.Refresh(authenticationDto) as BadRequestObjectResult;
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as BadRequestObjectResult;
 
         // Assert
         Assert.NotNull(result);

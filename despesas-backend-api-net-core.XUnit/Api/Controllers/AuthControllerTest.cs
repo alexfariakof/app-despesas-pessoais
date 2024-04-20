@@ -10,19 +10,10 @@ namespace Api.Controllers;
 public class AuthControllerTest
 {
     private readonly AuthController _authController;
-    public class MockAuthController : AuthController
-    {
-        public int? MockGetIdUsuarioFromBearerToken(string token)
-        {
-            return GetIdUsuarioFromBearerToken(token);
-        }
-    }
-    private readonly MockAuthController _controleAcessoController;
 
     public AuthControllerTest()
     {
         _authController = new Mock<AuthController>().Object;
-        _controleAcessoController = new Mock<MockAuthController>().Object;
     }
 
     private void SetupBearerToken(int userId)
@@ -65,34 +56,6 @@ public class AuthControllerTest
 
         // Assert
         Assert.Equal(mockIdUsuario, result);
-    }
-
-    [Fact]
-    public void GetIdUsuarioFromBearerToken_ShouldReturnCorrectUserId()
-    {
-        // Arrange
-        const int mockIdUsuario = 22;
-        var token = GenerateJwtToken(mockIdUsuario);
-
-        // Act
-        var result = _controleAcessoController.MockGetIdUsuarioFromBearerToken(token);
-
-        // Assert
-        Assert.Equal(mockIdUsuario, result);
-    }
-
-    [Fact]
-    public void GetIdUsuarioFromBearerToken_ShouldReturnNullWhenTokenIsInvalid()
-    {
-        // Arrange
-        const string invalidToken = "invalid_token";
-
-        // Act
-        var result = _controleAcessoController.MockGetIdUsuarioFromBearerToken(invalidToken);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(0, result);
     }
 
     private T GetProtectedProperty<T>(object obj, string propertyName)

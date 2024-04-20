@@ -5,7 +5,7 @@ namespace Business.Abstractions;
 public interface IControleAcessoBusiness
 {
     AuthenticationDto ValidateCredentials(ControleAcessoDto controleAcesso);
-    AuthenticationDto ValidateCredentials(AuthenticationDto authenticationDto, int idUsuario);
+    AuthenticationDto ValidateCredentials(string refreshToken);
     void Create(ControleAcesso controleAcesso);
     void ChangePassword(int idUsuario, string password);
     void RecoveryPassword(string email);
