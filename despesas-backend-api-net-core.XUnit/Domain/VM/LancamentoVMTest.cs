@@ -1,16 +1,16 @@
 ﻿namespace Domain.ViewModel;
-public class LancamentoVMTest
+public class LancamentoDtoTest
 {
     [Theory]
     [InlineData(1, 1, 2, 0, 200.00, "Teste Descripition Despesa ", "Despesa")]
     [InlineData(2, 1, 0, 1, 500.55, "Teste Descripition Receita ", "Receita")]
-    public void LancamentoVM_Should_Set_Properties_Correctly(int id, int idUsuario, int idDespesa, int idReceita, decimal valor, string descricao, string tipoCategoria)
+    public void LancamentoDto_Should_Set_Properties_Correctly(int id, int idUsuario, int idDespesa, int idReceita, decimal valor, string descricao, string tipoCategoria)
     {
         // Arrange and Act
         var data = DateTime.Now.ToString("yyyy-MM-dd");
         var mockCategoria = Mock.Of<Categoria>();
 
-        var lancamentoVM = new LancamentoDto
+        var lancamentoDto = new LancamentoDto
         {
             Id = id,
             IdUsuario = idUsuario,
@@ -24,14 +24,14 @@ public class LancamentoVMTest
         };
 
         // Assert
-        Assert.Equal(id, lancamentoVM.Id);
-        Assert.Equal(idUsuario, lancamentoVM.IdUsuario);
-        Assert.Equal(idDespesa, lancamentoVM.IdDespesa);
-        Assert.Equal(idReceita, lancamentoVM.IdReceita);
-        Assert.Equal(valor, lancamentoVM.Valor);
-        Assert.Equal(data, lancamentoVM.Data);
-        Assert.Equal(descricao, lancamentoVM.Descricao);
-        Assert.Equal(tipoCategoria, lancamentoVM.TipoCategoria);
-        Assert.Equal(mockCategoria.Descricao, lancamentoVM.Categoria);
+        Assert.Equal(id, lancamentoDto.Id);
+        Assert.Equal(idUsuario, lancamentoDto.IdUsuario);
+        Assert.Equal(idDespesa, lancamentoDto.IdDespesa);
+        Assert.Equal(idReceita, lancamentoDto.IdReceita);
+        Assert.Equal(valor, lancamentoDto.Valor);
+        Assert.Equal(data, lancamentoDto.Data);
+        Assert.Equal(descricao, lancamentoDto.Descricao);
+        Assert.Equal(tipoCategoria, lancamentoDto.TipoCategoria);
+        Assert.Equal(mockCategoria.Descricao, lancamentoDto.Categoria);
     }
 }

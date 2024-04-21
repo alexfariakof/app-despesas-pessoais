@@ -19,7 +19,6 @@ public class ControleAcesso : BaseModel
     }
     public int UsuarioId { get; set; }
     public string? RefreshToken { get; set; }
-
     public DateTime? RefreshTokenExpiry { get; set; }
 
     public virtual Usuario? Usuario { get; set; }
@@ -42,6 +41,4 @@ public class ControleAcesso : BaseModel
 
         return email;
     }
-
-
 }

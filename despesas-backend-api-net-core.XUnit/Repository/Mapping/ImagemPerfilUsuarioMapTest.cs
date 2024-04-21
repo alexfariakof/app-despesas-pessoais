@@ -7,9 +7,7 @@ public class ImagemPerfilUsuarioMapTest
     public void EntityConfiguration_IsValid()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase").Options;
 
         using (var context = new RegisterContext(options))
         {
@@ -24,10 +22,9 @@ public class ImagemPerfilUsuarioMapTest
             // Act
 
             var idProperty = entity?.FindProperty("Id");
-
             var nameProperty = entity?.FindProperty("Name");
             var urlProperty = entity?.FindProperty("Url");
-            var typeProperty = entity?.FindProperty("Type");
+            var typeProperty = entity?.FindProperty("ContentType");
             var usuarioIdProperty = entity?.FindProperty("UsuarioId");
             var nameIndex = entity?.GetIndexes().FirstOrDefault(index => index.Properties.Any(p => p.Name == "Name"));
             var urlIndex = entity?.GetIndexes().FirstOrDefault(index => index.Properties.Any(p => p.Name == "Url"));
@@ -48,7 +45,7 @@ public class ImagemPerfilUsuarioMapTest
             Assert.True(nameIndex.IsUnique);
             Assert.False(urlProperty.IsNullable);
             Assert.False(typeProperty.IsNullable);
-            Assert.Equal(4, typeProperty.GetMaxLength());
+            Assert.Equal(20, typeProperty.GetMaxLength());
             Assert.False(usuarioIdProperty.IsNullable);
             Assert.True(usuarioIdIndex.IsUnique);
         }

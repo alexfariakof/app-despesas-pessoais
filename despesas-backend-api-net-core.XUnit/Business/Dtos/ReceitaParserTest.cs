@@ -2,23 +2,23 @@
 public class ReceitaParserTest
 {
     [Fact]
-    public void Should_Parse_ReceitaVM_To_Receita()
+    public void Should_Parse_ReceitaDto_To_Receita()
     {
         // Arrange
         var receitaParser = new ReceitaParser();
-        var receitaVM = ReceitaFaker.Instance.GetNewFakerVM(1, 1);
+        var receitaDto = ReceitaFaker.Instance.GetNewFakerVM(1, 1);
 
         // Act
-        var receita = receitaParser.Parse(receitaVM);
+        var receita = receitaParser.Parse(receitaDto);
 
         // Assert
-        Assert.Equal(receitaVM.Id, receita.Id);
-        Assert.Equal(receitaVM.Descricao, receita.Descricao);
-        Assert.Equal(receitaVM.IdUsuario, receita.UsuarioId);
+        Assert.Equal(receitaDto.Id, receita.Id);
+        Assert.Equal(receitaDto.Descricao, receita.Descricao);
+        Assert.Equal(receitaDto.IdUsuario, receita.UsuarioId);
     }
 
     [Fact]
-    public void Should_Parse_Receita_To_ReceitaVM()
+    public void Should_Parse_Receita_To_ReceitaDto()
     {
         // Arrange
         var receitaParser = new ReceitaParser();
@@ -29,37 +29,37 @@ public class ReceitaParserTest
         );
 
         // Act
-        var receitaVM = receitaParser.Parse(receita);
+        var receitaDto = receitaParser.Parse(receita);
 
         // Assert
-        Assert.Equal(receita.Id, receitaVM.Id);
-        Assert.Equal(receita.Descricao, receitaVM.Descricao);
-        Assert.Equal(receita.UsuarioId, receitaVM.IdUsuario);
+        Assert.Equal(receita.Id, receitaDto.Id);
+        Assert.Equal(receita.Descricao, receitaDto.Descricao);
+        Assert.Equal(receita.UsuarioId, receitaDto.IdUsuario);
     }
 
     [Fact]
-    public void Should_Parse_List_ReceitaVMs_To_List_Receitas()
+    public void Should_Parse_List_ReceitaDtos_To_List_Receitas()
     {
         // Arrange
         var receitaParser = new ReceitaParser();
-        var usuarioVM = UsuarioFaker.Instance.GetNewFakerVM();
-        var receitaVMs = ReceitaFaker.Instance.ReceitasVMs(usuarioVM, usuarioVM.Id);
+        var usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
+        var receitaDtos = ReceitaFaker.Instance.ReceitasVMs(usuarioDto, usuarioDto.Id);
 
         // Act
-        var receitas = receitaParser.ParseList(receitaVMs);
+        var receitas = receitaParser.ParseList(receitaDtos);
 
         // Assert
-        Assert.Equal(receitaVMs.Count, receitas.Count);
-        for (int i = 0; i < receitaVMs.Count; i++)
+        Assert.Equal(receitaDtos.Count, receitas.Count);
+        for (int i = 0; i < receitaDtos.Count; i++)
         {
-            Assert.Equal(receitaVMs[i].Id, receitas[i].Id);
-            Assert.Equal(receitaVMs[i].Descricao, receitas[i].Descricao);
-            Assert.Equal(receitaVMs[i].IdUsuario, receitas[i].UsuarioId);
+            Assert.Equal(receitaDtos[i].Id, receitas[i].Id);
+            Assert.Equal(receitaDtos[i].Descricao, receitas[i].Descricao);
+            Assert.Equal(receitaDtos[i].IdUsuario, receitas[i].UsuarioId);
         }
     }
 
     [Fact]
-    public void Should_Parse_List_Receitas_To_List_ReceitaVMs()
+    public void Should_Parse_List_Receitas_To_List_ReceitaDtos()
     {
         // Arrange
         var receitaParser = new ReceitaParser();
@@ -67,15 +67,15 @@ public class ReceitaParserTest
         var receitas = ReceitaFaker.Instance.Receitas(usuario, usuario.Id);
 
         // Act
-        var receitaVMs = receitaParser.ParseList(receitas);
+        var receitaDtos = receitaParser.ParseList(receitas);
 
         // Assert
-        Assert.Equal(receitas.Count, receitaVMs.Count);
+        Assert.Equal(receitas.Count, receitaDtos.Count);
         for (int i = 0; i < receitas.Count; i++)
         {
-            Assert.Equal(receitas[i].Id, receitaVMs[i].Id);
-            Assert.Equal(receitas[i].Descricao, receitaVMs[i].Descricao);
-            Assert.Equal(receitas[i].UsuarioId, receitaVMs[i].IdUsuario);
+            Assert.Equal(receitas[i].Id, receitaDtos[i].Id);
+            Assert.Equal(receitas[i].Descricao, receitaDtos[i].Descricao);
+            Assert.Equal(receitas[i].UsuarioId, receitaDtos[i].IdUsuario);
         }
     }
 }

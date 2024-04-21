@@ -1,14 +1,14 @@
 Erro Apenas ocorre durante a execução de Workflows de Teste Unitário no ambiente do GitActions.
 
-Especificamente no teste LancamentoMapTest.cs / LancamentoMap_Should_Parse_Lancamento_To_LancamentoVM()
+Especificamente no teste LancamentoMapTest.cs / LancamentoMap_Should_Parse_Lancamento_To_LancamentoDto()
 O Assert aonde a comparação entre as data mokadas e instanciadas no objeto que esta sendo comparado ocorre o erro de conversão.
-    - Assert.Equal(lancamentoVM.Data, lancamento.Data.ToString("dd/MM/yyyy"));
+    - Assert.Equal(lancamentoDto.Data, lancamento.Data.ToString("dd/MM/yyyy"));
 
 Obs.: No ambiente de desenvolvimento "Windows 11" a execução não gera erro com todos os testes sendo realizado com sucesso,
 porém no ambiente criado pelo GitACtions o teste executado gera erro com a seguinte saida:
 
-[xUnit.net 00:00:00.64]     Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoVM_To_Lancamento [FAIL]
-  Failed Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoVM_To_Lancamento [5 ms]
+[xUnit.net 00:00:00.64]     Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoDto_To_Lancamento [FAIL]
+  Failed Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoDto_To_Lancamento [5 ms]
   Error Message:
    Assert.Equal() Failure: Strings differ
            ↓ (pos 0)
@@ -16,7 +16,7 @@ Expected: "07/10/2023"
 Actual:   "10/07/2023"
            ↑ (pos 0)
   Stack Trace:
-     at Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoVM_To_Lancamento() in /home/runner/work/despesas-backend-api-net-core/despesas-backend-api-net-core/despesas-backend-api-net-core.XUnit/Infrastructure/Data/EntityConfig/LancamentoMapTest.cs:line 35
+     at Test.XUnit.Infrastructure.Data.EntityConfig.LancamentoMapTest.LancamentoMap_Should_Parse_LancamentoDto_To_Lancamento() in /home/runner/work/despesas-backend-api-net-core/despesas-backend-api-net-core/despesas-backend-api-net-core.XUnit/Infrastructure/Data/EntityConfig/LancamentoMapTest.cs:line 35
    at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
    at System.Reflection.MethodInvoker.Invoke(Object obj, IntPtr* args, BindingFlags invokeAttr) 
 

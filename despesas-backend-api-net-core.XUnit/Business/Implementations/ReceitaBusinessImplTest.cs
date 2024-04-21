@@ -15,26 +15,26 @@ public class ReceitaBusinessImplTest
     }
 
     [Fact]
-    public void Create_Should_Returns_Parsed_ReceitaVM()
+    public void Create_Should_Returns_Parsed_ReceitaDto()
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaParser().Parse(receita);
+        var receitaDto = new ReceitaParser().Parse(receita);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny));
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Receita, receita.UsuarioId));
         // Act
-        var result = _receitaBusiness.Create(receitaVM);
+        var result = _receitaBusiness.Create(receitaDto);
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<ReceitaDto>(result);
-        Assert.Equal(receitaVM.Id, result.Id);
+        Assert.Equal(receitaDto.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Receita>.IsAny), Times.Once());
     }
 
     [Fact]
-    public void FindAll_Should_Returns_List_Of_ReceitaVM()
+    public void FindAll_Should_Returns_List_Of_ReceitaDto()
     {
         // Arrange         
         var receitas = ReceitaFaker.Instance.Receitas();
@@ -55,7 +55,7 @@ public class ReceitaBusinessImplTest
     }
 
     [Fact]
-    public void FindById_Should_Returns_Parsed_ReceitaVM()
+    public void FindById_Should_Returns_Parsed_ReceitaDto()
     {
         // Arrange
         var id = ReceitaFaker.Instance.ReceitasVMs().First().Id;
@@ -74,7 +74,7 @@ public class ReceitaBusinessImplTest
     }
 
     [Fact]
-    public void FindById_Should_Returns_Null_When_Parsed_ReceitaVM()
+    public void FindById_Should_Returns_Null_When_Parsed_ReceitaDto()
     {
         // Arrange
         var id = 0;
@@ -91,18 +91,18 @@ public class ReceitaBusinessImplTest
     }
 
     [Fact]
-    public void Update_Should_Returns_Parsed_ReceitaVM()
+    public void Update_Should_Returns_Parsed_ReceitaDto()
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaParser().Parse(receita);            
+        var receitaDto = new ReceitaParser().Parse(receita);            
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
         var categorias = CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Despesa, receita.UsuarioId);
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
         // Act
-        var result = _receitaBusiness.Update(receitaVM);
+        var result = _receitaBusiness.Update(receitaDto);
 
         // Assert
         Assert.NotNull(result);
@@ -116,11 +116,11 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaParser().Parse(receita);
+        var receitaDto = new ReceitaParser().Parse(receita);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Receita>())).Returns(true);
         
         // Act
-        var result = _receitaBusiness.Delete(receitaVM);
+        var result = _receitaBusiness.Delete(receitaDto);
 
         // Assert
         Assert.IsType<bool>(result);
@@ -132,13 +132,13 @@ public class ReceitaBusinessImplTest
     {
         // Arrange
         var receita = ReceitaFaker.Instance.Receitas().First();
-        var receitaVM = new ReceitaParser().Parse(receita);
+        var receitaDto = new ReceitaParser().Parse(receita);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny)).Throws(() => new ArgumentException("Erro InvalidCategorie"));
         var categorias = CategoriaFaker.Instance.Categorias();
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
         // Act & Assert 
-        Assert.Throws<ArgumentException>(() => _receitaBusiness.Create(receitaVM));
+        Assert.Throws<ArgumentException>(() => _receitaBusiness.Create(receitaDto));
     }
 }

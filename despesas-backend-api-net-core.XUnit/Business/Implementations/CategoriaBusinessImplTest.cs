@@ -23,26 +23,26 @@ public class CategoriaBusinessImplTest
     }
 
     [Fact]
-    public void Create_Shloud_Returns_Parsed_CategoriaVM()
+    public void Create_Shloud_Returns_Parsed_CategoriaDto()
     {
         // Arrange
         var categoria = _categorias.First();
-        var categoriaVM = new CategoriaParser().Parse(categoria);
+        var categoriaDto = new CategoriaParser().Parse(categoria);
 
         _unitOfWorkMock.Setup(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny));
 
         // Act
-        var result = _categoriaBusiness.Create(categoriaVM);
+        var result = _categoriaBusiness.Create(categoriaDto);
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<CategoriaDto>(result);
-        Assert.Equal(categoriaVM.Id, result.Id);
+        Assert.Equal(categoriaDto.Id, result.Id);
         _unitOfWorkMock.Verify(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny), Times.Once);
     }
 
     [Fact]
-    public async void FindAll_Should_Returns_List_Of_CategoriaVM()
+    public async void FindAll_Should_Returns_List_Of_CategoriaDto()
     {
         // Arrange
         var categoria = _categorias.First();
@@ -60,7 +60,7 @@ public class CategoriaBusinessImplTest
     }
 
     [Fact]
-    public void FindById_Should_Returns_Parsed_CategoriaVM()
+    public void FindById_Should_Returns_Parsed_CategoriaDto()
     {
         // Arrange
         var categoria = _categorias.First();
@@ -98,18 +98,18 @@ public class CategoriaBusinessImplTest
     }
 
     [Fact]
-    public void Update_Should_Returns_Parsed_CategoriaVM()
+    public void Update_Should_Returns_Parsed_CategoriaDto()
     {
         // Arrange
 
-        var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(null);
+        var categoriaDto = CategoriaFaker.Instance.GetNewFakerVM(null);
 
-        var categoria = new CategoriaParser().Parse(categoriaVM);
+        var categoria = new CategoriaParser().Parse(categoriaDto);
 
         _unitOfWorkMock.Setup(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny));
 
         // Act
-        var result = _categoriaBusiness.Update(categoriaVM) as CategoriaDto;
+        var result = _categoriaBusiness.Update(categoriaDto) as CategoriaDto;
 
         // Assert
         Assert.NotNull(result);
