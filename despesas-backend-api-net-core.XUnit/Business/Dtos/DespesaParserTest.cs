@@ -2,23 +2,23 @@
 public class DespesaParserTest
 {
     [Fact]
-    public void Should_Parse_DespesaVM_To_Despesa()
+    public void Should_Parse_DespesaDto_To_Despesa()
     {
         // Arrange
         var despesaParser = new DespesaParser();
-        var despesaVM = DespesaFaker.Instance.GetNewFakerVM(1, 1);
+        var despesaDto = DespesaFaker.Instance.GetNewFakerVM(1, 1);
 
         // Act
-        var despesa = despesaParser.Parse(despesaVM);
+        var despesa = despesaParser.Parse(despesaDto);
 
         // Assert
-        Assert.Equal(despesaVM.Id, despesa.Id);
-        Assert.Equal(despesaVM.Descricao, despesa.Descricao);
-        Assert.Equal(despesaVM.IdUsuario, despesa.UsuarioId);
+        Assert.Equal(despesaDto.Id, despesa.Id);
+        Assert.Equal(despesaDto.Descricao, despesa.Descricao);
+        Assert.Equal(despesaDto.IdUsuario, despesa.UsuarioId);
     }
 
     [Fact]
-    public void Should_Parse_Despesa_To_DespesaVM()
+    public void Should_Parse_Despesa_To_DespesaDto()
     {
         // Arrange
         var despesaParser = new DespesaParser();
@@ -28,53 +28,53 @@ public class DespesaParserTest
             CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.Despesa, usuario.Id)
         );
         // Act
-        var despesaVM = despesaParser.Parse(despesa);
+        var despesaDto = despesaParser.Parse(despesa);
 
         // Assert
-        Assert.Equal(despesa.Id, despesaVM.Id);
-        Assert.Equal(despesa.Descricao, despesaVM.Descricao);
-        Assert.Equal(despesa.UsuarioId, despesaVM.IdUsuario);
+        Assert.Equal(despesa.Id, despesaDto.Id);
+        Assert.Equal(despesa.Descricao, despesaDto.Descricao);
+        Assert.Equal(despesa.UsuarioId, despesaDto.IdUsuario);
     }
 
     [Fact]
-    public void Should_Parse_List_DespesaVM_To_List_Despesa()
+    public void Should_Parse_List_DespesaDto_To_List_Despesa()
     {
         // Arrange
         var despesaParser = new DespesaParser();
         var usuario = UsuarioFaker.Instance.GetNewFaker();
-        var despesaVMs = DespesaFaker.Instance.Despesas(usuario, usuario.Id);
+        var despesaDtos = DespesaFaker.Instance.Despesas(usuario, usuario.Id);
 
         // Act
-        var despesas = despesaParser.ParseList(despesaVMs);
+        var despesas = despesaParser.ParseList(despesaDtos);
 
         // Assert
-        Assert.Equal(despesaVMs.Count, despesas.Count);
-        for (int i = 0; i < despesaVMs.Count; i++)
+        Assert.Equal(despesaDtos.Count, despesas.Count);
+        for (int i = 0; i < despesaDtos.Count; i++)
         {
-            Assert.Equal(despesaVMs[i].Id, despesas[i].Id);
-            Assert.Equal(despesaVMs[i].Descricao, despesas[i].Descricao);
-            Assert.Equal(despesaVMs[i].UsuarioId, despesas[i].IdUsuario);
+            Assert.Equal(despesaDtos[i].Id, despesas[i].Id);
+            Assert.Equal(despesaDtos[i].Descricao, despesas[i].Descricao);
+            Assert.Equal(despesaDtos[i].UsuarioId, despesas[i].IdUsuario);
         }
     }
 
     [Fact]
-    public void Should_Parse_List_Despesa_To_List_DespesaVM()
+    public void Should_Parse_List_Despesa_To_List_DespesaDto()
     {
         // Arrange
         var despesaParser = new DespesaParser();
-        var usuarioVM = UsuarioFaker.Instance.GetNewFakerVM();
-        var despesas = DespesaFaker.Instance.DespesasVMs(usuarioVM, usuarioVM.Id);
+        var usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
+        var despesas = DespesaFaker.Instance.DespesasVMs(usuarioDto, usuarioDto.Id);
 
         // Act
-        var despesaVMs = despesaParser.ParseList(despesas);
+        var despesaDtos = despesaParser.ParseList(despesas);
 
         // Assert
-        Assert.Equal(despesas.Count, despesaVMs.Count);
+        Assert.Equal(despesas.Count, despesaDtos.Count);
         for (int i = 0; i < despesas.Count; i++)
         {
-            Assert.Equal(despesas[i].Id, despesaVMs[i].Id);
-            Assert.Equal(despesas[i].Descricao, despesaVMs[i].Descricao);
-            Assert.Equal(despesas[i].IdUsuario, despesaVMs[i].UsuarioId);
+            Assert.Equal(despesas[i].Id, despesaDtos[i].Id);
+            Assert.Equal(despesas[i].Descricao, despesaDtos[i].Descricao);
+            Assert.Equal(despesas[i].IdUsuario, despesaDtos[i].UsuarioId);
         }
     }
 }

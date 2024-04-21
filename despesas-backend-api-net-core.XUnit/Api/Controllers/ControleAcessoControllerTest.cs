@@ -34,11 +34,11 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM(controleAcesso.Usuario);
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM(controleAcesso.Usuario);
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>()));
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -53,11 +53,11 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         ControleAcesso? controleAcesso = null;
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>())).Throws<Exception>();
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -71,11 +71,11 @@ public class ControleAcessoControllerTest
     public void Post_With_Null_Telefone_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoVM.Telefone = string.Empty;
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        controleAcessoDto.Telefone = string.Empty;
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -89,11 +89,11 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_Email_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoVM.Email = string.Empty;
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        controleAcessoDto.Email = string.Empty;
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -107,11 +107,11 @@ public class ControleAcessoControllerTest
     public void Post_With_InvalidEmail_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoVM.Email = "email Inválido";
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        controleAcessoDto.Email = "email Inválido";
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -125,11 +125,11 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_Password_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoVM.Senha = string.Empty;
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        controleAcessoDto.Senha = string.Empty;
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -143,11 +143,11 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_ConfirmedPassword_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoVM.ConfirmaSenha = string.Empty;
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        controleAcessoDto.ConfirmaSenha = string.Empty;
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -161,11 +161,11 @@ public class ControleAcessoControllerTest
     public void Post_With_Password_Mismatch_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoVM = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoVM.ConfirmaSenha = "senha Errada";
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        controleAcessoDto.ConfirmaSenha = "senha Errada";
 
         // Act
-        var result = _controleAcessoController.Post(controleAcessoVM) as ObjectResult;
+        var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);

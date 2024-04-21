@@ -11,7 +11,6 @@ public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilDto, ImagemPerfilUs
         {
             Id = origin.Id,
             Name = origin.Name,
-            Type = origin.Type,
             ContentType = origin.ContentType,
             Url = origin.Url,
             UsuarioId = origin.IdUsuario,
@@ -25,7 +24,6 @@ public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilDto, ImagemPerfilUs
         {
             Id = origin.Id,
             Name = origin.Name,
-            Type = origin.Type,
             ContentType = origin.ContentType,
             Url = origin.Url,
             IdUsuario = origin.UsuarioId,

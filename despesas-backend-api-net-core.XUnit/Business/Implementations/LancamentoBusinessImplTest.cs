@@ -11,7 +11,7 @@ public class LancamentoBusinessImplTest
     }
 
     [Fact]
-    public void FindByMesAno_Should_Return_List_Of_LancamentoVM()
+    public void FindByMesAno_Should_Return_List_Of_LancamentoDto()
     {
         // Arrange            
         var lancamentos = LancamentoFaker.Lancamentos();

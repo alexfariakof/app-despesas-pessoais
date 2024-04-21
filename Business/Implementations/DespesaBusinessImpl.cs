@@ -36,10 +36,10 @@ public class DespesaBusinessImpl : IBusiness<DespesaDto>
     {
         var despesa = _repositorio.Get(id);
         despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
-        var despesaVM = _converter.Parse(despesa);
+        var despesaDto = _converter.Parse(despesa);
 
-        if (despesaVM.IdUsuario == idUsuario)
-            return despesaVM;
+        if (despesaDto.IdUsuario == idUsuario)
+            return despesaDto;
         return null;
     }
 

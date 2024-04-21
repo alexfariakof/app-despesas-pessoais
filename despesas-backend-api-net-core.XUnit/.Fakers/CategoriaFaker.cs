@@ -32,33 +32,33 @@ public class CategoriaFaker
         return categoriaFaker.Generate();
     }
 
-    public CategoriaDto GetNewFakerVM(UsuarioDto usuarioVM, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsuario = null)
+    public CategoriaDto GetNewFakerVM(UsuarioDto usuarioDto, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsuario = null)
     {
         if (idUsuario == null)
-            usuarioVM = UsuarioFaker.Instance.GetNewFakerVM();
+            usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
 
         var categoriaFaker = new Faker<CategoriaDto>()
             .RuleFor(c => c.Id, counterVM++)
             .RuleFor(c => c.Descricao, f => f.Commerce.ProductName())
-            .RuleFor(c => c.IdUsuario, f => usuarioVM.Id)
+            .RuleFor(c => c.IdUsuario, f => usuarioDto.Id)
             .RuleFor(c => c.IdTipoCategoria, tipoCategoria.Equals(TipoCategoria.Todas) ? counter % 2 == 0 ? (int)TipoCategoria.Receita : (int)TipoCategoria.Despesa : (int)tipoCategoria);
 
         return categoriaFaker.Generate();
     }
 
-    public List<CategoriaDto> CategoriasVMs(UsuarioDto? usuarioVM = null, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsuario = null)
+    public List<CategoriaDto> CategoriasVMs(UsuarioDto? usuarioDto = null, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsuario = null)
     {
-        var listCategoriaVM = new List<CategoriaDto>();
+        var listCategoriaDto = new List<CategoriaDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)
-                usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random(1).Next(1, 10));
+                usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random(1).Next(1, 10));
 
-            var categoriaVM = GetNewFakerVM(usuarioVM, tipoCategoria);
+            var categoriaDto = GetNewFakerVM(usuarioDto, tipoCategoria);
 
-            listCategoriaVM.Add(categoriaVM);
+            listCategoriaDto.Add(categoriaDto);
         }
-        return listCategoriaVM;
+        return listCategoriaDto;
     }
 
     public List<Categoria> Categorias(Usuario? usuario = null, TipoCategoria tipoCategoria = TipoCategoria.Todas, int? idUsuario = null)
