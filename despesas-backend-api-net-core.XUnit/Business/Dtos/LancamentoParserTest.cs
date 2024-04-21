@@ -2,11 +2,11 @@
 public class LancamentoParserTest
 {
     [Fact]
-    public void Should_Parse_LancamentoVM_To_Lancamento()
+    public void Should_Parse_LancamentoDto_To_Lancamento()
     {
         // Arrange
         var lancamentoParser = new LancamentoParser();
-        var lancamentoVM = new LancamentoDto
+        var lancamentoDto = new LancamentoDto
         {
             Id = 1,
             IdUsuario = 1,
@@ -14,25 +14,25 @@ public class LancamentoParserTest
             IdReceita = 0,
             Valor = 2000,
             Data = DateTime.Now.ToShortDateString(),
-            Descricao = "LancamentoVM Teste",
+            Descricao = "LancamentoDto Teste",
             TipoCategoria = "Despesa",
             Categoria = Mock.Of<Categoria>().Descricao,
         };
 
         // Act
-        var lancamento = lancamentoParser.Parse(lancamentoVM);
+        var lancamento = lancamentoParser.Parse(lancamentoDto);
 
         // Assert
-        Assert.Equal(lancamentoVM.Id, lancamento.Id);
-        Assert.Equal(lancamentoVM.IdUsuario, lancamento.UsuarioId);
-        Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
-        Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
-        Assert.Equal(lancamentoVM.Valor, lancamento.Valor);
-        Assert.Equal(DateTime.Parse(lancamentoVM.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
+        Assert.Equal(lancamentoDto.Id, lancamento.Id);
+        Assert.Equal(lancamentoDto.IdUsuario, lancamento.UsuarioId);
+        Assert.Equal(lancamentoDto.IdDespesa, lancamento.DespesaId);
+        Assert.Equal(lancamentoDto.IdReceita, lancamento.ReceitaId);
+        Assert.Equal(lancamentoDto.Valor, lancamento.Valor);
+        Assert.Equal(DateTime.Parse(lancamentoDto.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
     }
 
     [Fact]
-    public void Should_Parse_Lancamento_To_LancamentoVM()
+    public void Should_Parse_Lancamento_To_LancamentoDto()
     {
         // Arrange
         var lancamentoParser = new LancamentoParser();
@@ -50,25 +50,25 @@ public class LancamentoParserTest
         };
 
         // Act
-        var lancamentoVM = lancamentoParser.Parse(lancamento);
+        var lancamentoDto = lancamentoParser.Parse(lancamento);
 
         // Assert
         // Assert
-        Assert.Equal(lancamentoVM.Id, lancamento.Id);
-        Assert.Equal(lancamentoVM.IdUsuario, lancamento.UsuarioId);
-        Assert.Equal(lancamentoVM.IdDespesa, lancamento.DespesaId);
-        Assert.Equal(lancamentoVM.IdReceita, lancamento.ReceitaId);
-        Assert.Equal(lancamentoVM.Valor, lancamento.Valor);
-        Assert.Equal(DateTime.Parse(lancamentoVM.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
-        //Assert.Equal(lancamentoVM.Descricao, lancamento.Descricao);
+        Assert.Equal(lancamentoDto.Id, lancamento.Id);
+        Assert.Equal(lancamentoDto.IdUsuario, lancamento.UsuarioId);
+        Assert.Equal(lancamentoDto.IdDespesa, lancamento.DespesaId);
+        Assert.Equal(lancamentoDto.IdReceita, lancamento.ReceitaId);
+        Assert.Equal(lancamentoDto.Valor, lancamento.Valor);
+        Assert.Equal(DateTime.Parse(lancamentoDto.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
+        //Assert.Equal(lancamentoDto.Descricao, lancamento.Descricao);
     }
 
     [Fact]
-    public void Should_Parse_List_LancamentoVM_To_Lancamento()
+    public void Should_Parse_List_LancamentoDto_To_Lancamento()
     {
         // Arrange
         var lancamentoParser = new LancamentoParser();
-        var lancamentoVMs = new List<LancamentoDto>
+        var lancamentoDtos = new List<LancamentoDto>
         {
             new LancamentoDto
             {
@@ -78,7 +78,7 @@ public class LancamentoParserTest
                 IdReceita = 0,
                 Valor = 2000,
                 Data = DateTime.Now.ToLocalTime().ToShortDateString(),
-                Descricao = "LancamentoVM Teste",
+                Descricao = "LancamentoDto Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
             },
@@ -90,7 +90,7 @@ public class LancamentoParserTest
                 IdReceita = 1,
                 Valor = 500,
                 Data = DateTime.Now.ToLocalTime().ToShortDateString(),
-                Descricao = "LancamentoVM Teste",
+                Descricao = "LancamentoDto Teste",
                 TipoCategoria = "Receita",
                 Categoria = Mock.Of<Categoria>().Descricao,
             },
@@ -102,27 +102,27 @@ public class LancamentoParserTest
                 IdReceita = 0,
                 Valor = 70000,
                 Data = DateTime.Now.ToLocalTime().ToShortDateString(),
-                Descricao = "LancamentoVM Teste",
+                Descricao = "LancamentoDto Teste",
                 TipoCategoria = "Despesa",
                 Categoria = Mock.Of<Categoria>().Descricao,
             }
         };
 
         // Act
-        var lancamentos = lancamentoParser.ParseList(lancamentoVMs);
+        var lancamentos = lancamentoParser.ParseList(lancamentoDtos);
 
         // Assert
-        Assert.Equal(lancamentoVMs.Count, lancamentos.Count);
-        for (int i = 0; i < lancamentoVMs.Count; i++)
+        Assert.Equal(lancamentoDtos.Count, lancamentos.Count);
+        for (int i = 0; i < lancamentoDtos.Count; i++)
         {
-            Assert.Equal(lancamentoVMs[i].Id, lancamentos[i].Id);
-            //Assert.Equal(lancamentoVMs[i].Descricao, lancamentos[i].Descricao);
-            Assert.Equal(lancamentoVMs[i].IdUsuario, lancamentos[i].UsuarioId);
+            Assert.Equal(lancamentoDtos[i].Id, lancamentos[i].Id);
+            //Assert.Equal(lancamentoDtos[i].Descricao, lancamentos[i].Descricao);
+            Assert.Equal(lancamentoDtos[i].IdUsuario, lancamentos[i].UsuarioId);
         }
     }
 
     [Fact]
-    public void Should_Parse_Parse_List_Lancamento_To_lancamentoVM()
+    public void Should_Parse_Parse_List_Lancamento_To_lancamentoDto()
     {
         // Arrange
         var lancamentoParser = new LancamentoParser();
@@ -167,15 +167,15 @@ public class LancamentoParserTest
         };
 
         // Act
-        var lancamentoVMs = lancamentoParser.ParseList(lancamentos);
+        var lancamentoDtos = lancamentoParser.ParseList(lancamentos);
 
         // Assert
-        Assert.Equal(lancamentos.Count, lancamentoVMs.Count);
+        Assert.Equal(lancamentos.Count, lancamentoDtos.Count);
         for (int i = 0; i < lancamentos.Count; i++)
         {
-            Assert.Equal(lancamentos[i].Id, lancamentoVMs[i].Id);
-            //Assert.Equal(lancamentos[i].Descricao, lancamentoVMs[i].Descricao);
-            Assert.Equal(lancamentos[i].UsuarioId, lancamentoVMs[i].IdUsuario);
+            Assert.Equal(lancamentos[i].Id, lancamentoDtos[i].Id);
+            //Assert.Equal(lancamentos[i].Descricao, lancamentoDtos[i].Descricao);
+            Assert.Equal(lancamentos[i].UsuarioId, lancamentoDtos[i].IdUsuario);
         }
     }
 

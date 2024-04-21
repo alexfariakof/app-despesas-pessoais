@@ -46,7 +46,7 @@ public class UsuarioController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    public IActionResult Post([FromBody] UsuarioDto usuarioVM)
+    public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
         if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
@@ -54,32 +54,32 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
 
-        if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
+        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
             return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
-        if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
+        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
             return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
-        if (!IsValidEmail(usuarioVM.Email))
+        if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        return new OkObjectResult(_usuarioBusiness.Create(usuarioVM));
+        return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
     }
 
     [HttpPut]
     [Authorize("Bearer")]
-    public IActionResult Put([FromBody] UsuarioDto usuarioVM)
+    public IActionResult Put([FromBody] UsuarioDto usuarioDto)
     {
-        if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
+        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
             return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
-        if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
+        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
             return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
-        if (!IsValidEmail(usuarioVM.Email))
+        if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioVM);
+        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
             return  BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -88,7 +88,7 @@ public class UsuarioController : AuthController
 
     [HttpPut("UpdateUsuario")]
     [Authorize("Bearer")]
-    public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioVM)
+    public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
         if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
@@ -96,16 +96,16 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
 
-        if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
+        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
             return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
 
-        if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
+        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
             return BadRequest(new { message = "Campo Login não pode ser em branco" });
 
-        if (!IsValidEmail(usuarioVM.Email))
+        if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioVM);
+        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -114,7 +114,7 @@ public class UsuarioController : AuthController
 
     [HttpDelete]
     [Authorize("Bearer")]
-    public IActionResult Delete([FromBody] UsuarioDto usuarioVM)
+    public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
         if (adm.PerfilUsuario != PerfilUsuario.Administrador)
@@ -122,7 +122,7 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
             
-        if (_usuarioBusiness.Delete(usuarioVM))
+        if (_usuarioBusiness.Delete(usuarioDto))
             return new OkObjectResult(new { message = true });
         else
             return BadRequest(new { message = "Erro ao excluir Usuário!" });
@@ -147,7 +147,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
+            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
             if (_imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
@@ -166,7 +166,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
+            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -195,7 +195,7 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
         }
     }
-    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioVMAsync(IFormFile file, int idUsuario)
+    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioDtoAsync(IFormFile file, int idUsuario)
     {
         string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
         string typeFile = "";

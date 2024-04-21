@@ -47,22 +47,22 @@ public class ReceitaFaker
     }
 
     public List<ReceitaDto> ReceitasVMs(
-        UsuarioDto? usuarioVM = null,
+        UsuarioDto? usuarioDto = null,
         int? idUsuario = null
     )
     {
-        var listReceitaVM = new List<ReceitaDto>();
+        var listReceitaDto = new List<ReceitaDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)
-                usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
+                usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
-            var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(usuarioVM);
+            var categoriaDto = CategoriaFaker.Instance.GetNewFakerVM(usuarioDto);
 
-            var receitaVM = GetNewFakerVM(usuarioVM.Id, categoriaVM.Id);
-            listReceitaVM.Add(receitaVM);
+            var receitaDto = GetNewFakerVM(usuarioDto.Id, categoriaDto.Id);
+            listReceitaDto.Add(receitaDto);
         }
-        return listReceitaVM;
+        return listReceitaDto;
     }
 
     public List<Receita> Receitas(Usuario? usuario = null, int? idUsuario = null, int count = 10 )

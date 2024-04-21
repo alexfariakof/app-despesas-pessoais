@@ -39,7 +39,7 @@ public class ControleAcessoFaker
         {
             if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker();
 
-            var controleAcessoVMFaker = new Faker<ControleAcessoDto>()
+            var controleAcessoDtoFaker = new Faker<ControleAcessoDto>()
             .RuleFor(ca => ca.Nome, usuario.Nome)
             .RuleFor(ca => ca.SobreNome, usuario.SobreNome)
             .RuleFor(ca => ca.Email, usuario.Email)
@@ -48,21 +48,21 @@ public class ControleAcessoFaker
             .RuleFor(ca => ca.ConfirmaSenha, "!12345");
 
 
-            return controleAcessoVMFaker.Generate();
+            return controleAcessoDtoFaker.Generate();
         }
     }
 
-    public List<ControleAcessoDto> ControleAcessoVMs(int count = 3)
+    public List<ControleAcessoDto> ControleAcessoDtos(int count = 3)
     {           
-        var listControleAcessoVM = new List<ControleAcessoDto>();                        
+        var listControleAcessoDto = new List<ControleAcessoDto>();                        
         for (int i = 0; i < count; i++)
         {
             var usuario = UsuarioFaker.Instance.GetNewFaker();
-            var controleAcessoVM = GetNewFakerVM(usuario);
-            listControleAcessoVM.Add(controleAcessoVM);                
+            var controleAcessoDto = GetNewFakerVM(usuario);
+            listControleAcessoDto.Add(controleAcessoDto);                
         }
 
-        return listControleAcessoVM;
+        return listControleAcessoDto;
     }
 
     public List<ControleAcesso> ControleAcessos(int count = 3)

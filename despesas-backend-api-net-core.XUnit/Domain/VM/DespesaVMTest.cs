@@ -1,23 +1,23 @@
 ﻿using Business.Dtos.Parser;
 
 namespace Domain.ViewModel;
-public class DespesaVMTest
+public class DespesaDtoTest
 {
     [Fact]
-    public void DespesaVM_Should_Set_Properties_Correctly()
+    public void DespesaDto_Should_Set_Properties_Correctly()
     {
         // Arrange and Act
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaParser().Parse(despesa);
+        var despesaDto = new DespesaParser().Parse(despesa);
 
         // Assert
-        Assert.Equal(despesa.Id, despesaVM.Id);
-        Assert.Equal(despesa.Data, despesaVM.Data);
-        Assert.Equal(despesa.Descricao, despesaVM.Descricao);
-        Assert.Equal(despesa.Valor, despesaVM.Valor);
-        Assert.Equal(despesa.DataVencimento, despesaVM.DataVencimento);
-        Assert.Equal(despesa.UsuarioId, despesaVM.IdUsuario);
-        Assert.Equal(despesa.Categoria.Id, despesaVM.Categoria.Id);
+        Assert.Equal(despesa.Id, despesaDto.Id);
+        Assert.Equal(despesa.Data, despesaDto.Data);
+        Assert.Equal(despesa.Descricao, despesaDto.Descricao);
+        Assert.Equal(despesa.Valor, despesaDto.Valor);
+        Assert.Equal(despesa.DataVencimento, despesaDto.DataVencimento);
+        Assert.Equal(despesa.UsuarioId, despesaDto.IdUsuario);
+        Assert.Equal(despesa.Categoria.Id, despesaDto.Categoria.Id);
     }
     
 }

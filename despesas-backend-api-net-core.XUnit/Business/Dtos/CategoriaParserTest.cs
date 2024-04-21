@@ -2,11 +2,11 @@
 public class CategoriaParserTest
 {
     [Fact]
-    public void Should_Parse_CategoriaVM_To_Categoria()
+    public void Should_Parse_CategoriaDto_To_Categoria()
     {
         // Arrange
         var categoriaParser = new CategoriaParser();
-        var categoriaVM = new CategoriaDto
+        var categoriaDto = new CategoriaDto
         {
             Id = 1,
             Descricao = "Categoria Teste",
@@ -15,17 +15,17 @@ public class CategoriaParserTest
         };
 
         // Act
-        var categoria = categoriaParser.Parse(categoriaVM);
+        var categoria = categoriaParser.Parse(categoriaDto);
 
         // Assert
-        Assert.Equal(categoriaVM.Id, categoria.Id);
-        Assert.Equal(categoriaVM.Descricao, categoria.Descricao);
+        Assert.Equal(categoriaDto.Id, categoria.Id);
+        Assert.Equal(categoriaDto.Descricao, categoria.Descricao);
         Assert.Equal(TipoCategoria.Despesa, categoria.TipoCategoria);
-        Assert.Equal(categoriaVM.IdUsuario, categoria.UsuarioId);
+        Assert.Equal(categoriaDto.IdUsuario, categoria.UsuarioId);
     }
 
     [Fact]
-    public void Should_Parse_Categoria_To_CategoriaVM()
+    public void Should_Parse_Categoria_To_CategoriaDto()
     {
         // Arrange
         var categoriaParser = new CategoriaParser();
@@ -38,21 +38,21 @@ public class CategoriaParserTest
         };
 
         // Act
-        var categoriaVM = categoriaParser.Parse(categoria);
+        var categoriaDto = categoriaParser.Parse(categoria);
 
         // Assert
-        Assert.Equal(categoria.Id, categoriaVM.Id);
-        Assert.Equal(categoria.Descricao, categoriaVM.Descricao);
-        Assert.Equal((int)categoria.TipoCategoria, categoriaVM.IdTipoCategoria);
-        Assert.Equal(categoria.UsuarioId, categoriaVM.IdUsuario);
+        Assert.Equal(categoria.Id, categoriaDto.Id);
+        Assert.Equal(categoria.Descricao, categoriaDto.Descricao);
+        Assert.Equal((int)categoria.TipoCategoria, categoriaDto.IdTipoCategoria);
+        Assert.Equal(categoria.UsuarioId, categoriaDto.IdUsuario);
     }
 
     [Fact]
-    public void Should_Parse_List_CategoriaVMs_To_List_Categorias()
+    public void Should_Parse_List_CategoriaDtos_To_List_Categorias()
     {
         // Arrange
         var categoriaParser = new CategoriaParser();
-        var categoriaVMs = new List<CategoriaDto>
+        var categoriaDtos = new List<CategoriaDto>
         {
             new CategoriaDto
             {
@@ -78,17 +78,17 @@ public class CategoriaParserTest
         };
 
         // Act
-        var categorias = categoriaParser.ParseList(categoriaVMs);
+        var categorias = categoriaParser.ParseList(categoriaDtos);
 
         // Assert
-        Assert.Equal(categoriaVMs.Count, categorias.Count);
-        for (int i = 0; i < categoriaVMs.Count; i++)
+        Assert.Equal(categoriaDtos.Count, categorias.Count);
+        for (int i = 0; i < categoriaDtos.Count; i++)
         {
-            Assert.Equal(categoriaVMs[i].Id, categorias[i].Id);
-            Assert.Equal(categoriaVMs[i].Descricao, categorias[i].Descricao);
-            Assert.Equal(categoriaVMs[i].IdUsuario, categorias[i].UsuarioId);
+            Assert.Equal(categoriaDtos[i].Id, categorias[i].Id);
+            Assert.Equal(categoriaDtos[i].Descricao, categorias[i].Descricao);
+            Assert.Equal(categoriaDtos[i].IdUsuario, categorias[i].UsuarioId);
             Assert.Equal(
-                categoriaVMs[i].IdTipoCategoria == 1
+                categoriaDtos[i].IdTipoCategoria == 1
                     ? TipoCategoria.Despesa
                     : TipoCategoria.Receita,
                 categorias[i].TipoCategoria
@@ -97,7 +97,7 @@ public class CategoriaParserTest
     }
 
     [Fact]
-    public void Should_Parse_List_Categorias_To_List_CategoriaVMs()
+    public void Should_Parse_List_Categorias_To_List_CategoriaDtos()
     {
         // Arrange
         var categoriaParser = new CategoriaParser();
@@ -127,16 +127,16 @@ public class CategoriaParserTest
         };
 
         // Act
-        var categoriaVMs = categoriaParser.ParseList(categorias);
+        var categoriaDtos = categoriaParser.ParseList(categorias);
 
         // Assert
-        Assert.Equal(categorias.Count, categoriaVMs.Count);
+        Assert.Equal(categorias.Count, categoriaDtos.Count);
         for (int i = 0; i < categorias.Count; i++)
         {
-            Assert.Equal(categorias[i].Id, categoriaVMs[i].Id);
-            Assert.Equal(categorias[i].Descricao, categoriaVMs[i].Descricao);
-            Assert.Equal((int)categorias[i].TipoCategoria, categoriaVMs[i].IdTipoCategoria);
-            Assert.Equal(categorias[i].UsuarioId, categoriaVMs[i].IdUsuario);
+            Assert.Equal(categorias[i].Id, categoriaDtos[i].Id);
+            Assert.Equal(categorias[i].Descricao, categoriaDtos[i].Descricao);
+            Assert.Equal((int)categorias[i].TipoCategoria, categoriaDtos[i].IdTipoCategoria);
+            Assert.Equal(categorias[i].UsuarioId, categoriaDtos[i].IdUsuario);
         }
     }
 }

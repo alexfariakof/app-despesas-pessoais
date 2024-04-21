@@ -35,7 +35,7 @@ public class LancamentoFaker
         Categoria categoria
     )
     {
-        var lancamentoVMFaker = new Faker<LancamentoDto>()
+        var lancamentoDtoFaker = new Faker<LancamentoDto>()
             .RuleFor(l => l.Id, f => counterVM++)
             .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
             .RuleFor(
@@ -49,15 +49,15 @@ public class LancamentoFaker
             .RuleFor(c => c.TipoCategoria, f => f.PickRandom<TipoCategoria>().ToString())
             .RuleFor(l => l.Categoria, categoria.Descricao);
 
-        return lancamentoVMFaker.Generate();
+        return lancamentoDtoFaker.Generate();
     }
 
-    public static List<LancamentoDto> LancamentoVMs(
+    public static List<LancamentoDto> LancamentoDtos(
         Usuario? usuario = null,
         int? idUsuario = null
     )
     {
-        var listLancamentoVM = new List<LancamentoDto>();
+        var listLancamentoDto = new List<LancamentoDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)
@@ -67,11 +67,11 @@ public class LancamentoFaker
 
             var despesa = DespesaFaker.Instance.GetNewFaker(usuario, categoria);
             var receita = ReceitaFaker.Instance.GetNewFaker(usuario, categoria);
-            var lancamentoVM = GetNewFakerVM(usuario.Id, despesa.Id, receita.Id, categoria);
-            listLancamentoVM.Add(lancamentoVM);
+            var lancamentoDto = GetNewFakerVM(usuario.Id, despesa.Id, receita.Id, categoria);
+            listLancamentoDto.Add(lancamentoDto);
         }
 
-        return listLancamentoVM;
+        return listLancamentoDto;
     }
 
     public static List<Lancamento> Lancamentos(Usuario? usuario = null, int? idUsuario = null)

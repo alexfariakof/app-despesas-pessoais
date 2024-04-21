@@ -9,7 +9,7 @@ public class ReceitaControllerTest
 {
     protected Mock<IBusiness<ReceitaDto>> _mockReceitaBusiness;
     protected ReceitaController _receitaController;
-    protected List<ReceitaDto> _receitaVMs;
+    protected List<ReceitaDto> _receitaDtos;
 
     private void SetupBearerToken(int idUsuario)
     {
@@ -28,16 +28,16 @@ public class ReceitaControllerTest
     {
         _mockReceitaBusiness = new Mock<IBusiness<ReceitaDto>>();
         _receitaController = new ReceitaController(_mockReceitaBusiness.Object);
-        _receitaVMs = ReceitaFaker.Instance.ReceitasVMs();
+        _receitaDtos = ReceitaFaker.Instance.ReceitasVMs();
     }
 
     [Fact]
     public void Get_Should_Return_All_Receitas_From_Usuario()
     {
         // Arrange
-        int idUsuario = _receitaVMs.First().IdUsuario;
+        int idUsuario = _receitaDtos.First().IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaVMs);
+        _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_receitaDtos);
 
         // Act
         var result = _receitaController.Get() as ObjectResult;
@@ -45,7 +45,7 @@ public class ReceitaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        Assert.Equal(_receitaVMs, result.Value);
+        Assert.Equal(_receitaDtos, result.Value);
         _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
 
@@ -53,13 +53,13 @@ public class ReceitaControllerTest
     public void GetById_Should_Returns_BadRequest_When_Receita_NULL()
     {
         // Arrange
-        var receitaVM = _receitaVMs.First();
-        var idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos.First();
+        var idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns((ReceitaDto)null);
+        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Returns((ReceitaDto)null);
 
         // Act
-        var result = _receitaController.GetById(receitaVM.Id) as ObjectResult;
+        var result = _receitaController.GetById(receitaDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -67,14 +67,14 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Nenhuma receita foi encontrada.", message);
-        _mockReceitaBusiness.Verify(b => b.FindById(receitaVM.Id, idUsuario), Times.Once);
+        _mockReceitaBusiness.Verify(b => b.FindById(receitaDto.Id, idUsuario), Times.Once);
     }
 
     [Fact]
     public void GetById_Should_Returns_OkResults_With_Despesas()
     {
         // Arrange
-        var receita = _receitaVMs.Last();
+        var receita = _receitaDtos.Last();
         int idUsuario = receita.IdUsuario;
         int receitaId = receita.Id;
         SetupBearerToken(idUsuario);
@@ -99,13 +99,13 @@ public class ReceitaControllerTest
     public void GetById_Should_Returns_BadRequest_When_Throws_Error()
     {
         // Arrange
-        var receitaVM = _receitaVMs.First();
-        var idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos.First();
+        var idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Throws(new Exception());
+        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Throws(new Exception());
 
         // Act
-        var result = _receitaController.GetById(receitaVM.Id) as ObjectResult;
+        var result = _receitaController.GetById(receitaDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -113,20 +113,20 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Não foi possível realizar a consulta da receita.", message);
-        _mockReceitaBusiness.Verify(b => b.FindById(receitaVM.Id, idUsuario), Times.Once);
+        _mockReceitaBusiness.Verify(b => b.FindById(receitaDto.Id, idUsuario), Times.Once);
     }
 
     [Fact]
     public void Post_Should_Create_Receita()
     {
         // Arrange
-        var receitaVM = _receitaVMs[3];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[3];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Returns(receitaVM);
+        _mockReceitaBusiness.Setup(business => business.Create(receitaDto)).Returns(receitaDto);
 
         // Act
-        var result = _receitaController.Post(receitaVM) as ObjectResult;
+        var result = _receitaController.Post(receitaDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -138,20 +138,20 @@ public class ReceitaControllerTest
         var _receita = (ReceitaDto?)value?.GetType()?.GetProperty("receita")?.GetValue(value, null);
         Assert.NotNull(_receita);
         Assert.IsType<ReceitaDto>(_receita);
-        _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Once());
+        _mockReceitaBusiness.Verify(b => b.Create(receitaDto), Times.Once());
     }
 
     [Fact]
     public void Post_Should_Returns_BadRequest_When_Throws_Error()
     {
         // Arrange
-        var receitaVM = _receitaVMs[3];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[3];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.Create(receitaVM)).Throws(new Exception());
+        _mockReceitaBusiness.Setup(business => business.Create(receitaDto)).Throws(new Exception());
 
         // Act
-        var result = _receitaController.Post(receitaVM) as ObjectResult;
+        var result = _receitaController.Post(receitaDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -159,20 +159,20 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Não foi possível realizar o cadastro da receita!", message);
-        _mockReceitaBusiness.Verify(b => b.Create(receitaVM), Times.Once);
+        _mockReceitaBusiness.Verify(b => b.Create(receitaDto), Times.Once);
     }
 
     [Fact]
     public void Put_Should_Update_Receita()
     {
         // Arrange
-        var receitaVM = _receitaVMs[4];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[4];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns(receitaVM);
+        _mockReceitaBusiness.Setup(business => business.Update(receitaDto)).Returns(receitaDto);
 
         // Act
-        var result = _receitaController.Put(receitaVM) as ObjectResult;
+        var result = _receitaController.Put(receitaDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -183,20 +183,20 @@ public class ReceitaControllerTest
         var _receita = (ReceitaDto?)value?.GetType()?.GetProperty("receita")?.GetValue(value, null);
         Assert.NotNull(_receita);
         Assert.IsType<ReceitaDto>(_receita);
-        _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Once);
+        _mockReceitaBusiness.Verify(b => b.Update(receitaDto), Times.Once);
     }
 
     [Fact]
     public void Put_Should_Returns_BadRequest_When_Receita_Return_Null()
     {
         // Arrange
-        var receitaVM = _receitaVMs[3];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[3];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.Update(receitaVM)).Returns((ReceitaDto)null);
+        _mockReceitaBusiness.Setup(business => business.Update(receitaDto)).Returns((ReceitaDto)null);
 
         // Act
-        var result = _receitaController.Put(receitaVM) as ObjectResult;
+        var result = _receitaController.Put(receitaDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -204,21 +204,21 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Não foi possível atualizar o cadastro da receita.", message);
-        _mockReceitaBusiness.Verify(b => b.Update(receitaVM), Times.Once);
+        _mockReceitaBusiness.Verify(b => b.Update(receitaDto), Times.Once);
     }
 
     [Fact]
     public void Delete_Should_Returns_OkResult()
     {
         // Arrange
-        var receitaVM = _receitaVMs[2];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[2];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
-        _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
+        _mockReceitaBusiness.Setup(business => business.Delete(receitaDto)).Returns(true);
+        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Returns(receitaDto);
 
         // Act
-        var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
+        var result = _receitaController.Delete(receitaDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -226,22 +226,22 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
         Assert.True(message);
-        _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario),Times.Once);
-        _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);
+        _mockReceitaBusiness.Verify(business => business.FindById(receitaDto.Id, idUsuario),Times.Once);
+        _mockReceitaBusiness.Verify(b => b.Delete(receitaDto), Times.Once);
     }
 
     [Fact]
     public void Delete_With_InvalidToken_Returns_BadRequest()
     {
         // Arrange
-        var receitaVM = _receitaVMs[2];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[2];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(0);
-        _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(true);
-        _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
+        _mockReceitaBusiness.Setup(business => business.Delete(receitaDto)).Returns(true);
+        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Returns(receitaDto);
         
         // Act
-        var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
+        var result = _receitaController.Delete(receitaDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -249,22 +249,22 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
-        _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario),Times.Never);
-        _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Never);
+        _mockReceitaBusiness.Verify(business => business.FindById(receitaDto.Id, idUsuario),Times.Never);
+        _mockReceitaBusiness.Verify(b => b.Delete(receitaDto), Times.Never);
     }
 
     [Fact]
     public void Delete_Should_Returns_BadResquest_When_Receita_Not_Deleted()
     {
         // Arrange
-        var receitaVM = _receitaVMs[2];
-        int idUsuario = receitaVM.IdUsuario;
+        var receitaDto = _receitaDtos[2];
+        int idUsuario = receitaDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockReceitaBusiness.Setup(business => business.Delete(receitaVM)).Returns(false);
-        _mockReceitaBusiness.Setup(business => business.FindById(receitaVM.Id, idUsuario)).Returns(receitaVM);
+        _mockReceitaBusiness.Setup(business => business.Delete(receitaDto)).Returns(false);
+        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Returns(receitaDto);
 
         // Act
-        var result = _receitaController.Delete(receitaVM.Id) as ObjectResult;
+        var result = _receitaController.Delete(receitaDto.Id) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -272,7 +272,7 @@ public class ReceitaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Erro ao excluir Receita!", message);
-        _mockReceitaBusiness.Verify(business => business.FindById(receitaVM.Id, idUsuario), Times.Once);
-        _mockReceitaBusiness.Verify(b => b.Delete(receitaVM), Times.Once);
+        _mockReceitaBusiness.Verify(business => business.FindById(receitaDto.Id, idUsuario), Times.Once);
+        _mockReceitaBusiness.Verify(b => b.Delete(receitaDto), Times.Once);
     }
 }
