@@ -21,7 +21,14 @@ public class DespesaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Get()
     {
-        return Ok(_despesaBusiness.FindAll(IdUsuario));
+        try
+        {
+            return Ok(_despesaBusiness.FindAll(IdUsuario));
+        }
+        catch
+        {
+            return Ok(new List<DespesaDto>());
+        }
     }
 
     [HttpGet("GetById/{id}")]
@@ -70,12 +77,19 @@ public class DespesaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
-        despesa.IdUsuario = IdUsuario;
-        var updateDespesa = _despesaBusiness.Update(despesa);
-        if (updateDespesa == null)
-            return BadRequest("Não foi possível atualizar o cadastro da despesa.");
+        try
+        {
+            despesa.IdUsuario = IdUsuario;
+            var updateDespesa = _despesaBusiness.Update(despesa);
+            if (updateDespesa == null)
+                throw new Exception();            
 
-        return new OkObjectResult(updateDespesa);
+            return new OkObjectResult(updateDespesa);
+        }
+        catch
+        {
+            return BadRequest("Não foi possível atualizar o cadastro da despesa.");
+        }
     }
 
     [HttpDelete("{idDespesa}")]
@@ -85,15 +99,22 @@ public class DespesaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Delete(int idDespesa)
     {
-        DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
-        if (despesa == null || IdUsuario != despesa.IdUsuario)
+        try
         {
-            return BadRequest("Usuário não permitido a realizar operação!");
-        }
+            DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
+            if (despesa == null || IdUsuario != despesa.IdUsuario)
+            {
+                return BadRequest("Usuário não permitido a realizar operação!");
+            }
 
-        if (_despesaBusiness.Delete(despesa))
-            return new OkObjectResult(true);
-        else
+            if (_despesaBusiness.Delete(despesa))
+                return new OkObjectResult(true);
+            else
+                throw new Exception();
+        }
+        catch
+        {
             return BadRequest("Erro ao excluir Despesa!");
+        }
     }
 }

@@ -57,8 +57,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
     }
@@ -97,8 +96,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
     }
@@ -131,7 +129,6 @@ public class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
 
         // Act
@@ -140,8 +137,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
@@ -204,9 +200,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
+        Assert.True((bool)result.Value);
         _mockUsuarioBusiness.Verify(b => b.Delete(usuarioDto), Times.Once);
     }
 
@@ -229,8 +223,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
     }
@@ -254,8 +247,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
     }
@@ -279,8 +271,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
     }
@@ -304,8 +295,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Email inválido!", message);
         _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
     }
@@ -326,8 +316,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -348,8 +337,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -370,8 +358,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -392,8 +379,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Email inválido!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -413,8 +399,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
@@ -437,8 +422,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         _mockUsuarioBusiness.Verify(b => b.Delete(usuarioNormal), Times.Never);
@@ -462,8 +446,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Erro ao excluir Usuário!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         _mockUsuarioBusiness.Verify(b => b.Delete(usuarioNormal), Times.Once);
@@ -511,8 +494,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Email inválido!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -536,8 +518,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -553,7 +534,6 @@ public class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
 
         // Act
@@ -562,8 +542,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -587,8 +566,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }
@@ -611,8 +589,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioDto>()), Times.Once);
     }
@@ -635,8 +612,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }

@@ -21,8 +21,15 @@ public class ReceitaController : AuthController
     [ProducesResponseType((200), Type = typeof(IList<ReceitaDto>))]
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Get()
-    { 
-        return Ok(_receitaBusiness.FindAll(IdUsuario));
+    {
+        try
+        {
+            return Ok(_receitaBusiness.FindAll(IdUsuario));
+        }
+        catch
+        {
+            return Ok(new List<ReceitaDto>());
+        }
     }
 
     [HttpGet("GetById/{id}")]
@@ -72,14 +79,17 @@ public class ReceitaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
-
-        receita.IdUsuario = IdUsuario;
-        var updateReceita = _receitaBusiness.Update(receita);
-
-        if (updateReceita == null)
+        try
+        {
+            receita.IdUsuario = IdUsuario;
+            var updateReceita = _receitaBusiness.Update(receita);
+            if (updateReceita == null) throw new Exception();
+            return new OkObjectResult(updateReceita);
+        }
+        catch
+        {
             return BadRequest("Não foi possível atualizar o cadastro da receita.");
-
-        return new OkObjectResult(updateReceita);
+        }
     }
 
     [HttpDelete("{idReceita}")]
@@ -89,13 +99,20 @@ public class ReceitaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Delete(int idReceita)
     {
-        ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
-        if (receita == null || IdUsuario != receita.IdUsuario)
-            return BadRequest("Usuário não permitido a realizar operação!");
+        try
+        {
+            ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
+            if (receita == null || IdUsuario != receita.IdUsuario)
+                return BadRequest("Usuário não permitido a realizar operação!");
 
-        if (_receitaBusiness.Delete(receita))
-            return new OkObjectResult(true);
-        else
-            return BadRequest("Erro ao excluir Receita!");         
+            if (_receitaBusiness.Delete(receita))
+                return new OkObjectResult(true);
+            else
+                throw new Exception();                
+        }
+        catch
+        {
+            return BadRequest("Erro ao excluir Receita!");
+        }
     }
 }

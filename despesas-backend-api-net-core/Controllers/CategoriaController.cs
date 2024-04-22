@@ -22,8 +22,15 @@ public class CategoriaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Get()
     {
-        IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario).Result;
-        return Ok(_categoria);
+        try
+        {
+            IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario).Result;
+            return Ok(_categoria);
+        }
+        catch
+        {
+            return Ok(new List<CategoriaDto>());
+        }
     }
 
     [HttpGet("GetById/{idCategoria}")]
@@ -32,9 +39,15 @@ public class CategoriaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult GetById([FromRoute] int idCategoria)
     {
-
-        CategoriaDto _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-        return Ok(_categoria);
+        try
+        {
+            CategoriaDto _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+            return Ok(_categoria);
+        }
+        catch
+        {
+            return Ok(new CategoriaDto());
+        }
     }
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
@@ -62,7 +75,6 @@ public class CategoriaController : AuthController
     [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
-
         if (categoria.IdTipoCategoria == (int)TipoCategoria.Todas)
             return BadRequest("Nenhum tipo de Categoria foi selecionado!");
 
@@ -84,17 +96,20 @@ public class CategoriaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
-
         if (categoria.TipoCategoria == TipoCategoria.Todas)
             return BadRequest("Nenhum tipo de Categoria foi selecionado!");
 
-        categoria.IdUsuario = IdUsuario;
-        CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
-
-        if (updateCategoria == null)
+        try
+        {
+            categoria.IdUsuario = IdUsuario;
+            CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
+            if (updateCategoria == null) throw new Exception();
+            return Ok(updateCategoria);
+        }
+        catch
+        {
             return BadRequest("Erro ao atualizar categoria!");
-
-        return Ok(updateCategoria);
+        }
     }
 
     [HttpDelete("{idCategoria}")]
@@ -104,17 +119,20 @@ public class CategoriaController : AuthController
     [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Delete(int idCategoria)
     {
-        CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-        if (categoria == null || IdUsuario != categoria.IdUsuario)
+        try
         {
-            return BadRequest("Usuário não permitido a realizar operação!");
-        }
+            CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+            if (categoria == null || IdUsuario != categoria.IdUsuario)
+                return BadRequest("Usuário não permitido a realizar operação!");
 
-        if (_categoriaBusiness.Delete(categoria))
+            if (_categoriaBusiness.Delete(categoria))
+                return Ok(true);
+
+            return new OkObjectResult(false);
+        }
+        catch
         {
-            return Ok(true);
+            return BadRequest("Erro ao deletar categoria!");
         }
-
-        return new OkObjectResult(false);
     }        
 }
