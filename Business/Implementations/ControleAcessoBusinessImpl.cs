@@ -25,8 +25,20 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _emailSender = emailSender;
     }
 
-    public void Create(ControleAcesso controleAcesso)
+    public void Create(ControleAcessoDto controleAcessoDto)
     {
+        ControleAcesso controleAcesso = new ControleAcesso();
+        controleAcesso.CreateAccount(new Usuario()
+            .CreateUsuario(
+            controleAcessoDto.Nome,
+            controleAcessoDto.SobreNome,
+            controleAcessoDto.Email,
+            controleAcessoDto.Telefone,
+            StatusUsuario.Ativo,
+            PerfilUsuario.Usuario),
+            controleAcessoDto.Email,
+            controleAcessoDto.Senha
+            );
         _repositorio.Create(controleAcesso);
     }
 

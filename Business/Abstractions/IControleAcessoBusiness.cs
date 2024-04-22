@@ -1,12 +1,11 @@
 ﻿using Business.Dtos;
-using Domain.Entities;
 
 namespace Business.Abstractions;
 public interface IControleAcessoBusiness
 {
-    AuthenticationDto ValidateCredentials(ControleAcessoDto controleAcesso);
+    AuthenticationDto ValidateCredentials(ControleAcessoDto controleAcessoDto);
     AuthenticationDto ValidateCredentials(string refreshToken);
-    void Create(ControleAcesso controleAcesso);
+    void Create(ControleAcessoDto controleAcessoDto);
     void ChangePassword(int idUsuario, string password);
     void RecoveryPassword(string email);
     void RevokeToken(int idUsurio);
