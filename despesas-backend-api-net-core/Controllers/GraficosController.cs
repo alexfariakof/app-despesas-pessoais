@@ -19,6 +19,9 @@ public class GraficosController : AuthController
 
     [HttpGet("Bar/{ano}")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(Dictionary<List<object>, List<string>>))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult GetByAnoByIdUsuario([FromRoute] DateTime ano)
     {
         try
@@ -35,7 +38,7 @@ public class GraficosController : AuthController
         }
         catch
         {
-            return BadRequest(new { message = "Erro ao gerar dados do Gráfico!" });
+            return BadRequest("Erro ao gerar dados do Gráfico!");
         }
     }
 }
