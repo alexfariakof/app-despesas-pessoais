@@ -35,19 +35,7 @@ public class ControleAcessoBusinessImplTest
     public void Create_Should_ControleAcesso_Returns_True()
     {
         // Arrange
-        var controleAcesso = new ControleAcesso
-        {
-            Login = "teste@teste.com",
-            Senha = "teste",
-            Usuario = new Usuario
-            {
-                Email = "teste@teste.com",
-                Nome = "Teste Usuário 1",
-                SobreNome = "Teste",
-                Telefone = "(21) 9999-9999",
-                PerfilUsuario = PerfilUsuario.Usuario
-            }
-        };
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFakerVM();
 
         _repositorioMock.Setup(repo => repo.Create(It.IsAny<ControleAcesso>()));
 
@@ -55,11 +43,11 @@ public class ControleAcessoBusinessImplTest
         _controleAcessoBusiness.Create(controleAcesso);
 
         // Assert        
-        _repositorioMock.Verify(repo => repo.Create(controleAcesso), Times.Once);
+        _repositorioMock.Verify(repo => repo.Create(It.IsAny<ControleAcesso>()), Times.Once);
     }
 
     [Fact]
-    public void FindByLogin_Should_Return_Valid_Credentials_And_AccessToken()
+    public void ValidateCredentials_Should_Return_Valid_Credentials_And_AccessToken()
     {
         // Arrange
         var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
@@ -83,7 +71,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Usaurio_Inexistente()
+    public void ValidateCredentials_Should_Returns_Usaurio_Inexistente()
     {
         // Arrange
         var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com" };
@@ -98,7 +86,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Usuario_Inativo()
+    public void ValidateCredentials_Should_Returns_Usuario_Inativo()
     {
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
@@ -116,7 +104,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Email_Inexistente()
+    public void ValidateCredentials_Should_Returns_Email_Inexistente()
     {
         // Arrange
         var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
@@ -139,7 +127,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Senha_Invalida()
+    public void ValidateCredentials_Should_Returns_Senha_Invalida()
     {
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
@@ -157,7 +145,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Usuario_Invalido()
+    public void ValidateCredentials_Should_Returns_Usuario_Invalido()
     {
         // Arrange
         var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };

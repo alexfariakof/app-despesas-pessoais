@@ -35,7 +35,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM(controleAcesso.Usuario);
-        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>()));
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>()));
 
         // Act
         var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
@@ -43,8 +43,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        var message = (bool)result.Value;
+        //var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
         Assert.True(message);
     }
 
@@ -54,7 +54,7 @@ public class ControleAcessoControllerTest
         // Arrange
         ControleAcesso? controleAcesso = null;
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
-        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcesso>())).Throws<Exception>();
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws<Exception>();
 
         // Act
         var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
@@ -62,8 +62,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        ////var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Não foi possível realizar o cadastro.", message);
     }
 
@@ -80,8 +80,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        ////var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
     }
 
@@ -98,8 +98,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Login não pode ser em branco", message);
     }
 
@@ -116,8 +116,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email inválido!", message);
     }
 
@@ -134,8 +134,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Senha não pode ser em branco ou nulo", message);
     }
 
@@ -152,8 +152,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Confirma Senha não pode ser em branco ou nulo", message);
     }
 
@@ -170,8 +170,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Senha e Confirma Senha são diferentes!", message);
     }
 
@@ -202,8 +202,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         //Assert.Equal("Email inválido!", message);
     }
 
@@ -219,8 +219,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Erro ao realizar login!", message);
     }
 
@@ -238,10 +238,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-
+        var message = (bool)result.Value;
+        //var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
         Assert.True(message);
     }
 
@@ -258,8 +256,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("A senha deste usuário não pode ser atualizada!", message);
     }
 
@@ -276,8 +274,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Senha não pode ser em branco ou nulo!", message);
     }
 
@@ -294,8 +292,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Confirma Senha não pode ser em branco ou nulo!", message);
     }
 
@@ -313,8 +311,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.", message);
     }
 
@@ -331,8 +329,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        var message = (bool)result.Value;
+        //var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
         Assert.True(message);
     }
 
@@ -348,8 +346,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Login não pode ser em branco ou nulo!", message);
     }
 
@@ -365,8 +363,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email inválido!", message);
     }
 
@@ -382,8 +380,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email inválido!", message);
     }
 
@@ -400,8 +398,8 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
+        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email não pode ser enviado, tente novamente mais tarde.", message);
     }
 
@@ -477,5 +475,4 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.Equal(400, result.StatusCode);
     }
-
 }

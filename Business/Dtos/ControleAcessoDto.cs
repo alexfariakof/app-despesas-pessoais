@@ -12,4 +12,8 @@ public class ControleAcessoDto : UsuarioDto
     
     [Required]
     public string? ConfirmaSenha { get; set; }
+
+    [JsonIgnore]
+    public string RefreshToken { get; set; }
+
 }

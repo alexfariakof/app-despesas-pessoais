@@ -164,6 +164,7 @@ public class ControleAcessoController : AuthController
             return BadRequest("Invalid Client Request.");
         }       
     }
+
     private bool IsValidEmail(string email)
     {
         if (email.Length > 256) return false;
@@ -172,5 +173,4 @@ public class ControleAcessoController : AuthController
         Regex regex = new Regex(pattern);
         return regex.IsMatch(email);
     }
-
 }
