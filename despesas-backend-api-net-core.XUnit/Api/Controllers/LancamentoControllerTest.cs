@@ -50,10 +50,7 @@ public class LancamentoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
-        Assert.True(message);
+        var lancamentos = result.Value  as List<LancamentoDto>;
         Assert.NotNull(lancamentos);
         Assert.NotEmpty(lancamentos);
         var returnedLancamentoDtos = Assert.IsType<List<LancamentoDto>>(lancamentos);
@@ -77,12 +74,7 @@ public class LancamentoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-
-        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
-        Assert.True(message);
+        var lancamentos = result.Value as List<LancamentoDto>;
         Assert.NotNull(lancamentos);
         Assert.Empty(lancamentos);
         _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
@@ -104,10 +96,7 @@ public class LancamentoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
-        Assert.True(message);
+        var lancamentos = result.Value as List<LancamentoDto>;
         Assert.NotNull(lancamentos);
         Assert.Empty(lancamentos);
         _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
@@ -129,10 +118,7 @@ public class LancamentoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var lancamentos = (List<LancamentoDto>?)value?.GetType()?.GetProperty("lancamentos")?.GetValue(value, null);
-        Assert.True(message);
+        var lancamentos = result.Value as List<LancamentoDto>;
         Assert.NotNull(lancamentos);
         Assert.Empty(lancamentos);
         _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
