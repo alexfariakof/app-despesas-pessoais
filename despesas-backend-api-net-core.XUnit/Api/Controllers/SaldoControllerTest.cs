@@ -45,12 +45,7 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var value = okResult.Value;
-
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var returnedSaldo = (decimal)(value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) ?? 0);
-
-        Assert.True(message);
+        var returnedSaldo = (decimal)okResult.Value;
         Assert.IsType<decimal>(returnedSaldo);
         Assert.Equal(saldo, returnedSaldo);
     }
@@ -69,8 +64,7 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Erro ao gerar saldo!", message);
         _mockSaldoBusiness.Verify(b => b.GetSaldo(idUsuario), Times.Once);
     }
@@ -90,10 +84,7 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var value = okResult.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var returnedSaldo = (decimal)(value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) ?? 0);
-        Assert.True(message);
+        var returnedSaldo = (decimal)okResult.Value;
         Assert.IsType<decimal>(returnedSaldo);
         Assert.Equal(saldo, returnedSaldo);
     }
@@ -112,8 +103,7 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message  = result.Value;
         Assert.Equal("Erro ao gerar saldo!", message);
         _mockSaldoBusiness.Verify(b => b.GetSaldoAnual(DateTime.Today, idUsuario), Times.Once);
     }
@@ -133,10 +123,7 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var value = okResult.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        var returnedSaldo = (decimal)(value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) ?? 0);
-        Assert.True(message);
+        var returnedSaldo = (decimal)okResult.Value;
         Assert.IsType<decimal>(returnedSaldo);
         Assert.Equal(saldo, returnedSaldo);
     }
@@ -155,8 +142,7 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Erro ao gerar saldo!", message);
         _mockSaldoBusiness.Verify(b => b.GetSaldoByMesAno(DateTime.Today, idUsuario),Times.Once);
     }
