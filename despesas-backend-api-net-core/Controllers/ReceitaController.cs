@@ -18,6 +18,8 @@ public class ReceitaController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(IList<ReceitaDto>))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Get()
     { 
         return Ok(_receitaBusiness.FindAll(IdUsuario));
@@ -25,6 +27,9 @@ public class ReceitaController : AuthController
 
     [HttpGet("GetById/{id}")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(ReceitaDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult GetById([FromRoute]int id)
     {
         try
@@ -32,33 +37,39 @@ public class ReceitaController : AuthController
             var _receita = _receitaBusiness.FindById(id, IdUsuario);
 
             if (_receita == null)
-                return BadRequest(new { message = "Nenhuma receita foi encontrada." });
+                return BadRequest("Nenhuma receita foi encontrada.");
 
-            return new OkObjectResult(new { message = true, receita = _receita });
+            return new OkObjectResult(_receita);
         }
         catch
         {
-            return BadRequest(new { message = "Não foi possível realizar a consulta da receita." });
+            return BadRequest("Não foi possível realizar a consulta da receita.");
         }
     }
 
     [HttpPost]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(ReceitaDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Post([FromBody] ReceitaDto receita)
     {
         try
         {
             receita.IdUsuario = IdUsuario;
-            return new OkObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
+            return new OkObjectResult(_receitaBusiness.Create(receita));
         }
         catch
         {
-            return BadRequest(new { message = "Não foi possível realizar o cadastro da receita!" });
+            return BadRequest("Não foi possível realizar o cadastro da receita!");
         }            
     }
 
     [HttpPut]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(ReceitaDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
 
@@ -66,24 +77,25 @@ public class ReceitaController : AuthController
         var updateReceita = _receitaBusiness.Update(receita);
 
         if (updateReceita == null)
-            return BadRequest(new { message = "Não foi possível atualizar o cadastro da receita." });
+            return BadRequest("Não foi possível atualizar o cadastro da receita.");
 
-        return new OkObjectResult(new { message = true, receita = updateReceita });
+        return new OkObjectResult(updateReceita);
     }
 
     [HttpDelete("{idReceita}")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult Delete(int idReceita)
     {
         ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
         if (receita == null || IdUsuario != receita.IdUsuario)
-        {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-        }
+            return BadRequest("Usuário não permitido a realizar operação!");
 
         if (_receitaBusiness.Delete(receita))
-            return new OkObjectResult(new { message = true });
+            return new OkObjectResult(true);
         else
-            return BadRequest(new { message = "Erro ao excluir Receita!" });         
+            return BadRequest("Erro ao excluir Receita!");         
     }
 }
