@@ -21,7 +21,7 @@ public class GraficosController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(Dictionary<List<object>, List<string>>))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetByAnoByIdUsuario([FromRoute] DateTime ano)
     {
         try

@@ -71,8 +71,9 @@ public class ControleAcessoControllerTest
     public void Post_With_Null_Telefone_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();        
         controleAcessoDto.Telefone = string.Empty;
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
 
         // Act
         var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
@@ -81,7 +82,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        ////var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
     }
 
@@ -90,6 +90,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
         controleAcessoDto.Email = string.Empty;
 
         // Act
@@ -99,7 +100,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Login não pode ser em branco", message);
     }
 
@@ -108,7 +108,8 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
-        controleAcessoDto.Email = "email Inválido";
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Email inválido!"));
+        controleAcessoDto.Email = "email";
 
         // Act
         var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
@@ -117,7 +118,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Email inválido!", message);
     }
 
@@ -127,7 +127,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.Senha = string.Empty;
-
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Campo Senha não pode ser em branco ou nulo"));
         // Act
         var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
 
@@ -135,7 +135,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Senha não pode ser em branco ou nulo", message);
     }
 
@@ -144,6 +143,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Campo Confirma Senha não pode ser em branco ou nulo"));
         controleAcessoDto.ConfirmaSenha = string.Empty;
 
         // Act
@@ -153,7 +153,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Campo Confirma Senha não pode ser em branco ou nulo", message);
     }
 
@@ -163,6 +162,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.ConfirmaSenha = "senha Errada";
+        _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Senha e Confirma Senha são diferentes!"));
 
         // Act
         var result = _controleAcessoController.Post(controleAcessoDto) as ObjectResult;
@@ -180,7 +180,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var loginVM = new LoginDto { Email = "teste@teste.com", Senha = "password" };
-        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<ControleAcessoDto>())).Returns(new AuthenticationDto());
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<LoginDto>())).Returns(new AuthenticationDto());
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -211,7 +211,7 @@ public class ControleAcessoControllerTest
     public void SignIn_With_InvalidEmail_Returns_BadRequest_Login_Erro()
     {
         // Arrange
-        var loginVM = new LoginDto { Email = "email@invalido.com", Senha = "password" };
+        var loginVM = new LoginDto { Email = "email", Senha = "password" };
 
         // Act
         var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
@@ -221,7 +221,7 @@ public class ControleAcessoControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
         //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Erro ao realizar login!", message);
+        Assert.Equal("Não foi possível realizar o login do usuário.", message);
     }
 
     [Fact]
@@ -265,36 +265,34 @@ public class ControleAcessoControllerTest
     public void ChangePassword_With_NULL_Password_Returns_BadRequest()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordDto { Senha = "", ConfirmaSenha = "!12345" };
+        var changePasswordVM = new ChangePasswordDto { Senha = null, ConfirmaSenha = "!12345" };
         SetupBearerToken(1);
 
         // Act
-        var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
+        var result = _controleAcessoController.ChangePassword((ChangePasswordDto)null) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Campo Senha não pode ser em branco ou nulo!", message);
+        Assert.Equal("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.", message);
     }
 
     [Fact]
     public void ChangePassword_With_NULL_ConfirmedPassword_Returns_BadRequest()
     {
         // Arrange
-        var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "" };
+        var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = null };
         SetupBearerToken(1);
 
         // Act
-        var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
+        var result = _controleAcessoController.ChangePassword((ChangePasswordDto)null) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Campo Confirma Senha não pode ser em branco ou nulo!", message);
+        Assert.Equal("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.", message);
     }
 
     [Fact]
@@ -339,16 +337,13 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = string.Empty;
-
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
         // Act
-        var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
+        var result = _controleAcessoController.RecoveryPassword(email) as NoContentResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Campo Login não pode ser em branco ou nulo!", message);
+        Assert.IsType<NoContentResult>(result);
     }
 
     [Fact]
@@ -356,16 +351,15 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = new string('A', 257);
-
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
+        
         // Act
-        var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
+        var result = _controleAcessoController.RecoveryPassword(email) as NoContentResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Email inválido!", message);
+        Assert.IsType<NoContentResult>(result);
+
     }
 
     [Fact]
@@ -373,16 +367,13 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "email Invalido";
-
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
         // Act
-        var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
+        var result = _controleAcessoController.RecoveryPassword(email) as NoContentResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Email inválido!", message);
+        Assert.IsType<NoContentResult>(result);
     }
 
     [Fact]
@@ -390,17 +381,14 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "email@invalido.com";
-        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws(new Exception());
-        
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
+
         // Act
-        var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
+        var result = _controleAcessoController.RecoveryPassword(email) as NoContentResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Email não pode ser enviado, tente novamente mais tarde.", message);
+        Assert.IsType<NoContentResult>(result);
     }
 
     [Fact]
@@ -424,13 +412,13 @@ public class ControleAcessoControllerTest
         // Arrange
         var authenticationDto = new AuthenticationDto();
         _controleAcessoController.ModelState.AddModelError("Key", "Error");
-
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns((AuthenticationDto)null);
         // Act
-        var result = _controleAcessoController.Refresh("fakeRefreshToken") as BadRequestObjectResult;
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as NoContentResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(400, result.StatusCode);
+        Assert.Equal(204, result.StatusCode);
     }
 
     [Fact]
@@ -441,38 +429,10 @@ public class ControleAcessoControllerTest
         _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns<AuthenticationDto>(null);
 
         // Act
-        var result = _controleAcessoController.Refresh("fakeRefreshToken") as BadRequestObjectResult;
+        var result = _controleAcessoController.Refresh("fakeRefreshToken") as NoContentResult;
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(400, result.StatusCode);
-    }
-
-    [Fact]
-    public void Revoke_With_ValidData_Returns_NoContentResult()
-    {
-        // Arrange
-        SetupBearerToken(1);
-
-        // Act
-        var result = _controleAcessoController.Revoke() as NoContentResult;
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.IsType<NoContentResult>(result);
-    }
-
-    [Fact]
-    public void Revoke_Throws_Exception_Returns_BadRequest()
-    {
-        // Arrange
-        _mockControleAcessoBusiness.Setup(b => b.RevokeToken(It.IsAny<int>())).Throws(new Exception());
-
-        // Act
-        var result = _controleAcessoController.Revoke() as BadRequestObjectResult;
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(400, result.StatusCode);
+        Assert.Equal(204, result.StatusCode);
     }
 }

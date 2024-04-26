@@ -1,8 +1,10 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Business.Dtos;
 public class ImagemPerfilDto : BaseModelDto
 {
+    [Url(ErrorMessage = "Url inválida.")]
     public string? Url { get; set; }
     
     [JsonIgnore]

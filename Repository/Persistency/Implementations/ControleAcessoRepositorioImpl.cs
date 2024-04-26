@@ -13,7 +13,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
     }
     public void Create(ControleAcesso controleAcesso)
     {
-        if (FindByEmail(controleAcesso) != null) throw new AggregateException("Usuário já cadastrado!"); ;            
+        if (FindByEmail(controleAcesso) != null) throw new ArgumentException("Usuário já cadastrado!"); ;            
         
         using (_context)
         {

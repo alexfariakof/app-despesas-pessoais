@@ -12,6 +12,8 @@ public class Usuario : BaseModel
     public virtual IList<Categoria> Categorias { get; set; }  = new List<Categoria>();
     public Usuario CreateUsuario(string nome, string sobreNome, string email, string telefone, StatusUsuario statusUsuario, PerfilUsuario perfilUsuario)
     {
+        IsValidUsuario(nome, email, telefone);
+
         List<Categoria> defaultCategorias = new List<Categoria>();
         defaultCategorias.Add(new Categoria
         {
@@ -91,6 +93,20 @@ public class Usuario : BaseModel
             Categorias = defaultCategorias            
         };
 
+        
         return newUsuario;
+    }
+
+    private void IsValidUsuario(string nome, string email, string telefone)
+    {
+        if (String.IsNullOrEmpty(nome) || String.IsNullOrWhiteSpace(nome))
+            throw new ArgumentException("Nome não pode ser em branco ou nulo.");
+
+        if (String.IsNullOrEmpty(email) || String.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("Email não pode ser em branco ou nulo.");
+
+        if (String.IsNullOrEmpty(telefone) || String.IsNullOrWhiteSpace(telefone))
+            throw new ArgumentException("Telefone não pode ser em branco ou nulo.");
+
     }
 }

@@ -19,7 +19,7 @@ public class ReceitaController : AuthController
     [HttpGet]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(IList<ReceitaDto>))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Get()
     {
         try
@@ -36,7 +36,7 @@ public class ReceitaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(ReceitaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetById([FromRoute]int id)
     {
         try
@@ -58,7 +58,7 @@ public class ReceitaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(ReceitaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Post([FromBody] ReceitaDto receita)
     {
         try
@@ -76,7 +76,7 @@ public class ReceitaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(ReceitaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
         try
@@ -96,7 +96,7 @@ public class ReceitaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Delete(int idReceita)
     {
         try

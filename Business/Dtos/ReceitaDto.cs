@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 namespace Business.Dtos;
 public class ReceitaDto : BaseModelDto
 {     
-    [Required]
+    [Required(ErrorMessage = "O campo Data é obrigatório.")]
     public DateTime Data { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
     public string? Descricao { get; set; }
     
-    [Required]
+    [Required(ErrorMessage = "O campo Valor é obrigatório.")]    
     public decimal Valor { get; set; }
     
-    [Required]
+    [Required(ErrorMessage = "A Categoria é obrigatória.")]
     public CategoriaDto? Categoria { get; set; }
     
     [JsonIgnore]

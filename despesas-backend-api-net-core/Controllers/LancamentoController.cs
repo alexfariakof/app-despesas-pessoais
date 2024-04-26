@@ -19,13 +19,12 @@ public class LancamentoController : AuthController
     [HttpGet("{anoMes}")]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(List<LancamentoDto>))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Get([FromRoute]DateTime anoMes)
     {
         try
         {
             var list = _lancamentoBusiness.FindByMesAno(anoMes, IdUsuario);
-
             if (list == null || list.Count == 0)
                 return Ok(new List<LancamentoDto>());
 

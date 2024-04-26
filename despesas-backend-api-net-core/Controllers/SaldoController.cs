@@ -18,7 +18,7 @@ public class SaldoController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(decimal))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Get()
     {
         try
@@ -36,7 +36,7 @@ public class SaldoController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(decimal))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetSaldoByAno([FromRoute] DateTime ano)
     {
         try
@@ -54,7 +54,7 @@ public class SaldoController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(decimal))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
     {
         try

@@ -19,7 +19,7 @@ public class CategoriaController : AuthController
     [HttpGet]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(List<CategoriaDto>))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Get()
     {
         try
@@ -36,7 +36,7 @@ public class CategoriaController : AuthController
     [HttpGet("GetById/{idCategoria}")]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(CategoriaDto))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetById([FromRoute] int idCategoria)
     {
         try
@@ -53,7 +53,7 @@ public class CategoriaController : AuthController
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(List<CategoriaDto>))]
-    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetByTipoCategoria([FromRoute] TipoCategoria tipoCategoria)
     {
         if (tipoCategoria == TipoCategoria.Todas)
@@ -72,7 +72,7 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType(typeof(CategoriaDto), StatusCodes.Status200OK)]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(typeof(UnauthorizedResult), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
         if (categoria.IdTipoCategoria == (int)TipoCategoria.Todas)
@@ -93,7 +93,7 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(CategoriaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
         if (categoria.TipoCategoria == TipoCategoria.Todas)
@@ -116,7 +116,7 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult Delete(int idCategoria)
     {
         try

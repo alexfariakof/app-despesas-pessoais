@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace Business.Dtos;
 public class LoginDto
 {
-    [Required]
+    [EmailAddress(ErrorMessage = "O campo Email é inválido.")]
+    [Required(ErrorMessage = "O campo Email é obrigatório.")]    
     public string? Email { get; set; }
    
-    [Required]
+    [Required(ErrorMessage = "O campo Senha é obrigatório.")]
     public string? Senha { get; set; }
 }
