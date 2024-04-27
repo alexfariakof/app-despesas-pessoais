@@ -1,4 +1,6 @@
 ﻿using Business.Abstractions;
+using Business.Dtos;
+using despesas_backend_api_net_core.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +18,10 @@ public class SaldoController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(decimal))]
+    [ProducesResponseType((200), Type = typeof(SaldoDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         try
@@ -34,9 +37,10 @@ public class SaldoController : AuthController
 
     [HttpGet("ByAno/{ano}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(decimal))]
+    [ProducesResponseType((200), Type = typeof(SaldoDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByAno([FromRoute] DateTime ano)
     {
         try
@@ -52,9 +56,10 @@ public class SaldoController : AuthController
 
     [HttpGet("ByMesAno/{anoMes}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(decimal))]
+    [ProducesResponseType((200), Type = typeof(SaldoDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
     {
         try

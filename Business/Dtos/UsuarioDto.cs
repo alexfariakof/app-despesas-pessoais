@@ -1,9 +1,11 @@
-﻿using Domain.Entities;
+﻿using Business.HyperMedia;
+using Business.HyperMedia.Abstractions;
+using Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos;
-public class UsuarioDto : BaseModelDto
+public class UsuarioDto : BaseModelDto, ISupportHyperMedia
 {
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     public string? Nome { get; set; }
@@ -18,5 +20,7 @@ public class UsuarioDto : BaseModelDto
     public string? Email { get; set; }
 
     [JsonIgnore]
-    public PerfilUsuario PerfilUsuario  {get; set;} 
+    public PerfilUsuario PerfilUsuario  {get; set;}
+
+    public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

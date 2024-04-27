@@ -45,9 +45,9 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedSaldo = (decimal)okResult.Value;
-        Assert.IsType<decimal>(returnedSaldo);
-        Assert.Equal(saldo, returnedSaldo);
+        var returnedSaldo = (SaldoDto)okResult.Value;
+        Assert.IsType<decimal>(returnedSaldo.saldo);
+        Assert.Equal(saldo, returnedSaldo.saldo);
     }
 
     [Fact]
@@ -84,9 +84,9 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedSaldo = (decimal)okResult.Value;
-        Assert.IsType<decimal>(returnedSaldo);
-        Assert.Equal(saldo, returnedSaldo);
+        var returnedSaldo = (SaldoDto)okResult.Value;
+        Assert.IsType<decimal>(returnedSaldo.saldo);
+        Assert.Equal(saldo, returnedSaldo.saldo);
     }
 
     [Fact]
@@ -123,9 +123,9 @@ public class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
-        var returnedSaldo = (decimal)okResult.Value;
-        Assert.IsType<decimal>(returnedSaldo);
-        Assert.Equal(saldo, returnedSaldo);
+        var returnedSaldo = (SaldoDto)okResult.Value;
+        Assert.IsType<decimal>(returnedSaldo.saldo);
+        Assert.Equal(saldo, returnedSaldo.saldo);
     }
 
     [Fact]

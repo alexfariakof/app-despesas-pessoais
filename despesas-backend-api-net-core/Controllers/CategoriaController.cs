@@ -1,5 +1,6 @@
 ﻿using Business.Abstractions;
 using Business.Dtos;
+using despesas_backend_api_net_core.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,8 @@ public class CategoriaController : AuthController
     [HttpGet]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(List<CategoriaDto>))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         try
@@ -36,7 +38,8 @@ public class CategoriaController : AuthController
     [HttpGet("GetById/{idCategoria}")]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(CategoriaDto))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetById([FromRoute] int idCategoria)
     {
         try
@@ -53,7 +56,8 @@ public class CategoriaController : AuthController
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(List<CategoriaDto>))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetByTipoCategoria([FromRoute] TipoCategoria tipoCategoria)
     {
         if (tipoCategoria == TipoCategoria.Todas)
@@ -72,7 +76,8 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType(typeof(CategoriaDto), StatusCodes.Status200OK)]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
         if (categoria.IdTipoCategoria == (int)TipoCategoria.Todas)
@@ -93,7 +98,8 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(CategoriaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
         if (categoria.TipoCategoria == TipoCategoria.Todas)
@@ -116,7 +122,8 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idCategoria)
     {
         try

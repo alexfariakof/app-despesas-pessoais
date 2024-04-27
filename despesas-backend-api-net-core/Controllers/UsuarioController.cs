@@ -1,9 +1,9 @@
 ﻿using Business.Abstractions;
 using Business.Dtos;
+using despesas_backend_api_net_core.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers;
 
@@ -24,7 +24,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(IList<UsuarioDto>))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         try
@@ -48,7 +49,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(UsuarioDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetUsuario()
     {
         try
@@ -70,7 +72,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(UsuarioDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
         try
@@ -91,7 +94,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(UsuarioDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] UsuarioDto usuarioDto)
     {
         try
@@ -115,7 +119,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(UsuarioDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
         try
@@ -143,7 +148,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
         try
@@ -170,7 +176,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetImage()
     {
         try
@@ -197,7 +204,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PostImagemPerfil(IFormFile file)
     {
         try
@@ -223,7 +231,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PutImagemPerfil(IFormFile file)
     {
         try
@@ -248,7 +257,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult DeleteImagemPerfil()
     {
         try
@@ -294,11 +304,5 @@ public class UsuarioController : AuthController
         }
         else
             throw new ArgumentException("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.");
-    }
-    private bool IsValidEmail(string email)
-    {
-        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-        Regex regex = new Regex(pattern);
-        return regex.IsMatch(email);
     }
 }

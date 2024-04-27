@@ -63,7 +63,7 @@ public class ControleAcessoController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordVM)
     {
         try
@@ -87,7 +87,7 @@ public class ControleAcessoController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
     public IActionResult RecoveryPassword([FromBody] string email)
     {
         try

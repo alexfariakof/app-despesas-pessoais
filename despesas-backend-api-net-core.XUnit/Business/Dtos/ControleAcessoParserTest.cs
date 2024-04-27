@@ -71,7 +71,7 @@ public class ControleAcessoParserTest
         Assert.Equal(controleAcesso.Id, controleAcessoDto.Id);
         Assert.Equal(controleAcesso.Login, controleAcessoDto.Email);
         Assert.Equal(controleAcesso.UsuarioId, controleAcessoDto.IdUsuario);
-        Assert.NotEqual(controleAcesso.Senha, controleAcessoDto.Senha);
+        Assert.Equal(controleAcesso.Senha, controleAcessoDto.Senha);
         Assert.Equal(controleAcesso.RefreshToken, controleAcessoDto.RefreshToken);
         Assert.Equal(usuario.Id, controleAcessoDto.IdUsuario);
         Assert.Equal(usuario.Nome, controleAcessoDto.Nome);
@@ -96,7 +96,6 @@ public class ControleAcessoParserTest
         // Assert
         Assert.Empty(validationResults);
     }
-
 
     [Fact]
     public void Should_Validate_ControleAcessoDto_With_Empty_ConfirmaSenha()

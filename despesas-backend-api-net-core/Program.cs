@@ -51,9 +51,8 @@ builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 builder.Services.ConfigureAutorization(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
-
 builder.Services.AddCrossCuttingConfiguration();
-
+builder.Services.AddHyperMediaHATEOAS();
 
 var app = builder.Build();
 
@@ -78,9 +77,11 @@ app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-// Not existis folder  wwwroot for SPA projects
+// Not existis folder wwwroot for SPA projects
 //app.UseStaticFiles();
+
 app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
 
 using (var scope = app.Services.CreateScope())
 {

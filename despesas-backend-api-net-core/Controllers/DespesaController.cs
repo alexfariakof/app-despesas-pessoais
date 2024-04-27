@@ -1,5 +1,6 @@
 ﻿using Business.Dtos;
 using Business.Generic;
+using despesas_backend_api_net_core.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,8 @@ public class DespesaController : AuthController
     [HttpGet]
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(IList<DespesaDto>))]    
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         try
@@ -35,7 +37,8 @@ public class DespesaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(DespesaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get([FromRoute]int id)
     {
         try
@@ -56,7 +59,8 @@ public class DespesaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(DespesaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] DespesaDto despesa)
     {
         try
@@ -74,7 +78,8 @@ public class DespesaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(DespesaDto))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
         try
@@ -96,7 +101,8 @@ public class DespesaController : AuthController
     [Authorize("Bearer")]
     [ProducesResponseType((200), Type = typeof(bool))]
     [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idDespesa)
     {
         try
