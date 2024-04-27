@@ -8,6 +8,7 @@ using Repository.Persistency;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 
 namespace Business.Implementations;
 public class ControleAcessoBusinessImpl : IControleAcessoBusiness
@@ -25,14 +26,26 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _emailSender = emailSender;
     }
 
-    public void Create(ControleAcesso controleAcesso)
+    public void Create(ControleAcessoDto controleAcessoDto)
     {
+        ControleAcesso controleAcesso = new ControleAcesso();
+        controleAcesso.CreateAccount(new Usuario()
+            .CreateUsuario(
+            controleAcessoDto.Nome,
+            controleAcessoDto.SobreNome,
+            controleAcessoDto.Email,
+            controleAcessoDto.Telefone,
+            StatusUsuario.Ativo,
+            PerfilUsuario.Usuario),
+            controleAcessoDto.Email,
+            controleAcessoDto.Senha
+            );
         _repositorio.Create(controleAcesso);
     }
 
-    public AuthenticationDto ValidateCredentials(ControleAcessoDto controleAcesso)
+    public AuthenticationDto ValidateCredentials(LoginDto login)
     {
-        ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = controleAcesso.Email });
+        ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = login.Email });
 
         if (baseLogin == null)
             return AuthenticationException("Usuário inexistente!");                
@@ -40,10 +53,10 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
             return AuthenticationException("Usuário Inativo!");
 
 
-        if (!_repositorio.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha))
+        if (!_repositorio.IsValidPasssword(login.Email, login.Senha))
             return AuthenticationException("Senha inválida!");
 
-        bool credentialsValid = baseLogin != null && controleAcesso.Email == baseLogin.Login;
+        bool credentialsValid = baseLogin != null && login.Email == baseLogin.Login;
         if (credentialsValid)
         {
             baseLogin.RefreshToken = _tokenConfiguration.GenerateRefreshToken();
@@ -68,7 +81,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         else if (baseLogin != null)
             this.RevokeToken(baseLogin.Id);
 
-        return AuthenticationException("Token Inválido!");
+        return AuthenticationException("Refresh Token Inválido!");
     }
     public void RevokeToken(int idUsuario)
     {
@@ -76,12 +89,14 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
     }
 
     public void RecoveryPassword(string email)
-    {        
+    {
+        IsValidEmail(email);
+
         var result = _repositorio.RecoveryPassword(email);
         ControleAcesso controleAcesso = _repositorio.FindByEmail(new ControleAcesso { Login = email });
 
         if (result && _emailSender.SendEmailPassword(controleAcesso.Usuario, Crypto.GetInstance.Decrypt(controleAcesso.Senha)))
-            throw new ArgumentException("Usuário não encontrado  ");
+            throw new ArgumentException("Usuário não encontrado!");
     }
 
     public void ChangePassword(int idUsuario, string password)
@@ -122,5 +137,22 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
             RefreshToken = controleAcesso.RefreshToken,
             Message = "OK"
         };
+    }
+
+    private string IsValidEmail(string email)
+    {
+        if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
+            throw new ArgumentException("Email não pode ser em branco ou nulo!");
+
+        if (email.Length > 256)
+            throw new ArgumentException("Email inválido!");
+
+        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        Regex regex = new Regex(pattern);
+
+        if (!regex.IsMatch(email))
+            throw new ArgumentException("Email inválido!");
+
+        return email;
     }
 }

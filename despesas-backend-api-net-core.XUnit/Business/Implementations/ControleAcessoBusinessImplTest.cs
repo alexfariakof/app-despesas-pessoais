@@ -35,19 +35,7 @@ public class ControleAcessoBusinessImplTest
     public void Create_Should_ControleAcesso_Returns_True()
     {
         // Arrange
-        var controleAcesso = new ControleAcesso
-        {
-            Login = "teste@teste.com",
-            Senha = "teste",
-            Usuario = new Usuario
-            {
-                Email = "teste@teste.com",
-                Nome = "Teste Usuário 1",
-                SobreNome = "Teste",
-                Telefone = "(21) 9999-9999",
-                PerfilUsuario = PerfilUsuario.Usuario
-            }
-        };
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFakerVM();
 
         _repositorioMock.Setup(repo => repo.Create(It.IsAny<ControleAcesso>()));
 
@@ -55,14 +43,14 @@ public class ControleAcessoBusinessImplTest
         _controleAcessoBusiness.Create(controleAcesso);
 
         // Assert        
-        _repositorioMock.Verify(repo => repo.Create(controleAcesso), Times.Once);
+        _repositorioMock.Verify(repo => repo.Create(It.IsAny<ControleAcesso>()), Times.Once);
     }
 
     [Fact]
-    public void FindByLogin_Should_Return_Valid_Credentials_And_AccessToken()
+    public void ValidateCredentials_Should_Return_Valid_Credentials_And_AccessToken()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
+        var controleAcesso = new LoginDto { Email = "teste@teste.com", Senha = "teste", };
 
         var usuario = new Usuario
         {
@@ -83,14 +71,14 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Usaurio_Inexistente()
+    public void ValidateCredentials_Should_Returns_Usaurio_Inexistente()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com" };
+        var loginDto = new LoginDto { Email = "teste@teste.com" };
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(loginDto);
 
         // Assert
         Assert.False(result.Authenticated);
@@ -98,7 +86,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Usuario_Inativo()
+    public void ValidateCredentials_Should_Returns_Usuario_Inativo()
     {
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
@@ -108,7 +96,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(controleAcesso);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(new ControleAcessoParser().Parse(controleAcesso));
+        var result = _controleAcessoBusiness.ValidateCredentials(new LoginDto { Email = controleAcesso.Login, Senha = controleAcesso.Senha });
 
         // Assert
         Assert.False(result.Authenticated);
@@ -116,10 +104,10 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Email_Inexistente()
+    public void ValidateCredentials_Should_Returns_Email_Inexistente()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
+        var loginDto = new LoginDto { Email = "teste@teste.com", Senha = "teste", };
         var usuario = new Usuario
         {
             Id = 1,
@@ -127,11 +115,11 @@ public class ControleAcessoBusinessImplTest
             StatusUsuario = StatusUsuario.Ativo
         };
 
-        _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha)).Returns(true);
+        _repositorioMock.Setup(repo => repo.IsValidPasssword(loginDto.Email, loginDto.Senha)).Returns(true);
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns((ControleAcesso)null);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(controleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(loginDto);
 
         // Assert
         Assert.False(result.Authenticated);
@@ -139,7 +127,7 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Senha_Invalida()
+    public void ValidateCredentials_Should_Returns_Senha_Invalida()
     {
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
@@ -149,7 +137,7 @@ public class ControleAcessoBusinessImplTest
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(controleAcesso);
 
         // Act
-        var result = _controleAcessoBusiness.ValidateCredentials(new ControleAcessoParser().Parse(controleAcesso));
+        var result = _controleAcessoBusiness.ValidateCredentials(new LoginDto() { Email = controleAcesso.Login, Senha = controleAcesso.Senha });
 
         // Assert
         Assert.False(result.Authenticated);
@@ -157,10 +145,10 @@ public class ControleAcessoBusinessImplTest
     }
 
     [Fact]
-    public void FindByLogin_Should_Returns_Usuario_Invalido()
+    public void ValidateCredentials_Should_Returns_Usuario_Invalido()
     {
         // Arrange
-        var controleAcesso = new ControleAcessoDto { Email = "teste@teste.com", Senha = "teste", };
+        var loginDto = new LoginDto { Email = "teste@teste.com", Senha = "teste", };
 
         var usuario = new Usuario
         {
@@ -169,11 +157,11 @@ public class ControleAcessoBusinessImplTest
             StatusUsuario = StatusUsuario.Ativo
         };
 
-        _repositorioMock.Setup(repo => repo.IsValidPasssword(controleAcesso.Email, controleAcesso.Senha)).Returns(true);
+        _repositorioMock.Setup(repo => repo.IsValidPasssword(loginDto.Email, loginDto.Senha)).Returns(true);
         _repositorioMock.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Throws(new ArgumentException("Usuário Inválido!"));
 
         // Act &  Assert
-        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.ValidateCredentials(controleAcesso));
+        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.ValidateCredentials(loginDto));
     }
 
     [Fact]
@@ -286,7 +274,7 @@ public class ControleAcessoBusinessImplTest
 
         // Assert
         Assert.False(result.Authenticated);
-        Assert.Equal("Token Inválido!", result.Message);
+        Assert.Equal("Refresh Token Inválido!", result.Message);
     }
 
     [Fact]

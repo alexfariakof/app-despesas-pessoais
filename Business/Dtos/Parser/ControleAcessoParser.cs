@@ -13,12 +13,12 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
             Id = origin.Id,
             Email = origin.Login,
             Senha = origin.Senha,
-           IdUsuario   = origin.UsuarioId,
-           Nome = origin.Usuario.Nome,
-           PerfilUsuario = origin.Usuario.PerfilUsuario,
-           Telefone = origin.Usuario.Telefone,
-           SobreNome = origin.Usuario.SobreNome,
-           RefreshToken = origin.RefreshToken
+            IdUsuario   = origin.UsuarioId,
+            Nome = origin.Usuario.Nome,
+            PerfilUsuario = origin.Usuario.PerfilUsuario,
+            Telefone = origin.Usuario.Telefone,
+            SobreNome = origin.Usuario.SobreNome,
+            RefreshToken = origin.RefreshToken
         };
     }
 

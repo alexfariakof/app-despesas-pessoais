@@ -66,8 +66,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Nenhuma despesa foi encontrada.", message);
         _mockDespesaBusiness.Verify(b => b.FindById(despesaDto.Id, idUsuario), Times.Once);
     }
@@ -89,11 +88,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-
-        Assert.True(message);
-        var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaDto;
+        var _despesa = result.Value;
         Assert.NotNull(_despesa);
         Assert.IsType<DespesaDto>(_despesa);
         _mockDespesaBusiness.Verify(b => b.FindById(despesaId, idUsuario), Times.Once);
@@ -114,8 +109,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value) as string;
+        var message = result.Value;
         Assert.Equal("Não foi possível realizar a consulta da despesa.", message);
         _mockDespesaBusiness.Verify(b => b.FindById(despesaDto.Id, idUsuario), Times.Once);
     }
@@ -136,11 +130,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-
-        Assert.True(message);
-        var _despesa = value?.GetType()?.GetProperty("despesa")?.GetValue(value, null) as DespesaDto;
+        var _despesa = result.Value;
         Assert.NotNull(_despesa);
         Assert.IsType<DespesaDto>(_despesa);
         _mockDespesaBusiness.Verify(b => b.Create(despesaDto), Times.Once());
@@ -163,8 +153,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Não foi possível realizar o cadastro da despesa.", message);
         _mockDespesaBusiness.Verify(b => b.Create(despesaDto), Times.Once);
     }
@@ -185,10 +174,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        var _despesa = (DespesaDto?)value?.GetType()?.GetProperty("despesa")?.GetValue(value, null);
+        var _despesa = result.Value;
         Assert.NotNull(_despesa);
         Assert.IsType<DespesaDto>(_despesa);
         _mockDespesaBusiness.Verify(b => b.Update(despesaDto), Times.Once);
@@ -210,8 +196,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Não foi possível atualizar o cadastro da despesa.", message);
         _mockDespesaBusiness.Verify(b => b.Update(despesaDto), Times.Once);
     }
@@ -233,9 +218,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-
+        var message = (bool)result.Value;
         Assert.True(message);
         _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);
@@ -258,8 +241,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Never);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Never);
@@ -282,8 +264,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Erro ao excluir Despesa!", message);
         _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);

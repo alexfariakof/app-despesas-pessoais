@@ -1,15 +1,26 @@
-﻿using Domain.Entities;
+﻿using Business.HyperMedia;
+using Business.HyperMedia.Abstractions;
+using Domain.Entities;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Business.Dtos;
-public class UsuarioDto : BaseModelDto
+public class UsuarioDto : BaseModelDto, ISupportHyperMedia
 {
-    [Required]
+    [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     public string? Nome { get; set; }
+
     public string? SobreNome { get; set; }    
-    [Required]
+
+    [Required(ErrorMessage = "O campo Telefone é obrigatório.")]
     public string? Telefone { get; set; }    
-    [Required]
+
+    [EmailAddress(ErrorMessage = "O campo Email é inválido.")]
+    [Required(ErrorMessage = "O campo Email é obrigatório.")]        
     public string? Email { get; set; }
-    public PerfilUsuario PerfilUsuario  {get; set;} 
+
+    [JsonIgnore]
+    public PerfilUsuario PerfilUsuario  {get; set;}
+
+    public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

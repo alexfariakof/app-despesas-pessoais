@@ -33,7 +33,7 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Version 6",
-            Version = "6.0.0"
+            Version = "6.0.2"
         });
 });
 
@@ -51,9 +51,8 @@ builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 builder.Services.ConfigureAutorization(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
-
 builder.Services.AddCrossCuttingConfiguration();
-
+builder.Services.AddHyperMediaHATEOAS();
 
 var app = builder.Build();
 
@@ -71,16 +70,18 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
-    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v6/swagger.json", "API Version 6 with DDD/CQRS");
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v6/swagger.json", "API Version 6 with DDD/UnitOfWork/CQRS");
 });
 
 app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-// Not existis folder  wwwroot for SPA projects
+// Not existis folder wwwroot for SPA projects
 //app.UseStaticFiles();
+
 app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
 
 using (var scope = app.Services.CreateScope())
 {
