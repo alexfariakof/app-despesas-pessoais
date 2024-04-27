@@ -19,8 +19,10 @@ public class UsuarioBusinessImplTest
     {
         // Arrange
         var usuario = _usuarios.First();
+        usuario.PerfilUsuario = PerfilUsuario.Administrador;
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Usuario>.IsAny));
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
 
         // Act
         var result = _usuarioBusiness.Create(new UsuarioParser().Parse(usuario));

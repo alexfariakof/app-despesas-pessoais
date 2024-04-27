@@ -22,7 +22,7 @@ public class SaldoBusinessImplTest
         var result = _saldoBusiness.GetSaldo(idUsuario);
 
         // Assert
-        Assert.Equal(saldo, result);
+        Assert.Equal(saldo, result.saldo);
         _repositorioMock.Verify(r => r.GetSaldo(idUsuario), Times.Once);
     }
 
@@ -38,7 +38,7 @@ public class SaldoBusinessImplTest
         var result = _saldoBusiness.GetSaldoAnual(DateTime.Today,  idUsuario);
 
         // Assert
-        Assert.Equal(saldo, result);
+        Assert.Equal(saldo, result.saldo);
         _repositorioMock.Verify(r => r.GetSaldoByAno(DateTime.Today, idUsuario), Times.Once);
     }
 
@@ -54,7 +54,7 @@ public class SaldoBusinessImplTest
         var result = _saldoBusiness.GetSaldoByMesAno(DateTime.Today, idUsuario);
 
         // Assert
-        Assert.Equal(saldo, result);
+        Assert.Equal(saldo, result.saldo);
         _repositorioMock.Verify(r => r.GetSaldoByMesAno(DateTime.Today, idUsuario), Times.Once);
     }
 }

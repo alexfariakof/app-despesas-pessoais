@@ -18,6 +18,10 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
 
     public UsuarioDto Create(UsuarioDto usuarioDto)
     {
+        var isValidUsuario = _repositorio.Get(usuarioDto.IdUsuario);
+        if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
+            throw new ArgumentException("Usuário não permitido a realizar operação!");
+        
         var usuario = new Usuario().CreateUsuario(
             usuarioDto.Nome,
             usuarioDto.SobreNome,

@@ -65,8 +65,6 @@ public class GraficosControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("Erro ao gerar dados do Gráfico!", message);
+        Assert.Equal("Erro ao gerar dados do Gráfico!", result.Value);
     }
 }

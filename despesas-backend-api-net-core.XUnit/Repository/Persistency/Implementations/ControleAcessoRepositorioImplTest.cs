@@ -292,7 +292,7 @@ public class ControleAcessoRepositorioImplTest
         mockRepository.Setup(repo => repo.FindByEmail(It.IsAny<ControleAcesso>())).Returns(mockControleAcesso);
 
         // Act & Assert
-        Assert.Throws<AggregateException>(() => repository.Object.Create(mockControleAcesso));
+        Assert.Throws<ArgumentException>(() => repository.Object.Create(mockControleAcesso));
     }
 
     [Fact]

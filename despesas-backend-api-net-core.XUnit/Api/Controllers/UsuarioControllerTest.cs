@@ -57,8 +57,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.FindAll(idUsuario), Times.Never);
     }
@@ -97,8 +96,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
     }
@@ -130,9 +128,9 @@ public class UsuarioControllerTest
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
+        _mockUsuarioBusiness.Setup(business => business.FindById(It.IsAny<int>())).Throws(new ArgumentException("Usuário não permitido a realizar operação!"));
+        _mockUsuarioBusiness.Setup(business => business.Create(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Usuário não permitido a realizar operação!"));
 
-        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
 
         // Act
         var result = _usuarioController.Post(usuarioDto) as ObjectResult;
@@ -140,11 +138,10 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
-        _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
-        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -204,9 +201,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
+        Assert.True((bool)result.Value);
         _mockUsuarioBusiness.Verify(b => b.Delete(usuarioDto), Times.Once);
     }
 
@@ -220,8 +215,8 @@ public class UsuarioControllerTest
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.FindById(It.IsAny<int>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
+        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
 
         // Act
         var result = _usuarioController.Post(usuarioDto) as ObjectResult;
@@ -229,10 +224,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -245,8 +239,8 @@ public class UsuarioControllerTest
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Throws(new ArgumentException("Campo Login não pode ser em branco"));
+        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
         // Act
         var result = _usuarioController.Post(usuarioDto) as ObjectResult;
@@ -254,10 +248,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -270,8 +263,8 @@ public class UsuarioControllerTest
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Throws(new ArgumentException("Campo Login não pode ser em branco"));
+        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
         // Act
         var result = _usuarioController.Post(usuarioDto) as ObjectResult;
@@ -279,10 +272,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -295,8 +287,8 @@ public class UsuarioControllerTest
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Throws(new ArgumentException("Email inválido!"));
+        _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Throws(new ArgumentException("Email inválido!"));
 
         // Act
         var result = _usuarioController.Post(usuarioDto) as ObjectResult;
@@ -304,10 +296,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Email inválido!", message);
-        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Create(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -318,7 +309,7 @@ public class UsuarioControllerTest
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
 
         // Act
         var result = _usuarioController.Put(usuarioDto) as ObjectResult;
@@ -326,10 +317,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -340,7 +330,7 @@ public class UsuarioControllerTest
         usuarioDto.Email = string.Empty;
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
         // Act
         var result = _usuarioController.Put(usuarioDto) as ObjectResult;
@@ -348,10 +338,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -362,7 +351,7 @@ public class UsuarioControllerTest
         usuarioDto.Email = " ";
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
         // Act
         var result = _usuarioController.Put(usuarioDto) as ObjectResult;
@@ -370,10 +359,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -384,7 +372,7 @@ public class UsuarioControllerTest
         usuarioDto.Email = "invalidEmail.com";
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Email inválido!"));
 
         // Act
         var result = _usuarioController.Put(usuarioDto) as ObjectResult;
@@ -392,10 +380,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Email inválido!", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -413,8 +400,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
@@ -437,8 +423,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         _mockUsuarioBusiness.Verify(b => b.Delete(usuarioNormal), Times.Never);
@@ -462,8 +447,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Erro ao excluir Usuário!", message);
         _mockUsuarioBusiness.Verify(b => b.FindById(idUsuario), Times.Once);
         _mockUsuarioBusiness.Verify(b => b.Delete(usuarioNormal), Times.Once);
@@ -503,7 +487,7 @@ public class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Email inválido!"));
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioDto) as ObjectResult;
@@ -511,10 +495,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Email inválido!", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once );
     }
 
     [Fact]
@@ -528,7 +511,7 @@ public class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioDto) as ObjectResult;
@@ -536,10 +519,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Telefone não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -553,8 +535,7 @@ public class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioDto) as ObjectResult;
@@ -562,10 +543,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -579,7 +559,7 @@ public class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioDto) as ObjectResult;
@@ -587,10 +567,9 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Campo Login não pode ser em branco", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Once);
     }
 
     [Fact]
@@ -611,8 +590,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioDto>()), Times.Once);
     }
@@ -635,8 +613,7 @@ public class UsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(usuarioDto), Times.Never);
     }

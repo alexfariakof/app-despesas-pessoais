@@ -1,0 +1,14 @@
+﻿namespace despesas_backend_api_net_core.HyperMedia.Constants;
+
+public sealed class RelationType
+{
+    public const string self = "self";
+    public const string post = "post";
+    public const string put = "put";
+    public const string delete = "delete";
+    public const string pacth= "pacth";
+    public const string next = "next";
+    public const string previous = "previous";
+    public const string first = "first";
+    public const string last = "last";
+}

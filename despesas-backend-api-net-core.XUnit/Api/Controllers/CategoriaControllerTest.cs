@@ -147,13 +147,8 @@ public class CategoriaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-
-        var categoria = value?.GetType()?.GetProperty("categoria")?.PropertyType;
-        Assert.NotNull(categoria);
-        value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
+        Assert.NotNull(result.Value);
+        Assert.IsType<CategoriaDto>(result.Value);
     }
 
     [Fact]
@@ -181,8 +176,7 @@ public class CategoriaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;        
         Assert.Equal("Nenhum tipo de Categoria foi selecionado!", message);
     }
 
@@ -205,8 +199,7 @@ public class CategoriaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Não foi possível realizar o cadastro de uma nova categoria, tente mais tarde ou entre em contato com o suporte.", message);
     }
 
@@ -234,13 +227,8 @@ public class CategoriaControllerTest
 
         // Assert
         Assert.NotNull(result);
-        var value = result.Value;
-
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        var _categoriaDto = value?.GetType()?.GetProperty("categoria")?.GetValue(value, null);
-        Assert.IsType<CategoriaDto>(_categoriaDto);
-        Assert.Equal(_categoriaDto, categoriaDto);
+        Assert.IsType<CategoriaDto>(result.Value);
+        Assert.Equal(result.Value, categoriaDto);
     }
 
     [Fact]
@@ -262,8 +250,7 @@ public class CategoriaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Nenhum tipo de Categoria foi selecionado!", message);
     }
 
@@ -286,8 +273,7 @@ public class CategoriaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;
         Assert.Equal("Erro ao atualizar categoria!", message);
     }
 
@@ -315,8 +301,7 @@ public class CategoriaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        var message = (bool)result.Value ;
         Assert.True(message);
         _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.IdUsuario),Times.Once);
         _mockCategoriaBusiness.Verify(b => b.Delete(categoriaDto), Times.Once);
@@ -345,9 +330,8 @@ public class CategoriaControllerTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        Assert.IsType<OkObjectResult>(result);
+        var message = (bool)result.Value;
         Assert.False(message);
         _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.IdUsuario),Times.Once);
         _mockCategoriaBusiness.Verify(b => b.Delete(categoriaDto), Times.Once);
