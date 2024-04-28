@@ -56,6 +56,29 @@ public class CategoriaControllerTest
     }
 
     [Fact]
+    public void Get_Returns_Ok_Result_When_TryCatch_ThrowError()
+    {
+        // Arrange
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaDto, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
+        _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
+        var categoriaDtos = CategoriaFaker.Instance.CategoriasVMs();
+        var idUsuario = categoriaDtos.First().IdUsuario;
+        SetupBearerToken(idUsuario);
+        _mockCategoriaBusiness.Setup(b => b.FindAll(idUsuario).Result).Throws<Exception>(); 
+
+        // Act
+        var result = _categoriaController.Get() as OkObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.IsType<List<CategoriaDto>>(result.Value);
+        Assert.NotNull(result.Value as List<CategoriaDto>);
+        Assert.Empty(result.Value as List<CategoriaDto>);
+    }
+
+
+    [Fact]
     public void GetById_Returns_Ok_Result()
     {
         // Arrange
@@ -76,6 +99,31 @@ public class CategoriaControllerTest
         Assert.NotNull(result);
         Assert.IsType<CategoriaDto>(result.Value);
         Assert.Equal(categoriaDto, result.Value);
+    }
+
+    [Fact]
+    public void GetById_Returns_Ok_Result_When_TryCatch_ThrowError()
+    {
+        // Arrange
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaDto, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
+        _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
+        var categoriaDto = CategoriaFaker.Instance.CategoriasVMs().First();
+
+        var idCategoria = categoriaDto.IdUsuario;
+
+        SetupBearerToken(idCategoria);
+
+        _mockCategoriaBusiness.Setup(b => b.FindById(idCategoria, categoriaDto.IdUsuario)).Throws<Exception>();
+
+        // Act
+        var result = _categoriaController.GetById(idCategoria) as OkObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<CategoriaDto>(result.Value);
+        Assert.NotNull(result.Value as CategoriaDto);
+
+
     }
 
     [Fact]
@@ -357,4 +405,25 @@ public class CategoriaControllerTest
         _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.IdUsuario),Times.Never);
         _mockCategoriaBusiness.Verify(b => b.Delete(categoriaDto), Times.Never);
     }
+
+    [Fact]
+    public void Delete_Returns_BadRequest_When_TryCatch_ThrowError()
+    {
+        // Arrange
+        _mockCategoriaBusiness = new Mock<BusinessBase<CategoriaDto, Categoria>>(new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default).Object);
+        _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
+        var categoriaDto = CategoriaFaker.Instance.CategoriasVMs().First();
+        SetupBearerToken(categoriaDto.IdUsuario);
+        _mockCategoriaBusiness.Setup(b => b.FindById(categoriaDto.Id, categoriaDto.IdUsuario)).Returns(categoriaDto);
+        _mockCategoriaBusiness.Setup(b => b.Delete(It.IsAny<CategoriaDto>())).Throws<Exception>();
+
+        // Act
+        var result = _categoriaController.Delete(categoriaDto.Id) as BadRequestObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+        _mockCategoriaBusiness.Verify(b => b.FindById(It.IsAny<int>(), It.IsAny<int>()), Times.Once);
+        _mockCategoriaBusiness.Verify(b => b.Delete(It.IsAny<CategoriaDto>()), Times.Once);
+    }    
 }

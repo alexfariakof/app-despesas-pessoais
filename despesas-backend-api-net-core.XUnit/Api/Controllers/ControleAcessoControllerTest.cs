@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Business.Abstractions;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Api.Controllers;
 public class ControleAcessoControllerTest
@@ -176,6 +177,21 @@ public class ControleAcessoControllerTest
     }
 
     [Fact]
+    public void SignIn_BadRequest_When_TryCatch_Throws_ArgumentException()
+    {
+        // Arrange
+        var loginVM = new LoginDto { Email = "teste@teste.com", Senha = "password" };
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<LoginDto>())).Throws<ArgumentException>();
+
+        // Act
+        var result = _controleAcessoController.SignIn(loginVM) as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
     public void SignIn_With_ValidData_Returns_ObjectResult()
     {
         // Arrange
@@ -189,6 +205,7 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
     }
+
 
     [Fact]
     public void SignIn_With_InvalidEmail_Returns_BadRequest_EmailInvalido()

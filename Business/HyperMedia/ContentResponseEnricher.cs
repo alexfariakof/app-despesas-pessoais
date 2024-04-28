@@ -1,11 +1,10 @@
 ﻿using Business.HyperMedia.Abstractions;
-using despesas_backend_api_net_core.HyperMedia.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Collections.Concurrent;
 
-namespace despesas_backend_api_net_core.HyperMedia;
+namespace Business.HyperMedia;
 
 public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISupportHyperMedia
 {

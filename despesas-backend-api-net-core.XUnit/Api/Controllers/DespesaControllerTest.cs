@@ -52,6 +52,30 @@ public class DespesaControllerTest
     }
 
     [Fact]
+    public void Get_Should_Returns_OkResults_With_Null_List_When_TryCatch_ThrowsError()
+    {
+        // Arrange
+        var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
+
+        int idUsuario = _despesaDtos.First().IdUsuario;
+
+        SetupBearerToken(idUsuario);
+        _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Throws<Exception>();
+
+        // Act
+        var result = _despesaController.Get() as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.NotNull(result.Value);
+        Assert.IsType<List<DespesaDto>>(result.Value);
+        Assert.Empty(result.Value as List<DespesaDto>);
+        _mockDespesaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
+    }
+
+
+    [Fact]
     public void GetById_Should_Returns_BadRequest_When_Despesa_NULL()
     {
         // Arrange

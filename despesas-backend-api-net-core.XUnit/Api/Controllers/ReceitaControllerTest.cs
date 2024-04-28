@@ -32,6 +32,26 @@ public class ReceitaControllerTest
     }
 
     [Fact]
+    public void Get_Should_Returns_OkResults_With_Null_List_When_TryCatch_ThrowsError()
+    {
+        // Arrange
+        int idUsuario = _receitaDtos.First().IdUsuario;
+        SetupBearerToken(idUsuario);
+        _mockReceitaBusiness.Setup(business => business.FindAll(idUsuario)).Throws<Exception>();
+
+        // Act
+        var result = _receitaController.Get() as ObjectResult;
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.IsType<OkObjectResult>(result);
+        Assert.NotNull(result.Value);
+        Assert.IsType<List<ReceitaDto>>(result.Value);
+        Assert.Empty(result.Value as List<ReceitaDto>);
+        _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
+    }
+
+    [Fact]
     public void Get_Should_Return_All_Receitas_From_Usuario()
     {
         // Arrange

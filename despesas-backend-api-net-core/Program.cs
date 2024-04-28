@@ -70,7 +70,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
-    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v6/swagger.json", "API Version 6 with DDD/UnitOfWork/CQRS");
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v6/swagger.json", "API Version 6.0.2 with DDD/UnitOfWork/CQRS/HATEOAS");
 });
 
 app.UseCors();

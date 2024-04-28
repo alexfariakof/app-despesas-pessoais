@@ -1,6 +1,6 @@
 ﻿using Business.Abstractions;
 using Business.Dtos;
-using despesas_backend_api_net_core.HyperMedia.Filters;
+using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
