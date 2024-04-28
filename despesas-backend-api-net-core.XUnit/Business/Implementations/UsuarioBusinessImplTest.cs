@@ -15,12 +15,14 @@ public class UsuarioBusinessImplTest
     }
 
     [Fact]
-    public void Create_Should_Returns_Parsed_UsuarioVM()
+    public void Create_Should_Returns_Parsed_UsuarioDto()
     {
         // Arrange
         var usuario = _usuarios.First();
+        usuario.PerfilUsuario = PerfilUsuario.Administrador;
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Usuario>.IsAny));
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
 
         // Act
         var result = _usuarioBusiness.Create(new UsuarioParser().Parse(usuario));
@@ -33,7 +35,7 @@ public class UsuarioBusinessImplTest
     }
 
     [Fact]
-    public void FindAll_Should_Returns_List_Of_UsuarioVM()
+    public void FindAll_Should_Returns_List_Of_UsuarioDto()
     {
         // Arrange         
         var usuario = _usuarios.First();
@@ -77,7 +79,7 @@ public class UsuarioBusinessImplTest
     }
 
     [Fact]
-    public void FindById_Should_Returns_Parsed_UsuarioVM()
+    public void FindById_Should_Returns_Parsed_UsuarioDto()
     {
         // Arrange
         var usuario = _usuarios.First();
@@ -96,22 +98,22 @@ public class UsuarioBusinessImplTest
     }
 
     [Fact]
-    public void Update_Should_Returns_Parsed_UsuarioVM()
+    public void Update_Should_Returns_Parsed_UsuarioDto()
     {
         // Arrange            
         var usuario = _usuarios.First();
-        var usuarioVM = new UsuarioParser().Parse(usuario);
+        var usuarioDto = new UsuarioParser().Parse(usuario);
         usuario.Nome = "Teste Usuario Update";                       
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Usuario>.IsAny));
 
         // Act
-        var result = _usuarioBusiness.Update(usuarioVM);
+        var result = _usuarioBusiness.Update(usuarioDto);
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<UsuarioDto>(result);
-        Assert.Equal(usuarioVM.Id, result.Id);
+        Assert.Equal(usuarioDto.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Usuario>.IsAny), Times.Once);
     }
 

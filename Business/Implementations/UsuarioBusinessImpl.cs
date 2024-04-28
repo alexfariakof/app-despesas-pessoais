@@ -16,13 +16,17 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         _converter = new UsuarioParser();
     }
 
-    public UsuarioDto Create(UsuarioDto usuarioVM)
+    public UsuarioDto Create(UsuarioDto usuarioDto)
     {
+        var isValidUsuario = _repositorio.Get(usuarioDto.IdUsuario);
+        if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
+            throw new ArgumentException("Usuário não permitido a realizar operação!");
+        
         var usuario = new Usuario().CreateUsuario(
-            usuarioVM.Nome,
-            usuarioVM.SobreNome,
-            usuarioVM.Email,
-            usuarioVM.Telefone,
+            usuarioDto.Nome,
+            usuarioDto.SobreNome,
+            usuarioDto.Email,
+            usuarioDto.Telefone,
             StatusUsuario.Ativo,
             PerfilUsuario.Usuario);
 
@@ -43,15 +47,15 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         var usuario = _repositorio.Get(id);
         return _converter.Parse(usuario);
     }
-    public UsuarioDto Update(UsuarioDto usuarioVM)
+    public UsuarioDto Update(UsuarioDto usuarioDto)
     {
         var usuario = new Usuario
         {
-            Id = usuarioVM.Id,
-            Nome = usuarioVM.Nome,
-            SobreNome = usuarioVM.SobreNome,
-            Email = usuarioVM.Email,
-            Telefone = usuarioVM.Telefone,
+            Id = usuarioDto.Id,
+            Nome = usuarioDto.Nome,
+            SobreNome = usuarioDto.SobreNome,
+            Email = usuarioDto.Email,
+            Telefone = usuarioDto.Telefone,
             StatusUsuario = StatusUsuario.Ativo
         };
         
@@ -59,8 +63,8 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         return _converter.Parse(usuario);
     }
 
-    public bool Delete(UsuarioDto usuarioVM)
+    public bool Delete(UsuarioDto usuarioDto)
     {
-        return _repositorio.Delete(new Usuario{ Id = usuarioVM.Id });
+        return _repositorio.Delete(new Usuario{ Id = usuarioDto.Id });
     }
 }

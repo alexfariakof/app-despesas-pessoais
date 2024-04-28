@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using CrossCutting.CommonDependenceInject;
+using DataSeeders.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddCors(c =>
     });
 });
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -31,11 +33,11 @@ builder.Services.AddSwaggerGen(c =>
         new Microsoft.OpenApi.Models.OpenApiInfo
         {
             Title = "API Version 6",
-            Version = "6.0.0"
+            Version = "6.0.2"
         });
 });
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsProduction() || builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 }
@@ -45,11 +47,12 @@ else
 }
 
 // Add CommonInjectDependences 
+builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 builder.Services.ConfigureAutorization(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();
-
+builder.Services.AddHyperMediaHATEOAS();
 
 var app = builder.Build();
 
@@ -67,25 +70,24 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     string swaggerJsonBasePath = string.IsNullOrWhiteSpace(c.RoutePrefix) ? "." : "..";
-    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v6/swagger.json", "API Version 6 with DDD/CQRS");
+    c.SwaggerEndpoint($"{swaggerJsonBasePath}/swagger/v6/swagger.json", "API Version 6.0.2 with DDD/UnitOfWork/CQRS/HATEOAS");
 });
 
 app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-// Not existis folder  wwwroot for SPA projects
+// Not existis folder wwwroot for SPA projects
 //app.UseStaticFiles();
-app.MapControllers();
 
-if (!app.Environment.IsProduction())
-{ 
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var dataSeeder = services.GetRequiredService<IDataSeeder>();
-        dataSeeder.SeedData();
-    }
+app.MapControllers();
+app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dataSeeder = services.GetRequiredService<IDataSeeder>();
+    dataSeeder.SeedData();
 }
 
 app.Run();

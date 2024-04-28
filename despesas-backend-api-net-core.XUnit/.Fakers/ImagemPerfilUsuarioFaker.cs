@@ -10,21 +10,20 @@ public class ImagemPerfilUsuarioFaker
             .RuleFor(i => i.Id, f => counter++)
             .RuleFor(i => i.Url, f => f.Internet.Url())
             .RuleFor(i => i.Name, f => f.System.FileName())
-            .RuleFor(i => i.Type, f => f.System.CommonFileType())
+            .RuleFor(i => i.ContentType, f => f.System.CommonFileType())
             .RuleFor(i => i.UsuarioId, usuario.Id)
             .RuleFor(i => i.Usuario, usuario);
 
         return imagemFaker.Generate();
     }
 
-    public static ImagemPerfilDto GetNewFakerVM(UsuarioDto usuarioVM)
+    public static ImagemPerfilDto GetNewFakerVM(UsuarioDto usuarioDto)
     {
         var imagemFaker = new Faker<ImagemPerfilDto>()
             .RuleFor(i => i.Id, f => counterVM++)
             .RuleFor(i => i.Url, f => f.Internet.Url())
             .RuleFor(i => i.Name, f => f.System.FileName())
-            .RuleFor(i => i.Type, f => f.System.CommonFileType())
-            .RuleFor(i => i.IdUsuario, usuarioVM.Id)
+            .RuleFor(i => i.IdUsuario, usuarioDto.Id)
             .RuleFor(i => i.ContentType, f => counter % 2 == 0 ? "image/png" : "image/jpg");
 
         return imagemFaker.Generate();
@@ -48,8 +47,8 @@ public class ImagemPerfilUsuarioFaker
         return imagens;
     }
 
-    public static List<ImagemPerfilDto> ImagensPerfilUsuarioVMs(
-        UsuarioDto? usuarioVM = null,
+    public static List<ImagemPerfilDto> ImagensPerfilUsuarioDtos(
+        UsuarioDto? usuarioDto = null,
         int? idUsuario = null
     )
     {
@@ -57,9 +56,9 @@ public class ImagemPerfilUsuarioFaker
         for (var i = 0; i < 10; i++)
         {
             if (idUsuario == null)
-                usuarioVM = UsuarioFaker.Instance.GetNewFakerVM();
+                usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
 
-            var imagemVM = GetNewFakerVM(usuarioVM);
+            var imagemVM = GetNewFakerVM(usuarioDto);
 
             imagensVM.Add(imagemVM);
         }

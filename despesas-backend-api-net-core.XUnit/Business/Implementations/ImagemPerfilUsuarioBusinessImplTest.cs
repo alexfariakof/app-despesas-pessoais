@@ -22,7 +22,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     }
 
     [Fact]
-    public void Create_Should_Returns_ImagemPerfilUsuarioVM()
+    public void Create_Should_Returns_ImagemPerfilUsuarioDto()
     {
         // Arrange
         var imagemPerfilVM = ImagemPerfilUsuarioFaker.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM());
@@ -55,7 +55,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     }
 
     [Fact]
-    public void FindAll_Should_Return_List_Of_ImagemPerfilUsuarioVM()
+    public void FindAll_Should_Return_List_Of_ImagemPerfilUsuarioDto()
     {
         // Arrange
         var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
@@ -70,7 +70,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     }
 
     [Fact]
-    public void FindById_Should_Returns_ImagemPerfilUsuarioVM()
+    public void FindById_Should_Returns_ImagemPerfilUsuarioDto()
     {
         // Arrange
         var imagemPerfilVM = new ImagemPerfilUsuarioParser().Parse(_imagensPerfil.First());
@@ -128,7 +128,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     }
 
     [Fact]
-    public void Update_Should_Return_ImagemPerfilUsuarioVM()
+    public void Update_Should_Return_ImagemPerfilUsuarioDto()
     {
         // Arrange
         var imagemPerfil = _imagensPerfil.First();

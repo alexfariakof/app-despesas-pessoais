@@ -62,13 +62,13 @@ public class UsuarioFaker
         lock (LockObject)
         {
 
-            var listUsuarioVM = new List<UsuarioDto>();
+            var listUsuarioDto = new List<UsuarioDto>();
             for (int i = 0; i < count; i++)
             {
-                var usuarioVM = GetNewFakerVM();
-                listUsuarioVM.Add(usuarioVM);
+                var usuarioDto = GetNewFakerVM();
+                listUsuarioDto.Add(usuarioDto);
             }
-            return listUsuarioVM;            
+            return listUsuarioDto;            
         }
     }
 

@@ -2,7 +2,7 @@
 public class UsuarioParserTest
 {
     [Fact]
-    public void Should_Parse_UsuarioVM_To_Usuario()
+    public void Should_Parse_UsuarioDto_To_Usuario()
     {
         // Arrange
         var parser = new UsuarioParser();
@@ -21,7 +21,7 @@ public class UsuarioParserTest
     }
 
     [Fact]
-    public void Should_Parse_Usuario_To_UsuarioVM()
+    public void Should_Parse_Usuario_To_UsuarioDto()
     {
         // Arrange
         var parser = new UsuarioParser();
@@ -39,7 +39,7 @@ public class UsuarioParserTest
     }
 
     [Fact]
-    public void Should_ParseList_UsuarioVM_List_To_Usuario_List()
+    public void Should_ParseList_UsuarioDto_List_To_Usuario_List()
     {
         // Arrange
         var parser = new UsuarioParser();
@@ -62,7 +62,7 @@ public class UsuarioParserTest
     }
 
     [Fact]
-    public void Should_ParseList_Usuario_List_To_UsuarioVM_List()
+    public void Should_ParseList_Usuario_List_To_UsuarioDto_List()
     {
         // Arrange
         var parser = new UsuarioParser();

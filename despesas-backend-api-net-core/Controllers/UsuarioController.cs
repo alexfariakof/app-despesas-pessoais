@@ -1,9 +1,9 @@
 ﻿using Business.Abstractions;
 using Business.Dtos;
+using Business.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers;
 
@@ -22,180 +22,262 @@ public class UsuarioController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(IList<UsuarioDto>))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
-        var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+        try
         {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-        }
+            var adm = _usuarioBusiness.FindById(IdUsuario);
+            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+                throw new ArgumentException("Usuário não permitido a realizar operação!");
 
-        return Ok(_usuarioBusiness.FindAll(IdUsuario));
+            return Ok(_usuarioBusiness.FindAll(IdUsuario));
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return Ok(new List<UsuarioDto>());
+        }
     }
             
     [HttpGet("GetUsuario")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetUsuario()
     {
-        UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (_usuario == null)
-            return BadRequest(new { message ="Usuário não encontrado!" });
+        try
+        { 
+            UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+            if (_usuario == null) throw new Exception();
+            return Ok(_usuario);
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
 
-        return Ok(_usuario);
+            return BadRequest("Usuário não encontrado!");
+        }
     }
 
     [HttpPost]
     [Authorize("Bearer")]
-    public IActionResult Post([FromBody] UsuarioDto usuarioVM)
+    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
-        var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+        try
         {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            usuarioDto.IdUsuario = IdUsuario;
+            return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
         }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
 
-        if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
-
-        if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
-
-        if (!IsValidEmail(usuarioVM.Email))
-            return BadRequest(new { message = "Email inválido!" });
-
-        return new OkObjectResult(_usuarioBusiness.Create(usuarioVM));
+            return BadRequest("Erro ao cadastar novo Usuário!");
+        }
     }
 
     [HttpPut]
     [Authorize("Bearer")]
-    public IActionResult Put([FromBody] UsuarioDto usuarioVM)
+    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Put([FromBody] UsuarioDto usuarioDto)
     {
-        if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
+        try
+        {
+            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+            if (updateUsuario == null) 
+                throw new ArgumentException("Usuário não encontrado!");
 
-        if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
+            return new OkObjectResult(updateUsuario);
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
 
-        if (!IsValidEmail(usuarioVM.Email))
-            return BadRequest(new { message = "Email inválido!" });
-
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioVM);
-        if (updateUsuario == null)
-            return  BadRequest(new { message = "Usuário não encontrado!" });
-
-        return new OkObjectResult(updateUsuario);
+            return BadRequest("Erro ao atualizar Usuário!");
+        }
     }
 
     [HttpPut("UpdateUsuario")]
     [Authorize("Bearer")]
-    public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioVM)
+    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
-        var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+        try
         {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            var usuario = _usuarioBusiness.FindById(IdUsuario);
+            if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+                throw new ArgumentException("Usuário não permitido a realizar operação!");
+
+            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+            if (updateUsuario == null) 
+                throw new ArgumentException("Usuário não encontrado!");
+
+            return new OkObjectResult(updateUsuario);
         }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
 
-        if (String.IsNullOrEmpty(usuarioVM.Telefone) || String.IsNullOrWhiteSpace(usuarioVM.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
-
-        if (String.IsNullOrEmpty(usuarioVM.Email) || String.IsNullOrWhiteSpace(usuarioVM.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
-
-        if (!IsValidEmail(usuarioVM.Email))
-            return BadRequest(new { message = "Email inválido!" });
-
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioVM);
-        if (updateUsuario == null)
-            return BadRequest(new { message = "Usuário não encontrado!" });
-
-        return new OkObjectResult(updateUsuario);
+            return BadRequest("Erro ao atualizar Usuário!");
+        }
     }
 
     [HttpDelete]
     [Authorize("Bearer")]
-    public IActionResult Delete([FromBody] UsuarioDto usuarioVM)
+    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
-        var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+        try
         {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+            var adm = _usuarioBusiness.FindById(IdUsuario);
+            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+                throw new ArgumentException("Usuário não permitido a realizar operação!");
+
+            if (_usuarioBusiness.Delete(usuarioDto))
+                return new OkObjectResult(true);
+            else
+                throw new Exception();
         }
-            
-        if (_usuarioBusiness.Delete(usuarioVM))
-            return new OkObjectResult(new { message = true });
-        else
-            return BadRequest(new { message = "Erro ao excluir Usuário!" });
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao excluir Usuário!");
+        }
     }
     
     [HttpGet("ImagemPerfil")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetImage()
     {
-        var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
-            .Find(prop => prop.IdUsuario.Equals(IdUsuario));
+        try
+        {
 
-        if (imagemPerfilUsuario != null)
-            return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
-        else
-            return BadRequest(new { message = "Usuário não possui nenhuma imagem de perfil cadastrada!" });
+            var imagemPerfilUsuario = _imagemPerfilBussiness
+                .FindAll(IdUsuario).Find(prop => prop.IdUsuario.Equals(IdUsuario));
+
+            if (imagemPerfilUsuario != null)
+                return Ok(imagemPerfilUsuario);
+            else
+                throw new Exception();
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Usuário não possui nenhuma imagem de perfil cadastrada!");
+        }
     }
 
     [HttpPost("ImagemPerfil")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PostImagemPerfil(IFormFile file)
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
+            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+
             if (_imagemPerfilUsuario != null)
-                return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
+                return Ok(_imagemPerfilUsuario);
             else
-                return BadRequest(new { message = false, imagemPerfilUsuario = _imagemPerfilUsuario });
+                throw new Exception();
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao incluir imagem de perfil!");
         }
     }
 
     [HttpPut("ImagemPerfil")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PutImagemPerfil(IFormFile file)
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioVMAsync(file, IdUsuario);
+            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
-                return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
+                return Ok(imagemPerfilUsuario);
             else
-                return BadRequest(new { message = false });
+                throw new Exception();
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao atualizar imagem de perfil!");
         }
     }
 
     [HttpDelete("ImagemPerfil")]
     [Authorize("Bearer")]
+    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult DeleteImagemPerfil()
     {
         try
         {
             if (_imagemPerfilBussiness.Delete(IdUsuario))
-                return Ok(new { message = true });
+                return Ok(true);
             else
-                return BadRequest(new { message = false });
+                throw new Exception();
         }
-        catch
+        catch (Exception ex)
         {
-            return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao excluir imagem do perfil!");
         }
     }
-    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioVMAsync(IFormFile file, int idUsuario)
+
+    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioDtoAsync(IFormFile file, int idUsuario)
     {
         string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
         string typeFile = "";
@@ -221,14 +303,6 @@ public class UsuarioController : AuthController
             }
         }
         else
-            throw new Exception("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.");
+            throw new ArgumentException("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.");
     }
-    private bool IsValidEmail(string email)
-    {
-        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-        Regex regex = new Regex(pattern);
-        return regex.IsMatch(email);
-    }
-
 }
-

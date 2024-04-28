@@ -20,7 +20,7 @@ public class DespesaBusinessImplTest
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaParser().Parse(despesa);
+        var despesaDto = new DespesaParser().Parse(despesa);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
         var categorias = CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId);
@@ -28,17 +28,17 @@ public class DespesaBusinessImplTest
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
         
         // Act
-        var result = _despesaBusiness.Create(despesaVM);
+        var result = _despesaBusiness.Create(despesaDto);
 
         // Assert
         Assert.NotNull(result);
         Assert.IsType<DespesaDto>(result);
-        Assert.Equal(despesaVM.Id, result.Id);
+        Assert.Equal(despesaDto.Id, result.Id);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Despesa>.IsAny), Times.Once);
     }
 
     [Fact]
-    public void FindAll_Should_Returns_List_Of_DespesaVM()
+    public void FindAll_Should_Returns_List_Of_DespesaDto()
     {
         // Arrange                     
         var despesas = DespesaFaker.Instance.Despesas();
@@ -58,7 +58,7 @@ public class DespesaBusinessImplTest
     }
 
     [Fact]
-    public void FindById_Should_Returns_Parsed_DespesaVM()
+    public void FindById_Should_Returns_Parsed_DespesaDto()
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
@@ -77,7 +77,7 @@ public class DespesaBusinessImplTest
     }
 
     [Fact]
-    public void FindById_Should_Returns_Null_When_Parsed_DespesaVM()
+    public void FindById_Should_Returns_Null_When_Parsed_DespesaDto()
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
@@ -94,18 +94,18 @@ public class DespesaBusinessImplTest
     }
 
     [Fact]
-    public void Update_Should_Returns_Parsed_DespesaVM()
+    public void Update_Should_Returns_Parsed_DespesaDto()
     {
         // Arrange         
         var despesa = DespesaFaker.Instance.Despesas().First();
         despesa.Descricao = "Teste Update Despesa";
-        var despesaVM = new DespesaParser().Parse(despesa);        
+        var despesaDto = new DespesaParser().Parse(despesa);        
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Despesa>.IsAny));
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId));
 
         // Act
-        var result = _despesaBusiness.Update(despesaVM);
+        var result = _despesaBusiness.Update(despesaDto);
 
         // Assert
         Assert.NotNull(result);
@@ -121,10 +121,10 @@ public class DespesaBusinessImplTest
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Despesa>())).Returns(true);
-        var despesaVM = new DespesaParser().Parse(despesa);
+        var despesaDto = new DespesaParser().Parse(despesa);
         
         // Act
-        var result = _despesaBusiness.Delete(despesaVM);
+        var result = _despesaBusiness.Delete(despesaDto);
 
         // Assert
         Assert.IsType<bool>(result);
@@ -137,12 +137,12 @@ public class DespesaBusinessImplTest
     {
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
-        var despesaVM = new DespesaParser().Parse(despesa);
+        var despesaDto = new DespesaParser().Parse(despesa);
         var categorias = CategoriaFaker.Instance.Categorias();
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny)).Throws<Exception>();        
         _repositorioCategoria.Setup(repo => repo.GetAll()).Throws(new ArgumentException("Erro Categoria inexistente ou não cadastrada!"));
 
         // Act & Assert 
-        Assert.Throws<ArgumentException>(() => _despesaBusiness.Create(despesaVM));
+        Assert.Throws<ArgumentException>(() => _despesaBusiness.Create(despesaDto));
     }
 }

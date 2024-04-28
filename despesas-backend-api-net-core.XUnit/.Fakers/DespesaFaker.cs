@@ -53,21 +53,21 @@ public class DespesaFaker
         return despesaFaker.Generate();
     }
 
-    public List<DespesaDto> DespesasVMs(UsuarioDto? usuarioVM = null, int? idUsuario = null)
+    public List<DespesaDto> DespesasVMs(UsuarioDto? usuarioDto = null, int? idUsuario = null)
     {
-        var listDespesaVM = new List<DespesaDto>();
+        var listDespesaDto = new List<DespesaDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)
-                usuarioVM = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
+                usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
-            var categoriaVM = CategoriaFaker.Instance.GetNewFakerVM(usuarioVM, TipoCategoria.Despesa);
+            var categoriaDto = CategoriaFaker.Instance.GetNewFakerVM(usuarioDto, TipoCategoria.Despesa);
 
-            var despesaVM = GetNewFakerVM(usuarioVM.Id, categoriaVM.Id);
-            listDespesaVM.Add(despesaVM);
+            var despesaDto = GetNewFakerVM(usuarioDto.Id, categoriaDto.Id);
+            listDespesaDto.Add(despesaDto);
         }
 
-        return listDespesaVM;
+        return listDespesaDto;
     }
 
     public List<Despesa> Despesas(Usuario? usuario = null, int? idUsurio = null, int count = 10)

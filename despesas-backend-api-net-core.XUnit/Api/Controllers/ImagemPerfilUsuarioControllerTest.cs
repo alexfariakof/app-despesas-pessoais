@@ -13,7 +13,7 @@ public class ImagemPerfilUsuarioControllerTest
     protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
     protected Mock<IImagemPerfilUsuarioBusiness> _mockImagemPerfilBusiness;
     protected UsuarioController _usuarioController;
-    protected List<UsuarioDto>? _usuarioVMs;
+    protected List<UsuarioDto>? _usuarioDtos;
 
     private void SetupBearerToken(int idUsuario)
     {
@@ -36,40 +36,37 @@ public class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public void GetImage_Should_Returns_OkResults_With_ImagemPerfilUsuario()
+    public void Get_ImagemPerfilUsuario_Should_Returns_OkResults_With_ImagemPerfilUsuario()
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
-        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
-        var usuarioVM = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
-        int idUsuario = usuarioVM.Id;
+        var _imagemPerfilUsuarioDtos = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
+        var usuarioDto = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
+        int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioVMs);
+        _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
         var result = _usuarioController.GetImage() as ObjectResult;
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        var _imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        var _imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(_imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(_imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
 
     [Fact]
-    public void Get_Should_Returns_BadRequest_When_ImagemPerfilUsuario_NotFound()
+    public void Get_ImagemPerfilUsuario_Should_Returns_BadRequest_When_ImagemPerfilUsuario_NotFound()
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
-        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
-        var usuarioVM = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
+        var _imagemPerfilUsuarioDtos = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
+        var usuarioDto = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
         int idUsuario = 987654;
         SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioVMs);
+        _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
         var result = _usuarioController.GetImage() as ObjectResult;
@@ -77,23 +74,22 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;        
         Assert.Equal("Usuário não possui nenhuma imagem de perfil cadastrada!", message);
         _mockImagemPerfilBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
 
     [Fact]
-    public async void Post_Should_Create_And_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
+    public async void Post_ImagemPerfilUsuario_Should_Create_And_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
-        var _imagemPerfilUsuarioVMs = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
-        var imagemPerfilUsuarioVM = _imagemPerfilUsuarioVMs.First();
-        int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
+        var _imagemPerfilUsuarioDtos = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
+        var imagemPerfilUsuarioDto = _imagemPerfilUsuarioDtos.First();
+        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
 
         SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioVM);
+        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/jpg" } };
@@ -104,10 +100,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        var imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Once);
@@ -122,10 +115,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert file Type PNG
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        value = result.Value;
-        message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify( b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Exactly(2));
@@ -140,24 +130,20 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert file Type JPEG
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        value = result.Value;
-
-        message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Exactly(3));
     }
 
     [Fact]
-    public async void Post_Should_Returns_BadRequest_For_Invalid_Images_Type()
+    public async void Post_ImagemPerfilUsuario_Should_Returns_BadRequest_For_Invalid_Images_Type()
     {
         // Arrange
-        var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
-        int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
+        var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
+        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioVM);
+        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file not Image type content")), 0, Encoding.UTF8.GetBytes("Test file not Image type content").Length, "DATA File Erro", "test.txt");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/txt" } };
@@ -168,20 +154,18 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;        
         Assert.Equal("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.", message);
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
 
     [Fact]
-    public async void Post_Should_Try_Create_And_Returns_BadRequest()
+    public async void Post_ImagemPerfilUsuario_Should_Try_Create_And_Returns_BadRequest()
     {
         // Arrange
-        var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
-        int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
+        var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
+        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
         SetupBearerToken(idUsuario);
-
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
 
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
@@ -193,11 +177,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.False(message);
-        var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        var imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.Null(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Once);
     }
@@ -209,7 +189,6 @@ public class ImagemPerfilUsuarioControllerTest
         var idUsuario = 1;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
-
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
 
         // Act
@@ -220,7 +199,6 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var value = result.Value;
         value = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as String;
         //Assert.Equal("Erro ao incluir nova imagem de peefil!", message);
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
@@ -229,10 +207,10 @@ public class ImagemPerfilUsuarioControllerTest
     public async void Put_Should_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
     {
         // Arrange
-        var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
-        int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
+        var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
+        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioVM);
+        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/jpg" } };
@@ -243,11 +221,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-
-        Assert.True(message);
-        var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        var imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Once);
@@ -262,10 +236,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert file Type PNG
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        value = result.Value;
-        message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Exactly(2));
@@ -280,10 +251,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert file Type JPEG
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        value = result.Value;
-        message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.True(message);
-        imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Exactly(3));
@@ -296,7 +264,6 @@ public class ImagemPerfilUsuarioControllerTest
         int idUsuario = 1;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
-
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
 
         // Act
@@ -307,7 +274,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var value = result.Value;
         value = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as String;
+
         //Assert.Equal("Erro ao Atualizar imagem do perfil!", message);
         _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
@@ -316,12 +283,10 @@ public class ImagemPerfilUsuarioControllerTest
     public async void Put_Should_Returns_BadRequest_For_Invalid_Images_Type()
     {
         // Arrange
-        var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
-        int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
-
+        var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
+        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
         SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioVM);
-
+        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file not Image type content")), 0, Encoding.UTF8.GetBytes("Test file not Image type content").Length, "DATA File Erro", "test.txt");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/txt" } };
 
@@ -331,8 +296,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;        
         Assert.Equal("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.", message);
         _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Never);
     }
@@ -341,11 +305,10 @@ public class ImagemPerfilUsuarioControllerTest
     public async void Put_Should_Returns_BadRequest_When_ImagemPerfil_IsNull()
     {
         // Arrange
-        var imagemPerfilUsuarioVM = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioVMs().First();
-        int idUsuario = imagemPerfilUsuarioVM.IdUsuario;
+        var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
+        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
-
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/jpg" } };
 
@@ -355,11 +318,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        value = result.Value;
-        var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
-        Assert.False(message);
-        var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
+        var imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.Null(imagemPerfilUsuario);
         _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Once);
     }
@@ -378,8 +337,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var message  = (bool)result.Value;
         Assert.IsType<bool>(message);
         Assert.True((bool)message);
         _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);
@@ -399,11 +357,8 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-        Assert.IsType<bool>(message);
-        Assert.False((bool)message);
+        var message = result.Value;
+        Assert.Equal("Erro ao excluir imagem do perfil!", message);
         _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);
     }
 
@@ -421,9 +376,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
+        var message = result.Value;               
         Assert.Equal("Erro ao excluir imagem do perfil!", message);
         _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);
     }

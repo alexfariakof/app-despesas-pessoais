@@ -10,7 +10,7 @@ public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity :
         UnitOfWork = unitOfWork;
     }
 
-    public abstract Dto Create(Dto usuarioVM);
+    public abstract Dto Create(Dto usuarioDto);
 
     public abstract Dto FindById(int id, int idUsuario);
 

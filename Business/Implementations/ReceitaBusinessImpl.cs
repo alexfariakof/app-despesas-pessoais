@@ -38,9 +38,9 @@ public class ReceitaBusinessImpl : IBusiness<ReceitaDto>
     {
         var receita = _repositorio.Get(id);
         receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
-        var receitaVm = _converter.Parse(receita);
-        if (receitaVm.IdUsuario == idUsuario)
-            return receitaVm;
+        var receitaDto = _converter.Parse(receita);
+        if (receitaDto.IdUsuario == idUsuario)
+            return receitaDto;
         return null;
     }
 

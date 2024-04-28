@@ -13,7 +13,6 @@ public static class AutorizationDependenceInject
     public static void CreateDataBaseInMemory(this IServiceCollection services)
     {
         services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-        services.AddTransient<IDataSeeder, DataSeeder>();
     }
 
     public static void ConfigureAutorization(this IServiceCollection services, IConfiguration configuration)
