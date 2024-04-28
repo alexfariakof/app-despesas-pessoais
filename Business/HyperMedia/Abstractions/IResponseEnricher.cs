@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace despesas_backend_api_net_core.HyperMedia.Abstractions;
+namespace Business.HyperMedia.Abstractions;
 public interface IResponseEnricher
 {
     bool CanEnrich(ResultExecutingContext response);

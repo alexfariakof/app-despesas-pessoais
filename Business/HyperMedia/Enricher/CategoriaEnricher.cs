@@ -1,17 +1,16 @@
 ﻿using Business.Dtos;
-using Business.HyperMedia;
-using despesas_backend_api_net_core.HyperMedia.Constants;
+using Business.HyperMedia.Constants;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
-namespace despesas_backend_api_net_core.HyperMedia.Enricher;
+namespace Business.HyperMedia.Enricher;
 
-public class ImagemPerfilEnricher : ContentResponseEnricher<ImagemPerfilDto>
+public class CategoriaEnricher : ContentResponseEnricher<CategoriaDto>
 {
     private readonly object _lock = new object();
-    protected override Task EnrichModel(ImagemPerfilDto content, IUrlHelper urlHelper)
+    protected override Task EnrichModel(CategoriaDto content, IUrlHelper urlHelper)
     {
-        var path = "usuario/imagemperfil";
+        var path = "categoria";
         string link = GetLink(content.Id, urlHelper, path);
 
         content.Links.Add(new HyperMediaLink() 

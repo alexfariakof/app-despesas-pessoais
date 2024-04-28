@@ -1,18 +1,17 @@
 ﻿using Business.Dtos;
-using Business.HyperMedia;
-using despesas_backend_api_net_core.HyperMedia.Constants;
+using Business.HyperMedia.Constants;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
-namespace despesas_backend_api_net_core.HyperMedia.Enricher;
+namespace Business.HyperMedia.Enricher;
 
-public class UsuarioEnricher : ContentResponseEnricher<UsuarioDto>
+public class SaldoEnricher : ContentResponseEnricher<SaldoDto>
 {
     private readonly object _lock = new object();
-    protected override Task EnrichModel(UsuarioDto content, IUrlHelper urlHelper)
+    protected override Task EnrichModel(SaldoDto content, IUrlHelper urlHelper)
     {
-        var path = "usuario";
-        string link = GetLink(content.Id, urlHelper, path);
+        var path = "saldo";
+        string link = GetLink(0, urlHelper, path);
 
         content.Links.Add(new HyperMediaLink() 
         { 
@@ -22,29 +21,26 @@ public class UsuarioEnricher : ContentResponseEnricher<UsuarioDto>
             Type = ResponseTypeFormat.DefaultGet
         });
 
+        path = "saldo/ByAno";
+        link = GetLink(0, urlHelper, path);
+
         content.Links.Add(new HyperMediaLink()
         {
-            Action = HttpActionVerb.POST,
+            Action = HttpActionVerb.GET,
             Href = link,
             Rel = RelationType.self,
-            Type = ResponseTypeFormat.DefaultPost
+            Type = ResponseTypeFormat.DefaultGet
         });
 
+        path = "saldo/ByMesAno";
+        link = GetLink(0, urlHelper, path);
 
         content.Links.Add(new HyperMediaLink()
         {
-            Action = HttpActionVerb.PUT,
+            Action = HttpActionVerb.GET,
             Href = link,
             Rel = RelationType.self,
-            Type = ResponseTypeFormat.DefaultPut
-        });
-
-        content.Links.Add(new HyperMediaLink()
-        {
-            Action = HttpActionVerb.DELETE,
-            Href = link,
-            Rel = RelationType.self,
-            Type = ResponseTypeFormat.DefaultDelete
+            Type = ResponseTypeFormat.DefaultGet
         });
 
         return Task.CompletedTask;

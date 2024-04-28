@@ -1,7 +1,9 @@
-﻿using despesas_backend_api_net_core.HyperMedia.Enricher;
-using despesas_backend_api_net_core.HyperMedia.Filters;
+﻿using Business.HyperMedia.Enricher;
+using Business.HyperMedia.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace despesas_backend_api_net_core.CommonDependenceInject;
+
+namespace Business.CommonDependenceInject;
 public static class HyperMediaDependenceInject
 {
     public static void AddHyperMediaHATEOAS(this IServiceCollection services)

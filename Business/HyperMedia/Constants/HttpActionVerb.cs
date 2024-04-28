@@ -1,4 +1,4 @@
-﻿namespace despesas_backend_api_net_core.HyperMedia.Constants;
+﻿namespace Business.HyperMedia.Constants;
 
 public sealed class HttpActionVerb
 {

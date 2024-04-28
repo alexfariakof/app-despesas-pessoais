@@ -1,6 +1,6 @@
-﻿using despesas_backend_api_net_core.HyperMedia.Abstractions;
+﻿using Business.HyperMedia.Abstractions;
 
-namespace despesas_backend_api_net_core.HyperMedia.Filters;
+namespace Business.HyperMedia.Filters;
 
 public class HyperMediaFilterOptions
 {
