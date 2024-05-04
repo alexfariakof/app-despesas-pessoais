@@ -9,6 +9,11 @@ using Repository.Persistency.Implementations;
 namespace Repository.CommonDependenceInject;
 public static class RepositoryDependenceInject
 {
+    public static void CreateDataBaseInMemory(this IServiceCollection services)
+    {
+        services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
+    }
+
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));

@@ -1,20 +1,11 @@
 ﻿using Business.Authentication;
-using DataSeeders;
-using DataSeeders.Implementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using Repository;
 
 namespace despesas_backend_api_net_core.CommonDependenceInject;
 public static class AutorizationDependenceInject
 {
-    public static void CreateDataBaseInMemory(this IServiceCollection services)
-    {
-        services.AddDbContext<RegisterContext>(c => c.UseInMemoryDatabase("Register"));
-    }
-
     public static void ConfigureAutorization(this IServiceCollection services, IConfiguration configuration)
     {
         SigningConfigurations signingConfigurations = new SigningConfigurations();
