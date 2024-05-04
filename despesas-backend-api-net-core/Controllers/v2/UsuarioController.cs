@@ -1,15 +1,15 @@
-﻿using Business.Abstractions;
+﻿using Asp.Versioning;
+using Business.Abstractions;
 using Business.Dtos;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v2;
 
-[Route("[controller]")]
-[ApiController]
-[Authorize("Bearer")]
+[ApiVersion("2")]
+[Route("v{version:apiVersion}/[controller]")]
 public class UsuarioController : AuthController
 {
     private IUsuarioBusiness _usuarioBusiness;
@@ -22,9 +22,9 @@ public class UsuarioController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(IList<UsuarioDto>))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(IList<UsuarioDto>))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -44,17 +44,17 @@ public class UsuarioController : AuthController
             return Ok(new List<UsuarioDto>());
         }
     }
-            
+
     [HttpGet("GetUsuario")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetUsuario()
     {
         try
-        { 
+        {
             UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
             if (_usuario == null) throw new Exception();
             return Ok(_usuario);
@@ -70,9 +70,9 @@ public class UsuarioController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
@@ -92,16 +92,16 @@ public class UsuarioController : AuthController
 
     [HttpPut]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] UsuarioDto usuarioDto)
     {
         try
         {
             UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
-            if (updateUsuario == null) 
+            if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
             return new OkObjectResult(updateUsuario);
@@ -117,9 +117,9 @@ public class UsuarioController : AuthController
 
     [HttpPut("UpdateUsuario")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(UsuarioDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
@@ -130,7 +130,7 @@ public class UsuarioController : AuthController
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
-            if (updateUsuario == null) 
+            if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
             return new OkObjectResult(updateUsuario);
@@ -146,9 +146,9 @@ public class UsuarioController : AuthController
 
     [HttpDelete]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(bool))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
@@ -171,12 +171,12 @@ public class UsuarioController : AuthController
             return BadRequest("Erro ao excluir Usuário!");
         }
     }
-    
+
     [HttpGet("ImagemPerfil")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(ImagemPerfilDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetImage()
     {
@@ -202,9 +202,9 @@ public class UsuarioController : AuthController
 
     [HttpPost("ImagemPerfil")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(ImagemPerfilDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PostImagemPerfil(IFormFile file)
     {
@@ -229,9 +229,9 @@ public class UsuarioController : AuthController
 
     [HttpPut("ImagemPerfil")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(ImagemPerfilDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(ImagemPerfilDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PutImagemPerfil(IFormFile file)
     {
@@ -255,9 +255,9 @@ public class UsuarioController : AuthController
 
     [HttpDelete("ImagemPerfil")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(bool))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult DeleteImagemPerfil()
     {
@@ -291,7 +291,8 @@ public class UsuarioController : AuthController
             {
                 await file.CopyToAsync(memoryStream);
 
-                ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto {
+                ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto
+                {
 
                     Name = fileName,
                     Type = typeFile,

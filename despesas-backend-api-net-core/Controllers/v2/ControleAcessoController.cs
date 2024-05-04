@@ -1,12 +1,13 @@
-﻿using Business.Abstractions;
+﻿using Asp.Versioning;
+using Business.Abstractions;
 using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v2;
 
-[Route("[controller]")]
-[ApiController]
+[ApiVersion("2")]
+[Route("v{version:apiVersion}/[controller]")]
 public class ControleAcessoController : AuthController
 {
     private IControleAcessoBusiness _controleAcessoBusiness;
@@ -14,11 +15,11 @@ public class ControleAcessoController : AuthController
     {
         _controleAcessoBusiness = controleAcessoBusiness;
     }
-    
+
     [AllowAnonymous]
     [HttpPost]
-    [ProducesResponseType((200), Type = typeof(bool))]
-    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
     public IActionResult Post([FromBody] ControleAcessoDto controleAcessoDto)
     {
         try
@@ -26,7 +27,7 @@ public class ControleAcessoController : AuthController
             _controleAcessoBusiness.Create(controleAcessoDto);
             return Ok(true);
         }
-        catch  (Exception ex)
+        catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
                 return BadRequest(argEx.Message);
@@ -34,11 +35,11 @@ public class ControleAcessoController : AuthController
             return BadRequest("Não foi possível realizar o cadastro.");
         }
     }
-    
+
     [AllowAnonymous]
     [HttpPost("SignIn")]
-    [ProducesResponseType((200), Type = typeof(AuthenticationDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
+    [ProducesResponseType(200, Type = typeof(AuthenticationDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
     public IActionResult SignIn([FromBody] LoginDto login)
     {
         try
@@ -61,9 +62,9 @@ public class ControleAcessoController : AuthController
 
     [HttpPost("ChangePassword")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(bool))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordVM)
     {
         try
@@ -80,18 +81,21 @@ public class ControleAcessoController : AuthController
                 return BadRequest(argEx.Message);
 
             return BadRequest("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.");
-        }        
+        }
     }
 
     [HttpPost("RecoveryPassword")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(bool))]
+    [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     public IActionResult RecoveryPassword([FromBody] string email)
     {
         try
         {
+            if (IdUsuario.Equals(2))
+                throw new Exception();
+
             _controleAcessoBusiness.RecoveryPassword(email);
             return Ok(true);
         }
@@ -103,7 +107,7 @@ public class ControleAcessoController : AuthController
 
     [AllowAnonymous]
     [HttpGet("refresh/{refreshToken}")]
-    [ProducesResponseType((200), Type = typeof(AuthenticationDto))]
+    [ProducesResponseType(200, Type = typeof(AuthenticationDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public IActionResult Refresh([FromRoute] string refreshToken)
     {
@@ -112,12 +116,12 @@ public class ControleAcessoController : AuthController
             var result = _controleAcessoBusiness.ValidateCredentials(refreshToken);
             if (result is null)
                 throw new NullReferenceException();
-            
+
             return Ok(result);
         }
         catch
         {
-           return NoContent();
+            return NoContent();
         }
     }
 }

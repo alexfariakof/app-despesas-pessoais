@@ -1,13 +1,14 @@
-﻿using Business.Abstractions;
+﻿using Asp.Versioning;
+using Business.Abstractions;
 using Business.Dtos;
 using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v2;
 
-[Route("[controller]")]
-[ApiController]
+[ApiVersion("2")]
+[Route("v{version:apiVersion}/[controller]")]
 public class SaldoController : AuthController
 {
     private ISaldoBusiness _saldoBusiness;
@@ -18,9 +19,9 @@ public class SaldoController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(SaldoDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(SaldoDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -37,9 +38,9 @@ public class SaldoController : AuthController
 
     [HttpGet("ByAno/{ano}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(SaldoDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(SaldoDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByAno([FromRoute] DateTime ano)
     {
@@ -56,9 +57,9 @@ public class SaldoController : AuthController
 
     [HttpGet("ByMesAno/{anoMes}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(SaldoDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(SaldoDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
     {

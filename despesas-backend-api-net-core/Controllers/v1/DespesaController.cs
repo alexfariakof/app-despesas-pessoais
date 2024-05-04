@@ -1,13 +1,14 @@
-﻿using Business.Dtos;
+﻿using Asp.Versioning;
+using Business.Dtos;
 using Business.Generic;
 using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v1;
 
-[Route("[controller]")]
-[ApiController]
+[ApiVersion("1")]
+[Route("v1/[controller]")]
 public class DespesaController : AuthController
 {
     private IBusiness<DespesaDto> _despesaBusiness;
@@ -18,8 +19,8 @@ public class DespesaController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(IList<DespesaDto>))]    
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(IList<DespesaDto>))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -35,11 +36,11 @@ public class DespesaController : AuthController
 
     [HttpGet("GetById/{id}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(DespesaDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(DespesaDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Get([FromRoute]int id)
+    public IActionResult Get([FromRoute] int id)
     {
         try
         {
@@ -57,9 +58,9 @@ public class DespesaController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(DespesaDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(DespesaDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] DespesaDto despesa)
     {
@@ -76,9 +77,9 @@ public class DespesaController : AuthController
 
     [HttpPut]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(DespesaDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(DespesaDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
@@ -87,7 +88,7 @@ public class DespesaController : AuthController
             despesa.IdUsuario = IdUsuario;
             var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
-                throw new Exception();            
+                throw new Exception();
 
             return new OkObjectResult(updateDespesa);
         }
@@ -99,9 +100,9 @@ public class DespesaController : AuthController
 
     [HttpDelete("{idDespesa}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(bool))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idDespesa)
     {

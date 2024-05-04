@@ -1,13 +1,13 @@
-﻿using Business.Abstractions;
+﻿using Asp.Versioning;
+using Business.Abstractions;
 using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v2;
 
-[Route("[controller]")]
-[ApiController]
-[Authorize("Bearer")]
+[ApiVersion("2")]
+[Route("v{version:apiVersion}/[controller]")]
 public class LancamentoController : AuthController
 {
     private ILancamentoBusiness _lancamentoBusiness;
@@ -18,9 +18,9 @@ public class LancamentoController : AuthController
 
     [HttpGet("{anoMes}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(List<LancamentoDto>))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
-    public IActionResult Get([FromRoute]DateTime anoMes)
+    [ProducesResponseType(200, Type = typeof(List<LancamentoDto>))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    public IActionResult Get([FromRoute] DateTime anoMes)
     {
         try
         {
@@ -34,5 +34,5 @@ public class LancamentoController : AuthController
         {
             return Ok(new List<LancamentoDto>());
         }
-    }    
+    }
 }

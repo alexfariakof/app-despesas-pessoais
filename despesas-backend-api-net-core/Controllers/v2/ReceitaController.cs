@@ -1,14 +1,14 @@
-﻿using Business.Dtos;
+﻿using Asp.Versioning;
+using Business.Dtos;
 using Business.Generic;
 using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v2;
 
-[Route("[controller]")]
-[ApiController]
-[Authorize("Bearer")]
+[ApiVersion("2")]
+[Route("v{version:apiVersion}/[controller]")]
 public class ReceitaController : AuthController
 {
     private IBusiness<ReceitaDto> _receitaBusiness;
@@ -19,8 +19,8 @@ public class ReceitaController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(IList<ReceitaDto>))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(IList<ReceitaDto>))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -36,11 +36,11 @@ public class ReceitaController : AuthController
 
     [HttpGet("GetById/{id}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(ReceitaDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(ReceitaDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetById([FromRoute]int id)
+    public IActionResult GetById([FromRoute] int id)
     {
         try
         {
@@ -59,9 +59,9 @@ public class ReceitaController : AuthController
 
     [HttpPost]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(ReceitaDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(ReceitaDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] ReceitaDto receita)
     {
@@ -73,14 +73,14 @@ public class ReceitaController : AuthController
         catch
         {
             return BadRequest("Não foi possível realizar o cadastro da receita!");
-        }            
+        }
     }
 
     [HttpPut]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(ReceitaDto))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(ReceitaDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
@@ -99,9 +99,9 @@ public class ReceitaController : AuthController
 
     [HttpDelete("{idReceita}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(bool))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idReceita)
     {
@@ -114,7 +114,7 @@ public class ReceitaController : AuthController
             if (_receitaBusiness.Delete(receita))
                 return new OkObjectResult(true);
             else
-                throw new Exception();                
+                throw new Exception();
         }
         catch
         {

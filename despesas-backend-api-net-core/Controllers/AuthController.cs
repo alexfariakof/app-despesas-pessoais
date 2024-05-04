@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace despesas_backend_api_net_core.Controllers;
 
 [Authorize("Bearer")]
-public abstract class AuthController : Controller
+public abstract class AuthController : ValuesController
 {
     public AuthController() { }
     protected int IdUsuario
-    { 
+    {
         get
         {
             var tokenHandler = new JwtSecurityTokenHandler();

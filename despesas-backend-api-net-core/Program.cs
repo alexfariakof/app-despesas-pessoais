@@ -22,6 +22,7 @@ builder.Services.AddCors(c =>
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
 
 if (builder.Environment.IsProduction() || builder.Environment.EnvironmentName.Equals("MySqlServer"))
@@ -50,6 +51,6 @@ app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
+app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 app.RunDataSeeders();
 app.Run();

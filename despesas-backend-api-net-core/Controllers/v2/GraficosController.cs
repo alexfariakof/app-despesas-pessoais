@@ -1,12 +1,12 @@
-﻿using Business.Abstractions;
+﻿using Asp.Versioning;
+using Business.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace despesas_backend_api_net_core.Controllers;
+namespace despesas_backend_api_net_core.Controllers.v2;
 
-[Route("[controller]")]
-[ApiController]
-[Authorize("Bearer")]
+[ApiVersion("2")]
+[Route("v{version:apiVersion}/[controller]")]
 public class GraficosController : AuthController
 {
     private IGraficosBusiness _graficosBusiness;
@@ -19,9 +19,9 @@ public class GraficosController : AuthController
 
     [HttpGet("Bar/{ano}")]
     [Authorize("Bearer")]
-    [ProducesResponseType((200), Type = typeof(Dictionary<List<object>, List<string>>))]
-    [ProducesResponseType((400), Type = typeof(string))]
-    [ProducesResponseType((401), Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(200, Type = typeof(Dictionary<List<object>, List<string>>))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     public IActionResult GetByAnoByIdUsuario([FromRoute] DateTime ano)
     {
         try
@@ -34,7 +34,7 @@ public class GraficosController : AuthController
             };
 
             labels = new List<string> { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
-            return Ok(new { datasets = datasets, labels = labels });
+            return Ok(new { datasets, labels });
         }
         catch
         {
