@@ -1,6 +1,7 @@
 ﻿using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Persistency;
 using Repository.Persistency.Generic;
