@@ -1,11 +1,11 @@
 ﻿using Business.Abstractions;
-using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Controllers.v2;
 using Domain.Entities.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Api.Controllers;
+namespace Api.Controllers.v2;
 public class CategoriaControllerTest
 {
     protected Mock<BusinessBase<CategoriaDto, Categoria>> _mockCategoriaBusiness;

@@ -1,4 +1,4 @@
-﻿namespace Domain.ViewModel;
+﻿namespace Business.Dtos;
 public class ImagemPerfilUsuarioDtoTest
 {
     [Theory]

@@ -1,6 +1,6 @@
 ﻿using Business.Dtos.Parser;
 
-namespace Domain.ViewModel;
+namespace Business.Dtos;
 public class ReceitaDtoTest
 {
     [Fact]

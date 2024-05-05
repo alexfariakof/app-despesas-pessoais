@@ -1,6 +1,4 @@
-﻿using DataSeeders;
-using despesas_backend_api_net_core.CommonDependenceInject;
-using Domain.Core;
+﻿using Domain.Core;
 using Domain.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
@@ -9,7 +7,7 @@ using Business.CommonDependenceInject;
 using Business.Abstractions;
 
 namespace CommonDependenceInject;
-public class CommonDependenceInjectTest
+public class ServicesDependenceInjectTest
 {
     [Fact]
     public void AddServices_Should_Register_Services()
@@ -29,6 +27,7 @@ public class CommonDependenceInjectTest
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(ILancamentoBusiness) && descriptor.ImplementationType == typeof(LancamentoBusinessImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IUsuarioBusiness) && descriptor.ImplementationType == typeof(UsuarioBusinessImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IImagemPerfilUsuarioBusiness) && descriptor.ImplementationType == typeof(ImagemPerfilUsuarioBusinessImpl)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IEmailSender) && descriptor.ImplementationType == typeof(EmailSender)));
     }
 
     [Fact]
@@ -48,6 +47,7 @@ public class CommonDependenceInjectTest
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IControleAcessoRepositorioImpl) && descriptor.ImplementationType == typeof(ControleAcessoRepositorioImpl)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IEmailSender) && descriptor.ImplementationType == typeof(EmailSender)));
         Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(ILancamentoRepositorio) && descriptor.ImplementationType == typeof(LancamentoRepositorioImpl)));
+        Assert.NotNull(services.Any(descriptor => descriptor.ServiceType == typeof(IEmailSender) && descriptor.ImplementationType == typeof(EmailSender)));
     }
 
     [Fact]

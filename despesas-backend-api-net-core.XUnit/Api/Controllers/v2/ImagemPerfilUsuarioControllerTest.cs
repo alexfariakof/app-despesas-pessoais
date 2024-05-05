@@ -1,12 +1,12 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.Parser;
-using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text;
 
-namespace Api.Controllers;
+namespace Api.Controllers.v2;
 
 public class ImagemPerfilUsuarioControllerTest
 {

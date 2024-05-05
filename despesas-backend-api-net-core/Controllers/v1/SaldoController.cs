@@ -1,14 +1,13 @@
 ﻿using Asp.Versioning;
-using Business.Abstractions;
-using Business.Dtos;
-using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Business.Abstractions;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
 [ApiVersion("1")]
 [Route("v1/[controller]")]
+[ApiController]
 public class SaldoController : AuthController
 {
     private ISaldoBusiness _saldoBusiness;
@@ -19,58 +18,46 @@ public class SaldoController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(SaldoDto))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
         try
         {
             var saldo = _saldoBusiness.GetSaldo(IdUsuario);
-            return Ok(saldo);
+            return Ok(new { message = true, saldo = saldo});
         }
         catch
         {
-            return BadRequest("Erro ao gerar saldo!");
+            return BadRequest(new { message = "Erro ao gerar saldo!" });
         }
     }
 
     [HttpGet("ByAno/{ano}")]
     [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(SaldoDto))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByAno([FromRoute] DateTime ano)
     {
         try
         {
             var saldo = _saldoBusiness.GetSaldoAnual(ano, IdUsuario);
-            return Ok(saldo);
+            return Ok(new { message = true, saldo = saldo });
         }
         catch
         {
-            return BadRequest("Erro ao gerar saldo!");
+            return BadRequest(new { message = "Erro ao gerar saldo!" });
         }
     }
 
     [HttpGet("ByMesAno/{anoMes}")]
     [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(SaldoDto))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
     {
         try
         {
             var saldo = _saldoBusiness.GetSaldoByMesAno(anoMes, IdUsuario);
-            return Ok(saldo);
+            return Ok(new { message = true, saldo = saldo });
         }
         catch
         {
-            return BadRequest("Erro ao gerar saldo!");
+            return BadRequest(new { message = "Erro ao gerar saldo!" });
         }
     }
 }

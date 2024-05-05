@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Business.Abstractions;
-using Microsoft.AspNetCore.Http.HttpResults;
-using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Controllers.v2;
 
-namespace Api.Controllers;
+namespace Api.Controllers.v2;
 public class ControleAcessoControllerTest
 {
     protected readonly Mock<IControleAcessoBusiness> _mockControleAcessoBusiness;
@@ -336,7 +335,9 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var email = "teste@teste.com";
-        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(email));
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Callback(() => { });
+        _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>()));
+        SetupBearerToken(1);
 
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;

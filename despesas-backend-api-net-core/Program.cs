@@ -36,7 +36,7 @@ else
 
 // Add CommonInjectDependences 
 builder.Services.AddDataSeeders();
-builder.Services.ConfigureAutorization(builder.Configuration);
+builder.Services.AddAuthConfigurations(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();

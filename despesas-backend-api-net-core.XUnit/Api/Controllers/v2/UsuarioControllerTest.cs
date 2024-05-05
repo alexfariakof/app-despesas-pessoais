@@ -1,11 +1,11 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.Parser;
-using despesas_backend_api_net_core.Controllers;
+using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace Api.Controllers;
+namespace Api.Controllers.v2;
 public class UsuarioControllerTest
 {
     protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
@@ -599,7 +599,7 @@ public class UsuarioControllerTest
     public void PutAdministrador_Should_Returns_BadRequest_When_Usuario_Is_Not_Administrador()
     {
         // Arrange
-        var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
+        var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(15);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;

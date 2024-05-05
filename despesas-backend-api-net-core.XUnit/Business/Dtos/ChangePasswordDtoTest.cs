@@ -1,5 +1,5 @@
-﻿namespace Domain.ViewModel;
-public class ChangePasswordVMTest
+﻿namespace Business.Dtos;
+public class ChangePasswordDtoTest
 {
     [Theory]
     [InlineData("userTeste1", "userTeste1")]

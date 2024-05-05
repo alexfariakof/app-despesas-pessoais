@@ -1,13 +1,15 @@
 ﻿using Asp.Versioning;
-using Business.Abstractions;
 using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Business.Abstractions;
+using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
 [ApiVersion("1")]
 [Route("v1/[controller]")]
+[ApiController]
 public class ControleAcessoController : AuthController
 {
     private IControleAcessoBusiness _controleAcessoBusiness;
@@ -15,113 +17,119 @@ public class ControleAcessoController : AuthController
     {
         _controleAcessoBusiness = controleAcessoBusiness;
     }
-
+    
     [AllowAnonymous]
     [HttpPost]
-    [ProducesResponseType(200, Type = typeof(bool))]
-    [ProducesResponseType(400, Type = typeof(string))]
     public IActionResult Post([FromBody] ControleAcessoDto controleAcessoDto)
     {
+        if (String.IsNullOrEmpty(controleAcessoDto.Telefone) || String.IsNullOrWhiteSpace(controleAcessoDto.Telefone))
+            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
+
+        if (String.IsNullOrEmpty(controleAcessoDto.Email) || String.IsNullOrWhiteSpace(controleAcessoDto.Email))
+            return BadRequest(new { message = "Campo Login não pode ser em branco" });
+
+        if (!IsValidEmail(controleAcessoDto.Email))
+            return BadRequest(new { message = "Email inválido!" });
+
+        if (String.IsNullOrEmpty(controleAcessoDto.Senha) || String.IsNullOrWhiteSpace(controleAcessoDto.Senha))
+            return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo" });
+
+        if (String.IsNullOrEmpty(controleAcessoDto.ConfirmaSenha) | String.IsNullOrWhiteSpace(controleAcessoDto.ConfirmaSenha))
+            return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo" });
+
+        if (controleAcessoDto.Senha != controleAcessoDto.ConfirmaSenha)
+            return BadRequest(new { message = "Senha e Confirma Senha são diferentes!" });
+
         try
-        {
+        {        
             _controleAcessoBusiness.Create(controleAcessoDto);
-            return Ok(true);
+            return Ok(new { message = true });
         }
-        catch (Exception ex)
+        catch
         {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
-
-            return BadRequest("Não foi possível realizar o cadastro.");
+            return BadRequest(new { message = "Não foi possível realizar o cadastro." });
         }
+            
     }
-
+    
     [AllowAnonymous]
     [HttpPost("SignIn")]
-    [ProducesResponseType(200, Type = typeof(AuthenticationDto))]
-    [ProducesResponseType(400, Type = typeof(string))]
     public IActionResult SignIn([FromBody] LoginDto login)
     {
-        try
-        {
-            var result = _controleAcessoBusiness.ValidateCredentials(login);
-            if (result == null)
-                throw new Exception();
 
-            return new OkObjectResult(result);
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
+        if (String.IsNullOrEmpty(login.Email) || String.IsNullOrWhiteSpace(login.Email))
+            return BadRequest(new { message = "Campo Login não pode ser em branco ou nulo!" });
 
-            return BadRequest("Não foi possível realizar o login do usuário.");
-        }
+        if (!IsValidEmail(login.Email))
+            return BadRequest(new { message = "Email inválido!" });
+
+        if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
+            return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
+
+        var result = _controleAcessoBusiness.ValidateCredentials(login);
+        
+        if (result == null)
+            return BadRequest(new { message = "Erro ao realizar login!" });
+
+        return new OkObjectResult(result);
     }
-
 
     [HttpPost("ChangePassword")]
-    [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(bool))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordVM)
+    [Authorize("Bearer")]        
+    public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
+
+        if (IdUsuario.Equals(2))
+            return BadRequest(new { message = "A senha deste usuário não pode ser atualizada!" });
+
+        if (String.IsNullOrEmpty(changePasswordDto.Senha) || String.IsNullOrWhiteSpace(changePasswordDto.Senha))
+            return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
+
+        if (String.IsNullOrEmpty(changePasswordDto.ConfirmaSenha) | String.IsNullOrWhiteSpace(changePasswordDto.ConfirmaSenha))
+            return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
         try
         {
-            if (IdUsuario.Equals(2))
-                throw new ArgumentException("A senha deste usuário não pode ser atualizada!");
-
-            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha);
-            return Ok(true);
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
-
-            return BadRequest("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.");
-        }
-    }
-
-    [HttpPost("RecoveryPassword")]
-    [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(bool))]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    public IActionResult RecoveryPassword([FromBody] string email)
-    {
-        try
-        {
-            if (IdUsuario.Equals(2))
-                throw new Exception();
-
-            _controleAcessoBusiness.RecoveryPassword(email);
-            return Ok(true);
+            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordDto.Senha);
+            return Ok(new { message = true });
         }
         catch
         {
-            return NoContent();
+
+            return BadRequest(new { message = "Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte." });
         }
     }
 
     [AllowAnonymous]
-    [HttpGet("refresh/{refreshToken}")]
-    [ProducesResponseType(200, Type = typeof(AuthenticationDto))]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult Refresh([FromRoute] string refreshToken)
+    [HttpPost("RecoveryPassword")]
+    [Authorize("Bearer")]
+    public IActionResult RecoveryPassword([FromBody] string email)
     {
+
+        if (String.IsNullOrEmpty(email) || String.IsNullOrWhiteSpace(email))
+            return BadRequest(new { message = "Campo Login não pode ser em branco ou nulo!" });
+
+        if (!IsValidEmail(email))
+            return BadRequest(new { message = "Email inválido!" });
         try
         {
-            var result = _controleAcessoBusiness.ValidateCredentials(refreshToken);
-            if (result is null)
-                throw new NullReferenceException();
-
-            return Ok(result);
+            _controleAcessoBusiness.RecoveryPassword(email);
+            return Ok(new { message = true });
         }
         catch
         {
-            return NoContent();
+            return BadRequest(new { message = "Email não pode ser enviado, tente novamente mais tarde." });
         }
+    }
+
+    private bool IsValidEmail(string email)
+    {
+        if (email.Length > 256)
+        {
+            return false;
+        }
+
+        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        Regex regex = new Regex(pattern);
+        return regex.IsMatch(email);
     }
 }
