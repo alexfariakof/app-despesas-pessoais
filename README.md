@@ -8,7 +8,7 @@ In summary, this project involves an update of the Restful API application creat
 [Postman Documentation](https://www.postman.com/bold-eclipse-872793/workspace/api-despesas-pessoais/collection/16681680-86c1aecc-60d3-4133-9643-5f3d4a106575?action=share&creator=16681680)
 
 This project can be access at [API Restful Despesas Pessoais](http://alexfariakof.com:42535/swagger).
-![backend](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/d715b8d3-e275-4998-beb7-cb8c9690513f)
+![image](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/c0abe2f5-da31-4907-90dc-bbb06a95d2f3)
 
 ## Build
 
