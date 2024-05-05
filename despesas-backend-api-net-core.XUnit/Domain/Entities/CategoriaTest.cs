@@ -25,4 +25,44 @@ public class CategoriaTest
         Assert.Equal(usuario, categoria.Usuario);
         Assert.Equal(tipoCategoria, categoria.TipoCategoria);
     }
+
+    [Fact]
+    public void Categoria_First_Constructor_Should_Set_Properties_Correctly()
+    {
+        // Arrange
+        string descricao = "Test Description";
+        int usuarioId = 1;
+        Usuario usuario = UsuarioFaker.Instance.GetNewFaker();
+        TipoCategoria tipoCategoria = TipoCategoria.Despesa;
+
+        // Act
+        var categoria = new Categoria(descricao, usuarioId, usuario, tipoCategoria);
+
+        // Assert
+        Assert.Equal(descricao, categoria.Descricao);
+        Assert.Equal(usuarioId, categoria.UsuarioId);
+        Assert.Equal(usuario, categoria.Usuario);
+        Assert.Equal(tipoCategoria, categoria.TipoCategoria);
+    }
+
+    [Fact]
+    public void Categoria_Second_Constructor_Should_Set_Properties_Correctly()
+    {
+        // Arrange
+        int id = 1;
+        string descricao = "Test Description";
+        int usuarioId = 1;
+        Usuario usuario = UsuarioFaker.Instance.GetNewFaker();
+        TipoCategoria tipoCategoria = TipoCategoria.Despesa;
+
+        // Act
+        var categoria = new Categoria(id, descricao, usuarioId, usuario, tipoCategoria);
+
+        // Assert
+        Assert.Equal(id, categoria.Id);
+        Assert.Equal(descricao, categoria.Descricao);
+        Assert.Equal(usuarioId, categoria.UsuarioId);
+        Assert.Equal(usuario, categoria.Usuario);
+        Assert.Equal(tipoCategoria, categoria.TipoCategoria);
+    }
 }

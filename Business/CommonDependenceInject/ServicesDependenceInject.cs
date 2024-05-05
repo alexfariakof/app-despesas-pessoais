@@ -2,6 +2,8 @@
 using Business.Dtos;
 using Business.Generic;
 using Business.Implementations;
+using Domain.Core;
+using Domain.Core.Interfaces;
 using Domain.Entities;
 using Domain.Entities.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +24,7 @@ public static class ServicesDependenceInject
         services.AddScoped(typeof(IImagemPerfilUsuarioBusiness), typeof(ImagemPerfilUsuarioBusinessImpl));
         services.AddScoped(typeof(ISaldoBusiness), typeof(SaldoBusinessImpl));
         services.AddScoped(typeof(IGraficosBusiness), typeof(GraficosBusinessImpl));
-
+        services.AddScoped<IEmailSender, EmailSender>();
         return services;
     }
 }

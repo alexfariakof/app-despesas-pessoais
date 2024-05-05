@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 namespace despesas_backend_api_net_core.CommonDependenceInject;
 public static class AutorizationDependenceInject
 {
-    public static void ConfigureAutorization(this IServiceCollection services, IConfiguration configuration)
+    public static void AddAuthConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         SigningConfigurations signingConfigurations = new SigningConfigurations();
         services.AddSingleton(signingConfigurations);
