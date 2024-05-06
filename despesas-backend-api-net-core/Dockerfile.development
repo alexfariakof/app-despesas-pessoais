@@ -7,12 +7,11 @@ ENV ASPNETCORE_URLS=http://+:42536
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["despesas-backend-api-net-core/despesas-backend-api-net-core.csproj", "."]
-RUN dotnet restore "despesas-backend-api-net-core.csproj"
 COPY . .
 
-WORKDIR "/src/."
-RUN dotnet build "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/build
+RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
+RUN dotnet test "./despesas-backend-api-net-core.XUnit/XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
+RUN /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html
 
 FROM build AS publish
 RUN dotnet publish "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/publish /p:UseAppHost=false
@@ -20,5 +19,5 @@ RUN dotnet publish "despesas-backend-api-net-core/despesas-backend-api-net-core.
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=build /app/test ./wwwroot
 ENTRYPOINT ["dotnet", "despesas-backend-api-net-core.dll"]
-
