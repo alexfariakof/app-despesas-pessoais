@@ -43,9 +43,9 @@ builder.Services.AddCrossCuttingConfiguration();
 builder.Services.AddHyperMediaHATEOAS();
 
 var app = builder.Build();
-app.AddSupporteCulturesPtBr();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
+app.AddSupporteCulturesPtBr();
 app.AddSwaggerApiVersioning();
 app.UseCors();
 app.UseHttpsRedirection();
@@ -53,4 +53,6 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 app.RunDataSeeders();
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.Run();

@@ -24,7 +24,6 @@
 **/.editorconfig
 **/MsMySqlServer.Migrations
 **/MySqlServer.Migrations
-**/despesas-backend-api-net-core.XUnit
 **/.documents
 LICENSE
 README.md
