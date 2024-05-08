@@ -45,7 +45,7 @@ public class UsuarioMapTest
             Assert.Equal(50, sobrenomeProperty.GetMaxLength());
             Assert.Equal(15, telefoneProperty.GetMaxLength());
             Assert.True(telefoneProperty.IsNullable);
-            var defaultPerfilValue = perfilUsuarioProperty.GetDefaultValue();
+            var defaultPerfilValue = perfilUsuarioProperty.Sentinel;
             Assert.Equal(PerfilUsuario.Usuario, defaultPerfilValue);
         }
     }

@@ -49,10 +49,10 @@ public class LancamentoParserTest
             Assert.Null(despesaIdProperty.GetDefaultValue());
             Assert.True(receitaIdProperty.IsNullable);
             Assert.Null(receitaIdProperty.GetDefaultValue());
-            Assert.True(dataProperty.GetColumnType() == "timestamp");
+            Assert.True(dataProperty.GetColumnType() == "datetime");
             Assert.False(dataProperty.IsNullable);
-            Assert.True(dataCriacaoProperty.GetColumnType() == "timestamp");
-            //Assert.Equal(DateTime.Now, dataCriacaoProperty.GetDefaultValue());
+            Assert.True(dataCriacaoProperty.GetColumnType() == "datetime");
+            Assert.Equal(DateTime.MinValue, dataCriacaoProperty.GetDefaultValue());
             Assert.True(valorProperty.GetColumnType() == "decimal(10, 2)");
             Assert.Equal(100, descricaoProperty.GetMaxLength());
         }

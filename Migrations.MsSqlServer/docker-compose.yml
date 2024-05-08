@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  db:
+    container_name: mssql-server-in-docker
+    image: mssql-server-db-img
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      TZ: America/Sao_Paulo
+      MSSQL_DATABASE: StreamingDB
+      MSSQL_USER: docker
+      MSSQL_PASSWORD: docker
+      SA_PASSWORD: "!aA12345"
+      MSSQL_TCP_PORT: "1433"
+      MSSQL_ALLOW_DUPLICATE_SQL_SERVER_NAMES: "Y"
+      MSSQL_ENABLE_HADR: "N"
+      MSSQL_COLLATION: "SQL_Latin1_General_CP1_CI_AS"
+    build:
+      context: .
+      dockerfile: ./Dockerfile      
+    ports:
+      - "1433:1433"

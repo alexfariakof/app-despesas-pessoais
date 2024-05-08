@@ -8,12 +8,12 @@ public class ControleAcessoMap : IEntityTypeConfiguration<ControleAcesso>
     public void Configure(EntityTypeBuilder<ControleAcesso> builder)
     {
         builder.ToTable(nameof(ControleAcesso));
-        builder.HasKey(m => m.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
-        builder.HasIndex(m => m.Login).IsUnique(true);
-        builder.Property(x => x.UsuarioId).IsRequired();
-        builder.Property(m => m.Login).IsRequired().HasMaxLength(100) ;
-        builder.Property(m => m.RefreshToken).HasDefaultValue(null);
-        builder.Property(m => m.RefreshTokenExpiry).HasDefaultValue(null);
+        builder.HasKey(ca => ca.Id);
+        builder.Property(ca => ca.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.HasIndex(ca => ca.Login).IsUnique(true);
+        builder.Property(ca => ca.UsuarioId).IsRequired();
+        builder.Property(ca => ca.Login).IsRequired().HasMaxLength(100) ;
+        builder.Property(ca => ca.RefreshToken).HasDefaultValue(null);
+        builder.Property(ca => ca.RefreshTokenExpiry).HasDefaultValue(null);
     }
 }
