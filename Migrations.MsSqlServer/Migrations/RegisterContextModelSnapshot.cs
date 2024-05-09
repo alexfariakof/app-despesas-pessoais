@@ -2,12 +2,13 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
 #nullable disable
 
-namespace MsMySqlServer.Migrations.Migrations
+namespace Migrations.MsSqlServer.Migrations
 {
     [DbContext(typeof(RegisterContext))]
     partial class RegisterContextModelSnapshot : ModelSnapshot
@@ -17,7 +18,9 @@ namespace MsMySqlServer.Migrations.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Domain.Entities.Categoria", b =>
                 {
@@ -25,12 +28,14 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<ushort>("TipoCategoria")
-                        .HasColumnType("smallint unsigned");
+                    b.Property<int>("TipoCategoria")
+                        .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -48,20 +53,22 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("RefreshToken")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("RefreshTokenExpiry")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -82,20 +89,22 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<DateTime?>("DataVencimento")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -120,19 +129,21 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("ContentType")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -157,20 +168,22 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("DataCriacao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int?>("DespesaId")
                         .HasColumnType("int");
@@ -203,17 +216,19 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("CategoriaId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("GetDate()");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
@@ -238,32 +253,32 @@ namespace MsMySqlServer.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<ushort>("PerfilUsuario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint unsigned")
-                        .HasDefaultValue((ushort)2);
+                    b.Property<int>("PerfilUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("SobreNome")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<ushort>("StatusUsuario")
-                        .HasColumnType("smallint unsigned");
+                    b.Property<int>("StatusUsuario")
+                        .HasColumnType("int");
 
                     b.Property<string>("Telefone")
                         .HasMaxLength(15)
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("nvarchar(15)");
 
                     b.HasKey("Id");
 
@@ -306,7 +321,7 @@ namespace MsMySqlServer.Migrations.Migrations
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Categoria");
@@ -335,16 +350,18 @@ namespace MsMySqlServer.Migrations.Migrations
 
                     b.HasOne("Domain.Entities.Despesa", "Despesa")
                         .WithMany()
-                        .HasForeignKey("DespesaId");
+                        .HasForeignKey("DespesaId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.Receita", "Receita")
                         .WithMany()
-                        .HasForeignKey("ReceitaId");
+                        .HasForeignKey("ReceitaId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Categoria");
@@ -367,7 +384,7 @@ namespace MsMySqlServer.Migrations.Migrations
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Categoria");

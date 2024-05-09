@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.CommonDependenceInject;
-using Repository;
 using DataSeeders;
 using DataSeeders.Implementations;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString"),
-b => b.MigrationsAssembly("MySqlServer.Migrations")));
+b => b.MigrationsAssembly("Migrations.MySqlServer")));
 
 builder.Services.AddRepositories();
 builder.Services.AddTransient<IDataSeeder, DataSeeder>();

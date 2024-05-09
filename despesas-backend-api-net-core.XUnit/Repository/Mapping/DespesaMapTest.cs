@@ -46,8 +46,8 @@ public class DespesaMapTest
             Assert.False(usuarioIdProperty.IsNullable);
             Assert.False(categoriaIdProperty.IsNullable);
             Assert.Equal(typeof(DateTime), dataProperty.ClrType);
-            Assert.Equal("timestamp", dataProperty.GetColumnType());
-            //Assert.Equal(DateTime.Now, dataProperty.GetDefaultValue());
+            Assert.Equal("datetime", dataProperty.GetColumnType());
+            Assert.Equal(DateTime.MinValue, dataProperty.GetDefaultValue());
             Assert.True(dataVencimentoProperty.IsNullable);
             Assert.Null(dataVencimentoProperty.GetDefaultValue());
             Assert.Equal(typeof(decimal), valorProperty.ClrType);

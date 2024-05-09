@@ -1,5 +1,5 @@
-﻿using DataSeeders.Implementations;
-using DataSeeders;
+﻿using DataSeeders;
+using DataSeeders.Implementations;
 
 namespace despesas_backend_api_net_core.CommonDependenceInject;
 public static class DataSeedersDependenceInject

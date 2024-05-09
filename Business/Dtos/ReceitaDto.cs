@@ -7,7 +7,7 @@ namespace Business.Dtos;
 public class ReceitaDto : BaseModelDto, ISupportHyperMedia
 {     
     [Required(ErrorMessage = "O campo Data é obrigatório.")]
-    public DateTime Data { get; set; }
+    public DateTime? Data { get; set; }
 
     [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
     public string? Descricao { get; set; }
