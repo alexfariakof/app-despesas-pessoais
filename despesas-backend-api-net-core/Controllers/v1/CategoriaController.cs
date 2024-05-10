@@ -3,6 +3,7 @@ using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Generic;
+using Domain.Entities;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -10,8 +11,8 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [Route("v1/[controller]")]
 public class CategoriaController : AuthController
 {
-    private IBusiness<CategoriaDto> _categoriaBusiness;
-    public CategoriaController(IBusiness<CategoriaDto> categoriaBusiness)
+    private IBusiness<CategoriaDto, Categoria> _categoriaBusiness;
+    public CategoriaController(IBusiness<CategoriaDto, Categoria> categoriaBusiness)
     {
         _categoriaBusiness = categoriaBusiness;
     }
@@ -20,7 +21,7 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Get()
     {
-        List<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario);
+        var _categoria = _categoriaBusiness.FindAll(IdUsuario);
         return Ok(_categoria);
     }
 
@@ -29,7 +30,7 @@ public class CategoriaController : AuthController
     public IActionResult GetById([FromRoute] int idCategoria)
     {
 
-        CategoriaDto _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+        var _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
         return Ok(_categoria);
     }
 
@@ -79,7 +80,7 @@ public class CategoriaController : AuthController
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
         categoria.IdUsuario = IdUsuario;
-        CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
+        var updateCategoria = _categoriaBusiness.Update(categoria);
 
         if (updateCategoria == null)
             return BadRequest(new { message = "Erro ao atualizar categoria!" });
@@ -91,7 +92,7 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Delete(int idCategoria)
     {
-        CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+        var categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
         if (categoria == null || IdUsuario != categoria.IdUsuario)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });

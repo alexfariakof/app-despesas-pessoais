@@ -3,6 +3,7 @@ using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Generic;
+using Domain.Entities;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -11,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class ReceitaController : AuthController
 {
-    private IBusiness<ReceitaDto> _receitaBusiness;
-    public ReceitaController(IBusiness<ReceitaDto> receitaBusiness)
+    private IBusiness<ReceitaDto, Receita> _receitaBusiness;
+    public ReceitaController(IBusiness<ReceitaDto, Receita> receitaBusiness)
     {
         _receitaBusiness = receitaBusiness;
     }

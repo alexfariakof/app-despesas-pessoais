@@ -13,9 +13,9 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class UsuarioController : AuthController
 {
-    private IUsuarioBusiness _usuarioBusiness;
-    private readonly IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
-    public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
+    private IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
+    private readonly IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> _imagemPerfilBussiness;
+    public UsuarioController(IUsuarioBusiness<UsuarioDto> usuarioBusiness, IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> imagemPerfilBussiness)
     {
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
@@ -210,7 +210,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            BaseImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             var _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
 
             if (_imagemPerfilUsuario != null)
@@ -237,7 +237,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            BaseImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);

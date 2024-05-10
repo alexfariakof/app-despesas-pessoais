@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using Business.Abstractions;
 using Business.Dtos.Core;
-using Business.Dtos.Parser;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-
-public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
+public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsuarioBusiness<Dto, DtoUsuario> where Dto : BaseImagemPerfilDto, new() where DtoUsuario : BaseUsuarioDto, new()
 {
     private readonly IMapper _mapper;
     private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
@@ -23,7 +21,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         _amazonS3Bucket = amazonS3Bucket == null ? AmazonS3Bucket.GetInstance : amazonS3Bucket; 
     }
 
-    public BaseImagemPerfilDto Create(BaseImagemPerfilDto obj)
+    public Dto Create(Dto obj)
     {
         ImagemPerfilUsuario? perfilFile = _mapper.Map<ImagemPerfilUsuario>(obj);
         try
@@ -31,7 +29,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
             perfilFile.Url = _amazonS3Bucket.WritingAnObjectAsync(perfilFile, obj.Arquivo).GetAwaiter().GetResult();
             perfilFile.Usuario = _repositorioUsuario.Get(perfilFile.UsuarioId);
             _repositorio.Insert(ref perfilFile);
-            return _mapper.Map<BaseImagemPerfilDto>(perfilFile);
+            return _mapper.Map<Dto>(perfilFile);
         }
         catch
         {
@@ -40,27 +38,27 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         return null;
     }
 
-    public List<BaseImagemPerfilDto> FindAll(int idUsuario)
+    public List<Dto> FindAll(int idUsuario)
     {
         var lstPerfilFile = _repositorio.GetAll();
-        return _mapper.Map<List<BaseImagemPerfilDto>>(lstPerfilFile);
+        return _mapper.Map<List<Dto>>(lstPerfilFile);
     }
 
-    public BaseImagemPerfilDto FindById(int id, int idUsuario)
+    public Dto FindById(int id, int idUsuario)
     {
-        var imagemPerfilUsuario = _mapper.Map<BaseImagemPerfilDto>(_repositorio.Get(id));
+        var imagemPerfilUsuario = _mapper.Map<Dto>(_repositorio.Get(id));
         if (imagemPerfilUsuario.IdUsuario != idUsuario)
             return null;
 
         return imagemPerfilUsuario;
     }
 
-    public BaseUsuarioDto FindByIdUsuario(int idUsuario)
+    public DtoUsuario FindByIdUsuario(int idUsuario)
     {
         try
         {
             var usuario = _repositorio?.GetAll()?.Find(u => u.UsuarioId == idUsuario)?.Usuario;
-            return new UsuarioParser().Parse(usuario);
+            return _mapper.Map<DtoUsuario>(usuario);
         }
         catch 
         { 
@@ -68,7 +66,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         }            
     }
 
-    public BaseImagemPerfilDto Update(BaseImagemPerfilDto obj)
+    public Dto Update(Dto obj)
     {        
         try
         {
@@ -79,7 +77,7 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
             validImagemPerfil.Url = _amazonS3Bucket.WritingAnObjectAsync(validImagemPerfil, obj.Arquivo).GetAwaiter().GetResult();
             _repositorio.Update(ref validImagemPerfil);            
-            return _mapper.Map<BaseImagemPerfilDto>(validImagemPerfil);
+            return _mapper.Map<Dto>(validImagemPerfil);
         }
         catch
         {

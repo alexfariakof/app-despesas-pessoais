@@ -11,7 +11,7 @@ using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace Business.Implementations;
-public class ControleAcessoBusinessImpl : IControleAcessoBusiness
+public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : BaseControleAcessoDto where DtoLogin : BaseLoginDto, new()
 {
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
@@ -26,7 +26,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _emailSender = emailSender;
     }
 
-    public void Create(BaseControleAcessoDto controleAcessoDto)
+    public void Create(DtoCa controleAcessoDto)
     {
         ControleAcesso controleAcesso = new ControleAcesso();
         controleAcesso.CreateAccount(new Usuario()
@@ -43,7 +43,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _repositorio.Create(controleAcesso);
     }
 
-    public BaseAuthenticationDto ValidateCredentials(BaseLoginDto login)
+    public BaseAuthenticationDto ValidateCredentials(DtoLogin login)
     {
         ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = login.Email });
 

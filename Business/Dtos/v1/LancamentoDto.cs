@@ -3,11 +3,11 @@
 namespace Business.Dtos.v1;
 public class LancamentoDto : BaseLancamentoDto
 {
-    public int IdDespesa { get; set; }
-    public int IdReceita { get; set; }
-    public decimal Valor { get; set; }
-    public string? Data { get; set; }
-    public string? Descricao { get; set; }
-    public string? TipoCategoria { get; set; }
-    public string? Categoria { get; set; }
+    public override int IdDespesa { get; set; }
+    public override int IdReceita { get; set; }
+    public override decimal Valor { get; set; }
+    public override string? Data { get; set; }
+    public override string? Descricao { get; set; }
+    public override string? TipoCategoria { get; set; }
+    public override string? Categoria { get; set; }
 }

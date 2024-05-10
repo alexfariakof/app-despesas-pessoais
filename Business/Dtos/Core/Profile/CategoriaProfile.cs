@@ -5,7 +5,10 @@ public class CategoriaProfile: AutoMapper.Profile
 {
     public CategoriaProfile()
     {
-        CreateMap<BaseCategoriaDto, Categoria>().ReverseMap();
-        CreateMap<Categoria, BaseCategoriaDto>().ReverseMap();
+        CreateMap<Business.Dtos.v1.CategoriaDto, Categoria>().ReverseMap();
+        CreateMap<Categoria, Business.Dtos.v1.CategoriaDto>().ReverseMap();
+
+        CreateMap<Business.Dtos.v2.CategoriaDto, Categoria>().ReverseMap();
+        CreateMap<Categoria, Business.Dtos.v2.CategoriaDto>().ReverseMap();
     }
 }

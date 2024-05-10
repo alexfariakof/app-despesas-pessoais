@@ -4,16 +4,16 @@ using System.Text.Json.Serialization;
 namespace Business.Dtos.v1;
 public class ImagemPerfilDto : BaseImagemPerfilDto
 {
-    public string? Url { get; set; }
+    public override string? Url { get; set; }
 
     [JsonIgnore]
-    public string? Name { get; set; }
+    public override string? Name { get; set; }
     [JsonIgnore]
-    public string? Type { get; set; }
+    public override string? Type { get; set; }
     [JsonIgnore]
-    public string? ContentType { get; set; }
+    public override string? ContentType { get; set; }
 
     [JsonIgnore]
-    public byte[]? Arquivo { get; set; }
+    public override byte[]? Arquivo { get; set; }
 
 }

@@ -1,9 +1,9 @@
 ﻿namespace Business.Dtos.Core;
 public abstract class BaseDespesaDto : BaseModelDto
 {
-    public DateTime? Data { get; set; }
-    public string? Descricao { get; set; }
-    public decimal Valor { get; set; }
-    public DateTime? DataVencimento { get; set; }
-    public int? IdCategoria { get; set; }
+    public virtual DateTime? Data { get; set; }
+    public virtual string? Descricao { get; set; }
+    public virtual decimal Valor { get; set; }
+    public virtual DateTime? DataVencimento { get; set; }
+    public virtual int? IdCategoria { get; set; }
 }

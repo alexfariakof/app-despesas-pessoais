@@ -5,7 +5,7 @@ using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-public class UsuarioBusinessImpl : IUsuarioBusiness
+public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUsuarioDto, new()
 {
     private readonly IRepositorio<Usuario> _repositorio;
     private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         _repositorio = repositorio;        
     }
 
-    public BaseUsuarioDto Create(BaseUsuarioDto usuarioDto)
+    public Dto Create(Dto usuarioDto)
     {
         var isValidUsuario = _repositorio.Get(usuarioDto.IdUsuario);
         if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
@@ -31,23 +31,23 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
             PerfilUsuario.Usuario);
 
         _repositorio.Insert(ref usuario);
-        return _mapper.Map<BaseUsuarioDto>(usuario);
+        return _mapper.Map<Dto>(usuario);
     }
 
-    public List<BaseUsuarioDto> FindAll(int idUsuario)
+    public List<Dto> FindAll(int idUsuario)
     {
         var usuario = FindById(idUsuario);
         if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
-            return _mapper.Map<List<BaseUsuarioDto>>(_repositorio.GetAll());
+            return _mapper.Map<List<Dto>>(_repositorio.GetAll());
         return null;
     }      
 
-    public BaseUsuarioDto FindById(int id)
+    public Dto FindById(int id)
     {
         var usuario = _repositorio.Get(id);
-        return _mapper.Map<BaseUsuarioDto>(usuario);
+        return _mapper.Map<Dto>(usuario);
     }
-    public BaseUsuarioDto Update(BaseUsuarioDto usuarioDto)
+    public Dto Update(Dto usuarioDto)
     {
         var usuario = new Usuario
         {
@@ -60,10 +60,10 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         };
         
         _repositorio.Update(ref usuario);
-        return _mapper.Map<BaseUsuarioDto>(usuario);
+        return _mapper.Map<Dto>(usuario);
     }
 
-    public bool Delete(BaseUsuarioDto usuarioDto)
+    public bool Delete(Dto usuarioDto)
     {
         return _repositorio.Delete(new Usuario{ Id = usuarioDto.Id });
     }

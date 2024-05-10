@@ -8,13 +8,13 @@ namespace Business.Dtos.v2;
 public class ReceitaDto : BaseReceitaDto, ISupportHyperMedia
 {
     [Required(ErrorMessage = "O campo Data é obrigatório.")]
-    public DateTime? Data { get; set; }
+    public override DateTime? Data { get; set; }
 
     [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
-    public string? Descricao { get; set; }
+    public override string? Descricao { get; set; }
 
     [Required(ErrorMessage = "O campo Valor é obrigatório.")]
-    public decimal Valor { get; set; }
+    public override decimal Valor { get; set; }
 
     [Required(ErrorMessage = "A Categoria é obrigatória.")]
     public CategoriaDto? Categoria { get; set; }

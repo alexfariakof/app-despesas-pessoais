@@ -3,11 +3,11 @@ using Domain.Entities;
 using Domain.Entities.Abstractions;
 using MediatR;
 using AutoMapper;
-using Business.Dtos.Core;
 using Business.Generic;
 
+
 namespace Business.Implementations;
-public class CategoriaBusinessImpl: BusinessBase<BaseCategoriaDto, Categoria>, IBusiness<BaseCategoriaDto>
+public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness<Dto, Categoria> where Dto : class, new()
 {
     private readonly IMediator _mediator;
     private readonly IUnitOfWork<Categoria> _unitOfWork;    
@@ -17,37 +17,35 @@ public class CategoriaBusinessImpl: BusinessBase<BaseCategoriaDto, Categoria>, I
         _unitOfWork = unitOfWork;
     }
 
-    public override BaseCategoriaDto Create(BaseCategoriaDto obj)
+    public override Dto Create(Dto obj)
     {
         Categoria categoria = this.Mapper.Map<Categoria>(obj);
         _unitOfWork.Repository.Insert(ref categoria);
         _unitOfWork.CommitAsync();
-        return this.Mapper.Map<BaseCategoriaDto>(categoria);
+        return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override List<BaseCategoriaDto> FindAll(int idUsuario)
+    public override List<Dto> FindAll(int idUsuario)
     {
         var lstCategoria = _unitOfWork.Repository.GetAll().Result.Where(c => c.UsuarioId == idUsuario).ToList();
-        return this.Mapper.Map<List<BaseCategoriaDto>>(lstCategoria);
+        return this.Mapper.Map<List<Dto>>(lstCategoria);
     }
 
-    public override BaseCategoriaDto FindById(int id, int idUsuario)
+    public override Dto FindById(int id, int idUsuario)
     {
-        var categoria = this.Mapper.Map<BaseCategoriaDto>(_unitOfWork.Repository.GetById(id).Result);
-        if (idUsuario == categoria.IdUsuario)
-            return categoria;
-        return null;
+        var categoria = this.Mapper.Map<Dto>(_unitOfWork.Repository.GetById(id).Result);
+        return categoria;
     }
 
-    public override BaseCategoriaDto Update(BaseCategoriaDto obj)
+    public override Dto Update(Dto obj)
     {
         Categoria categoria = this.Mapper.Map<Categoria>(obj);
         _unitOfWork.Repository.Update(ref categoria);
         _unitOfWork.CommitAsync();
-        return this.Mapper.Map<BaseCategoriaDto>(categoria);
+        return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override bool Delete(BaseCategoriaDto obj)
+    public override bool Delete(Dto obj)
     {
         try
         {

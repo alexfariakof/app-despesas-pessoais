@@ -6,17 +6,17 @@ namespace Business.Dtos.v1;
 public class DespesaDto : BaseDespesaDto
 {
     [Required]
-    public DateTime Data { get; set; }
+    public override DateTime? Data { get; set; }
 
     [Required]
-    public string? Descricao { get; set; }
+    public override string? Descricao { get; set; }
 
     [Required]
-    public decimal Valor { get; set; }
-    public DateTime? DataVencimento { get; set; }
+    public override decimal Valor { get; set; }
+    public override DateTime? DataVencimento { get; set; }
 
     [Required]
-    public int? IdCategoria { get; set; }
+    public override int? IdCategoria { get; set; }
 
     [JsonIgnore]
     public UsuarioDto? Usuario { get; set; }

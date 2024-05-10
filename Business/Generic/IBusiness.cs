@@ -1,11 +1,11 @@
 ﻿using Domain.Core;
 
 namespace Business.Generic;
-public interface IBusiness<T> where T : BaseModel
+public interface IBusiness<Dto, Entity> where Dto : class where Entity : BaseModel, new ()
 {
-    T Create(T obj);
-    T FindById(int id, int idUsuario);
-    List<T> FindAll(int idUsuario);
-    T Update(T obj);
-    bool Delete(T obj);
+    Dto Create(Dto obj);
+    Dto FindById(int id, int idUsuario);
+    List<Dto> FindAll(int idUsuario);
+    Dto Update(Dto obj);
+    bool Delete(Dto obj);
 }

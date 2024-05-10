@@ -5,14 +5,24 @@ public class ControleAcessoProfile: AutoMapper.Profile
 {
     public ControleAcessoProfile()
     {
-        CreateMap<BaseControleAcessoDto, Categoria>().ReverseMap();
-        CreateMap<Categoria, BaseControleAcessoDto>().AfterMap((s, d) =>
+        CreateMap<Business.Dtos.v1.ControleAcessoDto, Categoria>().ReverseMap();
+        CreateMap<Categoria, Business.Dtos.v1.ControleAcessoDto>().AfterMap((s, d) =>
         {        
             d.Senha= "********";
         })
         .ReverseMap();
         
-        CreateMap<BaseUsuarioDto, Usuario>().ReverseMap();
+        CreateMap<Business.Dtos.v1.UsuarioDto, Usuario>().ReverseMap();
+
+
+        CreateMap<Business.Dtos.v2.ControleAcessoDto, Categoria>().ReverseMap();
+        CreateMap<Categoria, Business.Dtos.v2.ControleAcessoDto>().AfterMap((s, d) =>
+        {
+            d.Senha = "********";
+        })
+        .ReverseMap();
+
+        CreateMap<Business.Dtos.v2.UsuarioDto, Usuario>().ReverseMap();
 
     }    
 }

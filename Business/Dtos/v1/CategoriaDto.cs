@@ -6,8 +6,8 @@ namespace Business.Dtos.v1;
 public class CategoriaDto : BaseCategoriaDto
 {
     [Required]
-    public string? Descricao { get; set; }
+    public override string? Descricao { get; set; }
     [Required]
-    public int IdTipoCategoria { get; set; }
-    public TipoCategoria TipoCategoria { get { return (TipoCategoria)IdTipoCategoria; } set { IdTipoCategoria = (int)value; } }    
+    public override int IdTipoCategoria { get; set; }
+    public override TipoCategoria TipoCategoria { get { return (TipoCategoria)IdTipoCategoria; } set { IdTipoCategoria = (int)value; } }    
 }

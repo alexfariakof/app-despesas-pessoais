@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Business.Abstractions;
-using Business.Dtos.Core;
 using Repository.Persistency;
 
 namespace Business.Implementations;
-public class LancamentoBusinessImpl : ILancamentoBusiness
+public class LancamentoBusinessImpl<Dto> : ILancamentoBusiness<Dto> where Dto : class, new()
 {
     private readonly ILancamentoRepositorio _repositorio;
     private readonly IMapper _mapper;
@@ -14,8 +13,8 @@ public class LancamentoBusinessImpl : ILancamentoBusiness
         _repositorio = repositorio;
 
     }
-    public List<BaseLancamentoDto> FindByMesAno(DateTime data, int idUsuario)
+    public List<Dto> FindByMesAno(DateTime data, int idUsuario)
     {
-       return  _mapper.Map<List<BaseLancamentoDto>>(_repositorio.FindByMesAno(data, idUsuario));
+       return  _mapper.Map<List<Dto>>(_repositorio.FindByMesAno(data, idUsuario));
     }
 }

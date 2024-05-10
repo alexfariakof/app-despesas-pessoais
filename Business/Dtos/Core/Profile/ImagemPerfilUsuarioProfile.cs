@@ -5,7 +5,11 @@ public class ImagemPerfilUsuarioProfile : AutoMapper.Profile
 {
     public ImagemPerfilUsuarioProfile()
     {
-        CreateMap<BaseImagemPerfilDto, ImagemPerfilUsuario>().ReverseMap();
-        CreateMap<ImagemPerfilUsuario, BaseImagemPerfilDto>().ReverseMap();
+        CreateMap<Business.Dtos.v1.ImagemPerfilDto, ImagemPerfilUsuario>().ReverseMap();
+        CreateMap<ImagemPerfilUsuario, Business.Dtos.v1.ImagemPerfilDto>().ReverseMap();
+
+        CreateMap<Business.Dtos.v2.ImagemPerfilDto, ImagemPerfilUsuario>().ReverseMap();
+        CreateMap<ImagemPerfilUsuario, Business.Dtos.v2.ImagemPerfilDto>().ReverseMap();
+
     }
 }

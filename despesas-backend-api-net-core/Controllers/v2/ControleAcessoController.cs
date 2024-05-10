@@ -10,8 +10,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class ControleAcessoController : AuthController
 {
-    private IControleAcessoBusiness _controleAcessoBusiness;
-    public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
+    private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
+    public ControleAcessoController(IControleAcessoBusiness<ControleAcessoDto, LoginDto> controleAcessoBusiness)
     {
         _controleAcessoBusiness = controleAcessoBusiness;
     }

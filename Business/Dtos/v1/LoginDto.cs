@@ -6,8 +6,8 @@ public class LoginDto: BaseLoginDto
 {
     [EmailAddress]
     [Required]
-    public string? Email { get; set; }
+    public override string? Email { get; set; }
 
     [Required]
-    public string? Senha { get; set; }
+    public override string? Senha { get; set; }
 }

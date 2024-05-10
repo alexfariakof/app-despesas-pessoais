@@ -1,44 +1,44 @@
-﻿using Domain.Core;
+﻿using AutoMapper;
+using Domain.Core;
 using Repository.Persistency.Generic;
 
 namespace Business.Generic;
-public class GenericBusiness<T> : IBusiness<T> where T : BaseModel
+public class GenericBusiness<Dto, Entity>: IBusiness<Dto, Entity> where Dto: class where Entity : BaseModel, new()
 {
-    private readonly IRepositorio<T> _repositorio;
+    private readonly IRepositorio<Entity> _repositorio;
+    private readonly IMapper _mapper;
 
-    public GenericBusiness(IRepositorio<T> repositorio)
+    public GenericBusiness(IRepositorio<Entity> repositorio)
     {
         _repositorio = repositorio;
     }
-    public T Create(T obj)
+    public Dto Create(Dto obj)
     {
-        _repositorio.Insert(ref obj);
-        return obj;
+        var entity = this._mapper.Map<Entity>(obj);
+        _repositorio.Insert(ref entity);
+        return this._mapper.Map<Dto>(entity);
     }
 
-    public List<T> FindAll(int idUsuario)
+    public List<Dto> FindAll(int idUsuario)
     {
-        return _repositorio.GetAll();
+        return this._mapper.Map<List<Dto>>(_repositorio.GetAll());
     }
 
-    public T FindById(int id, int idUsuario)
+    public Dto FindById(int id, int idUsuario)
     {
-        return _repositorio.Get(id);
+        return this._mapper.Map<Dto>( _repositorio.Get(id));
     }
 
-    public T Update(T obj)
+    public Dto Update(Dto obj)
     {
-        _repositorio.Update(ref obj);
-        return obj;
+        var entity = this._mapper.Map<Entity>(obj);
+        _repositorio.Update(ref entity);
+        return this._mapper.Map<Dto>(obj);
     }
 
-    public bool Delete(T obj)
+    public bool Delete(Dto obj)
     {
-        return _repositorio.Delete(obj);
-    }
-
-    public List<T> FindByIdUsuario(int idUsuario)
-    {
-        return new List<T>();
+        var entity = this._mapper.Map<Entity>(obj);
+        return _repositorio.Delete(entity);
     }
 }

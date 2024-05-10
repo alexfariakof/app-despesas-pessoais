@@ -9,13 +9,13 @@ public class ControleAcessoDto : BaseControleAcessoDto, IValidatableObject
     public override int Id { get; set; }
 
     [Required(ErrorMessage = "A senha é obrigatório.")]
-    public string? Senha { get; set; }
+    public override string? Senha { get; set; }
 
     [Required(ErrorMessage = "Confirma Senha é obrigatória.")]
-    public string? ConfirmaSenha { get; set; }
+    public override string? ConfirmaSenha { get; set; }
 
     [JsonIgnore]
-    public string? RefreshToken { get; set; }
+    public override string? RefreshToken { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

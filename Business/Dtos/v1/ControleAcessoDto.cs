@@ -9,12 +9,12 @@ public class ControleAcessoDto : BaseControleAcessoDto
     public override int Id { get; set; }
 
     [Required]
-    public string? Senha { get; set; }
+    public override string? Senha { get; set; }
 
     [Required]
-    public string? ConfirmaSenha { get; set; }
+    public override string? ConfirmaSenha { get; set; }
 
     [JsonIgnore]
-    public string? RefreshToken { get; set; }
+    public override string? RefreshToken { get; set; }
 
 }

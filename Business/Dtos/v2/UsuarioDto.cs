@@ -9,19 +9,19 @@ namespace Business.Dtos.v2;
 public class UsuarioDto : BaseUsuarioDto, ISupportHyperMedia
 {
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
-    public string? Nome { get; set; }
+    public override string? Nome { get; set; }
 
-    public string? SobreNome { get; set; }
+    public override string? SobreNome { get; set; }
 
     [Required(ErrorMessage = "O campo Telefone é obrigatório.")]
-    public string? Telefone { get; set; }
+    public override string? Telefone { get; set; }
 
     [EmailAddress(ErrorMessage = "O campo Email é inválido.")]
     [Required(ErrorMessage = "O campo Email é obrigatório.")]
-    public string? Email { get; set; }
+    public override string? Email { get; set; }
 
     [JsonIgnore]
-    public PerfilUsuario PerfilUsuario { get; set; }
+    public override PerfilUsuario PerfilUsuario { get; set; }
 
     public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }
