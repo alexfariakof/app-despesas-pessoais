@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
+using Business.Dtos.Core;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
@@ -59,11 +60,11 @@ public class CategoriaController : AuthController
     [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
     [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetByTipoCategoria([FromRoute] TipoCategoria tipoCategoria)
+    public IActionResult GetByTipoCategoria([FromRoute] TipoCategoriaDto tipoCategoria)
     {
-        if (tipoCategoria == TipoCategoria.Todas)
+        if (tipoCategoria == TipoCategoriaDto.Todas)
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdUsuario.Equals(IdUsuario)).ToList();
+            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.UsuarioId.Equals(IdUsuario)).ToList();
             return Ok(_categoria);
         }
         else
@@ -81,12 +82,12 @@ public class CategoriaController : AuthController
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
-        if (categoria.IdTipoCategoria == (int)TipoCategoria.Todas)
+        if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
             return BadRequest("Nenhum tipo de Categoria foi selecionado!");
 
         try
         {
-            categoria.IdUsuario = IdUsuario;
+            categoria.UsuarioId = IdUsuario;
             return Ok(_categoriaBusiness.Create(categoria));
         }
         catch
@@ -103,12 +104,12 @@ public class CategoriaController : AuthController
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
-        if (categoria.TipoCategoria == TipoCategoria.Todas)
+        if (categoria.TipoCategoria == TipoCategoriaDto.Todas)
             return BadRequest("Nenhum tipo de Categoria foi selecionado!");
 
         try
         {
-            categoria.IdUsuario = IdUsuario;
+            categoria.UsuarioId = IdUsuario;
             CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
             if (updateCategoria == null) throw new Exception();
             return Ok(updateCategoria);
@@ -130,7 +131,7 @@ public class CategoriaController : AuthController
         try
         {
             CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-            if (categoria == null || IdUsuario != categoria.IdUsuario)
+            if (categoria == null || IdUsuario != categoria.UsuarioId)
                 return BadRequest("Usuário não permitido a realizar operação!");
 
             if (_categoriaBusiness.Delete(categoria))

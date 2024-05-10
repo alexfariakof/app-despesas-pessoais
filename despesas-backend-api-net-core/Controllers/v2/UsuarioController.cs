@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-using Business.Dtos.Core;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
@@ -79,7 +78,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            usuarioDto.IdUsuario = IdUsuario;
+            usuarioDto.UsuarioId = IdUsuario;
             return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
         }
         catch (Exception ex)
@@ -184,7 +183,7 @@ public class UsuarioController : AuthController
         try
         {
 
-            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario).Find(prop => prop.IdUsuario.Equals(IdUsuario));
+            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario).Find(prop => prop.UsuarioId.Equals(IdUsuario));
 
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -297,7 +296,7 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    IdUsuario = IdUsuario,
+                    UsuarioId = IdUsuario,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

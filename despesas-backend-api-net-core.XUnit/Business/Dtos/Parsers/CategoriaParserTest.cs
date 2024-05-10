@@ -44,7 +44,7 @@ public class CategoriaParserTest
         Assert.Equal(categoria.Id, categoriaDto.Id);
         Assert.Equal(categoria.Descricao, categoriaDto.Descricao);
         Assert.Equal((int)categoria.TipoCategoria, categoriaDto.IdTipoCategoria);
-        Assert.Equal(categoria.UsuarioId, categoriaDto.IdUsuario);
+        Assert.Equal(categoria.UsuarioId, categoriaDto.UsuarioId);
     }
 
     [Fact]
@@ -136,7 +136,7 @@ public class CategoriaParserTest
             Assert.Equal(categorias[i].Id, categoriaDtos[i].Id);
             Assert.Equal(categorias[i].Descricao, categoriaDtos[i].Descricao);
             Assert.Equal((int)categorias[i].TipoCategoria, categoriaDtos[i].IdTipoCategoria);
-            Assert.Equal(categorias[i].UsuarioId, categoriaDtos[i].IdUsuario);
+            Assert.Equal(categorias[i].UsuarioId, categoriaDtos[i].UsuarioId);
         }
     }
 }

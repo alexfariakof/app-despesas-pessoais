@@ -16,9 +16,6 @@ public class DespesaDto : BaseDespesaDto
     public override DateTime? DataVencimento { get; set; }
 
     [Required]
-    public override int? IdCategoria { get; set; }
-
-    [JsonIgnore]
-    public UsuarioDto? Usuario { get; set; }
+    public override int? CategoriaId { get; set; }
     
 }

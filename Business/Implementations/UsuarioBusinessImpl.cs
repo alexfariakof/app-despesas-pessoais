@@ -18,7 +18,7 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUs
 
     public Dto Create(Dto usuarioDto)
     {
-        var isValidUsuario = _repositorio.Get(usuarioDto.IdUsuario);
+        var isValidUsuario = _repositorio.Get(usuarioDto.UsuarioId);
         if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
             throw new ArgumentException("Usuário não permitido a realizar operação!");
         

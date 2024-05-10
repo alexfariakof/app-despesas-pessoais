@@ -22,8 +22,9 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
     }
     public override Dto Create(Dto obj)
     {
-        IsCategoriaValid(obj);
         Receita receita = _mapper.Map<Receita>(obj);
+        IsCategoriaValid(receita);
+        receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
         _repositorio.Insert(ref receita);
         return _mapper.Map<Dto>(receita);
     }
@@ -46,8 +47,9 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
 
     public override Dto Update(Dto obj)
     {
-        IsCategoriaValid(obj);
         Receita receita = _mapper.Map<Receita>(obj);
+        IsCategoriaValid(receita);
+        receita.Categoria = _repoCategoria.Get(receita.CategoriaId);
         _repositorio.Update(ref receita);
         return _mapper.Map<Dto>(receita);
     }
@@ -58,9 +60,9 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
         return  _repositorio.Delete(receita);
     }
 
-    private void IsCategoriaValid(Dto obj)
+    private void IsCategoriaValid(Receita obj)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario && c.TipoCategoria.Equals(TipoCategoria.Receita) && c.Id == obj.IdCategoria) == null)
-            throw new ArgumentException("Categoria não existe cadastrada para este usuário!");
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria.Equals(TipoCategoria.Receita) && c.Id == obj.CategoriaId) == null)
+            throw new ArgumentException("Categoria inválida para este usuário!");
     }
 }

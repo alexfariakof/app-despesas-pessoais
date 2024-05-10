@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Core;
+using Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -16,6 +17,9 @@ public class ControleAcessoDto : BaseControleAcessoDto, IValidatableObject
 
     [JsonIgnore]
     public override string? RefreshToken { get; set; }
+
+    [JsonIgnore]
+    public override PerfilUsuario PerfilUsuario { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {

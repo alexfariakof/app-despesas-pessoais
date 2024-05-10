@@ -135,7 +135,7 @@ public class UsuarioController : AuthController
     public IActionResult GetImage()
     {
         var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
-            .Find(prop => prop.IdUsuario.Equals(IdUsuario));
+            .Find(prop => prop.UsuarioId.Equals(IdUsuario));
 
         if (imagemPerfilUsuario != null)
             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -216,7 +216,7 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    IdUsuario = IdUsuario,
+                    UsuarioId = IdUsuario,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

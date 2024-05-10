@@ -101,7 +101,7 @@ public class DespesaControllerTest
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
         var despesaDto = new DespesaParser().Parse(despesa);
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         int despesaId = despesa.Id;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaId, idUsuario)).Returns(despesaDto);

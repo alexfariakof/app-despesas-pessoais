@@ -19,6 +19,6 @@ public class UsuarioDto : BaseUsuarioDto
     public override string? Email { get; set; }
 
     [JsonIgnore]
-    public PerfilUsuario PerfilUsuario { get; set; }
+    public override PerfilUsuario PerfilUsuario { get; set; }
 
 }

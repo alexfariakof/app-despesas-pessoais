@@ -102,7 +102,7 @@ public class ImagemPerfilUsuarioControllerTest
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
         var _imagemPerfilUsuarioDtos = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
         var imagemPerfilUsuarioDto = _imagemPerfilUsuarioDtos.First();
-        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
+        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
 
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);

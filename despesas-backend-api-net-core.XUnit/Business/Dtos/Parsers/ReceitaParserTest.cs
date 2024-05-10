@@ -34,7 +34,7 @@ public class ReceitaParserTest
         // Assert
         Assert.Equal(receita.Id, receitaDto.Id);
         Assert.Equal(receita.Descricao, receitaDto.Descricao);
-        Assert.Equal(receita.UsuarioId, receitaDto.IdUsuario);
+        Assert.Equal(receita.UsuarioId, receitaDto.UsuarioId);
     }
 
     [Fact]
@@ -75,7 +75,7 @@ public class ReceitaParserTest
         {
             Assert.Equal(receitas[i].Id, receitaDtos[i].Id);
             Assert.Equal(receitas[i].Descricao, receitaDtos[i].Descricao);
-            Assert.Equal(receitas[i].UsuarioId, receitaDtos[i].IdUsuario);
+            Assert.Equal(receitas[i].UsuarioId, receitaDtos[i].UsuarioId);
         }
     }
 }

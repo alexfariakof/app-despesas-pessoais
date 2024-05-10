@@ -4,5 +4,5 @@ public abstract class BaseReceitaDto : BaseModelDto
     public virtual DateTime? Data { get; set; }
     public virtual string? Descricao { get; set; }
     public virtual decimal Valor { get; set; }
-    public virtual int? IdCategoria { get; set; }
+    public virtual int? CategoriaId { get; set; }
 }

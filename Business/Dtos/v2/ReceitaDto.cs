@@ -16,11 +16,23 @@ public class ReceitaDto : BaseReceitaDto, ISupportHyperMedia
     [Required(ErrorMessage = "O campo Valor é obrigatório.")]
     public override decimal Valor { get; set; }
 
-    [Required(ErrorMessage = "A Categoria é obrigatória.")]
-    public CategoriaDto? Categoria { get; set; }
-
     [JsonIgnore]
-    public UsuarioDto? Usuario { get; set; }
-    public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
+    public override int? CategoriaId
+    {
+        get
+        {
+            return this.Categoria?.Id;
+        }
+        set
+        {
+            if (value != null)
+            {
+                this.Categoria.Id = value.Value;
+            }
+        }
+    }
 
+    [Required(ErrorMessage = "A Categoria é obrigatória.")]
+    public CategoriaDto? Categoria { get; set; } = new();
+    public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

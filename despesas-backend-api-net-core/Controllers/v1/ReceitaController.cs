@@ -50,7 +50,7 @@ public class ReceitaController : AuthController
     {
         try
         {
-            receita.IdUsuario = IdUsuario;
+            receita.UsuarioId = IdUsuario;
             return new OkObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
         }
         catch
@@ -64,7 +64,7 @@ public class ReceitaController : AuthController
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
 
-        receita.IdUsuario = IdUsuario;
+        receita.UsuarioId = IdUsuario;
         var updateReceita = _receitaBusiness.Update(receita);
 
         if (updateReceita == null)
@@ -78,7 +78,7 @@ public class ReceitaController : AuthController
     public IActionResult Delete(int idReceita)
     {
         ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
-        if (receita == null || IdUsuario != receita.IdUsuario)
+        if (receita == null || IdUsuario != receita.UsuarioId)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

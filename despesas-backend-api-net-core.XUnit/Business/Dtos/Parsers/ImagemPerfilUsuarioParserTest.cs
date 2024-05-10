@@ -48,7 +48,7 @@ public class ImagemPerfilUsuarioParserTest
         Assert.Equal(origin.Name, result.Name);
         Assert.Equal(origin.ContentType, result.ContentType);
         Assert.Equal(origin.Url, result.Url);
-        Assert.Equal(origin.UsuarioId, result.IdUsuario);
+        Assert.Equal(origin.UsuarioId, result.UsuarioId);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class ImagemPerfilUsuarioParserTest
             Assert.Equal(originList[i].Name, resultList[i].Name);
             Assert.Equal(originList[i].ContentType, resultList[i].ContentType);
             Assert.Equal(originList[i].Url, resultList[i].Url);
-            Assert.Equal(originList[i].UsuarioId, resultList[i].IdUsuario);
+            Assert.Equal(originList[i].UsuarioId, resultList[i].UsuarioId);
         }
     }
 }

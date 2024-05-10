@@ -16,7 +16,7 @@ public class DespesaDtoTest
         Assert.Equal(despesa.Descricao, despesaDto.Descricao);
         Assert.Equal(despesa.Valor, despesaDto.Valor);
         Assert.Equal(despesa.DataVencimento, despesaDto.DataVencimento);
-        Assert.Equal(despesa.UsuarioId, despesaDto.IdUsuario);
+        Assert.Equal(despesa.UsuarioId, despesaDto.UsuarioId);
         Assert.Equal(despesa.Categoria.Id, despesaDto.Categoria.Id);
     }
     

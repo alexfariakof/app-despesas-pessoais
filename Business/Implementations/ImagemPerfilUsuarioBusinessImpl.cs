@@ -47,7 +47,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
     public Dto FindById(int id, int idUsuario)
     {
         var imagemPerfilUsuario = _mapper.Map<Dto>(_repositorio.Get(id));
-        if (imagemPerfilUsuario.IdUsuario != idUsuario)
+        if (imagemPerfilUsuario.UsuarioId != idUsuario)
             return null;
 
         return imagemPerfilUsuario;
@@ -70,7 +70,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
     {        
         try
         {
-            var validImagemPerfil = _repositorio.GetAll().Find(prop => prop.UsuarioId.Equals(obj.IdUsuario));
+            var validImagemPerfil = _repositorio.GetAll().Find(prop => prop.UsuarioId.Equals(obj.UsuarioId));
             if (validImagemPerfil == null)
                 throw new ArgumentException("Erro ao atualizar iamgem do perfil!");
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Generic;
 using Domain.Entities;
+using Business.Dtos.Core;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -36,12 +37,12 @@ public class CategoriaController : AuthController
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
     [Authorize("Bearer")]
-    public IActionResult GetByTipoCategoria([FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
+    public IActionResult GetByTipoCategoria([FromRoute] TipoCategoriaDto tipoCategoria)
     {
-        if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
+        if (tipoCategoria == TipoCategoriaDto.Todas)
         {
             var _categoria = _categoriaBusiness.FindAll(IdUsuario)
-                             .FindAll(prop => prop.IdUsuario.Equals(IdUsuario));
+                             .FindAll(prop => prop.UsuarioId.Equals(IdUsuario));
             return Ok(_categoria);
         }
         else
@@ -57,12 +58,12 @@ public class CategoriaController : AuthController
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
+        if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!"});
 
         try
         {
-            categoria.IdUsuario = IdUsuario;
+            categoria.UsuarioId = IdUsuario;
             return Ok(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
         }
         catch
@@ -76,10 +77,10 @@ public class CategoriaController : AuthController
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
+        if (categoria.TipoCategoria == (int)TipoCategoriaDto.Todas)
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
-        categoria.IdUsuario = IdUsuario;
+        categoria.UsuarioId = IdUsuario;
         var updateCategoria = _categoriaBusiness.Update(categoria);
 
         if (updateCategoria == null)
@@ -93,7 +94,7 @@ public class CategoriaController : AuthController
     public IActionResult Delete(int idCategoria)
     {
         var categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-        if (categoria == null || IdUsuario != categoria.IdUsuario)
+        if (categoria == null || IdUsuario != categoria.UsuarioId)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

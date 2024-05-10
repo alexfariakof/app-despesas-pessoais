@@ -70,10 +70,10 @@ public class ControleAcessoParserTest
         Assert.NotNull(controleAcessoDto);
         Assert.Equal(controleAcesso.Id, controleAcessoDto.Id);
         Assert.Equal(controleAcesso.Login, controleAcessoDto.Email);
-        Assert.Equal(controleAcesso.UsuarioId, controleAcessoDto.IdUsuario);
+        Assert.Equal(controleAcesso.UsuarioId, controleAcessoDto.UsuarioId);
         Assert.Equal(controleAcesso.Senha, controleAcessoDto.Senha);
         Assert.Equal(controleAcesso.RefreshToken, controleAcessoDto.RefreshToken);
-        Assert.Equal(usuario.Id, controleAcessoDto.IdUsuario);
+        Assert.Equal(usuario.Id, controleAcessoDto.UsuarioId);
         Assert.Equal(usuario.Nome, controleAcessoDto.Nome);
         Assert.Equal(usuario.PerfilUsuario, controleAcessoDto.PerfilUsuario);
         Assert.Equal(usuario.Telefone, controleAcessoDto.Telefone);

@@ -21,6 +21,7 @@ public class DespesaController : AuthController
     [HttpGet]
     [Authorize("Bearer")]
     [ProducesResponseType(200, Type = typeof(IList<DespesaDto>))]
+    [ProducesResponseType(400, Type = typeof(string))]
     [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
@@ -29,8 +30,11 @@ public class DespesaController : AuthController
         {
             return Ok(_despesaBusiness.FindAll(IdUsuario));
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return Ok(new List<DespesaDto>());
         }
     }
@@ -51,8 +55,11 @@ public class DespesaController : AuthController
 
             return new OkObjectResult(_despesa);
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Não foi possível realizar a consulta da despesa.");
         }
     }
@@ -67,11 +74,14 @@ public class DespesaController : AuthController
     {
         try
         {
-            despesa.IdUsuario = IdUsuario;
+            despesa.UsuarioId = IdUsuario;
             return new OkObjectResult(_despesaBusiness.Create(despesa));
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Não foi possível realizar o cadastro da despesa.");
         }
     }
@@ -86,15 +96,18 @@ public class DespesaController : AuthController
     {
         try
         {
-            despesa.IdUsuario = IdUsuario;
+            despesa.UsuarioId = IdUsuario;
             var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
                 throw new Exception();
 
             return new OkObjectResult(updateDespesa);
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Não foi possível atualizar o cadastro da despesa.");
         }
     }
@@ -110,7 +123,7 @@ public class DespesaController : AuthController
         try
         {
             DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
-            if (despesa == null || IdUsuario != despesa.IdUsuario)
+            if (despesa == null || IdUsuario != despesa.UsuarioId)
             {
                 return BadRequest("Usuário não permitido a realizar operação!");
             }
@@ -120,8 +133,11 @@ public class DespesaController : AuthController
             else
                 throw new Exception();
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Erro ao excluir Despesa!");
         }
     }

@@ -55,9 +55,9 @@ public class LancamentoParserTest
         // Assert
         // Assert
         Assert.Equal(lancamentoDto.Id, lancamento.Id);
-        Assert.Equal(lancamentoDto.IdUsuario, lancamento.UsuarioId);
-        Assert.Equal(lancamentoDto.IdDespesa, lancamento.DespesaId);
-        Assert.Equal(lancamentoDto.IdReceita, lancamento.ReceitaId);
+        Assert.Equal(lancamentoDto.UsuarioId, lancamento.UsuarioId);
+        Assert.Equal(lancamentoDto.DespesaId, lancamento.DespesaId);
+        Assert.Equal(lancamentoDto.ReceitaId, lancamento.ReceitaId);
         Assert.Equal(lancamentoDto.Valor, lancamento.Valor);
         Assert.Equal(DateTime.Parse(lancamentoDto.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
         //Assert.Equal(lancamentoDto.Descricao, lancamento.Descricao);
@@ -175,7 +175,7 @@ public class LancamentoParserTest
         {
             Assert.Equal(lancamentos[i].Id, lancamentoDtos[i].Id);
             //Assert.Equal(lancamentos[i].Descricao, lancamentoDtos[i].Descricao);
-            Assert.Equal(lancamentos[i].UsuarioId, lancamentoDtos[i].IdUsuario);
+            Assert.Equal(lancamentos[i].UsuarioId, lancamentoDtos[i].UsuarioId);
         }
     }
 

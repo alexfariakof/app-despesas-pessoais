@@ -15,8 +15,6 @@ public class ReceitaDto : BaseReceitaDto
     public override decimal Valor { get; set; }
 
     [Required]
-    public override int? IdCategoria { get; set; }
+    public override int? CategoriaId { get; set; }
 
-    [JsonIgnore]
-    public UsuarioDto? Usuario { get; set; }
 }

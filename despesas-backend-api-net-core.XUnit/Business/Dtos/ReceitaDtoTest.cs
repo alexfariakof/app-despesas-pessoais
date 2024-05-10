@@ -15,7 +15,7 @@ public class ReceitaDtoTest
         Assert.Equal(receita.Data, receitaDto .Data);
         Assert.Equal(receita.Descricao, receitaDto .Descricao);
         Assert.Equal(receita.Valor, receitaDto .Valor);
-        Assert.Equal(receita.UsuarioId, receitaDto .IdUsuario);
+        Assert.Equal(receita.UsuarioId, receitaDto .UsuarioId);
         Assert.Equal(receita.Categoria.Id, receitaDto.Categoria.Id);
     }
 }

@@ -33,7 +33,7 @@ public class DespesaParserTest
         // Assert
         Assert.Equal(despesa.Id, despesaDto.Id);
         Assert.Equal(despesa.Descricao, despesaDto.Descricao);
-        Assert.Equal(despesa.UsuarioId, despesaDto.IdUsuario);
+        Assert.Equal(despesa.UsuarioId, despesaDto.UsuarioId);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public class DespesaParserTest
         {
             Assert.Equal(despesaDtos[i].Id, despesas[i].Id);
             Assert.Equal(despesaDtos[i].Descricao, despesas[i].Descricao);
-            Assert.Equal(despesaDtos[i].UsuarioId, despesas[i].IdUsuario);
+            Assert.Equal(despesaDtos[i].UsuarioId, despesas[i].UsuarioId);
         }
     }
 

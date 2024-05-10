@@ -14,8 +14,8 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
             Data = origin.Data.Value,
             Descricao = origin.Descricao,                
             Valor = origin.Valor,
-            CategoriaId = origin.IdCategoria.Value,
-            UsuarioId = origin.IdUsuario
+            CategoriaId = origin.CategoriaId.Value,
+            UsuarioId = origin.UsuarioId
         };
     }
 
@@ -28,9 +28,8 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
             Data = origin.Data,
             Descricao = origin.Descricao,
             Valor = origin.Valor,                
-            IdCategoria =origin.Categoria.Id,
-            IdUsuario = origin.UsuarioId,
-            Usuario = new UsuarioParser().Parse(origin.Usuario)                
+            CategoriaId =origin.Categoria.Id,
+            UsuarioId = origin.UsuarioId
         };
     }
 

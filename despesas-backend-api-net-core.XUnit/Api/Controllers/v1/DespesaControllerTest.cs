@@ -92,7 +92,7 @@ public class DespesaControllerTest
         var despesa = DespesaFaker.Instance.Despesas().First();
         var despesaDto = new DespesaParser().Parse(despesa);
 
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
 
         int despesaId = despesa.Id;
         SetupBearerToken(idUsuario);
