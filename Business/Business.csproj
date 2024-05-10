@@ -19,5 +19,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
+ 
+  <ItemGroup>
+    <Folder Include="Dtos\Interfaces\" />
+  </ItemGroup>
 
 </Project>

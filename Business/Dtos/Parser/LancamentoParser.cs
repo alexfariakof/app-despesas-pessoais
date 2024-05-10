@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Business.Dtos.Parser.Interfaces;
+using Business.Dtos.v1;
 
 namespace Business.Dtos.Parser;
 public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lancamento, LancamentoDto>

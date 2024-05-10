@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.v1;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 

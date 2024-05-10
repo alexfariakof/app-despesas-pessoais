@@ -1,10 +1,11 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
 using Domain.Entities;
 using System.Text.RegularExpressions;
+using Business.Dtos.Core;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -38,7 +39,7 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     public IActionResult GetUsuario()
     {
-        UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+        var _usuario = _usuarioBusiness.FindById(IdUsuario);
         if (_usuario == null)
             return BadRequest(new { message ="Usuário não encontrado!" });
 
@@ -80,7 +81,7 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
             return  BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -106,7 +107,7 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -149,7 +150,7 @@ public class UsuarioController : AuthController
         try
         {
             var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
-            ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+            BaseImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
             if (_imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
             else
@@ -167,7 +168,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            BaseImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });

@@ -1,6 +1,6 @@
 ﻿using Business.Abstractions;
 using Business.Authentication;
-using Business.Dtos;
+using Business.Dtos.Core;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
@@ -26,7 +26,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _emailSender = emailSender;
     }
 
-    public void Create(ControleAcessoDto controleAcessoDto)
+    public void Create(BaseControleAcessoDto controleAcessoDto)
     {
         ControleAcesso controleAcesso = new ControleAcesso();
         controleAcesso.CreateAccount(new Usuario()
@@ -43,7 +43,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _repositorio.Create(controleAcesso);
     }
 
-    public AuthenticationDto ValidateCredentials(LoginDto login)
+    public BaseAuthenticationDto ValidateCredentials(BaseLoginDto login)
     {
         ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = login.Email });
 
@@ -67,7 +67,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         return AuthenticationException("Usuário Inválido!");
     }
 
-    public AuthenticationDto ValidateCredentials(string refreshToken)
+    public BaseAuthenticationDto ValidateCredentials(string refreshToken)
     {
         var baseLogin = _repositorio.FindByRefreshToken(refreshToken);
         var credentialsValid = 
@@ -104,16 +104,16 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _repositorio.ChangePassword(idUsuario, password);
     }
 
-    private AuthenticationDto AuthenticationException(string message)
+    private BaseAuthenticationDto AuthenticationException(string message)
     {
-        return new AuthenticationDto
+        return new Business.Dtos.v2.AuthenticationDto
         {
             Authenticated = false,
             Message = message
         };
     }
 
-    private AuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
+    private BaseAuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
     {
 
         ClaimsIdentity identity = new ClaimsIdentity(
@@ -128,7 +128,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);        
         string token = _singingConfiguration.GenerateAccessToken(identity, _tokenConfiguration, controleAcesso.Usuario.Id);
 
-        return new AuthenticationDto
+        return new Business.Dtos.v2.AuthenticationDto
         {
             Authenticated = true,
             Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),

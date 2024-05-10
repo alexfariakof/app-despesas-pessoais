@@ -1,7 +1,7 @@
-﻿using Business.Dtos;
+﻿using Business.Dtos.Core;
 
 namespace Business.Abstractions;
 public interface ILancamentoBusiness
 {
-    List<LancamentoDto> FindByMesAno(DateTime data, int idUsuario); 
+    List<BaseLancamentoDto> FindByMesAno(DateTime data, int idUsuario); 
 }

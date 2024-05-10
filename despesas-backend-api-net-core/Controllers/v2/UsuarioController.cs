@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.Core;
+using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -55,7 +56,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+           var _usuario = _usuarioBusiness.FindById(IdUsuario);
             if (_usuario == null) throw new Exception();
             return Ok(_usuario);
         }
@@ -100,7 +101,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+            var updateUsuario = _usuarioBusiness.Update(usuarioDto);
             if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
@@ -129,7 +130,7 @@ public class UsuarioController : AuthController
             if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
-            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+            var updateUsuario = _usuarioBusiness.Update(usuarioDto);
             if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
@@ -183,8 +184,7 @@ public class UsuarioController : AuthController
         try
         {
 
-            var imagemPerfilUsuario = _imagemPerfilBussiness
-                .FindAll(IdUsuario).Find(prop => prop.IdUsuario.Equals(IdUsuario));
+            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario).Find(prop => prop.IdUsuario.Equals(IdUsuario));
 
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -210,8 +210,8 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
-            ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+            BaseImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            var _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
 
             if (_imagemPerfilUsuario != null)
                 return Ok(_imagemPerfilUsuario);
@@ -237,7 +237,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            BaseImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);

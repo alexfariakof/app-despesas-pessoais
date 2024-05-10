@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Parser.Interfaces;
+using Business.Dtos.v1;
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
@@ -14,7 +15,7 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Descricao = origin.Descricao,                
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
-            CategoriaId = origin.Categoria.Id,
+            CategoriaId = origin.IdUsuario,
             UsuarioId = origin.IdUsuario,
         };
     }
@@ -29,7 +30,7 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Descricao = origin.Descricao,
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
-            Categoria = new CategoriaParser().Parse(origin.Categoria),
+            IdCategoria = origin.Categoria.Id,
             IdUsuario = origin.UsuarioId,
             Usuario = new UsuarioParser().Parse(origin.Usuario),                
         };

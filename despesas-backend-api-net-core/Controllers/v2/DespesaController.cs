@@ -1,7 +1,8 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
-using Business.Generic;
+using Business.Abstractions;
+using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class DespesaController : AuthController
 {
-    private IBusiness<DespesaDto> _despesaBusiness;
-    public DespesaController(IBusiness<DespesaDto> despesaBusiness)
+    private readonly BusinessBase<DespesaDto, Despesa> _despesaBusiness;
+    public DespesaController(BusinessBase<DespesaDto, Despesa> despesaBusiness)
     {
         _despesaBusiness = despesaBusiness;
     }

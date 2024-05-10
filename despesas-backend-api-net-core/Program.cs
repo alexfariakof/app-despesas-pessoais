@@ -1,9 +1,9 @@
 using despesas_backend_api_net_core.CommonDependenceInject;
 using Business.CommonDependenceInject;
-using Repository;
 using Repository.CommonDependenceInject;
 using Microsoft.EntityFrameworkCore;
 using CrossCutting.CommonDependenceInject;
+using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,16 +25,25 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
 
-if (builder.Environment.IsProduction() || builder.Environment.EnvironmentName.Equals("MySqlServer"))
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureMsSqlConnectionString")));
+}
+else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
 }
-else 
+else if (builder.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
     builder.Services.CreateDataBaseInMemory();
 }
+else
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+}
 
 // Add CommonInjectDependences 
+builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
 builder.Services.AddAuthConfigurations(builder.Configuration);
 builder.Services.AddRepositories();
@@ -43,14 +52,19 @@ builder.Services.AddCrossCuttingConfiguration();
 builder.Services.AddHyperMediaHATEOAS();
 
 var app = builder.Build();
-app.AddSupporteCulturesPtBr();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
+app.AddSupporteCulturesPtBr();
 app.AddSwaggerApiVersioning();
 app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
-app.RunDataSeeders();
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+if (!app.Environment.IsProduction())
+    app.RunDataSeeders();
+
 app.Run();

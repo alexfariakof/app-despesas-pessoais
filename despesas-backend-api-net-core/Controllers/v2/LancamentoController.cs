@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.v2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

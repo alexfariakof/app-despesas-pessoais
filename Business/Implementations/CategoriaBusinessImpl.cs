@@ -1,59 +1,57 @@
 ﻿using Business.Abstractions;
-using Business.Dtos;
-using Business.Dtos.Parser;
 using Domain.Entities;
 using Domain.Entities.Abstractions;
 using MediatR;
+using AutoMapper;
+using Business.Dtos.Core;
+using Business.Generic;
 
 namespace Business.Implementations;
-public class CategoriaBusinessImpl: BusinessBase<CategoriaDto, Categoria>
+public class CategoriaBusinessImpl: BusinessBase<BaseCategoriaDto, Categoria>, IBusiness<BaseCategoriaDto>
 {
     private readonly IMediator _mediator;
-    private readonly IUnitOfWork<Categoria> _unitOfWork;
-    private readonly CategoriaParser _converter;
-    
-    public CategoriaBusinessImpl(IMediator mediator, IUnitOfWork<Categoria> unitOfWork): base (unitOfWork)
+    private readonly IUnitOfWork<Categoria> _unitOfWork;    
+    public CategoriaBusinessImpl(IMediator mediator, IMapper mapper, IUnitOfWork<Categoria> unitOfWork): base (mapper, unitOfWork)
     {
         _mediator = mediator;
         _unitOfWork = unitOfWork;
-        _converter = new CategoriaParser();   
     }
 
-    public override CategoriaDto Create(CategoriaDto obj)
+    public override BaseCategoriaDto Create(BaseCategoriaDto obj)
     {
-        Categoria categoria = _converter.Parse(obj);
+        Categoria categoria = this.Mapper.Map<Categoria>(obj);
         _unitOfWork.Repository.Insert(ref categoria);
         _unitOfWork.CommitAsync();
-        return _converter.Parse(categoria);
+        return this.Mapper.Map<BaseCategoriaDto>(categoria);
     }
 
-    public override Task<IList<CategoriaDto>> FindAll(int idUsuario)
+    public override List<BaseCategoriaDto> FindAll(int idUsuario)
     {
         var lstCategoria = _unitOfWork.Repository.GetAll().Result.Where(c => c.UsuarioId == idUsuario).ToList();
-        return Task.FromResult<IList<CategoriaDto>>(_converter.ParseList(lstCategoria)) ;
+        return this.Mapper.Map<List<BaseCategoriaDto>>(lstCategoria);
     }
 
-    public override CategoriaDto FindById(int id, int idUsuario)
+    public override BaseCategoriaDto FindById(int id, int idUsuario)
     {
-        var categoria = _converter.Parse(_unitOfWork.Repository.GetById(id).Result);
+        var categoria = this.Mapper.Map<BaseCategoriaDto>(_unitOfWork.Repository.GetById(id).Result);
         if (idUsuario == categoria.IdUsuario)
             return categoria;
         return null;
     }
 
-    public override CategoriaDto Update(CategoriaDto obj)
+    public override BaseCategoriaDto Update(BaseCategoriaDto obj)
     {
-        Categoria categoria = _converter.Parse(obj);
+        Categoria categoria = this.Mapper.Map<Categoria>(obj);
         _unitOfWork.Repository.Update(ref categoria);
         _unitOfWork.CommitAsync();
-        return _converter.Parse(categoria);
+        return this.Mapper.Map<BaseCategoriaDto>(categoria);
     }
 
-    public override bool Delete(CategoriaDto obj)
+    public override bool Delete(BaseCategoriaDto obj)
     {
         try
         {
-            Categoria categoria = _converter.Parse(obj);
+            Categoria categoria = this.Mapper.Map<Categoria>(obj);
             _unitOfWork.Repository.Delete(categoria.Id);
             _unitOfWork.CommitAsync();
             return true;

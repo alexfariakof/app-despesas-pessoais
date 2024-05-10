@@ -1,4 +1,4 @@
-﻿using Business.Dtos;
+﻿using Business.Dtos.v2;
 using Business.HyperMedia.Constants;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;

@@ -1,7 +1,8 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
-using Business.Generic;
+using Business.Abstractions;
+using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
+using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class ReceitaController : AuthController
 {
-    private IBusiness<ReceitaDto> _receitaBusiness;
-    public ReceitaController(IBusiness<ReceitaDto> receitaBusiness)
+    private readonly BusinessBase<ReceitaDto, Receita> _receitaBusiness;
+    public ReceitaController(BusinessBase<ReceitaDto, Receita> receitaBusiness)
     {
         _receitaBusiness = receitaBusiness;
     }

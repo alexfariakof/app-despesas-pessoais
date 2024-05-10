@@ -1,6 +1,6 @@
-﻿using Business.Abstractions;
-using Business.Dtos;
-using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Abstractions;
+using Business.Dtos.Core;
 using Domain.Entities;
 using Repository.Persistency.Generic;
 
@@ -8,15 +8,15 @@ namespace Business.Implementations;
 public class UsuarioBusinessImpl : IUsuarioBusiness
 {
     private readonly IRepositorio<Usuario> _repositorio;
-    private readonly UsuarioParser _converter;
+    private readonly IMapper _mapper;
 
-    public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
+    public UsuarioBusinessImpl(IMapper mapper, IRepositorio<Usuario> repositorio)
     {
-        _repositorio = repositorio;
-        _converter = new UsuarioParser();
+        _mapper = mapper;
+        _repositorio = repositorio;        
     }
 
-    public UsuarioDto Create(UsuarioDto usuarioDto)
+    public BaseUsuarioDto Create(BaseUsuarioDto usuarioDto)
     {
         var isValidUsuario = _repositorio.Get(usuarioDto.IdUsuario);
         if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
@@ -31,23 +31,23 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
             PerfilUsuario.Usuario);
 
         _repositorio.Insert(ref usuario);
-        return _converter.Parse(usuario);
+        return _mapper.Map<BaseUsuarioDto>(usuario);
     }
 
-    public List<UsuarioDto> FindAll(int idUsuario)
+    public List<BaseUsuarioDto> FindAll(int idUsuario)
     {
         var usuario = FindById(idUsuario);
         if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
-            return _converter.ParseList(_repositorio.GetAll());
+            return _mapper.Map<List<BaseUsuarioDto>>(_repositorio.GetAll());
         return null;
     }      
 
-    public UsuarioDto FindById(int id)
+    public BaseUsuarioDto FindById(int id)
     {
         var usuario = _repositorio.Get(id);
-        return _converter.Parse(usuario);
+        return _mapper.Map<BaseUsuarioDto>(usuario);
     }
-    public UsuarioDto Update(UsuarioDto usuarioDto)
+    public BaseUsuarioDto Update(BaseUsuarioDto usuarioDto)
     {
         var usuario = new Usuario
         {
@@ -60,10 +60,10 @@ public class UsuarioBusinessImpl : IUsuarioBusiness
         };
         
         _repositorio.Update(ref usuario);
-        return _converter.Parse(usuario);
+        return _mapper.Map<BaseUsuarioDto>(usuario);
     }
 
-    public bool Delete(UsuarioDto usuarioDto)
+    public bool Delete(BaseUsuarioDto usuarioDto)
     {
         return _repositorio.Delete(new Usuario{ Id = usuarioDto.Id });
     }

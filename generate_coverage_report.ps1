@@ -8,6 +8,13 @@ function Stop-ProcessesByName {
     }
 }
 
+# Função para Excluir todo o conteúdo da pasta TestResults, se existir
+function Remove-TestPath-Results {
+    if (Test-Path $reportPath) {
+        Remove-Item -Recurse -Force $reportPath
+    }
+}
+
 # Encerra qualquer processo em segundo plano relacionado ao comando npm run test:watch
 Stop-ProcessesByName
 
@@ -16,27 +23,25 @@ Stop-ProcessesByName
 $reportPath = ".\despesas-backend-api-net-core.XUnit\TestResults"
 
 # Exclui todo o conteúdo da pasta TestResults, se existir
-if (Test-Path $reportPath) {
-    Remove-Item -Recurse -Force $reportPath
-}
+#Remove-TestPath-Results
 
 # Executa o teste e coleta o GUID gerado
 dotnet clean > $null 2>&1
 dotnet test ./despesas-backend-api-net-core.XUnit/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 
 # Encontra o diretório mais recente na pasta TestResults
-$latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+#$latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
 $projectPath =  Join-Path -Path (Get-Location) -ChildPath ""
 $sourceDirs = "$projectPath\Business;$projectPath\Domain;$projectPath\Repository;$projectPath\despesas-backend-api-net-core;"
-$filefilters = "$projectPath\DataSeeders\**;$projectPath\MySqlServer.Migrations\**"
+$filefilters = "$projectPath\DataSeeders\**;$projectPath\MySqlServer.Migrations\**;$projectPath\CrossCutting\**"
 
 # Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
-if ($latestDir -ne $null) {
-    $guid = $latestDir.Name
+#if ($latestDir -ne $null) {
+#    $guid = $latestDir.Name
   
     # Constrói os caminhos dinamicamente
     $projectTestPath = ".\despesas-backend-api-net-core.XUnit\"
-    $coverageXmlPath = Join-Path -Path (Join-Path -Path $projectTestPath -ChildPath "TestResults") -ChildPath $guid
+    $coverageXmlPath = Join-Path -Path $projectTestPath -ChildPath "TestResults"
 
     # Gera o relatório de cobertura usando o GUID capturado
     reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
@@ -44,7 +49,7 @@ if ($latestDir -ne $null) {
 
     # Abre a página index.html no navegador padrão do sistema operacional
     Invoke-Item $coverageXmlPath\coveragereport\index.html
-}
-else {
-    Write-Host "Nenhum diretório de resultados encontrado."
-} 
+#}
+#else {
+#    Write-Host "Nenhum diretório de resultados encontrado."
+#} 

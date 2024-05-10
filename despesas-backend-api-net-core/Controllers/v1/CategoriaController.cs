@@ -1,5 +1,5 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Generic;

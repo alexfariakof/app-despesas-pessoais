@@ -10,6 +10,7 @@
     <DockerfileContext>.</DockerfileContext>
     <SonarQubeTestProject>false</SonarQubeTestProject>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <CoverageReportFiles>..\despesas-backend-api-net-core.XUnit\TestResults\coveragereport</CoverageReportFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,5 +31,16 @@
     <ProjectReference Include="..\DataSeeders\DataSeeders.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup> 
+  
+  <ItemGroup>
+    <Content Include="$(CoverageReportFiles)\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Link>wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Content>
+  </ItemGroup>
 </Project>

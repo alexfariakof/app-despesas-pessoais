@@ -1,5 +1,5 @@
 ﻿using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.v2;
 using Repository.Persistency;
 
 namespace Business.Implementations;

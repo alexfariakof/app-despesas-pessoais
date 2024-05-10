@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +27,7 @@ public class CategoriaController : AuthController
     {
         try
         {
-            IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario).Result;
+            IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario);
             return Ok(_categoria);
         }
         catch
@@ -63,12 +63,12 @@ public class CategoriaController : AuthController
     {
         if (tipoCategoria == TipoCategoria.Todas)
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Result.Where(prop => prop.IdUsuario.Equals(IdUsuario)).ToList();
+            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdUsuario.Equals(IdUsuario)).ToList();
             return Ok(_categoria);
         }
         else
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Result.Where(prop => prop.IdTipoCategoria.Equals((int)tipoCategoria)).ToList();
+            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdTipoCategoria.Equals((int)tipoCategoria)).ToList();
             return Ok(_categoria);
         }
     }
