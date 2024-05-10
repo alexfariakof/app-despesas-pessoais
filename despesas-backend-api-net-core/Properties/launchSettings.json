@@ -21,7 +21,17 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:42535"
     },
-
+    "DatabaseInMemory": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "DatabaseInMemory"
+      },
+      "nativeDebugging": true,
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:42535"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

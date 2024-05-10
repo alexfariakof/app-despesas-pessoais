@@ -11,7 +11,7 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
         return new Receita
         {
             Id  = origin.Id,
-            Data = origin.Data,
+            Data = origin.Data.Value,
             Descricao = origin.Descricao,                
             Valor = origin.Valor,
             CategoriaId = origin.IdCategoria.Value,

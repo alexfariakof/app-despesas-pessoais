@@ -44,8 +44,8 @@ public class ReceitaParserTest
             Assert.False(usuarioIdProperty.IsNullable);
             Assert.False(categoriaIdProperty.IsNullable);
             Assert.Equal(typeof(DateTime), dataProperty.ClrType);
-            Assert.Equal("timestamp", dataProperty.GetColumnType());
-            //Assert.Equal(DateTime.Now, dataProperty.GetDefaultValue());
+            Assert.Equal("datetime", dataProperty.GetColumnType());
+            Assert.Equal(DateTime.MinValue, dataProperty.GetDefaultValue());
             Assert.Equal(typeof(decimal), valorProperty.ClrType);
             Assert.Equal("decimal(10, 2)", valorProperty.GetColumnType());
             Assert.Equal(0, (decimal)(valorProperty.GetDefaultValue() ?? 0));

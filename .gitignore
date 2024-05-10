@@ -396,11 +396,10 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-#Exclude Migration
-Migrations/*
-
 # Arquivo contento chave de criptografia
 .vscode/
 despesas-backend-api-net-core/appsettings.Development.json
 despesas-backend-api-net-core/appsettings.json
 .config/
+
+

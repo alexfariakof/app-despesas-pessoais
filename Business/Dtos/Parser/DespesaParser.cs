@@ -11,7 +11,7 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
         return new Despesa
         {
             Id  = origin.Id,
-            Data = origin.Data,
+            Data = origin.Data.Value,
             Descricao = origin.Descricao,                
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
