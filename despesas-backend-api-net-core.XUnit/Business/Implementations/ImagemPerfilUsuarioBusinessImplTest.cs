@@ -1,14 +1,18 @@
-﻿using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Dtos.Parser;
+using Business.Dtos.v1;
 using Domain.Core.Interfaces;
+using Fakers.v1;
 
 namespace Business;
 public class ImagemPerfilUsuarioBusinessImplTests
 {
     private readonly Mock<IRepositorio<ImagemPerfilUsuario>> _repositorioMock;
     private readonly Mock<IRepositorio<Usuario>> _repositorioUsuarioMock;
-    private readonly ImagemPerfilUsuarioBusinessImpl _imagemPerfilUsuarioBusiness;
+    private readonly ImagemPerfilUsuarioBusinessImpl<ImagemPerfilDto, UsuarioDto> _imagemPerfilUsuarioBusiness;
     private readonly Mock<IAmazonS3Bucket> _mockAmazonS3Bucket;
     private List<ImagemPerfilUsuario> _imagensPerfil;
+    private readonly IMapper _mapper;
 
     public ImagemPerfilUsuarioBusinessImplTests()
     {
@@ -17,7 +21,8 @@ public class ImagemPerfilUsuarioBusinessImplTests
         _repositorioMock = Usings.MockRepositorio(_imagensPerfil);
         _repositorioUsuarioMock = new Mock<IRepositorio<Usuario>>(MockBehavior.Default);
         _mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>();
-        _imagemPerfilUsuarioBusiness = new ImagemPerfilUsuarioBusinessImpl(_repositorioMock.Object, _repositorioUsuarioMock.Object, _mockAmazonS3Bucket.Object);
+        _mapper = new Mock<IMapper>().Object;
+        _imagemPerfilUsuarioBusiness = new ImagemPerfilUsuarioBusinessImpl<ImagemPerfilDto, UsuarioDto>(_mapper, _repositorioMock.Object, _repositorioUsuarioMock.Object, _mockAmazonS3Bucket.Object);
         _imagensPerfil = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarios();
     }
 

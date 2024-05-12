@@ -3,9 +3,8 @@ using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
-using Domain.Entities;
 using System.Text.RegularExpressions;
-using Business.Dtos.Core;
+using Domain.Entities.ValueObjects;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -27,7 +26,7 @@ public class UsuarioController : AuthController
     public IActionResult Get()
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -51,7 +50,7 @@ public class UsuarioController : AuthController
     public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -93,7 +92,7 @@ public class UsuarioController : AuthController
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -119,7 +118,7 @@ public class UsuarioController : AuthController
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

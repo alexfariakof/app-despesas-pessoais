@@ -1,17 +1,19 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.Parser;
+using Business.Dtos.v2;
 using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text;
+using Fakers.v2;
 
 namespace Api.Controllers.v2;
 
 public class ImagemPerfilUsuarioControllerTest
 {
-    protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
-    protected Mock<IImagemPerfilUsuarioBusiness> _mockImagemPerfilBusiness;
+    protected Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
+    protected Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>> _mockImagemPerfilBusiness;
     protected UsuarioController _usuarioController;
     protected List<UsuarioDto>? _usuarioDtos;
 
@@ -21,7 +23,7 @@ public class ImagemPerfilUsuarioControllerTest
         {
             new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
         };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
+        var identity = new ClaimsIdentity(claims, "UsuarioId");
         var claimsPrincipal = new ClaimsPrincipal(identity);
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(idUsuario);
@@ -30,8 +32,8 @@ public class ImagemPerfilUsuarioControllerTest
 
     public ImagemPerfilUsuarioControllerTest()
     {
-        _mockUsuarioBusiness = new Mock<IUsuarioBusiness>();
-        _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness>();
+        _mockUsuarioBusiness = new Mock<IUsuarioBusiness<UsuarioDto>>();
+        _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>>();
         _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object, _mockImagemPerfilBusiness.Object);
     }
 
@@ -141,7 +143,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
+        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
@@ -164,7 +166,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
+        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
 
@@ -208,7 +210,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
+        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
@@ -284,7 +286,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
+        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file not Image type content")), 0, Encoding.UTF8.GetBytes("Test file not Image type content").Length, "DATA File Erro", "test.txt");
@@ -306,7 +308,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.IdUsuario;
+        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");

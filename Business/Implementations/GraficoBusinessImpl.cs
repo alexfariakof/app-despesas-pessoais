@@ -1,6 +1,6 @@
 ﻿using Business.Abstractions;
 using Domain.Entities;
-using Repository.Persistency;
+using Repository.Persistency.Abstractions;
 
 namespace Business.Implementations;
 public class GraficosBusinessImpl : IGraficosBusiness
@@ -11,6 +11,7 @@ public class GraficosBusinessImpl : IGraficosBusiness
     {
         _repositorio = repositorio;
     }
+
     public Grafico GetDadosGraficoByAnoByIdUsuario(int idUsuario, DateTime data)
     {
         return _repositorio.GetDadosGraficoByAno(idUsuario, data);

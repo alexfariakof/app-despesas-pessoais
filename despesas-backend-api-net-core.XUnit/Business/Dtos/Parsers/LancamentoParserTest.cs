@@ -1,4 +1,8 @@
-﻿namespace Business.Dtos.Parser;
+﻿using Business.Dtos.v1;
+using Domain.Entities.ValueObjects;
+using Fakers.v1;
+
+namespace Business.Dtos.Parser;
 public class LancamentoParserTest
 {
     [Fact]
@@ -9,7 +13,7 @@ public class LancamentoParserTest
         var lancamentoDto = new LancamentoDto
         {
             Id = 1,
-            IdUsuario = 1,
+            UsuarioId = 1,
             IdDespesa = 1,
             IdReceita = 0,
             Valor = 2000,
@@ -24,7 +28,7 @@ public class LancamentoParserTest
 
         // Assert
         Assert.Equal(lancamentoDto.Id, lancamento.Id);
-        Assert.Equal(lancamentoDto.IdUsuario, lancamento.UsuarioId);
+        Assert.Equal(lancamentoDto.UsuarioId, lancamento.UsuarioId);
         Assert.Equal(lancamentoDto.IdDespesa, lancamento.DespesaId);
         Assert.Equal(lancamentoDto.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoDto.Valor, lancamento.Valor);
@@ -56,8 +60,8 @@ public class LancamentoParserTest
         // Assert
         Assert.Equal(lancamentoDto.Id, lancamento.Id);
         Assert.Equal(lancamentoDto.UsuarioId, lancamento.UsuarioId);
-        Assert.Equal(lancamentoDto.DespesaId, lancamento.DespesaId);
-        Assert.Equal(lancamentoDto.ReceitaId, lancamento.ReceitaId);
+        Assert.Equal(lancamentoDto.IdDespesa, lancamento.DespesaId);
+        Assert.Equal(lancamentoDto.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoDto.Valor, lancamento.Valor);
         Assert.Equal(DateTime.Parse(lancamentoDto.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
         //Assert.Equal(lancamentoDto.Descricao, lancamento.Descricao);
@@ -73,7 +77,7 @@ public class LancamentoParserTest
             new LancamentoDto
             {
                 Id = 1,
-                IdUsuario = 1,
+                UsuarioId = 1,
                 IdDespesa = 1,
                 IdReceita = 0,
                 Valor = 2000,
@@ -85,7 +89,7 @@ public class LancamentoParserTest
             new LancamentoDto
             {
                 Id = 2,
-                IdUsuario = 3,
+                UsuarioId = 3,
                 IdDespesa = 0,
                 IdReceita = 1,
                 Valor = 500,
@@ -97,7 +101,7 @@ public class LancamentoParserTest
             new LancamentoDto
             {
                 Id = 3,
-                IdUsuario = 2,
+                UsuarioId = 2,
                 IdDespesa = 1,
                 IdReceita = 0,
                 Valor = 70000,
@@ -117,7 +121,7 @@ public class LancamentoParserTest
         {
             Assert.Equal(lancamentoDtos[i].Id, lancamentos[i].Id);
             //Assert.Equal(lancamentoDtos[i].Descricao, lancamentos[i].Descricao);
-            Assert.Equal(lancamentoDtos[i].IdUsuario, lancamentos[i].UsuarioId);
+            Assert.Equal(lancamentoDtos[i].UsuarioId, lancamentos[i].UsuarioId);
         }
     }
 
@@ -187,7 +191,7 @@ public class LancamentoParserTest
         var usuario = UsuarioFaker.Instance.GetNewFaker();
         var origin = DespesaFaker.Instance.GetNewFaker(
             usuario,
-            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.Despesa, usuario.Id)
+            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.TipoCategoriaType.Despesa, usuario.Id)
         );
 
         // Act
@@ -215,7 +219,7 @@ public class LancamentoParserTest
         var usuario = UsuarioFaker.Instance.GetNewFaker();
         var origin = ReceitaFaker.Instance.GetNewFaker(
             usuario,
-            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.Receita, usuario.Id)
+            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.TipoCategoriaType.Receita, usuario.Id)
         );
 
         // Act

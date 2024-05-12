@@ -30,7 +30,7 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Descricao = origin.Descricao,
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
-            CategoriaId = origin.Categoria.Id,
+            IdCategoria = origin.Categoria.Id,
             UsuarioId = origin.UsuarioId       
         };
     }

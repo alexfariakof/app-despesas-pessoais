@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.Core;
 
 namespace Business.Abstractions;
-public interface IUsuarioBusiness<Dto> where Dto : BaseUsuarioDto, new()
+public interface IUsuarioBusiness<Dto> where Dto : UsuarioDtoBase, new()
 {
     Dto Create(Dto usuarioDto);
     Dto FindById(int id);

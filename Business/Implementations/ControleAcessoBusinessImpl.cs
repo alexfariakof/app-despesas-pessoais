@@ -4,14 +4,15 @@ using Business.Dtos.Core;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
-using Repository.Persistency;
+using Domain.Entities.ValueObjects;
+using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace Business.Implementations;
-public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : BaseControleAcessoDto where DtoLogin : BaseLoginDto, new()
+public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : ControleAcessoDtoBase where DtoLogin : LoginDtoBase, new()
 {
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
@@ -36,14 +37,14 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
             controleAcessoDto.Email,
             controleAcessoDto.Telefone,
             StatusUsuario.Ativo,
-            PerfilUsuario.Usuario),
+            PerfilUsuario.PerfilType.Usuario),
             controleAcessoDto.Email,
             controleAcessoDto.Senha
             );
         _repositorio.Create(controleAcesso);
     }
 
-    public BaseAuthenticationDto ValidateCredentials(DtoLogin login)
+    public AuthenticationDto ValidateCredentials(DtoLogin login)
     {
         ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = login.Email });
 
@@ -67,7 +68,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         return AuthenticationException("Usuário Inválido!");
     }
 
-    public BaseAuthenticationDto ValidateCredentials(string refreshToken)
+    public AuthenticationDto ValidateCredentials(string refreshToken)
     {
         var baseLogin = _repositorio.FindByRefreshToken(refreshToken);
         var credentialsValid = 
@@ -83,6 +84,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
 
         return AuthenticationException("Refresh Token Inválido!");
     }
+
     public void RevokeToken(int idUsuario)
     {
         _repositorio.RevokeToken(idUsuario);
@@ -104,16 +106,16 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         _repositorio.ChangePassword(idUsuario, password);
     }
 
-    private BaseAuthenticationDto AuthenticationException(string message)
+    private AuthenticationDto AuthenticationException(string message)
     {
-        return new Business.Dtos.v2.AuthenticationDto
+        return new AuthenticationDto
         {
             Authenticated = false,
             Message = message
         };
     }
 
-    private BaseAuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
+    private AuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
     {
 
         ClaimsIdentity identity = new ClaimsIdentity(
@@ -128,7 +130,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);        
         string token = _singingConfiguration.GenerateAccessToken(identity, _tokenConfiguration, controleAcesso.Usuario.Id);
 
-        return new Business.Dtos.v2.AuthenticationDto
+        return new AuthenticationDto
         {
             Authenticated = true,
             Created = createDate.ToString("yyyy-MM-dd HH:mm:ss"),

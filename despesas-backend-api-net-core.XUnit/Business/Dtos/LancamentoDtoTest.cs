@@ -1,4 +1,6 @@
-﻿namespace Business.Dtos;
+﻿using Business.Dtos.v1;
+
+namespace Business.Dtos;
 public class LancamentoDtoTest
 {
     [Theory]
@@ -25,7 +27,7 @@ public class LancamentoDtoTest
 
         // Assert
         Assert.Equal(id, lancamentoDto.Id);
-        Assert.Equal(idUsuario, lancamentoDto.IdUsuario);
+        Assert.Equal(idUsuario, lancamentoDto.UsuarioId);
         Assert.Equal(idDespesa, lancamentoDto.IdDespesa);
         Assert.Equal(idReceita, lancamentoDto.IdReceita);
         Assert.Equal(valor, lancamentoDto.Valor);

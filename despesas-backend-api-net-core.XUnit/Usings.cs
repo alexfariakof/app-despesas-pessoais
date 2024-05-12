@@ -1,5 +1,4 @@
 global using Xunit;
-global using XUnit.Fakers;
 global using Moq;
 global using Bogus;
 global using Domain.Entities;

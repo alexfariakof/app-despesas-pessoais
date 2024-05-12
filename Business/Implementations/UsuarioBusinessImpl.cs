@@ -2,10 +2,11 @@
 using Business.Abstractions;
 using Business.Dtos.Core;
 using Domain.Entities;
+using Domain.Entities.ValueObjects;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUsuarioDto, new()
+public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : UsuarioDtoBase, new()
 {
     private readonly IRepositorio<Usuario> _repositorio;
     private readonly IMapper _mapper;
@@ -19,7 +20,7 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUs
     public Dto Create(Dto usuarioDto)
     {
         var isValidUsuario = _repositorio.Get(usuarioDto.UsuarioId);
-        if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
+        if (isValidUsuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
             throw new ArgumentException("Usuário não permitido a realizar operação!");
         
         var usuario = new Usuario().CreateUsuario(
@@ -28,7 +29,7 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUs
             usuarioDto.Email,
             usuarioDto.Telefone,
             StatusUsuario.Ativo,
-            PerfilUsuario.Usuario);
+            PerfilUsuario.PerfilType.Usuario);
 
         _repositorio.Insert(ref usuario);
         return _mapper.Map<Dto>(usuario);
@@ -37,7 +38,7 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUs
     public List<Dto> FindAll(int idUsuario)
     {
         var usuario = FindById(idUsuario);
-        if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
+        if (usuario.PerfilUsuario == PerfilUsuario.PerfilType.Administrador)
             return _mapper.Map<List<Dto>>(_repositorio.GetAll());
         return null;
     }      
@@ -47,6 +48,7 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : BaseUs
         var usuario = _repositorio.Get(id);
         return _mapper.Map<Dto>(usuario);
     }
+
     public Dto Update(Dto usuarioDto)
     {
         var usuario = new Usuario

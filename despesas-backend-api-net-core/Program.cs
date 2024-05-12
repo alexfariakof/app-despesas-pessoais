@@ -60,7 +60,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
+app.MapControllerRoute("DefaultApi", "v{version=apiVersion}/{controller=values}/{id?}");
 app.UseDefaultFiles();
 app.UseStaticFiles();
 

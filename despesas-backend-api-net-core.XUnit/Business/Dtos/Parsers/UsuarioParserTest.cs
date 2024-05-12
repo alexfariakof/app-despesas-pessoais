@@ -1,4 +1,5 @@
 ﻿namespace Business.Dtos.Parser;
+using Fakers.v1;
 public class UsuarioParserTest
 {
     [Fact]

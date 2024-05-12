@@ -1,9 +1,8 @@
 ﻿using Business.Dtos.Core;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v1;
-public class ReceitaDto : BaseReceitaDto
+public class ReceitaDto : ReceitaDtoBase
 {
     [Required]
     public override DateTime? Data { get; set; }
@@ -15,6 +14,6 @@ public class ReceitaDto : BaseReceitaDto
     public override decimal Valor { get; set; }
 
     [Required]
-    public override int? CategoriaId { get; set; }
+    public override int? IdCategoria { get; set; }
 
 }

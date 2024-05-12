@@ -34,13 +34,15 @@ namespace Migrations.MsSqlServer.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("TipoCategoria")
+                    b.Property<int>("TipoCategoriaId")
                         .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TipoCategoriaId");
 
                     b.HasIndex("UsuarioId");
 
@@ -265,7 +267,7 @@ namespace Migrations.MsSqlServer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PerfilUsuario")
+                    b.Property<int>("PerfilUsuarioId")
                         .HasColumnType("int");
 
                     b.Property<string>("SobreNome")
@@ -285,16 +287,84 @@ namespace Migrations.MsSqlServer.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("PerfilUsuarioId");
+
                     b.ToTable("Usuario", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.ValueObjects.PerfilUsuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PerfilUsuario", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Usuario"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.ValueObjects.TipoCategoria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoCategoria", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Despesa"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Receita"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Categoria", b =>
                 {
+                    b.HasOne("Domain.Entities.ValueObjects.TipoCategoria", "TipoCategoria")
+                        .WithMany()
+                        .HasForeignKey("TipoCategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany("Categorias")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TipoCategoria");
 
                     b.Navigation("Usuario");
                 });
@@ -390,6 +460,17 @@ namespace Migrations.MsSqlServer.Migrations
                     b.Navigation("Categoria");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Usuario", b =>
+                {
+                    b.HasOne("Domain.Entities.ValueObjects.PerfilUsuario", "PerfilUsuario")
+                        .WithMany()
+                        .HasForeignKey("PerfilUsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PerfilUsuario");
                 });
 
             modelBuilder.Entity("Domain.Entities.Usuario", b =>

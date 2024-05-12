@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Repository.Persistency.Abstractions;
 
 namespace Repository.Persistency.Implementations;
 public class SaldoRepositorioImpl : ISaldoRepositorio

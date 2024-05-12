@@ -1,12 +1,13 @@
 ﻿using Business.Dtos.Core;
 using Business.HyperMedia;
-using Business.HyperMedia.Abstractions;
-using Domain.Entities;
+using Business.HyperMedia.Interfaces;
+using Domain.Entities.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
+
 namespace Business.Dtos.v2;
-public class UsuarioDto : BaseUsuarioDto, ISupportHyperMedia
+public class UsuarioDto : UsuarioDtoBase, ISupportHyperMedia
 {
     [Required(ErrorMessage = "O campo Nome é obrigatório.")]
     public override string? Nome { get; set; }
@@ -22,6 +23,5 @@ public class UsuarioDto : BaseUsuarioDto, ISupportHyperMedia
 
     [JsonIgnore]
     public override PerfilUsuario PerfilUsuario { get; set; }
-
     public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

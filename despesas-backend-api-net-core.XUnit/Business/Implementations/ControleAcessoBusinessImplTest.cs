@@ -1,16 +1,19 @@
 ﻿using Business.Authentication;
-using Business.Authentication.Abstractions;
-using Business.Dtos.Parser;
+using Business.Authentication.Interfaces;
+using Business.Dtos.v2;
 using Domain.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
+using Fakers.v2;
+using Business.Dtos.Core;
 
 namespace Business;
 public class ControleAcessoBusinessImplTest
 {
     private readonly Mock<IControleAcessoRepositorioImpl> _repositorioMock;
-    private readonly ControleAcessoBusinessImpl _controleAcessoBusiness;
+    private readonly ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
     private readonly Mock<ITokenConfiguration> _tokenConfigurationMock;
 
 
@@ -28,7 +31,7 @@ public class ControleAcessoBusinessImplTest
         configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
         _tokenConfigurationMock = new Mock<ITokenConfiguration>();
         _repositorioMock = new Mock<IControleAcessoRepositorioImpl>();
-        _controleAcessoBusiness = new ControleAcessoBusinessImpl(_repositorioMock.Object, signingConfigurations, tokenConfigurations, new EmailSender());
+        _controleAcessoBusiness = new ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto>(_repositorioMock.Object, signingConfigurations, tokenConfigurations, new EmailSender());
     }
 
     [Fact]

@@ -1,14 +1,19 @@
-﻿namespace Business.Generic;
+﻿using Business.Abstractions.Generic;
+using Business.Dtos.Parser;
+using Business.Dtos.v1;
+using Fakers.v1;
+
+namespace Business.Generic;
 public class GenericBusinessTests
 {
     private Mock<IRepositorio<Categoria>> _mockRepositorio;
-    private GenericBusiness<Categoria> _genericBusiness;
+    private GenericBusiness<CategoriaDto, Categoria> _genericBusiness;
     private List<Categoria> _categorias;
 
     public GenericBusinessTests()
     {
         _mockRepositorio = new Mock<IRepositorio<Categoria>>(MockBehavior.Default);
-        _genericBusiness = new GenericBusiness<Categoria>(_mockRepositorio.Object);
+        _genericBusiness = new GenericBusiness<CategoriaDto, Categoria>(_mockRepositorio.Object);
         _categorias = CategoriaFaker.Instance.Categorias();
     }
 
@@ -17,14 +22,7 @@ public class GenericBusinessTests
     {
         // Arrange
         var obj = _categorias.Last();
-        var categoria = new Categoria
-        {
-            Descricao = obj.Descricao,
-            TipoCategoria = obj.TipoCategoria,
-            Usuario = obj.Usuario,
-            UsuarioId = obj.UsuarioId
-        };
-
+        var categoria = CategoriaFaker.Instance.CategoriasVMs().First();
         _mockRepositorio.Setup(repo => repo.Insert(ref It.Ref<Categoria>.IsAny));
         
         // Act
@@ -34,7 +32,7 @@ public class GenericBusinessTests
         Assert.NotNull(result);
         Assert.IsType<Categoria>(result);
         Assert.Equal(categoria.Id, result.Id);
-        _mockRepositorio.Verify(repo => repo.Insert(ref categoria), Times.Once);
+        _mockRepositorio.Verify(repo => repo.Insert(ref It.Ref<Categoria>.IsAny), Times.Once);
     }
 
     [Fact]
@@ -44,14 +42,14 @@ public class GenericBusinessTests
         var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();
         var repositoryMock = new Mock<IRepositorio<Usuario>>();
         repositoryMock.Setup(repo => repo.GetAll()).Returns(objects);
-        var business = new GenericBusiness<Usuario>(repositoryMock.Object);
+        var business = new GenericBusiness<UsuarioDto, Usuario>(repositoryMock.Object);
 
         // Act
         var result = business.FindAll(1);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(objects, result);
+        Assert.Equal(objects.Count, result.Count);
         Assert.IsType<List<Usuario>>(result);
         repositoryMock.Verify(repo => repo.GetAll(), Times.Once);            
     }
@@ -64,14 +62,14 @@ public class GenericBusinessTests
         var obj = DespesaFaker.Instance.Despesas().First();
         var repositoryMock = new Mock<IRepositorio<Despesa>>();
         repositoryMock.Setup(repo => repo.Get(id)).Returns(obj);
-        var business = new GenericBusiness<Despesa>(repositoryMock.Object);
+        var business = new GenericBusiness<DespesaDto, Despesa>(repositoryMock.Object);
 
         // Act
         var result = business.FindById(id, 1);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(obj, result);
+        Assert.Equal(obj.Id, result.Id);
         Assert.IsType<Despesa>(result);
         repositoryMock.Verify(repo => repo.Get(id), Times.Once);            
     }
@@ -80,10 +78,10 @@ public class GenericBusinessTests
     public void Update_Should_Return_Updated_Object()
     {
         // Arrange
-        var obj = ReceitaFaker.Instance.Receitas().First() ;
+        var obj = ReceitaFaker.Instance.ReceitasVMs().First() ;
         var repositoryMock = new Mock<IRepositorio<Receita>>();
-        repositoryMock.Setup(repo => repo.Update(ref obj));
-        var business = new GenericBusiness<Receita>(repositoryMock.Object);
+        repositoryMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
+        var business = new GenericBusiness<ReceitaDto, Receita>(repositoryMock.Object);
 
         // Act
         var result = business.Update(obj);
@@ -92,7 +90,7 @@ public class GenericBusinessTests
         Assert.NotNull(result);
         Assert.Equal(obj, result);
         Assert.IsType<Receita>(result);
-        repositoryMock.Verify(repo => repo.Update(ref obj), Times.Once);
+        repositoryMock.Verify(repo => repo.Update(ref It.Ref<Receita>.IsAny), Times.Once);
     }
 
     [Fact]
@@ -103,29 +101,14 @@ public class GenericBusinessTests
         var obj = objects.First();
         var repositoryMock = Usings.MockRepositorio(objects);
         repositoryMock.Setup(repo => repo.Delete(obj)).Returns(true);
-        var business = new GenericBusiness<Usuario>(repositoryMock.Object);
+        var business = new GenericBusiness<UsuarioDto, Usuario>(repositoryMock.Object);
 
         // Act
-        var result = business.Delete(obj);
+        var result = business.Delete(new UsuarioParser().Parse(obj));
 
         // Assert
         Assert.IsType<bool>(result);
         Assert.True(result);
         repositoryMock.Verify(repo => repo.Delete(obj), Times.Once);            
-    }
-
-    [Fact]
-    public void FindByIdUsuario_Should_Return_EmptyList()
-    {
-        // Arrange
-        var idUsuario = 1;
-        var business = new GenericBusiness<Lancamento>(Mock.Of<IRepositorio<Lancamento>>());
-
-        // Act
-        var result = business.FindByIdUsuario(idUsuario);
-
-        // Assert
-        Assert.Empty(result);
-        Assert.IsType<List<Lancamento>> (result);
     }
 }

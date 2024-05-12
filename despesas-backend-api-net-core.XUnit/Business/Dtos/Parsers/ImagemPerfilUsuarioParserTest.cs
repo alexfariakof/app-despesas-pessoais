@@ -1,4 +1,7 @@
-﻿namespace Business.Dtos.Parser;
+﻿using Business.Dtos.v1;
+using Fakers.v1;
+
+namespace Business.Dtos.Parser;
 public class ImagemPerfilUsuarioParserTest
 {
     [Fact]
@@ -12,7 +15,7 @@ public class ImagemPerfilUsuarioParserTest
             Name = "example.jpg",
             ContentType = "image/jpg",
             Url = "https://example.com/image.jpg",
-            IdUsuario = 42
+            UsuarioId = 42
         };
 
         // Act
@@ -23,7 +26,7 @@ public class ImagemPerfilUsuarioParserTest
         Assert.Equal(origin.Name, result.Name);
         Assert.Equal(origin.ContentType, result.ContentType);
         Assert.Equal(origin.Url, result.Url);
-        Assert.Equal(origin.IdUsuario, result.UsuarioId);
+        Assert.Equal(origin.UsuarioId, result.UsuarioId);
     }
 
     [Fact]
@@ -72,7 +75,7 @@ public class ImagemPerfilUsuarioParserTest
             Assert.Equal(originList[i].Name, resultList[i].Name);
             Assert.Equal(originList[i].ContentType, resultList[i].ContentType);
             Assert.Equal(originList[i].Url, resultList[i].Url);
-            Assert.Equal(originList[i].IdUsuario, resultList[i].UsuarioId);
+            Assert.Equal(originList[i].UsuarioId, resultList[i].UsuarioId);
         }
     }
 

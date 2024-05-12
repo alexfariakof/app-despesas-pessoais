@@ -2,7 +2,7 @@
 
 namespace CrossCutting.CQRS.Commands;
 
-public sealed class DeleteCommand<T> : BaseProperties<T>, IRequest<T> where T : class, new()
+public sealed class DeleteCommand<T> : PropertiesBase<T>, IRequest<T> where T : class, new()
 {
     public DeleteCommand(T entity) : base(entity) { }
 }

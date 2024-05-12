@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Business.Abstractions;
+using Business.Abstractions.Generic;
 using Business.Dtos.Core;
-using Business.Generic;
 using Domain.Entities;
-using Domain.Entities.Abstractions;
+using Domain.Entities.ValueObjects;
 using Repository.Persistency.Generic;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Implementations;
-public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dto, Despesa> where Dto : BaseDespesaDto, new()
+public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dto, Despesa> where Dto : DespesaDtoBase, new()
 {
     private readonly IRepositorio<Despesa> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
@@ -18,11 +19,11 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dt
         _repoCategoria = repoCategoria;
         _mapper = mapper;
     }
+
     public override Dto Create(Dto obj)
     {
         Despesa despesa = _mapper.Map<Despesa>(obj);
-        IsCategoriaValid(despesa);
-        despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
+        IsValidCategoria(despesa);
         _repositorio.Insert(ref despesa);
         return _mapper.Map<Dto>(despesa);
     }
@@ -30,15 +31,12 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dt
     public override List<Dto> FindAll(int idUsuario)
     {
         var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
-        foreach (var despesa in despesas)
-            despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
         return _mapper.Map<List<Dto>>(despesas);
     }
 
     public override  Dto FindById(int id, int idUsuario)
     {
         var despesa = _repositorio.Get(id);
-        despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
         var despesaDto = _mapper.Map<Dto>(despesa);
         return despesaDto; 
     }
@@ -46,7 +44,8 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dt
     public override  Dto Update(Dto obj)
     {
         Despesa despesa = _mapper.Map<Despesa>(obj);
-        IsCategoriaValid(despesa);        
+        IsValidDespesa(despesa);
+        IsValidCategoria(despesa);        
         _repositorio.Update(ref despesa);
         return _mapper.Map<Dto>(despesa);
     }
@@ -54,11 +53,20 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dt
     public override  bool Delete(Dto obj)
     {
         Despesa despesa = _mapper.Map<Despesa>(obj);
+        IsValidDespesa(despesa);
         return _repositorio.Delete(despesa);
     }
-    private void IsCategoriaValid(Despesa obj)
+
+    private void IsValidCategoria(Despesa obj)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.Despesa && c.Id == obj.CategoriaId) == null)
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.TipoCategoriaType.Despesa && c.Id == obj.Categoria.Id) == null)
             throw new ArgumentException("Categoria inválida para este usuário!");
+    }
+
+    private void IsValidDespesa(Despesa obj)
+    {
+        if (_repositorio.Get(obj.Id).Usuario.Id != obj.UsuarioId)
+            throw new ArgumentException("Despesa inválida para este usuário!");
+
     }
 }

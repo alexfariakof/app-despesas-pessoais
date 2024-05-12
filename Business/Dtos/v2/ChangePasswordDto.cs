@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos.v2;
-public class ChangePasswordDto : BaseChangePasswordDto, IValidatableObject
+public class ChangePasswordDto : ChangePasswordDtoBase, IValidatableObject
 {
     [Required(ErrorMessage = "O campo Senha é obrigatório.")]
     public override string? Senha { get; set; }

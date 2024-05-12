@@ -1,4 +1,6 @@
-﻿namespace Business;
+﻿using Repository.Persistency.Abstractions;
+
+namespace Business;
 public class SaldoBusinessImplTest
 {
     private readonly Mock<ISaldoRepositorio> _repositorioMock;

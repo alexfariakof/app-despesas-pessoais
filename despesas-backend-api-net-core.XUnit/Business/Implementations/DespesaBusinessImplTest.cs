@@ -1,18 +1,27 @@
-﻿using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Dtos.Parser;
+using Business.Dtos.v1;
+using Domain.Entities.ValueObjects;
+using Repository.Persistency.UnitOfWork.Abstractions;
+using Fakers.v1;
 
 namespace Business;
 
 public class DespesaBusinessImplTest
 {
+    private readonly Mock<IMapper> _mapper;
+    private readonly Mock<IUnitOfWork<Despesa>> _unitOfWork;
     private readonly Mock<IRepositorio<Despesa>> _repositorioMock;
     private readonly Mock<IRepositorio<Categoria>> _repositorioCategoria;
-    private readonly DespesaBusinessImpl _despesaBusiness;
+    private readonly DespesaBusinessImpl<DespesaDto> _despesaBusiness;
 
     public DespesaBusinessImplTest()
     {
+        _mapper = new Mock<IMapper>(MockBehavior.Default);
+        _unitOfWork = new Mock<IUnitOfWork<Despesa>>(MockBehavior.Default);
         _repositorioMock = new Mock<IRepositorio<Despesa>>();
-        _repositorioCategoria = new Mock<IRepositorio<Categoria>>();
-        _despesaBusiness = new DespesaBusinessImpl(_repositorioMock.Object, _repositorioCategoria.Object);
+        _repositorioCategoria = new Mock<IRepositorio<Categoria>>(MockBehavior.Default);
+        _despesaBusiness = new DespesaBusinessImpl<DespesaDto>(_mapper.Object, _unitOfWork.Object, _repositorioMock.Object,  _repositorioCategoria.Object);
     }
 
     [Fact]
@@ -23,7 +32,7 @@ public class DespesaBusinessImplTest
         var despesaDto = new DespesaParser().Parse(despesa);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Despesa>.IsAny));
-        var categorias = CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId);
+        var categorias = CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.TipoCategoriaType.Despesa, despesa.UsuarioId);
         categorias.Add(despesa.Categoria);
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
         
@@ -102,7 +111,7 @@ public class DespesaBusinessImplTest
         var despesaDto = new DespesaParser().Parse(despesa);        
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Despesa>.IsAny));
-        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.Despesa, despesa.UsuarioId));
+        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(despesa.Usuario, TipoCategoria.TipoCategoriaType.Despesa, despesa.UsuarioId));
 
         // Act
         var result = _despesaBusiness.Update(despesaDto);

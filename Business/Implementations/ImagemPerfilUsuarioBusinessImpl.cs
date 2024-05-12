@@ -7,7 +7,7 @@ using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsuarioBusiness<Dto, DtoUsuario> where Dto : BaseImagemPerfilDto, new() where DtoUsuario : BaseUsuarioDto, new()
+public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsuarioBusiness<Dto, DtoUsuario> where Dto : ImagemPerfilDtoBase, new() where DtoUsuario : UsuarioDtoBase, new()
 {
     private readonly IMapper _mapper;
     private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;

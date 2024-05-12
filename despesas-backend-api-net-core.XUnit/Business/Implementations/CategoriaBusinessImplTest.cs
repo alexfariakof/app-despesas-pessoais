@@ -1,6 +1,9 @@
-﻿using Business.Dtos.Parser;
-using Domain.Entities.Abstractions;
+﻿using AutoMapper;
+using Business.Dtos.Parser;
+using Business.Dtos.v1;
 using MediatR;
+using Repository.Persistency.UnitOfWork.Abstractions;
+using Fakers.v1;
 
 namespace Business;
 
@@ -8,8 +11,9 @@ public class CategoriaBusinessImplTest
 {
     private readonly Mock<IUnitOfWork<Categoria>> _unitOfWorkMock;
     private readonly Mock<IMediator> _mediator;
+    private readonly Mock<IMapper> _mapper;
     private readonly Mock<IRepositorio<Categoria>> _repositorioMock;
-    private readonly CategoriaBusinessImpl _categoriaBusiness;
+    private readonly CategoriaBusinessImpl<CategoriaDto> _categoriaBusiness;
     private readonly List<Categoria> _categorias;
 
     public CategoriaBusinessImplTest()
@@ -19,7 +23,8 @@ public class CategoriaBusinessImplTest
         _repositorioMock = Usings.MockRepositorio(_categorias);
         _unitOfWorkMock  = new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default);
         _mediator = new Mock<IMediator>(MockBehavior.Default);
-        _categoriaBusiness = new CategoriaBusinessImpl(_mediator.Object, _unitOfWorkMock.Object);
+        _mapper = new Mock<IMapper>(MockBehavior.Default);
+        _categoriaBusiness = new CategoriaBusinessImpl<CategoriaDto>(_mediator.Object, _mapper.Object, _unitOfWorkMock.Object, _repositorioMock.Object);
     }
 
     [Fact]
@@ -54,8 +59,8 @@ public class CategoriaBusinessImplTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<List<CategoriaDto>>(result.Result);
-        Assert.Equal(mockCategorias.Count, result.Result.Count);
+        Assert.IsType<List<CategoriaDto>>(result);
+        Assert.Equal(mockCategorias.Count, result.Count);
         _unitOfWorkMock.Verify(repo => repo.Repository.GetAll(), Times.Once);
     }
 

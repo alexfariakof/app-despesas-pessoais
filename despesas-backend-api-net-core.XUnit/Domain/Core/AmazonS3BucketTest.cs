@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Parser;
+using Business.Dtos.v1;
 using Domain.Core.Interfaces;
 
 namespace Domain.Core;

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos.v1;
-public class ChangePasswordDto : BaseChangePasswordDto
+public class ChangePasswordDto : ChangePasswordDtoBase
 {
     [Required]
     public string? Senha { get; set; }

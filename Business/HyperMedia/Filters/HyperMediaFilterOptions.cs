@@ -1,4 +1,4 @@
-﻿using Business.HyperMedia.Abstractions;
+﻿using Business.HyperMedia.Interfaces;
 
 namespace Business.HyperMedia.Filters;
 

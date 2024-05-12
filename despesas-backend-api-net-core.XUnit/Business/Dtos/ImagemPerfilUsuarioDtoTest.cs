@@ -1,4 +1,6 @@
-﻿namespace Business.Dtos;
+﻿using Business.Dtos.v1;
+
+namespace Business.Dtos;
 public class ImagemPerfilUsuarioDtoTest
 {
     [Theory]
@@ -18,7 +20,7 @@ public class ImagemPerfilUsuarioDtoTest
             Name = name,
             Type = type,
             ContentType = contentType,
-            IdUsuario = idUsuario,                
+            UsuarioId = idUsuario,                
             Arquivo = arquivoData
         };
         
@@ -28,7 +30,7 @@ public class ImagemPerfilUsuarioDtoTest
         Assert.Equal(name, imagemPerfilUsuarioDto.Name);
         Assert.Equal(type, imagemPerfilUsuarioDto.Type);
         Assert.Equal(contentType, imagemPerfilUsuarioDto.ContentType);
-        Assert.Equal(idUsuario, imagemPerfilUsuarioDto.IdUsuario);
+        Assert.Equal(idUsuario, imagemPerfilUsuarioDto.UsuarioId);
         Assert.Equal(arquivoData, imagemPerfilUsuarioDto.Arquivo);
     }
 }

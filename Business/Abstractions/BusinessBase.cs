@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Domain.Entities.Abstractions;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Abstractions;
 public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity : class, new()

@@ -90,8 +90,11 @@ public class CategoriaController : AuthController
             categoria.UsuarioId = IdUsuario;
             return Ok(_categoriaBusiness.Create(categoria));
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Não foi possível realizar o cadastro de uma nova categoria, tente mais tarde ou entre em contato com o suporte.");
         }
     }
@@ -114,8 +117,11 @@ public class CategoriaController : AuthController
             if (updateCategoria == null) throw new Exception();
             return Ok(updateCategoria);
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Erro ao atualizar categoria!");
         }
     }
@@ -139,8 +145,11 @@ public class CategoriaController : AuthController
 
             return new OkObjectResult(false);
         }
-        catch
+        catch (Exception ex)
         {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
             return BadRequest("Erro ao deletar categoria!");
         }
     }

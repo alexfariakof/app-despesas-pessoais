@@ -2,7 +2,7 @@ using Business.Dtos.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos.v2;
-public class LoginDto: BaseLoginDto
+public class LoginDto: LoginDtoBase
 {
     [EmailAddress(ErrorMessage = "O campo Email é inválido.")]
     [Required(ErrorMessage = "O campo Email é obrigatório.")]

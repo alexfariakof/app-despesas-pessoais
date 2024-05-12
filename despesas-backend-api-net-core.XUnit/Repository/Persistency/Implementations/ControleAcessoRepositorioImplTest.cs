@@ -1,5 +1,8 @@
 ﻿using Domain.Core;
 using Moq;
+using Repository.Persistency.Abstractions;
+using Fakers.v1;
+using Domain.Entities.ValueObjects;
 
 namespace Repository.Persistency.Implementations;
 public class ControleAcessoRepositorioImplTest
@@ -22,7 +25,7 @@ public class ControleAcessoRepositorioImplTest
         // Arrange
         var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();        
         controleAcesso.Usuario.StatusUsuario = StatusUsuario.Ativo;
-        controleAcesso.Usuario.PerfilUsuario = PerfilUsuario.Administrador;
+        controleAcesso.Usuario.PerfilUsuario = PerfilUsuario.PerfilType.Administrador;
 
         // Create a mock repository
         var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_repository.Object);

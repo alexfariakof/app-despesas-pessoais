@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v1;
-public class CategoriaDto : BaseCategoriaDto
+public class CategoriaDto : CategoriaDtoBase
 {
     [Required]
     public override string? Descricao { get; set; }
+
     [Required]
     public override int IdTipoCategoria { get; set; }
     

@@ -46,6 +46,43 @@ public class DespesaEnricher : ContentResponseEnricher<DespesaDto>
             Type = ResponseTypeFormat.DefaultDelete
         });
 
+        var categoriaContent = content.Categoria;
+        path = "categoria";
+        link = GetLink(categoriaContent.Id, urlHelper, path);
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.GET,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultGet
+        });
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.POST,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultPost
+        });
+
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.PUT,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultPut
+        });
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.DELETE,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultDelete
+        });
+
         return Task.CompletedTask;
     }
 

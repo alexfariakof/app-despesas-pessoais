@@ -2,7 +2,7 @@
 using Business.Abstractions;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
-using Domain.Entities;
+using Domain.Entities.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +31,7 @@ public class UsuarioController : AuthController
         try
         {
             var adm = _usuarioBusiness.FindById(IdUsuario);
-            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+            if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             return Ok(_usuarioBusiness.FindAll(IdUsuario));
@@ -126,7 +126,7 @@ public class UsuarioController : AuthController
         try
         {
             var usuario = _usuarioBusiness.FindById(IdUsuario);
-            if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+            if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             var updateUsuario = _usuarioBusiness.Update(usuarioDto);
@@ -155,7 +155,7 @@ public class UsuarioController : AuthController
         try
         {
             var adm = _usuarioBusiness.FindById(IdUsuario);
-            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+            if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             if (_usuarioBusiness.Delete(usuarioDto))

@@ -51,14 +51,14 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         return new Lancamento
         {
             Id = origin.Id,
-            DespesaId = origin.DespesaId,
-            ReceitaId = origin.ReceitaId,
+            DespesaId = origin.IdDespesa,
+            ReceitaId = origin.IdReceita,
             UsuarioId = origin.UsuarioId,
             Data = DateTime.Parse(origin.Data),
             DataCriacao = DateTime.Now,
             Valor = origin.Valor,
-            Despesa = new Despesa { Id = origin.DespesaId, Descricao = origin.Descricao },
-            Receita = new Receita { Id = origin.ReceitaId, Descricao = origin.Descricao }
+            Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
+            Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao }
         };
     }
     public LancamentoDto Parse(Lancamento origin)
@@ -67,8 +67,8 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         return new LancamentoDto
         {
             Id = origin.Id,
-            DespesaId = origin.DespesaId.Value,
-            ReceitaId = origin.ReceitaId.Value,
+            IdDespesa = origin.DespesaId.Value,
+            IdReceita = origin.ReceitaId.Value,
             UsuarioId = origin.UsuarioId,
             Data = origin.Data.ToShortDateString(),
             Valor = origin.Valor,

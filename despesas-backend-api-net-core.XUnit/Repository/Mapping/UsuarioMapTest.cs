@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+﻿using Domain.Entities.ValueObjects;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Repository.Mapping;
 public class UsuarioMapTest
@@ -46,7 +47,7 @@ public class UsuarioMapTest
             Assert.Equal(15, telefoneProperty.GetMaxLength());
             Assert.True(telefoneProperty.IsNullable);
             var defaultPerfilValue = perfilUsuarioProperty.Sentinel;
-            Assert.Equal(PerfilUsuario.Usuario, defaultPerfilValue);
+            Assert.Equal(PerfilUsuario.PerfilType.Usuario, defaultPerfilValue);
         }
     }
 }

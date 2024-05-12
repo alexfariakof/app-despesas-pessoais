@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v1;
-public class ImagemPerfilDto : BaseImagemPerfilDto
+public class ImagemPerfilDto : ImagemPerfilDtoBase
 {
     public override string? Url { get; set; }
 

@@ -3,6 +3,7 @@ using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Fakers.v2;
 
 namespace Api.Controllers.v2;
 

@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Parser;
+using Fakers.v1;
 
 namespace Business.Dtos;
 public class DespesaDtoTest
@@ -17,7 +18,7 @@ public class DespesaDtoTest
         Assert.Equal(despesa.Valor, despesaDto.Valor);
         Assert.Equal(despesa.DataVencimento, despesaDto.DataVencimento);
         Assert.Equal(despesa.UsuarioId, despesaDto.UsuarioId);
-        Assert.Equal(despesa.Categoria.Id, despesaDto.Categoria.Id);
+        Assert.Equal(despesa.Categoria.Id, despesaDto.IdCategoria);
     }
     
 }

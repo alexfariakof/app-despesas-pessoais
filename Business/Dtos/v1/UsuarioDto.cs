@@ -1,10 +1,10 @@
 ﻿using Business.Dtos.Core;
-using Domain.Entities;
+using Domain.Entities.ValueObjects;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v1;
-public class UsuarioDto : BaseUsuarioDto
+public class UsuarioDto : UsuarioDtoBase
 {
     [Required]
     public override string? Nome { get; set; }
@@ -18,7 +18,7 @@ public class UsuarioDto : BaseUsuarioDto
     [Required]
     public override string? Email { get; set; }
 
-    [JsonIgnore]
+    [JsonProperty(PropertyName = "perfilUsuario", NullValueHandling = NullValueHandling.Ignore)]
     public override PerfilUsuario PerfilUsuario { get; set; }
 
 }

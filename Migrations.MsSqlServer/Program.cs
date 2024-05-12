@@ -9,18 +9,9 @@ bool isDebug = Debugger.IsAttached || !Debugger.IsAttached && Debugger.IsLogging
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-if (!isDebug)
-{
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(
-         builder.Configuration.GetConnectionString("MsSqlConnectionString"),
-         b => b.MigrationsAssembly("Migrations.MsSqlServer")));
-}
-else
-{
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(
-      builder.Configuration.GetConnectionString("AzureMsSqlConnectionString"),
-      b => b.MigrationsAssembly("Migrations.MsSqlServer")));
-}
+builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(
+        builder.Configuration.GetConnectionString("MsSqlConnectionString"),
+        b => b.MigrationsAssembly("Migrations.MsSqlServer")));
 
 builder.Services.AddRepositories();
 builder.Services.AddTransient<IDataSeeder, DataSeeder>();
@@ -28,7 +19,7 @@ builder.Services.AddTransient<IDataSeeder, DataSeeder>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!isDebug)
+if (isDebug && !app.Environment.IsProduction())
 {
     using (var scope = app.Services.CreateScope())
     {

@@ -1,15 +1,18 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.Parser;
+using Business.Dtos.v2;
 using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Fakers.v2;
+using Domain.Entities.ValueObjects;
 
 namespace Api.Controllers.v2;
 public class UsuarioControllerTest
 {
-    protected Mock<IUsuarioBusiness> _mockUsuarioBusiness;
-    protected Mock<IImagemPerfilUsuarioBusiness> _mockImagemPerfilBusiness;
+    protected Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
+    protected Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>> _mockImagemPerfilBusiness;
     protected UsuarioController _usuarioController;
     protected List<UsuarioDto> _usuarioDtos;
     private UsuarioDto administrador;
@@ -31,12 +34,12 @@ public class UsuarioControllerTest
 
     public UsuarioControllerTest()
     {
-        _mockUsuarioBusiness = new Mock<IUsuarioBusiness>();
-        _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness>();
+        _mockUsuarioBusiness = new Mock<IUsuarioBusiness<UsuarioDto>>();
+        _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>>();
         _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object, _mockImagemPerfilBusiness.Object);
         var usuarios = UsuarioFaker.Instance.GetNewFakersUsuarios(20);
-        administrador = new UsuarioParser().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First());
-        usuarioNormal = new UsuarioParser().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());
+        administrador = new UsuarioParser().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).First());
+        usuarioNormal = new UsuarioParser().Parse(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).First());
         _usuarioDtos = new UsuarioParser().ParseList(usuarios);
     }
 
@@ -46,7 +49,7 @@ public class UsuarioControllerTest
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).Last().Id;
+        int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).Last().Id;
         SetupBearerToken(idUsuario);
         _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(usauriosVMs.FindAll(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.Find(u => u.Id == idUsuario) ?? new());
@@ -124,7 +127,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
@@ -149,7 +152,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
@@ -210,7 +213,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -234,7 +237,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Email = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -258,7 +261,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Email = "  ";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -282,7 +285,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Email = "TestINvalidemail";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -305,7 +308,7 @@ public class UsuarioControllerTest
     public void Put_Should_Returns_BadRequest_When_Telefone_IsNull()
     {
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).First());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).First());
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -410,7 +413,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
@@ -434,7 +437,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
@@ -458,7 +461,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
@@ -481,7 +484,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Email = "TestINvalidemail";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -505,7 +508,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -529,7 +532,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Email = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -553,7 +556,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(20);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         usuarioDto.Email = " ";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
@@ -577,7 +580,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Administrador).Last());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);
@@ -600,7 +603,7 @@ public class UsuarioControllerTest
     {
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(15);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());
+        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).First());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);

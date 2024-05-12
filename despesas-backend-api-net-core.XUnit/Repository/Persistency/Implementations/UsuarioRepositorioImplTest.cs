@@ -1,4 +1,7 @@
-﻿namespace Repository.Persistency.Implementations;
+﻿using Domain.Entities.ValueObjects;
+using Fakers.v1;
+
+namespace Repository.Persistency.Implementations;
 public class UsuarioRepositorioImplTest
 {
     private Mock<RegisterContext> _mockRegisterContext;
@@ -91,7 +94,7 @@ public class UsuarioRepositorioImplTest
             Nome = "Teste Update Item",
             Email = "Teste@teste.com",
             SobreNome = result.SobreNome,
-            PerfilUsuario = PerfilUsuario.Administrador,
+            PerfilUsuario = PerfilUsuario.PerfilType.Administrador,
             StatusUsuario = StatusUsuario.Ativo,
             Telefone = result.Telefone
         };
@@ -127,7 +130,7 @@ public class UsuarioRepositorioImplTest
             Nome = "Teste Update Item",
             Email = "Teste@teste.com",
             SobreNome = existingItem.SobreNome,
-            PerfilUsuario = PerfilUsuario.Administrador,
+            PerfilUsuario = PerfilUsuario.PerfilType.Administrador,
             StatusUsuario = StatusUsuario.Ativo,
             Telefone = existingItem.Telefone
         };

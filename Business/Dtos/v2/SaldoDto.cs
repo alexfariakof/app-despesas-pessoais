@@ -1,5 +1,5 @@
 ﻿using Business.HyperMedia;
-using Business.HyperMedia.Abstractions;
+using Business.HyperMedia.Interfaces;
 
 namespace Business.Dtos.v2;
 public class SaldoDto : ISupportHyperMedia

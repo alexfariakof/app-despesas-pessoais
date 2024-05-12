@@ -1,12 +1,12 @@
 ﻿using Business.Abstractions;
-using Business.Generic;
+using Business.Abstractions.Generic;
 using Business.Implementations;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
-using Domain.Entities.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Persistency.UnitOfWork;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.CommonDependenceInject;
 public static class ServicesDependenceInject

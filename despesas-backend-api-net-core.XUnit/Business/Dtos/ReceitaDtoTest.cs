@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Parser;
+using Fakers.v1;
 
 namespace Business.Dtos;
 public class ReceitaDtoTest
@@ -16,6 +17,6 @@ public class ReceitaDtoTest
         Assert.Equal(receita.Descricao, receitaDto .Descricao);
         Assert.Equal(receita.Valor, receitaDto .Valor);
         Assert.Equal(receita.UsuarioId, receitaDto .UsuarioId);
-        Assert.Equal(receita.Categoria.Id, receitaDto.Categoria.Id);
+        Assert.Equal(receita.Categoria.Id, receitaDto.IdCategoria);
     }
 }

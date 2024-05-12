@@ -1,9 +1,8 @@
 ﻿using Business.Dtos.Core;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v1;
-public class DespesaDto : BaseDespesaDto
+public class DespesaDto : DespesaDtoBase
 {
     [Required]
     public override DateTime? Data { get; set; }
@@ -16,6 +15,6 @@ public class DespesaDto : BaseDespesaDto
     public override DateTime? DataVencimento { get; set; }
 
     [Required]
-    public override int? CategoriaId { get; set; }
+    public override int? IdCategoria { get; set; }
     
 }

@@ -1,11 +1,11 @@
 ﻿using Business.Dtos.Core;
 using Business.HyperMedia;
-using Business.HyperMedia.Abstractions;
+using Business.HyperMedia.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v2;
-public class ImagemPerfilDto : BaseImagemPerfilDto, ISupportHyperMedia
+public class ImagemPerfilDto : ImagemPerfilDtoBase, ISupportHyperMedia
 {
     [Url(ErrorMessage = "Url inválida.")]
     public override string? Url { get; set; }

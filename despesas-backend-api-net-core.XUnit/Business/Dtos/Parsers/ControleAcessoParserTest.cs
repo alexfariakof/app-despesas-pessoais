@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Business.Dtos.v1;
+using Domain.Entities.ValueObjects;
+using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos.Parser;
 public class ControleAcessoParserTest
@@ -13,9 +15,8 @@ public class ControleAcessoParserTest
             Id = 1,
             Email = "test@example.com",
             Senha = "password",
-            IdUsuario = 1,
             Nome = "Test",
-            PerfilUsuario = PerfilUsuario.Administrador,
+            PerfilUsuario = PerfilUsuario.PerfilType.Administrador,
             Telefone = "123456789",
             SobreNome = "User",
             RefreshToken = "fakeRefreshToken"
@@ -28,11 +29,9 @@ public class ControleAcessoParserTest
         Assert.NotNull(controleAcesso);
         Assert.Equal(controleAcessoDto.Id, controleAcesso.Id);
         Assert.Equal(controleAcessoDto.Email, controleAcesso.Login);
-        Assert.Equal(controleAcessoDto.IdUsuario, controleAcesso.UsuarioId);
         Assert.NotEqual(controleAcessoDto.Senha, controleAcesso.Senha);
         Assert.Equal(controleAcessoDto.RefreshToken, controleAcesso.RefreshToken);
         Assert.NotNull(controleAcesso.Usuario);
-        Assert.Equal(controleAcessoDto.IdUsuario, controleAcesso.Usuario.Id);
         Assert.Equal(controleAcessoDto.Nome, controleAcesso.Usuario.Nome);
         Assert.Equal(controleAcessoDto.PerfilUsuario, controleAcesso.Usuario.PerfilUsuario);
         Assert.Equal(controleAcessoDto.Telefone, controleAcesso.Usuario.Telefone);
@@ -48,7 +47,7 @@ public class ControleAcessoParserTest
         {
             Id = 1,
             Nome = "Test",
-            PerfilUsuario = PerfilUsuario.Administrador,
+            PerfilUsuario = PerfilUsuario.PerfilType.Administrador,
             Telefone = "123456789",
             SobreNome = "User",
             Email = "test@example.com"

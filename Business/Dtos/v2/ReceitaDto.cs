@@ -1,11 +1,11 @@
 ﻿using Business.Dtos.Core;
 using Business.HyperMedia;
-using Business.HyperMedia.Abstractions;
+using Business.HyperMedia.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v2;
-public class ReceitaDto : BaseReceitaDto, ISupportHyperMedia
+public class ReceitaDto : ReceitaDtoBase, ISupportHyperMedia
 {
     [Required(ErrorMessage = "O campo Data é obrigatório.")]
     public override DateTime? Data { get; set; }
@@ -17,7 +17,7 @@ public class ReceitaDto : BaseReceitaDto, ISupportHyperMedia
     public override decimal Valor { get; set; }
 
     [JsonIgnore]
-    public override int? CategoriaId
+    public override int? IdCategoria
     {
         get
         {

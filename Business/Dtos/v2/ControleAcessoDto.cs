@@ -1,10 +1,10 @@
 ﻿using Business.Dtos.Core;
-using Domain.Entities;
+using Domain.Entities.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v2;
-public class ControleAcessoDto : BaseControleAcessoDto, IValidatableObject
+public class ControleAcessoDto : ControleAcessoDtoBase, IValidatableObject
 {
     [JsonIgnore]
     public override int Id { get; set; }
