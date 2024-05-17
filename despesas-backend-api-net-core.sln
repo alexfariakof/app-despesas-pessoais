@@ -25,10 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossCutting", "CrossCuttin
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7900F85A-9B75-409E-96B7-6FB47F630975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations.MsSqlServer", "Migrations.MsSqlServer\Migrations.MsSqlServer.csproj", "{E7E95582-B7ED-4B31-9F75-6D8E098EEC1E}"
-EndProject
-Project("{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}") = "Migrations.MsSqlServer", "Migrations.MsSqlServer\Migrations.MsSqlServer.csproj", "{F7E95582-B7ED-4B31-9F75-6D8E098EEC1E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,14 +61,6 @@ Global
 		{7900F85A-9B75-409E-96B7-6FB47F630975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7900F85A-9B75-409E-96B7-6FB47F630975}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7900F85A-9B75-409E-96B7-6FB47F630975}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7E95582-B7ED-4B31-9F75-6D8E098EEC1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
