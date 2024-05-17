@@ -16,6 +16,9 @@ public static class RepositoryDependenceInject
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
+        //services.AddScoped(typeof(IRepositorio<Categoria>), typeof(CategoriaRepositorioImpl));
+        //services.AddScoped(typeof(IRepositorio<Despesa>), typeof(DespesaRepositorioImpl));
+        //services.AddScoped(typeof(IRepositorio<Receita>), typeof(ReceitaRepositorioImpl));
         services.AddScoped(typeof(IRepositorio<Usuario>), typeof(UsuarioRepositorioImpl));
         services.AddScoped<IControleAcessoRepositorioImpl, ControleAcessoRepositorioImpl>();
         services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));

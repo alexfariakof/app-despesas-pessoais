@@ -27,6 +27,10 @@ builder.Services.AddSwaggerApiVersioning();
                                                                                                                                                  
 if (builder.Environment.IsProduction()) 
 {
+    builder.Services.CreateDataBaseInMemory();
+}
+else if (builder.Environment.EnvironmentName.Equals("Azure"))
+{
     builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureMsSqlConnectionString")));
 }    
 else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
@@ -62,8 +66,5 @@ app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 app.UseDefaultFiles();
 app.UseStaticFiles();
-
-if (!app.Environment.IsProduction())
-    app.RunDataSeeders();
-
+app.RunDataSeeders();
 app.Run();
