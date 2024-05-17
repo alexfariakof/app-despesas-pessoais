@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Business.Dtos.Core;
+
+namespace Domain.Entities;
 public class AuthResponseTest
 {
     [Theory]

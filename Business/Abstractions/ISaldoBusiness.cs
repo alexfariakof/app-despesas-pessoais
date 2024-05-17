@@ -1,4 +1,4 @@
-﻿using Business.Dtos;
+﻿using Business.Dtos.v2;
 
 namespace Business.Abstractions;
 public interface ISaldoBusiness

@@ -1,16 +1,22 @@
-﻿using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Dtos.Parser;
+using Business.Dtos.v1;
+using Domain.Entities.ValueObjects;
+using Fakers.v1;
 
 namespace Business;
 public class UsuarioBusinessImplTest
 {
     private readonly Mock<IRepositorio<Usuario>> _repositorioMock;
-    private readonly UsuarioBusinessImpl _usuarioBusiness;
+    private readonly UsuarioBusinessImpl<UsuarioDto> _usuarioBusiness;
+    private readonly IMapper _mapper;
     private List<Usuario> _usuarios;
 
     public UsuarioBusinessImplTest()
     {
         _repositorioMock = new Mock<IRepositorio<Usuario>>();
-        _usuarioBusiness = new UsuarioBusinessImpl(_repositorioMock.Object);
+        _mapper = new Mock<IMapper>().Object;
+        _usuarioBusiness = new UsuarioBusinessImpl<UsuarioDto>(_mapper, _repositorioMock.Object);
         _usuarios = UsuarioFaker.Instance.GetNewFakersUsuarios();
     }
 
@@ -19,7 +25,7 @@ public class UsuarioBusinessImplTest
     {
         // Arrange
         var usuario = _usuarios.First();
-        usuario.PerfilUsuario = PerfilUsuario.Administrador;
+        usuario.PerfilUsuario = PerfilUsuario.PerfilType.Administrador;
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Usuario>.IsAny));
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
@@ -39,7 +45,7 @@ public class UsuarioBusinessImplTest
     {
         // Arrange         
         var usuario = _usuarios.First();
-        usuario.PerfilUsuario = PerfilUsuario.Administrador;
+        usuario.PerfilUsuario = PerfilUsuario.PerfilType.Administrador;
         usuario.StatusUsuario= StatusUsuario.Ativo;
         var idUsuario = usuario.Id;            
         
@@ -62,7 +68,7 @@ public class UsuarioBusinessImplTest
     {
         // Arrange         
         var usuario = _usuarios.First();
-        usuario.PerfilUsuario = PerfilUsuario.Usuario;
+        usuario.PerfilUsuario = PerfilUsuario.PerfilType.Usuario;
         usuario.StatusUsuario = StatusUsuario.Ativo;
         var idUsuario = usuario.Id;
         

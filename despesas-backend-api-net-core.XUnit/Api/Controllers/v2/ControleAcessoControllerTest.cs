@@ -3,11 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Business.Abstractions;
 using despesas_backend_api_net_core.Controllers.v2;
+using Business.Dtos.v2;
+using Fakers.v2;
+using Business.Dtos.Core;
 
 namespace Api.Controllers.v2;
 public class ControleAcessoControllerTest
 {
-    protected readonly Mock<IControleAcessoBusiness> _mockControleAcessoBusiness;
+    protected readonly Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>> _mockControleAcessoBusiness;
     protected readonly ControleAcessoController _controleAcessoController;
     private void SetupBearerToken(int userId)
     {
@@ -25,7 +28,7 @@ public class ControleAcessoControllerTest
 
     public ControleAcessoControllerTest()
     {
-        _mockControleAcessoBusiness = new Mock<IControleAcessoBusiness>();
+        _mockControleAcessoBusiness = new Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>>();
         _controleAcessoController = new ControleAcessoController(_mockControleAcessoBusiness.Object);
     }
 

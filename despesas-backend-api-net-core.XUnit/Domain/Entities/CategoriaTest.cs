@@ -1,10 +1,13 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.ValueObjects;
+using Fakers.v1;
+
+namespace Domain.Entities;
 public class CategoriaTest
 {
     [Theory]
-    [InlineData(1, "Test Description 1", 1, TipoCategoria.Todas)]
-    [InlineData(2, "Test Description 2", 2, TipoCategoria.Despesa)]
-    [InlineData(3, "Test Description 3", 3, TipoCategoria.Receita)]
+    [InlineData(1, "Test Description 1", 1, TipoCategoria.TipoCategoriaType.Despesa)]
+    [InlineData(2, "Test Description 2", 2, TipoCategoria.TipoCategoriaType.Despesa)]
+    [InlineData(3, "Test Description 3", 3, TipoCategoria.TipoCategoriaType.Receita)]
     public void Categoria_Should_Set_Properties_Correctly(int idCatgeoria, string descricao, int idUsuario, TipoCategoria tipoCategoria)
     {
         // Arrange
@@ -33,7 +36,7 @@ public class CategoriaTest
         string descricao = "Test Description";
         int usuarioId = 1;
         Usuario usuario = UsuarioFaker.Instance.GetNewFaker();
-        TipoCategoria tipoCategoria = TipoCategoria.Despesa;
+        TipoCategoria tipoCategoria = TipoCategoria.TipoCategoriaType.Despesa;
 
         // Act
         var categoria = new Categoria(descricao, usuarioId, usuario, tipoCategoria);
@@ -53,7 +56,7 @@ public class CategoriaTest
         string descricao = "Test Description";
         int usuarioId = 1;
         Usuario usuario = UsuarioFaker.Instance.GetNewFaker();
-        TipoCategoria tipoCategoria = TipoCategoria.Despesa;
+        TipoCategoria tipoCategoria = TipoCategoria.TipoCategoriaType.Despesa;
 
         // Act
         var categoria = new Categoria(id, descricao, usuarioId, usuario, tipoCategoria);

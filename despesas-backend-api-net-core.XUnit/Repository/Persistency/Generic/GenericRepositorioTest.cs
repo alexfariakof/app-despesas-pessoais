@@ -1,4 +1,6 @@
-﻿namespace Repository.Persistency.Generic;
+﻿using Fakers.v1;
+
+namespace Repository.Persistency.Generic;
 public class GenericRepositorioTest
 {
     private Mock<RegisterContext> _dbContextMock;

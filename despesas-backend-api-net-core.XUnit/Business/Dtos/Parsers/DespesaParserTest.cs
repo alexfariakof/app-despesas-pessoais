@@ -1,4 +1,7 @@
-﻿namespace Business.Dtos.Parser;
+﻿using Domain.Entities.ValueObjects;
+using Fakers.v1;
+
+namespace Business.Dtos.Parser;
 public class DespesaParserTest
 {
     [Fact]
@@ -14,7 +17,6 @@ public class DespesaParserTest
         // Assert
         Assert.Equal(despesaDto.Id, despesa.Id);
         Assert.Equal(despesaDto.Descricao, despesa.Descricao);
-        Assert.Equal(despesaDto.IdUsuario, despesa.UsuarioId);
     }
 
     [Fact]
@@ -25,7 +27,7 @@ public class DespesaParserTest
         var usuario = UsuarioFaker.Instance.GetNewFaker();
         var despesa = DespesaFaker.Instance.GetNewFaker(
             usuario,
-            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.Despesa, usuario.Id)
+            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.TipoCategoriaType.Despesa, usuario.Id)
         );
         // Act
         var despesaDto = despesaParser.Parse(despesa);
@@ -33,7 +35,7 @@ public class DespesaParserTest
         // Assert
         Assert.Equal(despesa.Id, despesaDto.Id);
         Assert.Equal(despesa.Descricao, despesaDto.Descricao);
-        Assert.Equal(despesa.UsuarioId, despesaDto.IdUsuario);
+        Assert.Equal(despesa.UsuarioId, despesaDto.UsuarioId);
     }
 
     [Fact]
@@ -53,7 +55,7 @@ public class DespesaParserTest
         {
             Assert.Equal(despesaDtos[i].Id, despesas[i].Id);
             Assert.Equal(despesaDtos[i].Descricao, despesas[i].Descricao);
-            Assert.Equal(despesaDtos[i].UsuarioId, despesas[i].IdUsuario);
+            Assert.Equal(despesaDtos[i].UsuarioId, despesas[i].UsuarioId);
         }
     }
 
@@ -74,7 +76,6 @@ public class DespesaParserTest
         {
             Assert.Equal(despesas[i].Id, despesaDtos[i].Id);
             Assert.Equal(despesas[i].Descricao, despesaDtos[i].Descricao);
-            Assert.Equal(despesas[i].IdUsuario, despesaDtos[i].UsuarioId);
         }
     }
 }

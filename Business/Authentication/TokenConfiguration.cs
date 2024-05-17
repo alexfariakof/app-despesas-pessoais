@@ -1,5 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using Business.Authentication.Abstractions;
+using Business.Authentication.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Authentication;

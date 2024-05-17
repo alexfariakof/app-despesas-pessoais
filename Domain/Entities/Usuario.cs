@@ -1,4 +1,5 @@
 ﻿using Domain.Core;
+using Domain.Entities.ValueObjects;
 
 namespace Domain.Entities;
 public class Usuario : BaseModel
@@ -18,68 +19,68 @@ public class Usuario : BaseModel
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Alimentação",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Casa",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Serviços",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Saúde",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Imposto",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Transporte",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Lazer",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Outros",
-            TipoCategoria = TipoCategoria.Despesa
+            TipoCategoria = new TipoCategoria(1)
         });
 
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Salário",
-            TipoCategoria = TipoCategoria.Receita
+            TipoCategoria = new TipoCategoria(2)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Prêmio",
-            TipoCategoria = TipoCategoria.Receita
+            TipoCategoria = new TipoCategoria(2)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Investimento",
-            TipoCategoria = TipoCategoria.Receita
+            TipoCategoria = new TipoCategoria(2)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Benefício",
-            TipoCategoria = TipoCategoria.Receita
+            TipoCategoria = new TipoCategoria(2)
         });
         defaultCategorias.Add(new Categoria
         {
             Descricao = "Outros",
-            TipoCategoria = TipoCategoria.Receita
+            TipoCategoria = new TipoCategoria(2)
         });
 
         var newUsuario = new Usuario() 

@@ -1,13 +1,20 @@
-﻿namespace Business;
+﻿using AutoMapper;
+using Business.Dtos.v1;
+using Repository.Persistency.Abstractions;
+using Fakers.v1;
+
+namespace Business;
 public class LancamentoBusinessImplTest
 {
     private readonly Mock<ILancamentoRepositorio> _repositorioMock;
-    private readonly LancamentoBusinessImpl _lancamentoBusiness;
+    private readonly LancamentoBusinessImpl<LancamentoDto> _lancamentoBusiness;
+    private readonly IMapper _mapper;
 
     public LancamentoBusinessImplTest()
     {
         _repositorioMock = new Mock<ILancamentoRepositorio>();
-        _lancamentoBusiness = new LancamentoBusinessImpl(_repositorioMock.Object);
+        _mapper = new Mock<IMapper>().Object;
+        _lancamentoBusiness = new LancamentoBusinessImpl<LancamentoDto>(_mapper, _repositorioMock.Object);
     }
 
     [Fact]

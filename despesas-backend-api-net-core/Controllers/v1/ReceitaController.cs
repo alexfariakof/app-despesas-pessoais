@@ -1,8 +1,9 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Business.Generic;
+using Domain.Entities;
+using Business.Abstractions.Generic;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -11,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class ReceitaController : AuthController
 {
-    private IBusiness<ReceitaDto> _receitaBusiness;
-    public ReceitaController(IBusiness<ReceitaDto> receitaBusiness)
+    private IBusiness<ReceitaDto, Receita> _receitaBusiness;
+    public ReceitaController(IBusiness<ReceitaDto, Receita> receitaBusiness)
     {
         _receitaBusiness = receitaBusiness;
     }
@@ -49,7 +50,7 @@ public class ReceitaController : AuthController
     {
         try
         {
-            receita.IdUsuario = IdUsuario;
+            receita.UsuarioId = IdUsuario;
             return new OkObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
         }
         catch
@@ -63,7 +64,7 @@ public class ReceitaController : AuthController
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
 
-        receita.IdUsuario = IdUsuario;
+        receita.UsuarioId = IdUsuario;
         var updateReceita = _receitaBusiness.Update(receita);
 
         if (updateReceita == null)
@@ -77,7 +78,7 @@ public class ReceitaController : AuthController
     public IActionResult Delete(int idReceita)
     {
         ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
-        if (receita == null || IdUsuario != receita.IdUsuario)
+        if (receita == null || IdUsuario != receita.UsuarioId)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Parser.Interfaces;
+using Business.Dtos.v1;
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
@@ -13,7 +14,7 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
             Id = origin.Id,
             Email = origin.Login,
             Senha = origin.Senha,
-            IdUsuario   = origin.UsuarioId,
+            UsuarioId   = origin.UsuarioId,
             Nome = origin.Usuario.Nome,
             PerfilUsuario = origin.Usuario.PerfilUsuario,
             Telefone = origin.Usuario.Telefone,
@@ -29,12 +30,12 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
         {
             Id = origin.Id,
             Login = origin.Email,
-            UsuarioId = origin.IdUsuario,            
+            UsuarioId = origin.UsuarioId,            
             Senha = origin.Senha,
             RefreshToken = origin?.RefreshToken,
             Usuario = new Usuario
             {
-                Id = origin.IdUsuario,
+                Id = origin.UsuarioId,
                 Nome = origin?.Nome,
                 SobreNome = origin?.SobreNome,
                 Telefone = origin?.Telefone,

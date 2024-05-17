@@ -1,8 +1,8 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Abstractions;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Business.Abstractions;
 using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
@@ -12,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class ControleAcessoController : AuthController
 {
-    private IControleAcessoBusiness _controleAcessoBusiness;
-    public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
+    private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
+    public ControleAcessoController(IControleAcessoBusiness<ControleAcessoDto, LoginDto> controleAcessoBusiness)
     {
         _controleAcessoBusiness = controleAcessoBusiness;
     }

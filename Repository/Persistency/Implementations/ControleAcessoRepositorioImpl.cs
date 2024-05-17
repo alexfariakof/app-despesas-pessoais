@@ -1,6 +1,7 @@
 ﻿using Domain.Core;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Repository.Persistency.Abstractions;
 
 namespace Repository.Persistency.Implementations;
 public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl

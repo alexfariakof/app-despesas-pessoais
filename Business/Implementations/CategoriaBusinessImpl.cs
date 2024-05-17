@@ -1,61 +1,60 @@
 ﻿using Business.Abstractions;
-using Business.Dtos;
-using Business.Dtos.Parser;
 using Domain.Entities;
-using Domain.Entities.Abstractions;
 using MediatR;
+using AutoMapper;
+using Business.Abstractions.Generic;
+using Repository.Persistency.UnitOfWork.Abstractions;
+using Repository.Persistency.Generic;
+using Domain.Entities.ValueObjects;
+
 
 namespace Business.Implementations;
-public class CategoriaBusinessImpl: BusinessBase<CategoriaDto, Categoria>
+public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness<Dto, Categoria> where Dto : class, new()
 {
     private readonly IMediator _mediator;
     private readonly IUnitOfWork<Categoria> _unitOfWork;
-    private readonly CategoriaParser _converter;
-    
-    public CategoriaBusinessImpl(IMediator mediator, IUnitOfWork<Categoria> unitOfWork): base (unitOfWork)
+    private readonly IRepositorio<Categoria> _repositorio;
+    public CategoriaBusinessImpl(IMediator mediator, IMapper mapper, IUnitOfWork<Categoria> unitOfWork, IRepositorio<Categoria> repositorio) : base (mapper, unitOfWork)
     {
         _mediator = mediator;
         _unitOfWork = unitOfWork;
-        _converter = new CategoriaParser();   
+        _repositorio = repositorio;
     }
 
-    public override CategoriaDto Create(CategoriaDto obj)
+    public override Dto Create(Dto obj)
     {
-        Categoria categoria = _converter.Parse(obj);
-        _unitOfWork.Repository.Insert(ref categoria);
-        _unitOfWork.CommitAsync();
-        return _converter.Parse(categoria);
+        IsValidCategoria(obj);
+        Categoria categoria = this.Mapper.Map<Categoria>(obj);
+        _repositorio.Insert(ref categoria);
+        return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override Task<IList<CategoriaDto>> FindAll(int idUsuario)
+    public override List<Dto> FindAll(int idUsuario)
     {
-        var lstCategoria = _unitOfWork.Repository.GetAll().Result.Where(c => c.UsuarioId == idUsuario).ToList();
-        return Task.FromResult<IList<CategoriaDto>>(_converter.ParseList(lstCategoria)) ;
+        var lstCategoria =  _repositorio.GetAll().Where(c => c.UsuarioId == idUsuario).ToList();
+        return this.Mapper.Map<List<Dto>>(lstCategoria);
     }
 
-    public override CategoriaDto FindById(int id, int idUsuario)
+    public override Dto FindById(int id, int idUsuario)
     {
-        var categoria = _converter.Parse(_unitOfWork.Repository.GetById(id).Result);
-        if (idUsuario == categoria.IdUsuario)
-            return categoria;
-        return null;
+        var categoria = this.Mapper.Map<Dto>(_repositorio.Get(id));
+        return categoria;
     }
 
-    public override CategoriaDto Update(CategoriaDto obj)
+    public override Dto Update(Dto obj)
     {
-        Categoria categoria = _converter.Parse(obj);
-        _unitOfWork.Repository.Update(ref categoria);
-        _unitOfWork.CommitAsync();
-        return _converter.Parse(categoria);
+        IsValidCategoria(obj);
+        Categoria categoria = this.Mapper.Map<Categoria>(obj);
+        _repositorio.Update(ref categoria);
+        return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override bool Delete(CategoriaDto obj)
+    public override bool Delete(Dto obj)
     {
         try
         {
-            Categoria categoria = _converter.Parse(obj);
-            _unitOfWork.Repository.Delete(categoria.Id);
-            _unitOfWork.CommitAsync();
+            Categoria categoria = this.Mapper.Map<Categoria>(obj);
+            _repositorio.Delete(categoria);
             return true;
         }
         catch
@@ -63,4 +62,11 @@ public class CategoriaBusinessImpl: BusinessBase<CategoriaDto, Categoria>
             return false;
         }
     }    
+
+    private void IsValidCategoria(Dto obj)
+    {
+        Categoria categoria = this.Mapper.Map<Categoria>(obj);
+        if (categoria.TipoCategoria != TipoCategoria.TipoCategoriaType.Despesa && categoria.TipoCategoria != TipoCategoria.TipoCategoriaType.Receita)
+            throw new ArgumentException("Tipo de Categoria Inválida!");
+    }
 }

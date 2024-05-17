@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Repository.Persistency.Abstractions;
 using System.Data;
 
 namespace Repository.Persistency.Implementations;

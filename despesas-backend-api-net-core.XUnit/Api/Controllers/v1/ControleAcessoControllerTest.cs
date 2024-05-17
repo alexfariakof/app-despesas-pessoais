@@ -1,15 +1,17 @@
 ﻿using Business.Abstractions;
+using Business.Dtos.v1;
 using despesas_backend_api_net_core.Controllers.v1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-
+using Fakers.v1;
+using Business.Dtos.Core;
 
 namespace Api.Controllers.v1;
 
 public class ControleAcessoControllerTest
 {
-    protected readonly Mock<IControleAcessoBusiness> _mockControleAcessoBusiness;
+    protected readonly Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>> _mockControleAcessoBusiness;
     protected readonly ControleAcessoController _controleAcessoController;
 
     private ControleAcessoDto CreateValidControleAcessoDto()
@@ -46,7 +48,7 @@ public class ControleAcessoControllerTest
 
     public ControleAcessoControllerTest()
     {
-        _mockControleAcessoBusiness = new Mock<IControleAcessoBusiness>();
+        _mockControleAcessoBusiness = new Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>>();
         _controleAcessoController = new ControleAcessoController(_mockControleAcessoBusiness.Object);
     }
 

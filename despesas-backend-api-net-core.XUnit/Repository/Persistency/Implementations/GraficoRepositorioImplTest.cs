@@ -1,4 +1,7 @@
-﻿namespace Repository.Persistency.Implementations;
+﻿using Repository.Persistency.Abstractions;
+using Fakers.v1;
+
+namespace Repository.Persistency.Implementations;
 
 public class GraficoRepositorioImplTest
 {

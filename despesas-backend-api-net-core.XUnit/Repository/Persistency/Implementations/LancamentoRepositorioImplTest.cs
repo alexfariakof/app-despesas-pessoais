@@ -1,4 +1,7 @@
-﻿namespace Repository.Persistency.Implementations;
+﻿using Repository.Persistency.Abstractions;
+using Fakers.v1;
+
+namespace Repository.Persistency.Implementations;
 public class LancamentoRepositorioImplTest
 {
     private readonly RegisterContext _context;
@@ -8,11 +11,8 @@ public class LancamentoRepositorioImplTest
     private DateTime _mockAnoMes;
     public LancamentoRepositorioImplTest()
     {
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "Lancamento Repo Database InMemory")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Lancamento Repo Database InMemory").Options;
         _context = new RegisterContext(options);
-
         _mockUsuario = UsuarioFaker.Instance.GetNewFaker();
         _context.Usuario.Add(_mockUsuario);
         var despesas = DespesaFaker.Instance.Despesas(_mockUsuario, _mockUsuario.Id);
@@ -48,9 +48,7 @@ public class LancamentoRepositorioImplTest
         var data = _mockAnoMes;
         var idUsuario = _mockUsuario.Id;
 
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "MemoryDatabase Lancamento ")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "MemoryDatabase Lancamento ").Options;
 
         var context = new RegisterContext(options);
         context.Despesa.AddRange(new List<Despesa>());

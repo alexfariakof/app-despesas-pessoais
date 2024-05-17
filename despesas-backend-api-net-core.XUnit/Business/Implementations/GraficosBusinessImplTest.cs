@@ -1,4 +1,7 @@
-﻿namespace Business;
+﻿using Repository.Persistency.Abstractions;
+using Fakers.v1;
+
+namespace Business;
 public class GraficosBusinessImplTest
 {
     private readonly Mock<IGraficosRepositorio> _repositorioMock;

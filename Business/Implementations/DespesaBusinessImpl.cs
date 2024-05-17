@@ -1,64 +1,72 @@
-﻿using Business.Dtos;
-using Business.Dtos.Parser;
-using Business.Generic;
+﻿using AutoMapper;
+using Business.Abstractions;
+using Business.Abstractions.Generic;
+using Business.Dtos.Core;
 using Domain.Entities;
+using Domain.Entities.ValueObjects;
 using Repository.Persistency.Generic;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Implementations;
-public class DespesaBusinessImpl : IBusiness<DespesaDto>
+public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dto, Despesa> where Dto : DespesaDtoBase, new()
 {
     private readonly IRepositorio<Despesa> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
-    private readonly DespesaParser _converter;
-    public DespesaBusinessImpl(IRepositorio<Despesa> repositorio, IRepositorio<Categoria> repoCategoria)
+    private readonly IMapper _mapper;
+    public DespesaBusinessImpl(IMapper mapper, IUnitOfWork<Despesa> unitOfWork, IRepositorio<Despesa> repositorio, IRepositorio<Categoria> repoCategoria): base(mapper, unitOfWork)
     {
         _repositorio = repositorio;
         _repoCategoria = repoCategoria;
-        _converter = new DespesaParser();
-    }
-    public DespesaDto Create(DespesaDto obj)
-    {
-        IsCategoriaValid(obj);
-        Despesa despesa = _converter.Parse(obj);
-        _repositorio.Insert(ref despesa);
-        return _converter.Parse(despesa);
+        _mapper = mapper;
     }
 
-    public List<DespesaDto> FindAll(int idUsuario)
+    public override Dto Create(Dto obj)
+    {
+        Despesa despesa = _mapper.Map<Despesa>(obj);
+        IsValidCategoria(despesa);
+        _repositorio.Insert(ref despesa);
+        return _mapper.Map<Dto>(despesa);
+    }
+
+    public override List<Dto> FindAll(int idUsuario)
     {
         var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
-        foreach (var despesa in despesas)
-            despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
-        return _converter.ParseList(despesas);
+        return _mapper.Map<List<Dto>>(despesas);
     }
 
-    public DespesaDto FindById(int id, int idUsuario)
+    public override  Dto FindById(int id, int idUsuario)
     {
         var despesa = _repositorio.Get(id);
-        despesa.Categoria = _repoCategoria.Get(despesa.CategoriaId);
-        var despesaDto = _converter.Parse(despesa);
-
-        if (despesaDto.IdUsuario == idUsuario)
-            return despesaDto;
-        return null;
+        var despesaDto = _mapper.Map<Dto>(despesa);
+        return despesaDto; 
     }
 
-    public DespesaDto Update(DespesaDto obj)
+    public override  Dto Update(Dto obj)
     {
-        IsCategoriaValid(obj);
-        Despesa despesa = _converter.Parse(obj);
+        Despesa despesa = _mapper.Map<Despesa>(obj);
+        IsValidDespesa(despesa);
+        IsValidCategoria(despesa);        
         _repositorio.Update(ref despesa);
-        return _converter.Parse(despesa);
+        return _mapper.Map<Dto>(despesa);
     }
 
-    public bool Delete(DespesaDto obj)
+    public override  bool Delete(Dto obj)
     {
-        Despesa despesa = _converter.Parse(obj);
+        Despesa despesa = _mapper.Map<Despesa>(obj);
+        IsValidDespesa(despesa);
         return _repositorio.Delete(despesa);
     }
-    private void IsCategoriaValid(DespesaDto obj)
+
+    private void IsValidCategoria(Despesa obj)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.IdUsuario && obj.Categoria.IdTipoCategoria == (int)TipoCategoria.Despesa) == null)
-            throw new ArgumentException("Erro Categoria inexistente ou não cadastrada!");
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.TipoCategoriaType.Despesa && c.Id == obj.Categoria.Id) == null)
+            throw new ArgumentException("Categoria inválida para este usuário!");
+    }
+
+    private void IsValidDespesa(Despesa obj)
+    {
+        if (_repositorio.Get(obj.Id).Usuario.Id != obj.UsuarioId)
+            throw new ArgumentException("Despesa inválida para este usuário!");
+
     }
 }

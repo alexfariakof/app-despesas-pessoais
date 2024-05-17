@@ -1,4 +1,7 @@
-﻿namespace Business.Dtos.Parser;
+﻿using Domain.Entities.ValueObjects;
+using Fakers.v1;
+
+namespace Business.Dtos.Parser;
 public class ReceitaParserTest
 {
     [Fact]
@@ -14,7 +17,7 @@ public class ReceitaParserTest
         // Assert
         Assert.Equal(receitaDto.Id, receita.Id);
         Assert.Equal(receitaDto.Descricao, receita.Descricao);
-        Assert.Equal(receitaDto.IdUsuario, receita.UsuarioId);
+        Assert.Equal(receitaDto.UsuarioId, receita.UsuarioId);
     }
 
     [Fact]
@@ -25,7 +28,7 @@ public class ReceitaParserTest
         var usuario = UsuarioFaker.Instance.GetNewFaker();
         var receita = ReceitaFaker.Instance.GetNewFaker(
             usuario,
-            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.Receita, usuario.Id)
+            CategoriaFaker.Instance.GetNewFaker(usuario, TipoCategoria.TipoCategoriaType.Receita, usuario.Id)
         );
 
         // Act
@@ -34,7 +37,7 @@ public class ReceitaParserTest
         // Assert
         Assert.Equal(receita.Id, receitaDto.Id);
         Assert.Equal(receita.Descricao, receitaDto.Descricao);
-        Assert.Equal(receita.UsuarioId, receitaDto.IdUsuario);
+        Assert.Equal(receita.UsuarioId, receitaDto.UsuarioId);
     }
 
     [Fact]
@@ -54,7 +57,7 @@ public class ReceitaParserTest
         {
             Assert.Equal(receitaDtos[i].Id, receitas[i].Id);
             Assert.Equal(receitaDtos[i].Descricao, receitas[i].Descricao);
-            Assert.Equal(receitaDtos[i].IdUsuario, receitas[i].UsuarioId);
+            Assert.Equal(receitaDtos[i].UsuarioId, receitas[i].UsuarioId);
         }
     }
 
@@ -75,7 +78,7 @@ public class ReceitaParserTest
         {
             Assert.Equal(receitas[i].Id, receitaDtos[i].Id);
             Assert.Equal(receitas[i].Descricao, receitaDtos[i].Descricao);
-            Assert.Equal(receitas[i].UsuarioId, receitaDtos[i].IdUsuario);
+            Assert.Equal(receitas[i].UsuarioId, receitaDtos[i].UsuarioId);
         }
     }
 }

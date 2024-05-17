@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Repository.Persistency;
+using Repository.Persistency.Abstractions;
 using Repository.Persistency.Generic;
 using Repository.Persistency.Implementations;
 
@@ -16,9 +16,9 @@ public static class RepositoryDependenceInject
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepositorio<>), typeof(GenericRepositorio<>));
-        //services.AddScoped(typeof(IRepositorio<Categoria>), typeof(CategoriaRepositorioImpl));
-        //services.AddScoped(typeof(IRepositorio<Despesa>), typeof(DespesaRepositorioImpl));
-        //services.AddScoped(typeof(IRepositorio<Receita>), typeof(ReceitaRepositorioImpl));
+        services.AddScoped(typeof(IRepositorio<Categoria>), typeof(CategoriaRepositorioImpl));
+        services.AddScoped(typeof(IRepositorio<Despesa>), typeof(DespesaRepositorioImpl));
+        services.AddScoped(typeof(IRepositorio<Receita>), typeof(ReceitaRepositorioImpl));
         services.AddScoped(typeof(IRepositorio<Usuario>), typeof(UsuarioRepositorioImpl));
         services.AddScoped<IControleAcessoRepositorioImpl, ControleAcessoRepositorioImpl>();
         services.AddScoped(typeof(ILancamentoRepositorio), typeof(LancamentoRepositorioImpl));

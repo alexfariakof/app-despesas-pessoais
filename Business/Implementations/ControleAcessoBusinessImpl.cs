@@ -1,17 +1,18 @@
 ﻿using Business.Abstractions;
 using Business.Authentication;
-using Business.Dtos;
+using Business.Dtos.Core;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
-using Repository.Persistency;
+using Domain.Entities.ValueObjects;
+using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace Business.Implementations;
-public class ControleAcessoBusinessImpl : IControleAcessoBusiness
+public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : ControleAcessoDtoBase where DtoLogin : LoginDtoBase, new()
 {
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
@@ -26,7 +27,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
         _emailSender = emailSender;
     }
 
-    public void Create(ControleAcessoDto controleAcessoDto)
+    public void Create(DtoCa controleAcessoDto)
     {
         ControleAcesso controleAcesso = new ControleAcesso();
         controleAcesso.CreateAccount(new Usuario()
@@ -36,14 +37,14 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
             controleAcessoDto.Email,
             controleAcessoDto.Telefone,
             StatusUsuario.Ativo,
-            PerfilUsuario.Usuario),
+            PerfilUsuario.PerfilType.Usuario),
             controleAcessoDto.Email,
             controleAcessoDto.Senha
             );
         _repositorio.Create(controleAcesso);
     }
 
-    public AuthenticationDto ValidateCredentials(LoginDto login)
+    public AuthenticationDto ValidateCredentials(DtoLogin login)
     {
         ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = login.Email });
 
@@ -83,6 +84,7 @@ public class ControleAcessoBusinessImpl : IControleAcessoBusiness
 
         return AuthenticationException("Refresh Token Inválido!");
     }
+
     public void RevokeToken(int idUsuario)
     {
         _repositorio.RevokeToken(idUsuario);

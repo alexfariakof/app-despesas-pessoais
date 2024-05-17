@@ -1,4 +1,6 @@
-﻿namespace Business.Dtos;
+﻿using Business.Dtos.v1;
+
+namespace Business.Dtos;
 public class ChangePasswordDtoTest
 {
     [Theory]

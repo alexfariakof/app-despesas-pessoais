@@ -14,14 +14,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include=".Fakers\CategoriaFaker.cs" />
-    <Compile Include=".Fakers\DespesaFaker.cs" />
-    <Compile Include=".Fakers\GraficoFaker.cs" />
-    <Compile Include=".Fakers\ImagemPerfilUsuarioFaker.cs" />
-    <Compile Include=".Fakers\LancamentoFaker.cs" />
-    <Compile Include=".Fakers\ReceitaFaker.cs" />
-    <Compile Include=".Fakers\ControleAcessoFaker.cs" />
-    <Compile Include=".Fakers\UsuarioFaker.cs" />
+    <Compile Include=".Fakers\v1\CategoriaFaker.cs" />
+    <Compile Include=".Fakers\v1\DespesaFaker.cs" />
+    <Compile Include=".Fakers\v1\GraficoFaker.cs" />
+    <Compile Include=".Fakers\v1\ImagemPerfilUsuarioFaker.cs" />
+    <Compile Include=".Fakers\v1\LancamentoFaker.cs" />
+    <Compile Include=".Fakers\v1\ReceitaFaker.cs" />
+    <Compile Include=".Fakers\v1\ControleAcessoFaker.cs" />
+    <Compile Include=".Fakers\v1\UsuarioFaker.cs" />
+    <Compile Include=".Fakers\v2\CategoriaFaker.cs" />
+    <Compile Include=".Fakers\v2\ControleAcessoFaker.cs" />
+    <Compile Include=".Fakers\v2\DespesaFaker.cs" />
+    <Compile Include=".Fakers\v2\GraficoFaker.cs" />
+    <Compile Include=".Fakers\v2\ImagemPerfilUsuarioFaker.cs" />
+    <Compile Include=".Fakers\v2\LancamentoFaker.cs" />
+    <Compile Include=".Fakers\v2\ReceitaFaker.cs" />
+    <Compile Include=".Fakers\v2\UsuarioFaker.cs" />
   </ItemGroup>
 
   <ItemGroup>

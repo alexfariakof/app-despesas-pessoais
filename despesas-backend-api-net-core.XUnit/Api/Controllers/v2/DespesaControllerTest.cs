@@ -1,14 +1,17 @@
-﻿using Business.Dtos.Parser;
+﻿using Business.Abstractions;
+using Business.Dtos.Parser;
+using Business.Dtos.v2;
 using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Fakers.v2;
 
 namespace Api.Controllers.v2;
 
 public class DespesaControllerTest
 {
-    protected Mock<IBusiness<DespesaDto>> _mockDespesaBusiness;
+    protected Mock<BusinessBase<DespesaDto, Despesa>> _mockDespesaBusiness;
     protected DespesaController _despesaController;
 
     private void SetupBearerToken(int idUsuario)
@@ -17,7 +20,7 @@ public class DespesaControllerTest
         {
             new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
         };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
+        var identity = new ClaimsIdentity(claims, "UsuarioId");
         var claimsPrincipal = new ClaimsPrincipal(identity);
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };
         httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(idUsuario);
@@ -26,7 +29,7 @@ public class DespesaControllerTest
 
     public DespesaControllerTest()
     {
-        _mockDespesaBusiness = new Mock<IBusiness<DespesaDto>>();
+        _mockDespesaBusiness = new Mock<BusinessBase<DespesaDto, Despesa>>();
         _despesaController = new DespesaController(_mockDespesaBusiness.Object);
     }
 
@@ -36,7 +39,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
 
-        int idUsuario = _despesaDtos.First().IdUsuario;
+        int idUsuario = _despesaDtos.First().UsuarioId;
 
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_despesaDtos);
@@ -57,7 +60,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
 
-        int idUsuario = _despesaDtos.First().IdUsuario;
+        int idUsuario = _despesaDtos.First().UsuarioId;
 
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.FindAll(idUsuario)).Throws<Exception>();
@@ -80,7 +83,7 @@ public class DespesaControllerTest
     {
         // Arrange
         var despesaDto = DespesaFaker.Instance.DespesasVMs().First();
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns((DespesaDto)null);
 
@@ -101,7 +104,7 @@ public class DespesaControllerTest
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
         var despesaDto = new DespesaParser().Parse(despesa);
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         int despesaId = despesa.Id;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaId, idUsuario)).Returns(despesaDto);
@@ -123,7 +126,7 @@ public class DespesaControllerTest
     {
         // Arrange
         var despesaDto = DespesaFaker.Instance.DespesasVMs().First();
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Throws(new Exception());
 
@@ -144,7 +147,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[3];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.Create(despesaDto)).Returns(despesaDto);
 
@@ -166,7 +169,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[3];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
 
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.Create(despesaDto)).Throws(new Exception());
@@ -188,7 +191,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[4];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.Update(despesaDto)).Returns(despesaDto);
 
@@ -210,7 +213,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[3];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.Update(despesaDto)).Returns((DespesaDto)null);
 
@@ -231,7 +234,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[2];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.Delete(despesaDto)).Returns(true);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns(despesaDto);
@@ -254,7 +257,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[2];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(0);
         _mockDespesaBusiness.Setup(business => business.Delete(despesaDto)).Returns(true);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns(despesaDto);
@@ -277,7 +280,7 @@ public class DespesaControllerTest
         // Arrange
         var _despesaDtos = DespesaFaker.Instance.DespesasVMs();
         var despesaDto = _despesaDtos[2];
-        int idUsuario = despesaDto.IdUsuario;
+        int idUsuario = despesaDto.UsuarioId;
         SetupBearerToken(idUsuario);
         _mockDespesaBusiness.Setup(business => business.Delete(despesaDto)).Returns(false);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns(despesaDto);

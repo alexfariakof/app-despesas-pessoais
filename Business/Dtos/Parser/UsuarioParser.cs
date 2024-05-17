@@ -1,4 +1,5 @@
 ﻿using Business.Dtos.Parser.Interfaces;
+using Business.Dtos.v1;
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;

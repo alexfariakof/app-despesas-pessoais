@@ -1,4 +1,9 @@
-﻿using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Dtos.Parser;
+using Business.Dtos.v1;
+using Domain.Entities.ValueObjects;
+using Repository.Persistency.UnitOfWork.Abstractions;
+using Fakers.v1;
 
 namespace Business;
 
@@ -6,12 +11,16 @@ public class ReceitaBusinessImplTest
 {
     private readonly Mock<IRepositorio<Receita>> _repositorioMock;
     private readonly Mock<IRepositorio<Categoria>> _repositorioMockCategoria;
-    private readonly ReceitaBusinessImpl _receitaBusiness;
+    private readonly ReceitaBusinessImpl<ReceitaDto> _receitaBusiness;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork<Receita> _UnitOfWork;
     public ReceitaBusinessImplTest()
     {
         _repositorioMock = new Mock<IRepositorio<Receita>>();
         _repositorioMockCategoria = new Mock<IRepositorio<Categoria>>();
-        _receitaBusiness = new ReceitaBusinessImpl(_repositorioMock.Object, _repositorioMockCategoria.Object);
+        _mapper = new Mock<IMapper>().Object;
+        _UnitOfWork = new Mock<IUnitOfWork<Receita>>().Object;
+        _receitaBusiness = new ReceitaBusinessImpl<ReceitaDto>(_mapper, _UnitOfWork, _repositorioMock.Object, _repositorioMockCategoria.Object);
     }
 
     [Fact]
@@ -22,7 +31,7 @@ public class ReceitaBusinessImplTest
         var receitaDto = new ReceitaParser().Parse(receita);
 
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny));
-        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Receita, receita.UsuarioId));
+        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.TipoCategoriaType.Receita, receita.UsuarioId));
         // Act
         var result = _receitaBusiness.Create(receitaDto);
 
@@ -98,7 +107,7 @@ public class ReceitaBusinessImplTest
         var receitaDto = new ReceitaParser().Parse(receita);            
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
-        var categorias = CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.Despesa, receita.UsuarioId);
+        var categorias = CategoriaFaker.Instance.Categorias(receita.Usuario, TipoCategoria.TipoCategoriaType.Despesa, receita.UsuarioId);
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(categorias);
 
         // Act

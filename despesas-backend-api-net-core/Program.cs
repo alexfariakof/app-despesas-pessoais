@@ -47,6 +47,7 @@ else
 }
 
 // Add CommonInjectDependences 
+builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
 builder.Services.AddAuthConfigurations(builder.Configuration);
 builder.Services.AddRepositories();

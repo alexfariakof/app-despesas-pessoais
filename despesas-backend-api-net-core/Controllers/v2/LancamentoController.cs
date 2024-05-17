@@ -1,6 +1,6 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.v2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,8 +10,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class LancamentoController : AuthController
 {
-    private ILancamentoBusiness _lancamentoBusiness;
-    public LancamentoController(ILancamentoBusiness lancamentoBusiness)
+    private ILancamentoBusiness<LancamentoDto> _lancamentoBusiness;
+    public LancamentoController(ILancamentoBusiness<LancamentoDto> lancamentoBusiness)
     {
         _lancamentoBusiness = lancamentoBusiness;
     }
