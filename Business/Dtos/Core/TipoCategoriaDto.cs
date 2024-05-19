@@ -1,5 +1,5 @@
 ﻿namespace Business.Dtos.Core;
-public enum TipoCategoriaDto : int
+public enum TipoCategoriaDto
 {
     Todas = 0,
     Despesa = 1,

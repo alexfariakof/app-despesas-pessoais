@@ -22,9 +22,9 @@ public static class ServicesDependenceInject
         services.AddScoped(typeof(IImagemPerfilUsuarioBusiness<Business.Dtos.v1.ImagemPerfilDto, Business.Dtos.v1.UsuarioDto>), typeof(ImagemPerfilUsuarioBusinessImpl<Business.Dtos.v1.ImagemPerfilDto, Business.Dtos.v1.UsuarioDto>));
 
         services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-        services.AddScoped(typeof(BusinessBase<Business.Dtos.v2.CategoriaDto, Categoria>), typeof(CategoriaBusinessImpl<Business.Dtos.v2.CategoriaDto>));
-        services.AddScoped(typeof(BusinessBase<Business.Dtos.v2.DespesaDto, Despesa>), typeof(DespesaBusinessImpl<Business.Dtos.v2.DespesaDto>));
-        services.AddScoped(typeof(BusinessBase<Business.Dtos.v2.ReceitaDto, Receita>), typeof(ReceitaBusinessImpl<Business.Dtos.v2.ReceitaDto>));
+        services.AddScoped(typeof(IBusinessBase<Business.Dtos.v2.CategoriaDto, Categoria>), typeof(CategoriaBusinessImpl<Business.Dtos.v2.CategoriaDto>));
+        services.AddScoped(typeof(IBusinessBase<Business.Dtos.v2.DespesaDto, Despesa>), typeof(DespesaBusinessImpl<Business.Dtos.v2.DespesaDto>));
+        services.AddScoped(typeof(IBusinessBase<Business.Dtos.v2.ReceitaDto, Receita>), typeof(ReceitaBusinessImpl<Business.Dtos.v2.ReceitaDto>));
 
         services.AddScoped(typeof(IControleAcessoBusiness<Business.Dtos.v2.ControleAcessoDto, Business.Dtos.v2.LoginDto>), typeof(ControleAcessoBusinessImpl<Business.Dtos.v2.ControleAcessoDto, Business.Dtos.v2.LoginDto>));
         services.AddScoped(typeof(ILancamentoBusiness<Business.Dtos.v2.LancamentoDto>), typeof(LancamentoBusinessImpl<Business.Dtos.v2.LancamentoDto>));

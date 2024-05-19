@@ -31,7 +31,8 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>,IBusiness<Dto
     public override List<Dto> FindAll(int idUsuario)
     {
         var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
-        return _mapper.Map<List<Dto>>(despesas);
+        var dtos = _mapper.Map<List<Dto>>(despesas);
+        return dtos;
     }
 
     public override  Dto FindById(int id, int idUsuario)

@@ -69,14 +69,14 @@ public class CategoriaController : AuthController
         }
         else
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdTipoCategoria.Equals((int)tipoCategoria)).ToList();
+            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdTipoCategoria.Equals((TipoCategoriaDto)tipoCategoria)).ToList();
             return Ok(_categoria);
         }
     }
 
     [HttpPost]
     [Authorize("Bearer")]
-    [ProducesResponseType(typeof(CategoriaDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(200, Type = typeof(CategoriaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
     [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]

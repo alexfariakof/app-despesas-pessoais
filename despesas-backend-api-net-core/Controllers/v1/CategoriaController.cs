@@ -20,6 +20,7 @@ public class CategoriaController : AuthController
 
     [HttpGet]
     [Authorize("Bearer")]
+    [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
     public IActionResult Get()
     {
         var _categoria = _categoriaBusiness.FindAll(IdUsuario);

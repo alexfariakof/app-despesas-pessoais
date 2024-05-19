@@ -3,7 +3,7 @@ using Repository.Persistency.Generic;
 using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Abstractions;
-public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
+public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
 {
     protected IUnitOfWork<Entity> UnitOfWork { get;  }
     protected IMapper Mapper { get; set; }
