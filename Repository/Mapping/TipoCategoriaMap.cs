@@ -14,8 +14,8 @@ public class TipoCategoriaMap: IEntityTypeConfiguration<TipoCategoria>
 
         builder.HasData
         (
-            new TipoCategoria((int)TipoCategoria.TipoCategoriaType.Despesa),
-            new TipoCategoria((int)TipoCategoria.TipoCategoriaType.Receita)
+            new TipoCategoria(TipoCategoria.CategoriaType.Despesa),
+            new TipoCategoria(TipoCategoria.CategoriaType.Receita)
         );
     }
 }

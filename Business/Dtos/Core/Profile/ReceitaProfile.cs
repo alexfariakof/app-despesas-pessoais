@@ -17,7 +17,11 @@ public class ReceitaProfile: AutoMapper.Profile
             .ForMember(dest => dest.IdCategoria, opt => opt.MapFrom(src => src.CategoriaId))
             .ForMember(dest => dest.IdCategoria, opt => opt.MapFrom(src => src.Categoria.Id))
             .ForMember(dest => dest.Categoria, opt => opt.MapFrom(src => src.Categoria))
-            .ForPath(dest => dest.Categoria.IdTipoCategoria, opt => opt.MapFrom(src => TipoCategoria.TipoCategoriaType.Receita))
+            .ForPath(dest => dest.Categoria.IdTipoCategoria, opt => opt.MapFrom(src => TipoCategoria.CategoriaType.Receita))
+            .ReverseMap();
+
+        CreateMap<Categoria, Business.Dtos.v2.CategoriaDto>()
+            .ForMember(dest => dest.IdTipoCategoria, opt => opt.MapFrom(src => src.TipoCategoria.Id))
             .ReverseMap();
 
         CreateMap<TipoCategoriaDto, TipoCategoria>().ReverseMap();

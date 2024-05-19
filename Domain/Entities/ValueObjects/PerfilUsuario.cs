@@ -2,25 +2,25 @@
 public record PerfilUsuario
 {
     public static implicit operator PerfilType(PerfilUsuario pu) => (PerfilType)pu.Id;
-    public static implicit operator PerfilUsuario(PerfilType perfilType) => new PerfilUsuario(perfilType);
-    public static implicit operator PerfilUsuario(int perfilType) => new PerfilUsuario(perfilType);
+    public static implicit operator PerfilUsuario(int perfilType) => new PerfilUsuario((PerfilType)perfilType);
     public static bool operator ==(PerfilUsuario perfilUsuario, PerfilType perfilType) => perfilUsuario?.Id == (int)perfilType;
-    public static bool operator !=(PerfilUsuario perfilUsuario, PerfilType perfilType) => !(perfilUsuario == perfilType);
+    public static bool operator !=(PerfilUsuario perfilUsuario, PerfilType perfilType) => !(perfilUsuario?.Id == (int)perfilType);
 
     public enum PerfilType : int
     {
         Administrador = 1,
         Usuario = 2
     }
+
     public int Id { get; set; }
     public string Name { get; set; }
     
     public PerfilUsuario() { }
 
-    public PerfilUsuario(int id)
+    public PerfilUsuario(PerfilType itipoPerfil)
     {
-        Id = id;
-        Name = GetPerfilUsuarioName((PerfilType)id);
+        Id = (int)itipoPerfil;
+        Name = GetPerfilUsuarioName(itipoPerfil);
     }
 
     private string GetPerfilUsuarioName(PerfilType perfilUsuario = PerfilType.Usuario)

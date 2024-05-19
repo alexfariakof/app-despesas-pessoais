@@ -15,8 +15,8 @@ public class PerfilUsuarioMap: IEntityTypeConfiguration<PerfilUsuario>
 
         builder.HasData
         (
-            new PerfilUsuario((int)PerfilUsuario.PerfilType.Administrador),
-            new PerfilUsuario((int)PerfilUsuario.PerfilType.Usuario)
+            new PerfilUsuario(PerfilUsuario.PerfilType.Administrador),
+            new PerfilUsuario(PerfilUsuario.PerfilType.Usuario)
         );
     }
 }

@@ -20,27 +20,22 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : Usuari
     public Dto Create(Dto usuarioDto)
     {
         var isValidUsuario = _repositorio.Get(usuarioDto.UsuarioId);
-        if (isValidUsuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+        if (isValidUsuario.PerfilUsuario is null || isValidUsuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
             throw new ArgumentException("Usuário não permitido a realizar operação!");
         
-        var usuario = new Usuario().CreateUsuario(
-            usuarioDto.Nome,
-            usuarioDto.SobreNome,
-            usuarioDto.Email,
-            usuarioDto.Telefone,
-            StatusUsuario.Ativo,
-            PerfilUsuario.PerfilType.Usuario);
-
+        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        usuario = usuario.CreateUsuario(usuario);
         _repositorio.Insert(ref usuario);
         return _mapper.Map<Dto>(usuario);
     }
 
     public List<Dto> FindAll(int idUsuario)
     {
-        var usuario = FindById(idUsuario);
+        var usuario = _repositorio.Find(u => u.Id == idUsuario).FirstOrDefault();
         if (usuario.PerfilUsuario == PerfilUsuario.PerfilType.Administrador)
             return _mapper.Map<List<Dto>>(_repositorio.GetAll());
-        return null;
+
+        throw new ArgumentException("Usuário não permitido a realizar operação!");
     }      
 
     public Dto FindById(int id)
@@ -51,22 +46,14 @@ public class UsuarioBusinessImpl<Dto> : IUsuarioBusiness<Dto> where Dto : Usuari
 
     public Dto Update(Dto usuarioDto)
     {
-        var usuario = new Usuario
-        {
-            Id = usuarioDto.Id,
-            Nome = usuarioDto.Nome,
-            SobreNome = usuarioDto.SobreNome,
-            Email = usuarioDto.Email,
-            Telefone = usuarioDto.Telefone,
-            StatusUsuario = StatusUsuario.Ativo
-        };
-        
+        var usuario = _mapper.Map<Usuario>(usuarioDto);
         _repositorio.Update(ref usuario);
         return _mapper.Map<Dto>(usuario);
     }
 
     public bool Delete(Dto usuarioDto)
     {
-        return _repositorio.Delete(new Usuario{ Id = usuarioDto.Id });
+        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        return _repositorio.Delete(usuario);
     }
 }

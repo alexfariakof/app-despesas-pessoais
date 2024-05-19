@@ -53,7 +53,7 @@ public static class SwaggerApiVersioningDependenceInject
 
     }
 
-    public static void AddSwaggerApiVersioning(this WebApplication app)
+    public static void AddSwaggerUIApiVersioning(this WebApplication app)
     {
         app.UseSwagger();
         app.UseSwaggerUI(c =>

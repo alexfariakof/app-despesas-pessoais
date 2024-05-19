@@ -37,6 +37,9 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
     public override Dto FindById(int id, int idUsuario)
     {
         var receita = _repositorio.Get(id);
+        if (receita is null) return null;
+        receita.UsuarioId = idUsuario;
+        IsValidReceita(receita);
         var Dto = _mapper.Map<Dto>(receita);
         return Dto;
     }
@@ -59,14 +62,13 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
 
     private void IsValidCategoria(Receita obj)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.TipoCategoriaType.Receita && c.Id == obj.Categoria.Id) == null)
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.CategoriaType.Receita && c.Id == obj.CategoriaId) == null)
             throw new ArgumentException("Categoria inválida para este usuário!");
     }
 
     private void IsValidReceita(Receita obj)
     {
-        if (_repositorio.Get(obj.Id).Usuario.Id != obj.UsuarioId)
+        if (_repositorio.Get(obj.Id)?.Usuario?.Id != obj.UsuarioId)
             throw new ArgumentException("Receita inválida para este usuário!");
-
     }
 }

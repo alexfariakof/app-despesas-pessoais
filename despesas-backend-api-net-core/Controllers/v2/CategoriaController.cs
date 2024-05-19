@@ -13,8 +13,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class CategoriaController : AuthController
 {
-    private readonly BusinessBase<CategoriaDto, Categoria> _categoriaBusiness;
-    public CategoriaController(BusinessBase<CategoriaDto, Categoria> categoriaBusiness)
+    private readonly IBusinessBase<CategoriaDto, Categoria> _categoriaBusiness;
+    public CategoriaController(IBusinessBase<CategoriaDto, Categoria> categoriaBusiness)
     {
         _categoriaBusiness = categoriaBusiness;
     }
@@ -107,7 +107,7 @@ public class CategoriaController : AuthController
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
-        if (categoria.TipoCategoria == TipoCategoriaDto.Todas)
+        if (categoria.IdTipoCategoria == TipoCategoriaDto.Todas)
             return BadRequest("Nenhum tipo de Categoria foi selecionado!");
 
         try

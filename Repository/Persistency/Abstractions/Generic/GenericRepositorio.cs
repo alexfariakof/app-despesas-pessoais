@@ -1,5 +1,6 @@
 ﻿using Domain.Core;
 using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Repository.Persistency.Generic;
 public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
@@ -10,6 +11,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
     {
         _context = context;
     }
+
     public virtual void Insert(ref T item)
     {
         try
@@ -22,6 +24,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
             throw new Exception("GenericRepositorio_Insert", ex); ;
         }
     }
+
     public virtual List<T> GetAll()
     {
         try
@@ -33,15 +36,18 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
             throw new Exception("GenericRepositorio_GetAll", ex);
         }
     }
+
     public virtual T Get(int id)
     {
         return this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(id));
     }
-    public virtual void Update(ref T obj)
+
+    public virtual void Update(ref T entity)
     {
         try
         {
-            _context.Update(obj);
+            var existingEntity = _context.Set<T>().Find(entity.Id);
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
             _context.SaveChanges();
         }
         catch (Exception ex)            
@@ -49,11 +55,12 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
             throw new Exception("GenericRepositorio_Update", ex);
         }
     }
-    public virtual bool Delete(T obj)
+
+    public virtual bool Delete(T entity)
     {
         try
         {
-            T result = this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(obj.Id));
+            T result = this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(entity.Id));
             if (result != null)
             {                    
                 if (result.GetType().Equals(typeof(Usuario)))
@@ -61,7 +68,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
                     var dataSet = _context.Set<Usuario>();
                     Usuario usaurio = new Usuario
                     {
-                        Id = obj.Id,
+                        Id = entity.Id,
                         StatusUsuario = StatusUsuario.Inativo
                     };
                     _context.Entry(result).CurrentValues.SetValues(usaurio);
@@ -80,8 +87,14 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
             throw new Exception("GenericRepositorio_Delete", ex);
         }
     }
+
     public virtual bool Exists(int? id)
     {
         return this._context.Set<T>().Any(prop => prop.Id.Equals(id));
+    }
+
+    public IEnumerable<T>? Find(Expression<Func<T, bool>> expression)
+    {
+        return this._context.Set<T>().Where(expression);
     }
 }

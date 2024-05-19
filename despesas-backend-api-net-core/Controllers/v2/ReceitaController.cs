@@ -12,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class ReceitaController : AuthController
 {
-    private readonly BusinessBase<ReceitaDto, Receita> _receitaBusiness;
-    public ReceitaController(BusinessBase<ReceitaDto, Receita> receitaBusiness)
+    private readonly IBusinessBase<ReceitaDto, Receita> _receitaBusiness;
+    public ReceitaController(IBusinessBase<ReceitaDto, Receita> receitaBusiness)
     {
         _receitaBusiness = receitaBusiness;
     }

@@ -8,7 +8,7 @@ using Repository.Persistency.Generic;
 using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Implementations;
-public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dto, Despesa> where Dto : DespesaDtoBase, new()
+public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>,IBusiness<Dto, Despesa> where Dto : DespesaDtoBase, new()
 {
     private readonly IRepositorio<Despesa> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
@@ -37,7 +37,10 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dt
     public override  Dto FindById(int id, int idUsuario)
     {
         var despesa = _repositorio.Get(id);
-        var despesaDto = _mapper.Map<Dto>(despesa);
+        if (despesa is null) return null;
+        despesa.UsuarioId = idUsuario;
+        IsValidDespesa(despesa);
+        var despesaDto = _mapper.Map<Dto>(despesa);        
         return despesaDto; 
     }
 
@@ -59,14 +62,13 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>, IBusiness<Dt
 
     private void IsValidCategoria(Despesa obj)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.TipoCategoriaType.Despesa && c.Id == obj.Categoria.Id) == null)
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.CategoriaType.Despesa && c.Id == obj.CategoriaId) == null)
             throw new ArgumentException("Categoria inválida para este usuário!");
     }
 
     private void IsValidDespesa(Despesa obj)
     {
-        if (_repositorio.Get(obj.Id).Usuario.Id != obj.UsuarioId)
+        if (_repositorio.Get(obj.Id)?.Usuario?.Id != obj.UsuarioId)
             throw new ArgumentException("Despesa inválida para este usuário!");
-
     }
 }

@@ -1,26 +1,29 @@
 ﻿using Business.Dtos.Core;
-using Domain.Entities.ValueObjects;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v2;
 public class ControleAcessoDto : ControleAcessoDtoBase, IValidatableObject
 {
-    [JsonIgnore]
-    public override int Id { get; set; }
+    [Required(ErrorMessage = "O campo Nome é obrigatório.")]
+    public override string? Nome { get; set; }
 
-    [Required(ErrorMessage = "A senha é obrigatório.")]
+    public override string? SobreNome { get; set; }
+
+    [Required(ErrorMessage = "O campo Telefone é obrigatório.")]
+    public override string? Telefone { get; set; }
+
+    [EmailAddress(ErrorMessage = "O campo Email é inválido.")]
+    [Required(ErrorMessage = "O campo Email é obrigatório.")]
+    public override string? Email { get; set; }
+
+    [Required(ErrorMessage = "O campo Senha é obrigatório.")]
+    [PasswordPropertyText]
     public override string? Senha { get; set; }
 
-    [Required(ErrorMessage = "Confirma Senha é obrigatória.")]
+    [Required(ErrorMessage = "O campo Confirma Senha é obrigatório.")]
+    [PasswordPropertyText]
     public override string? ConfirmaSenha { get; set; }
-
-    [JsonIgnore]
-    public override string? RefreshToken { get; set; }
-
-    [JsonIgnore]
-    public override PerfilUsuario PerfilUsuario { get; set; }
-
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
 

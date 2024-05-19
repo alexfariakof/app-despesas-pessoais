@@ -7,7 +7,6 @@ using Repository.Persistency.UnitOfWork.Abstractions;
 using Repository.Persistency.Generic;
 using Domain.Entities.ValueObjects;
 
-
 namespace Business.Implementations;
 public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness<Dto, Categoria> where Dto : class, new()
 {
@@ -21,10 +20,10 @@ public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness
         _repositorio = repositorio;
     }
 
-    public override Dto Create(Dto obj)
+    public override Dto Create(Dto dto)
     {
-        IsValidCategoria(obj);
-        Categoria categoria = this.Mapper.Map<Categoria>(obj);
+        IsValidTipoCategoria(dto);
+        Categoria categoria = this.Mapper.Map<Categoria>(dto);
         _repositorio.Insert(ref categoria);
         return this.Mapper.Map<Dto>(categoria);
     }
@@ -37,23 +36,25 @@ public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness
 
     public override Dto FindById(int id, int idUsuario)
     {
-        var categoria = this.Mapper.Map<Dto>(_repositorio.Get(id));
-        return categoria;
+        var categoria = _repositorio.Find(c => c.Id == id && c.Usuario.Id == idUsuario).FirstOrDefault() ?? new();
+        return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override Dto Update(Dto obj)
+    public override Dto Update(Dto dto)
     {
-        IsValidCategoria(obj);
-        Categoria categoria = this.Mapper.Map<Categoria>(obj);
+        IsValidTipoCategoria(dto);
+        IsValidCategoria(dto);
+        Categoria categoria = this.Mapper.Map<Categoria>(dto);
         _repositorio.Update(ref categoria);
         return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override bool Delete(Dto obj)
+    public override bool Delete(Dto dto)
     {
+        IsValidCategoria(dto);
         try
-        {
-            Categoria categoria = this.Mapper.Map<Categoria>(obj);
+        {            
+            var categoria = this.Mapper.Map<Categoria>(dto);
             _repositorio.Delete(categoria);
             return true;
         }
@@ -63,10 +64,17 @@ public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness
         }
     }    
 
-    private void IsValidCategoria(Dto obj)
+    private void IsValidTipoCategoria(Dto dto)
     {
-        Categoria categoria = this.Mapper.Map<Categoria>(obj);
-        if (categoria.TipoCategoria != TipoCategoria.TipoCategoriaType.Despesa && categoria.TipoCategoria != TipoCategoria.TipoCategoriaType.Receita)
+        var categoria = this.Mapper.Map<Categoria>(dto);
+        if (categoria.TipoCategoria != TipoCategoria.CategoriaType.Despesa && categoria.TipoCategoria != TipoCategoria.CategoriaType.Receita)
             throw new ArgumentException("Tipo de Categoria Inválida!");
+    }
+
+    private void IsValidCategoria(Dto dto)
+    {
+        var categoria = this.Mapper.Map<Categoria>(dto);
+        if (_repositorio.Get(categoria.Id)?.Usuario?.Id != categoria.UsuarioId)
+            throw new ArgumentException("Categoria inválida para este usuário!");
     }
 }

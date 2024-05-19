@@ -11,5 +11,7 @@ public class ImagemPerfilUsuarioProfile : AutoMapper.Profile
         CreateMap<Business.Dtos.v2.ImagemPerfilDto, ImagemPerfilUsuario>().ReverseMap();
         CreateMap<ImagemPerfilUsuario, Business.Dtos.v2.ImagemPerfilDto>().ReverseMap();
 
+        CreateMap<Business.Dtos.v1.UsuarioDto, Usuario>().ReverseMap();
+        CreateMap<Business.Dtos.v2.UsuarioDto, Usuario>().ReverseMap();
     }
 }

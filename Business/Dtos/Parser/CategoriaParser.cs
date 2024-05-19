@@ -13,7 +13,7 @@ public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categori
         {
             Id = origin.Id,
             Descricao = origin.Descricao,
-            TipoCategoria = origin.IdTipoCategoria == 1 ? TipoCategoria.TipoCategoriaType.Despesa : TipoCategoria.TipoCategoriaType.Receita,
+            TipoCategoria = origin.IdTipoCategoria == 1 ? (int)TipoCategoria.CategoriaType.Despesa : (int)TipoCategoria.CategoriaType.Receita,
             UsuarioId = origin.UsuarioId
         };
     }

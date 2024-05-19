@@ -8,8 +8,9 @@ public class GenericBusiness<Dto, Entity> : IBusiness<Dto, Entity> where Dto : c
     private readonly IRepositorio<Entity> _repositorio;
     private readonly IMapper _mapper;
 
-    public GenericBusiness(IRepositorio<Entity> repositorio)
+    public GenericBusiness(IMapper mapper, IRepositorio<Entity> repositorio)
     {
+        _mapper = mapper;
         _repositorio = repositorio;
     }
     public Dto Create(Dto obj)

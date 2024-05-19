@@ -1,10 +1,10 @@
-﻿using Business.Abstractions;
+﻿using AutoMapper;
+using Business.Abstractions;
 using Business.Authentication;
 using Business.Dtos.Core;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
-using Domain.Entities.ValueObjects;
 using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,13 +14,15 @@ using System.Text.RegularExpressions;
 namespace Business.Implementations;
 public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : ControleAcessoDtoBase where DtoLogin : LoginDtoBase, new()
 {
+    private readonly IMapper _mapper;
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
     private readonly SigningConfigurations _singingConfiguration;
     private readonly TokenConfiguration _tokenConfiguration;   
 
-    public ControleAcessoBusinessImpl(IControleAcessoRepositorioImpl repositorio, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration, IEmailSender emailSender)
+    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration, IEmailSender emailSender)
     {
+        _mapper = mapper;
         _repositorio = repositorio;
         _singingConfiguration = singingConfiguration;
         _tokenConfiguration = tokenConfiguration;
@@ -29,32 +31,24 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
 
     public void Create(DtoCa controleAcessoDto)
     {
+        var usuario = _mapper.Map<Usuario>(controleAcessoDto);
+        usuario = new Usuario().CreateUsuario(usuario);
         ControleAcesso controleAcesso = new ControleAcesso();
-        controleAcesso.CreateAccount(new Usuario()
-            .CreateUsuario(
-            controleAcessoDto.Nome,
-            controleAcessoDto.SobreNome,
-            controleAcessoDto.Email,
-            controleAcessoDto.Telefone,
-            StatusUsuario.Ativo,
-            PerfilUsuario.PerfilType.Usuario),
-            controleAcessoDto.Email,
-            controleAcessoDto.Senha
-            );
+        controleAcesso.CreateAccount(usuario, controleAcessoDto.Senha);
         _repositorio.Create(controleAcesso);
     }
 
     public AuthenticationDto ValidateCredentials(DtoLogin login)
     {
-        ControleAcesso?  baseLogin = _repositorio.FindByEmail(new ControleAcesso { Login = login.Email });
+        ControleAcesso? baseLogin = _repositorio.Find(c => c.Login.Equals(login.Email));
 
-        if (baseLogin == null)
+        if (baseLogin is null)
             return AuthenticationException("Usuário inexistente!");                
         else if (baseLogin.Usuario.StatusUsuario == StatusUsuario.Inativo)
             return AuthenticationException("Usuário Inativo!");
-
-
-        if (!_repositorio.IsValidPasssword(login.Email, login.Senha))
+        
+        baseLogin.Senha = login.Senha;
+        if (!_repositorio.IsValidPassword(login.Email, baseLogin.Senha))
             return AuthenticationException("Senha inválida!");
 
         bool credentialsValid = baseLogin != null && login.Email == baseLogin.Login;
@@ -77,7 +71,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
             && refreshToken.Equals(baseLogin.RefreshToken)
             && _tokenConfiguration.ValidateRefreshToken(refreshToken);
 
-        if (credentialsValid)
+        if (credentialsValid && baseLogin is not null)
             return AuthenticationSuccess(baseLogin);
         else if (baseLogin != null)
             this.RevokeToken(baseLogin.Id);
@@ -87,18 +81,17 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
 
     public void RevokeToken(int idUsuario)
     {
-        _repositorio.RevokeToken(idUsuario);
+        _repositorio.RevokeRefreshToken(idUsuario);
     }
 
     public void RecoveryPassword(string email)
     {
         IsValidEmail(email);
-
         var result = _repositorio.RecoveryPassword(email);
-        ControleAcesso controleAcesso = _repositorio.FindByEmail(new ControleAcesso { Login = email });
+        var controleAcesso = _repositorio.Find(c => c.Login.Equals(email));
 
         if (result && _emailSender.SendEmailPassword(controleAcesso.Usuario, Crypto.GetInstance.Decrypt(controleAcesso.Senha)))
-            throw new ArgumentException("Usuário não encontrado!");
+            throw new ArgumentException("Erro ao enviar email de recuperação de senha!");
     }
 
     public void ChangePassword(int idUsuario, string password)

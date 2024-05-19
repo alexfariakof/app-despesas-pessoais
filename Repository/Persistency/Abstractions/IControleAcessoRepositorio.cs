@@ -1,15 +1,15 @@
 ﻿using Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Repository.Persistency.Abstractions;
 public interface IControleAcessoRepositorioImpl
 {
     void Create(ControleAcesso controleAcesso);
-    ControleAcesso FindById(int idUsuario);
-    ControleAcesso FindByEmail(ControleAcesso controleAcesso);
-    ControleAcesso FindByRefreshToken(string refreshToken);
+    ControleAcesso? Find(Expression<Func<ControleAcesso, bool>> expression);    
     bool ChangePassword(int idUsuario, string password);
     bool RecoveryPassword(string email);
-    bool IsValidPasssword(string login, string password);
-    void RevokeToken(int idUsuario);
+    bool IsValidPassword(string login, string password);
+    void RevokeRefreshToken(int idUsuario);
+    ControleAcesso FindByRefreshToken(string refreshToken);
     void RefreshTokenInfo(ControleAcesso controleAcesso);
 }

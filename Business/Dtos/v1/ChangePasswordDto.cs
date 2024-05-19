@@ -5,8 +5,8 @@ namespace Business.Dtos.v1;
 public class ChangePasswordDto : ChangePasswordDtoBase
 {
     [Required]
-    public string? Senha { get; set; }
+    public override string? Senha { get; set; }
 
     [Required]
-    public string? ConfirmaSenha { get; set; }
+    public override string? ConfirmaSenha { get; set; }
 }

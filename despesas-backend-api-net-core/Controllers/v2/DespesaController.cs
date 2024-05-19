@@ -12,8 +12,8 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class DespesaController : AuthController
 {
-    private readonly BusinessBase<DespesaDto, Despesa> _despesaBusiness;
-    public DespesaController(BusinessBase<DespesaDto, Despesa> despesaBusiness)
+    private readonly IBusinessBase<DespesaDto, Despesa> _despesaBusiness;
+    public DespesaController(IBusinessBase<DespesaDto, Despesa> despesaBusiness)
     {
         _despesaBusiness = despesaBusiness;
     }

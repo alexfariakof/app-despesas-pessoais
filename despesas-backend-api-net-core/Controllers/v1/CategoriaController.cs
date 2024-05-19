@@ -77,7 +77,7 @@ public class CategoriaController : AuthController
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.TipoCategoria == (int)TipoCategoriaDto.Todas)
+        if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
         categoria.UsuarioId = IdUsuario;

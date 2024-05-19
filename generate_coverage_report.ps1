@@ -1,5 +1,13 @@
 cls 
 
+# Pasta onde o relatário será gerado
+$baseDirectory = Get-Location
+$projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"
+$sourceDirs = "$baseDirectory\Business;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\despesas-backend-api-net-core;"
+$filefilters = "$baseDirectory\DataSeeders\**;$baseDirectory\Migrations.MySqlServer\**;$baseDirectory\Migrations.MsSqlServer\**;$baseDirectory\CrossCutting\**"
+$reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
+$coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
+
 # Função para matar processos com base no nome do processo
 function Stop-ProcessesByName {
     $processes = Get-Process | Where-Object { $_.ProcessName -like 'dotnet*' } | Where-Object { $_.MainWindowTitle -eq '' }
@@ -20,36 +28,13 @@ Stop-ProcessesByName
 
 
 # Pasta onde o relatório será gerado
-$reportPath = ".\despesas-backend-api-net-core.XUnit\TestResults"
+$reportPath = ".\XunitTests\TestResults"
 
 # Exclui todo o conteúdo da pasta TestResults, se existir
-#Remove-TestPath-Results
+Remove-TestPath-Results
 
 # Executa o teste e coleta o GUID gerado
 dotnet clean > $null 2>&1
-dotnet test ./despesas-backend-api-net-core.XUnit/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-
-# Encontra o diretório mais recente na pasta TestResults
-#$latestDir = Get-ChildItem -Directory -Path .\despesas-backend-api-net-core.XUnit\TestResults | Sort-Object LastWriteTime -Descending | Select-Object -First 1
-$projectPath =  Join-Path -Path (Get-Location) -ChildPath ""
-$sourceDirs = "$projectPath\Business;$projectPath\Domain;$projectPath\Repository;$projectPath\despesas-backend-api-net-core;"
-$filefilters = "$projectPath\DataSeeders\**;$projectPath\MySqlServer.Migrations\**;$projectPath\CrossCutting\**"
-
-# Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
-#if ($latestDir -ne $null) {
-#    $guid = $latestDir.Name
-  
-    # Constrói os caminhos dinamicamente
-    $projectTestPath = ".\despesas-backend-api-net-core.XUnit\"
-    $coverageXmlPath = Join-Path -Path $projectTestPath -ChildPath "TestResults"
-
-    # Gera o relatório de cobertura usando o GUID capturado
-    reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath\coveragereport -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
-    
-
-    # Abre a página index.html no navegador padrão do sistema operacional
-    Invoke-Item $coverageXmlPath\coveragereport\index.html
-#}
-#else {
-#    Write-Host "Nenhum diretório de resultados encontrado."
-#} 
+dotnet test ./XunitTests/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
+Invoke-Item $coverageXmlPath\index.html
