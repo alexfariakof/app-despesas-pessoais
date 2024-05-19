@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Repository.Persistency.Generic;
 using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Abstractions;
@@ -6,15 +7,24 @@ public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity :
 {
     protected IUnitOfWork<Entity> UnitOfWork { get;  }
     protected IMapper Mapper { get; set; }
-    protected BusinessBase(IMapper mapper, IUnitOfWork<Entity> unitOfWork)
+
+    protected IRepositorio<Entity> Repository { get; }
+
+    protected BusinessBase(IMapper mapper, IRepositorio<Entity> repository, IUnitOfWork<Entity> unitOfWork = null)
     {
+        Repository = repository;
         Mapper = mapper;
         UnitOfWork = unitOfWork;
     }
 
     public abstract Dto Create(Dto usuarioDto);
 
-    public abstract Dto FindById(int id, int idUsuario);
+    public virtual Dto FindById(int id)
+    {
+        throw new NotImplementedException("Este método não foi implementado.");
+    }
+
+    public virtual Dto FindById(int id, int idUsuario) { return null; }
 
     public abstract List<Dto> FindAll(int idUsuario);
 

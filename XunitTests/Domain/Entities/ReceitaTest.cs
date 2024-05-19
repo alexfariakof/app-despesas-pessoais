@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class ReceitaTest
+public sealed class ReceitaTest
 {
     [Theory]
     [InlineData(1, "Descrição 1", 10.0, 1, 1)]

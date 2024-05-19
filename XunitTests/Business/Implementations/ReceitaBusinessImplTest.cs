@@ -31,7 +31,7 @@ public class ReceitaBusinessImplTest
         var receita = receitas.First();
         var receitaDto = _mapper.Map<ReceitaDto>(receita);
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Receita>.IsAny));
-        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria).ToList());
+        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria ?? new()).ToList());
 
         // Act
         var result = _receitaBusiness.Create(receitaDto);
@@ -105,7 +105,7 @@ public class ReceitaBusinessImplTest
         var receitaDto = _mapper.Map<ReceitaDto>(receita);            
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(receita);
-        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria).ToList());
+        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria ?? new()).ToList());
 
         // Act
         var result = _receitaBusiness.Update(receitaDto);
@@ -126,7 +126,7 @@ public class ReceitaBusinessImplTest
         var receitaDto = _mapper.Map<ReceitaDto>(receita);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Receita>())).Returns(true);
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(receita);
-        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria).ToList());
+        _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria ?? new()).ToList());
 
         // Act
         var result = _receitaBusiness.Delete(receitaDto);

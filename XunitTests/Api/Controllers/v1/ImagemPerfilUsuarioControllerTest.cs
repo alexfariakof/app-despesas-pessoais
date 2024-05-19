@@ -1,40 +1,19 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.Parser;
-using Business.Dtos.v1;
 using despesas_backend_api_net_core.Controllers.v1;
+using Business.Dtos.v1;
+using Fakers.v1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using System.Text;
-using Fakers.v1;
 
 namespace Api.Controllers.v1;
 
-public class ImagemPerfilUsuarioControllerTest
+public sealed class ImagemPerfilUsuarioControllerTest
 {
-    protected Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
-    protected Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>> _mockImagemPerfilBusiness;
-    protected UsuarioController _usuarioController;
-    protected List<UsuarioDto> _usuarioDtos;
-
-    private void SetupBearerToken(int idUsuario)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
-        };
-        var identity = new ClaimsIdentity(claims, "UsuarioId");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers["Authorization"] =
-            "Bearer " + Usings.GenerateJwtToken(idUsuario);
-
-        _usuarioController.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
+    private Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
+    private Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>> _mockImagemPerfilBusiness;
+    private UsuarioController _usuarioController;
 
     public ImagemPerfilUsuarioControllerTest()
     {
@@ -53,7 +32,8 @@ public class ImagemPerfilUsuarioControllerTest
         );
         var usuarioDto = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
         int idUsuario = usuarioDto.Id;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
+        
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
@@ -64,7 +44,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
 
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
         var _imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -81,7 +61,7 @@ public class ImagemPerfilUsuarioControllerTest
         var _imagemPerfilUsuarioDtos = new ImagemPerfilUsuarioParser().ParseList(_imagemPerfilUsuarios);
         var usuarioDto = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
         int idUsuario = 987654;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
@@ -106,7 +86,7 @@ public class ImagemPerfilUsuarioControllerTest
         var imagemPerfilUsuarioDto = _imagemPerfilUsuarioDtos.First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
 
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(
@@ -125,7 +105,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
         var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -151,7 +131,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<OkObjectResult>(result);
         value = result.Value;
 
-        message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
         imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -176,9 +156,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
         value = result.Value;
-
-        message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-
+        message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.True(message);
         imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
@@ -192,8 +170,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
-
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(
@@ -223,10 +200,8 @@ public class ImagemPerfilUsuarioControllerTest
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
-
-        SetupBearerToken(idUsuario);
-
-        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
+        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns<ImagemPerfilDto>(null);
 
         var formFile = new FormFile(
             new MemoryStream(Encoding.UTF8.GetBytes("Test file content")),
@@ -245,9 +220,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var value = result.Value;
         value = result.Value;
-
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.False(message);
         var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
         Assert.Null(imagemPerfilUsuario);
@@ -258,9 +231,8 @@ public class ImagemPerfilUsuarioControllerTest
     public async void Post_Throws_Erro_And_Returns_BadRequest()
     {
         // Arrange
-        int idUsuario = 1;
-        SetupBearerToken(1);
-        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        Usings.SetupBearerToken(1, _usuarioController);
+        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns<ImagemPerfilDto>(null);
 
         var formFile = new FormFile(
             new MemoryStream(Encoding.UTF8.GetBytes("Test file content")),
@@ -290,7 +262,7 @@ public class ImagemPerfilUsuarioControllerTest
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
 
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(
@@ -309,7 +281,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
         var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -335,7 +307,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<OkObjectResult>(result);
         value = result.Value;
 
-        message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
         imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -361,7 +333,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<OkObjectResult>(result);
         value = result.Value;
 
-        message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
         imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -373,10 +345,9 @@ public class ImagemPerfilUsuarioControllerTest
     [Fact]
     public async void Put_Throws_Erro_And_Returns_BadRequest()
     {
-        // Arrange
-        int idUsuario = 1;
-        SetupBearerToken(1);
-        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        // Arrange        
+        Usings.SetupBearerToken(1, _usuarioController);
+        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns<ImagemPerfilDto>(null);
 
         var formFile = new FormFile(
             new MemoryStream(Encoding.UTF8.GetBytes("Test file content")),
@@ -406,7 +377,7 @@ public class ImagemPerfilUsuarioControllerTest
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
 
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
         var formFile = new FormFile(
@@ -436,8 +407,8 @@ public class ImagemPerfilUsuarioControllerTest
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
-        SetupBearerToken(idUsuario);
-        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
+        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns<ImagemPerfilDto>(null);
 
         var formFile = new FormFile(
             new MemoryStream(Encoding.UTF8.GetBytes("Test file content")),
@@ -456,7 +427,7 @@ public class ImagemPerfilUsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var value = result.Value;
         value = result.Value;
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.False(message);
         var imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
@@ -469,7 +440,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<int>())).Returns(true);
 
         // Act
@@ -490,7 +461,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<int>())).Returns(false);
 
         // Act
@@ -513,7 +484,7 @@ public class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<int>())).Throws<Exception>();
 
         // Act

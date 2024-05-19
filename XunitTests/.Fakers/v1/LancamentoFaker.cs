@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Fakers.v1;
-public class LancamentoFaker
+public sealed class LancamentoFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -64,7 +64,7 @@ public class LancamentoFaker
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker();
-
+            usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario);
 
             var despesa = DespesaFaker.Instance.GetNewFaker(usuario, categoria);
@@ -84,6 +84,7 @@ public class LancamentoFaker
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker();
 
+            usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario, null, usuario.Id);
 
             var despesa = DespesaFaker.Instance.GetNewFaker(usuario, categoria);

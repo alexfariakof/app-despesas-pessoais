@@ -10,12 +10,11 @@ using Business.Dtos.Core.Profile;
 
 namespace Api.Controllers.v2;
 
-public class ImagemPerfilUsuarioControllerTest
+public sealed class ImagemPerfilUsuarioControllerTest
 {
-    protected Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
-    protected Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>> _mockImagemPerfilBusiness;
-    protected UsuarioController _usuarioController;
-    protected List<UsuarioDto>? _usuarioDtos;
+    private Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
+    private Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>> _mockImagemPerfilBusiness;
+    private UsuarioController _usuarioController;
     private Mapper _mapperImagemPerfil;
     private Mapper _mapperUsuario;
 
@@ -330,7 +329,7 @@ public class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message  = (bool)result.Value;
+        var message  = (bool?)result.Value;
         Assert.IsType<bool>(message);
         Assert.True((bool)message);
         _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);

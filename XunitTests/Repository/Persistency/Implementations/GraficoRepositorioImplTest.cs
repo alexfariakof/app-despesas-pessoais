@@ -3,7 +3,7 @@ using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
 
-public class GraficoRepositorioImplTest : IClassFixture<GraficoRepositorioFixture>
+public sealed class GraficoRepositorioImplTest : IClassFixture<GraficoRepositorioFixture>
 {
     private readonly GraficoRepositorioFixture _fixture;
 
@@ -39,7 +39,7 @@ public class GraficoRepositorioImplTest : IClassFixture<GraficoRepositorioFixtur
         var despesaDbSetMock = new Mock<DbSet<Despesa>>();
         despesaDbSetMock.As<IQueryable<Despesa>>().Setup(d => d.Provider).Throws<Exception>();
 
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "MemoryDatabase GetDadosGraficoByAno Throws Erro").Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "GetDadosGraficoByAno_Throws_Exception_And_Returns_Grafico_With_Default_Values").Options;
         var context = new RegisterContext(options);
         context.Despesa = despesaDbSetMock.Object;
         context.SaveChanges();

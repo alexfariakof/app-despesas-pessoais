@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
 using despesas_backend_api_net_core.Controllers.v2;
 using Business.Dtos.v2;
@@ -8,23 +6,10 @@ using Fakers.v2;
 using Business.Dtos.Core;
 
 namespace Api.Controllers.v2;
-public class ControleAcessoControllerTest
+public sealed class ControleAcessoControllerTest
 {
-    protected readonly Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>> _mockControleAcessoBusiness;
-    protected readonly ControleAcessoController _controleAcessoController;
-    private void SetupBearerToken(int userId)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
-        };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(userId);
-        _controleAcessoController.ControllerContext = new ControllerContext { HttpContext = httpContext };
-    }
+    private readonly Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>> _mockControleAcessoBusiness;
+    private readonly ControleAcessoController _controleAcessoController;
 
     public ControleAcessoControllerTest()
     {
@@ -46,8 +31,7 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message = (bool)result.Value;
-        //var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        var message = (bool?)result.Value;
         Assert.True(message);
     }
 
@@ -55,7 +39,6 @@ public class ControleAcessoControllerTest
     public void Post_With_ValidData_Returns_BadRequest()
     {
         // Arrange
-        ControleAcesso? controleAcesso = null;
         var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws<Exception>();
 
@@ -66,7 +49,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        ////var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Não foi possível realizar o cadastro.", message);
     }
 
@@ -174,7 +156,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Senha e Confirma Senha são diferentes!", message);
     }
 
@@ -221,9 +202,6 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        //Assert.Equal("Email inválido!", message);
     }
 
     [Fact]
@@ -239,7 +217,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Não foi possível realizar o login do usuário.", message);
     }
 
@@ -248,7 +225,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
         _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345"));
 
         // Act
@@ -257,8 +234,7 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message = (bool)result.Value;
-        //var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        var message = (bool?)result.Value;
         Assert.True(message);
     }
 
@@ -267,7 +243,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        SetupBearerToken(2);
+        Usings.SetupBearerToken(2, _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordVM) as ObjectResult;
@@ -276,7 +252,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("A senha deste usuário não pode ser atualizada!", message);
     }
 
@@ -285,10 +260,10 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = null, ConfirmaSenha = "!12345" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
 
         // Act
-        var result = _controleAcessoController.ChangePassword((ChangePasswordDto)null) as ObjectResult;
+        var result = _controleAcessoController.ChangePassword(null) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -302,10 +277,10 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = null };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
 
         // Act
-        var result = _controleAcessoController.ChangePassword((ChangePasswordDto)null) as ObjectResult;
+        var result = _controleAcessoController.ChangePassword(null) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -319,7 +294,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
         _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345")).Throws(new Exception());
 
         // Act
@@ -329,7 +304,6 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
-        //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Erro ao trocar senha tente novamente mais tarde ou entre em contato com nosso suporte.", message);
     }
 
@@ -340,7 +314,7 @@ public class ControleAcessoControllerTest
         var email = "teste@teste.com";
         _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Callback(() => { });
         _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>()));
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;
@@ -348,8 +322,7 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message = (bool)result.Value;
-        //var message = (bool)(value?.GetType()?.GetProperty("message")?.GetValue(value, null) ?? false);
+        var message = (bool?)result.Value;
         Assert.True(message);
     }
 
@@ -380,7 +353,6 @@ public class ControleAcessoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<NoContentResult>(result);
-
     }
 
     [Fact]

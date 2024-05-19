@@ -2,7 +2,7 @@
 using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos.Parser;
-public class ControleAcessoParserTest
+public sealed class ControleAcessoParserTest
 {
     [Fact]
     public void Should_Parse_ControleAcessoDto_To_ControleAcesso()

@@ -1,5 +1,5 @@
 ﻿namespace Fakers.v1;
-public class GraficoFaker
+public sealed class GraficoFaker
 {
     public static Grafico GetNewFaker()
     {

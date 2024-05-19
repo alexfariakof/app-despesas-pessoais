@@ -2,7 +2,7 @@
 using Fakers.v1;
 
 namespace Business.Dtos.Parser;
-public class DespesaParserTest
+public sealed class DespesaParserTest
 {
     [Fact]
     public void Should_Parse_DespesaDto_To_Despesa()

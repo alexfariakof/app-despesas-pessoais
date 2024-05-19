@@ -13,7 +13,7 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>,IBusiness<Dto
     private readonly IRepositorio<Despesa> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
     private readonly IMapper _mapper;
-    public DespesaBusinessImpl(IMapper mapper, IUnitOfWork<Despesa> unitOfWork, IRepositorio<Despesa> repositorio, IRepositorio<Categoria> repoCategoria): base(mapper, unitOfWork)
+    public DespesaBusinessImpl(IMapper mapper, IUnitOfWork<Despesa> unitOfWork, IRepositorio<Despesa> repositorio, IRepositorio<Categoria> repoCategoria): base(mapper, repositorio, unitOfWork)
     {
         _repositorio = repositorio;
         _repoCategoria = repoCategoria;

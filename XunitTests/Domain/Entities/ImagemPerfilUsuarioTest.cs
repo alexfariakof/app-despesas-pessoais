@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class ImagemPerfilUsuarioTest
+public sealed class ImagemPerfilUsuarioTest
 {
     [Theory]
     [InlineData(1, "http://localhost/usuario1", "usuario 1", "image/jpg", 1)]

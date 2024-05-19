@@ -91,7 +91,7 @@ public class DespesaBusinessImplTest
         var despesa = DespesaFaker.Instance.Despesas().First();
         var id = despesa.Id;
 
-        _repositorioMock.Setup(repo => repo.Get(id)).Returns((Despesa?)null);
+        _repositorioMock.Setup(repo => repo.Get(id)).Returns<Despesa>(null);
 
         // Act
         var result = _despesaBusiness.FindById(id, 0);
@@ -111,7 +111,7 @@ public class DespesaBusinessImplTest
         var despesaDto = _mapper.Map<DespesaDto>(despesa);        
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Despesa>.IsAny));
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(despesa);
-        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(despesas.Select(d => d.Categoria).ToList());
+        _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(despesas.Select(d => d.Categoria ?? new()).ToList());
 
         // Act
         var result = _despesaBusiness.Update(despesaDto);

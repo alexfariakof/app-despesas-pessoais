@@ -25,7 +25,7 @@ public class GenericBusiness<Dto, Entity> : IBusiness<Dto, Entity> where Dto : c
         return _mapper.Map<List<Dto>>(_repositorio.GetAll());
     }
 
-    public Dto FindById(int id, int idUsuario)
+    public virtual Dto FindById(int id, int idUsuario)
     {
         return _mapper.Map<Dto>(_repositorio.Get(id));
     }

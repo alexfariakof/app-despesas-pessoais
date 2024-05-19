@@ -4,7 +4,8 @@ using Business.Dtos.v2;
 using Fakers.v2;
 using Domain.Entities.ValueObjects;
 using System.Linq.Expressions;
-using Moq;
+using MySqlX.XDevAPI.Common;
+using Domain.Entities;
 
 namespace Business;
 public class UsuarioBusinessImplTest
@@ -49,6 +50,8 @@ public class UsuarioBusinessImplTest
         var idUsuario = usuario.Id;
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_usuarios);
         _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Usuario, bool>>>())).Returns(usuarios.AsEnumerable());
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
+
         // Act
         var result = _usuarioBusiness.FindAll(idUsuario);
 
@@ -69,6 +72,7 @@ public class UsuarioBusinessImplTest
         var idUsuario = usuario.Id;
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_usuarios);
         _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Usuario, bool>>>())).Returns(usuarios.AsEnumerable());
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
 
         // Act & Assert 
         Assert.Throws<ArgumentException>(() => _usuarioBusiness.FindAll(idUsuario));
@@ -80,9 +84,10 @@ public class UsuarioBusinessImplTest
     public void FindById_Should_Returns_Parsed_UsuarioDto()
     {
         // Arrange
-        var usuario = _usuarios.First();
-        var idUsuario = usuario.Id;            
-
+        var usuarios = _usuarios.Take(3);
+        var usuario = usuarios.First();
+        var idUsuario = usuario.Id;
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Usuario, bool>>>())).Returns(_usuarios.AsEnumerable());
         _repositorioMock.Setup(repo => repo.Get(idUsuario)).Returns(usuario);
 
         // Act
@@ -92,7 +97,7 @@ public class UsuarioBusinessImplTest
         Assert.NotNull(result);
         Assert.IsType<UsuarioDto>(result);
         Assert.Equal(usuario.Id, result.Id);
-        _repositorioMock.Verify(repo => repo.Get(idUsuario), Times.Once);
+        _repositorioMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Usuario, bool>>>()), Times.Once);
     }
 
     [Fact]
@@ -116,18 +121,35 @@ public class UsuarioBusinessImplTest
     }
 
     [Fact]
-    public void Delete_Should_Returns_True()
+    public void Delete_Should_Returns_True_when_Usuario_is_Administrador()
     {
         // Arrange
-        var obj = _mapper.Map<UsuarioDto>(_usuarios.First());
+        var usuario= _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador);
+        var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(true);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);       
 
         // Act
-        var result = _usuarioBusiness.Delete(obj);
+        var result = _usuarioBusiness.Delete(usuarioDto);
 
         // Assert
         Assert.IsType<bool>(result);
         Assert.True(result);
         _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Usuario>()), Times.Once);
+    }
+
+
+    [Fact]
+    public void Delete_Should_Throws_Errro_When_Usuario_is_Not_Admintrador()
+    {
+        // Arrange
+        var usuario = _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario);
+        var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
+        _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(false);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
+
+        // Act & Assert 
+        Assert.Throws<ArgumentException>((() => _usuarioBusiness.Delete(usuarioDto)));
+        _repositorioMock.Verify(repo => repo.Delete(It.IsAny<Usuario>()), Times.Never);
     }
 }

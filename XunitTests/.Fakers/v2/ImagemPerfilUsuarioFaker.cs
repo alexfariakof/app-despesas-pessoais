@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v2;
 
 namespace Fakers.v2;
-public class ImagemPerfilUsuarioFaker
+public sealed class ImagemPerfilUsuarioFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -23,13 +23,12 @@ public class ImagemPerfilUsuarioFaker
         lock (LockObject)
         {
             var imagemFaker = new Faker<ImagemPerfilUsuario>()
-            .RuleFor(i => i.Id, f => counter++)
-            .RuleFor(i => i.Url, f => f.Internet.Url())
-            .RuleFor(i => i.Name, f => f.System.FileName())
-            .RuleFor(i => i.ContentType, f => f.System.CommonFileType())
-            .RuleFor(i => i.UsuarioId, usuario.Id)
-            .RuleFor(i => i.Usuario, usuario);
-
+                .RuleFor(i => i.Id, f => counter++)
+                .RuleFor(i => i.Url, f => f.Internet.Url())
+                .RuleFor(i => i.Name, f => f.System.FileName())
+                .RuleFor(i => i.ContentType, f => f.System.CommonFileType())
+                .RuleFor(i => i.UsuarioId, usuario.Id)
+                .RuleFor(i => i.Usuario, usuario);
             return imagemFaker.Generate();
         }
     }
@@ -39,12 +38,11 @@ public class ImagemPerfilUsuarioFaker
         lock (LockObject)
         {
             var imagemFaker = new Faker<ImagemPerfilDto>()
-            .RuleFor(i => i.Id, f => counterVM++)
-            .RuleFor(i => i.Url, f => f.Internet.Url())
-            .RuleFor(i => i.Name, f => f.System.FileName())
-            .RuleFor(i => i.UsuarioId, usuarioDto.Id)
-            .RuleFor(i => i.ContentType, f => counter % 2 == 0 ? "image/png" : "image/jpg");
-
+                .RuleFor(i => i.Id, f => counterVM++)
+                .RuleFor(i => i.Url, f => f.Internet.Url())
+                .RuleFor(i => i.Name, f => f.System.FileName())
+                .RuleFor(i => i.UsuarioId, usuarioDto.Id)
+                .RuleFor(i => i.ContentType, f => counter % 2 == 0 ? "image/png" : "image/jpg");
             return imagemFaker.Generate();
         }
     }
@@ -57,8 +55,8 @@ public class ImagemPerfilUsuarioFaker
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker();
 
+            usuario = usuario ?? new();
             var imagem = GetNewFaker(usuario);
-
             imagens.Add(imagem);
         }
         return imagens;
@@ -72,6 +70,7 @@ public class ImagemPerfilUsuarioFaker
             if (idUsuario == null)
                 usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
 
+            usuarioDto = usuarioDto ?? new();
             var imagemVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerVM(usuarioDto);
 
             imagensVM.Add(imagemVM);

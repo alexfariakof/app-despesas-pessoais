@@ -5,7 +5,7 @@ using Business.HyperMedia.Enricher;
 using Business.HyperMedia.Filters;
 
 namespace CommonDependenceInject;
-public class HyperMediaDependenceInjectTest
+public sealed class HyperMediaDependenceInjectTest
 {
     [Fact]
     public void AddHyperMediaHATEOAS_Should_Register_Enricher_Services()

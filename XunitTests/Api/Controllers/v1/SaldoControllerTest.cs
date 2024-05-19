@@ -1,37 +1,13 @@
 ﻿using Business.Abstractions;
 using despesas_backend_api_net_core.Controllers.v1;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Fakers.v1;
-using Business.Dtos.v2;
 
 namespace Api.Controllers.v1;
 
-public class SaldoControllerTest
+public sealed class SaldoControllerTest
 {
-    protected Mock<ISaldoBusiness> _mockSaldoBusiness;
-    protected SaldoController _SaldoController;
-
-    private void SetupBearerToken(int idUsuario)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
-        };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers["Authorization"] =
-            "Bearer " + Usings.GenerateJwtToken(idUsuario);
-
-        _SaldoController.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
-
+    private Mock<ISaldoBusiness> _mockSaldoBusiness;
+    private SaldoController _SaldoController;
     public SaldoControllerTest()
     {
         _mockSaldoBusiness = new Mock<ISaldoBusiness>();
@@ -43,7 +19,7 @@ public class SaldoControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _SaldoController);
         decimal saldo = 1000.99m;
         _mockSaldoBusiness.Setup(business => business.GetSaldo(idUsuario)).Returns(saldo);
 
@@ -54,11 +30,11 @@ public class SaldoControllerTest
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
         var value = okResult.Value;
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-        var returnedSaldo = (value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) as SaldoDto).saldo;
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var returnedSaldo = value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) as Business.Dtos.v2.SaldoDto;
         Assert.True(message);
-        Assert.IsType<decimal>(returnedSaldo);
-        Assert.Equal(saldo, returnedSaldo);
+        Assert.IsType<Business.Dtos.v2.SaldoDto>(returnedSaldo);
+        Assert.Equal(saldo, returnedSaldo.saldo);
     }
 
     [Fact]
@@ -66,8 +42,7 @@ public class SaldoControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(1);
-        decimal saldo = 1000m;
+        Usings.SetupBearerToken(1, _SaldoController);
         _mockSaldoBusiness.Setup(business => business.GetSaldo(idUsuario)).Throws(new Exception());
 
         // Act
@@ -87,7 +62,7 @@ public class SaldoControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _SaldoController);
         decimal saldo = 897.99m;
         _mockSaldoBusiness.Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario)).Returns(saldo);
 
@@ -98,11 +73,11 @@ public class SaldoControllerTest
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
         var value = okResult.Value;
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-        var returnedSaldo = (value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) as SaldoDto).saldo;
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var returnedSaldo = value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) as Business.Dtos.v2.SaldoDto;
         Assert.True(message);
-        Assert.IsType<decimal>(returnedSaldo);
-        Assert.Equal(saldo, returnedSaldo);
+        Assert.IsType<Business.Dtos.v2.SaldoDto>(returnedSaldo);
+        Assert.Equal(saldo, returnedSaldo.saldo);
     }
 
     [Fact]
@@ -110,8 +85,7 @@ public class SaldoControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(1);
-        decimal saldo = 1000m;
+        Usings.SetupBearerToken(1, _SaldoController);
         _mockSaldoBusiness.Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario)).Throws(new Exception());
 
         // Act
@@ -131,7 +105,7 @@ public class SaldoControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(idUsuario);
+        Usings.SetupBearerToken(idUsuario, _SaldoController);
         decimal saldo = 178740.99m;
         _mockSaldoBusiness.Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario)).Returns(saldo);
 
@@ -142,11 +116,11 @@ public class SaldoControllerTest
         Assert.NotNull(result);
         var okResult = Assert.IsType<OkObjectResult>(result);
         var value = okResult.Value;
-        var message = (bool)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
-        var returnedSaldo = (value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) as SaldoDto).saldo;
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
+        var returnedSaldo = value?.GetType()?.GetProperty("saldo")?.GetValue(value, null) as Business.Dtos.v2.SaldoDto;
         Assert.True(message);
-        Assert.IsType<decimal>(returnedSaldo);
-        Assert.Equal(saldo, returnedSaldo);
+        Assert.IsType<Business.Dtos.v2.SaldoDto>(returnedSaldo);
+        Assert.Equal(saldo, returnedSaldo.saldo);
     }
 
     [Fact]
@@ -154,8 +128,7 @@ public class SaldoControllerTest
     {
         // Arrange
         int idUsuario = 1;
-        SetupBearerToken(1);
-        decimal saldo = 165478.87m;
+        Usings.SetupBearerToken(1, _SaldoController);
         _mockSaldoBusiness.Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario)).Throws(new Exception());
 
         // Act

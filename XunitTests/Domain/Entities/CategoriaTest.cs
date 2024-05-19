@@ -2,7 +2,7 @@
 using Fakers.v1;
 
 namespace Domain.Entities;
-public class CategoriaTest
+public sealed class CategoriaTest
 {
     [Theory]
     [InlineData(1, "Test Description 1", 1, TipoCategoria.CategoriaType.Despesa)]

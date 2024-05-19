@@ -1,7 +1,7 @@
 ﻿using Domain.Entities.ValueObjects;
 
 namespace Domain.Entities;
-public class UsuarioTest
+public sealed class UsuarioTest
 {
     [Theory]
     [InlineData(1, "Teste Usuario Administrador ", "Teste", "219999-9999", "adm@adm.com", StatusUsuario.Ativo, PerfilUsuario.PerfilType.Administrador)]

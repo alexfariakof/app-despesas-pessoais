@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Business.Dtos;
-public class ImagemPerfilUsuarioDtoTest
+public sealed class ImagemPerfilUsuarioDtoTest
 {
     [Theory]
     [InlineData(1, "http://localhost:user1", "User 1 ", "jpg", "image/jpg", 1)]

@@ -8,7 +8,7 @@ using Business.Abstractions;
 
 namespace Api.Controllers.v2;
 
-public class DespesaControllerTest
+public sealed class DespesaControllerTest
 {
     private Mock<IBusinessBase<DespesaDto, Despesa>> _mockDespesaBusiness;
     private DespesaController _despesaController;
@@ -57,7 +57,9 @@ public class DespesaControllerTest
         Assert.IsType<OkObjectResult>(result);
         Assert.NotNull(result.Value);
         Assert.IsType<List<DespesaDto>>(result.Value);
-        Assert.Empty(result.Value as List<DespesaDto>);
+        var lstDespesas = result.Value as List<DespesaDto>;
+        Assert.NotNull(lstDespesas);
+        Assert.Empty(lstDespesas);
         _mockDespesaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
 
@@ -69,7 +71,7 @@ public class DespesaControllerTest
         var despesaDto = DespesaFaker.Instance.DespesasVMs().First();
         int idUsuario = despesaDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _despesaController);
-        _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns((DespesaDto)null);
+        _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns<DespesaDto>(null);
 
         // Act
         var result = _despesaController.Get(despesaDto.Id) as ObjectResult;
@@ -199,7 +201,7 @@ public class DespesaControllerTest
         var despesaDto = _despesaDtos[3];
         int idUsuario = despesaDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _despesaController);
-        _mockDespesaBusiness.Setup(business => business.Update(despesaDto)).Returns((DespesaDto)null);
+        _mockDespesaBusiness.Setup(business => business.Update(despesaDto)).Returns<DespesaDto>(null);
 
         // Act
         var result = _despesaController.Put(despesaDto) as ObjectResult;
@@ -229,7 +231,7 @@ public class DespesaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message = (bool)result.Value;
+        var message = (bool?)result.Value;
         Assert.True(message);
         _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);

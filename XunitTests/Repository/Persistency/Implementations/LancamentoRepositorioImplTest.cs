@@ -1,7 +1,7 @@
 ﻿using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
-public class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepositorioFixture>
+public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepositorioFixture>
 {
     private readonly LancamentoRepositorioFixture _fixture;
 

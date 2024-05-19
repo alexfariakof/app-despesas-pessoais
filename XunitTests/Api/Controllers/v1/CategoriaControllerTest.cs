@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Fakers.v1;
 
 namespace Api.Controllers.v1;
-
-public class CategoriaControllerTest
+public sealed class CategoriaControllerTest
 {
     private Mock<IBusiness<CategoriaDto, Categoria>> _mockCategoriaBusiness;
     private CategoriaController _categoriaController;

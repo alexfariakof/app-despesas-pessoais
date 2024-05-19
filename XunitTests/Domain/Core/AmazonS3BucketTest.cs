@@ -3,15 +3,16 @@ using Business.Dtos.v1;
 using Domain.Core.Interfaces;
 
 namespace Domain.Core;
-public class AmazonS3BucketTest
+public sealed class AmazonS3BucketTest
 {
     private IAmazonS3Bucket _amazonS3Bucket;
 
-    private readonly string _bucketName = null;
+    private readonly string _bucketName;
 
     public AmazonS3BucketTest()
     {
         _amazonS3Bucket = AmazonS3Bucket.GetInstance;
+        _bucketName = "Amazon.Server";
     }
 
     [Fact]
@@ -86,7 +87,7 @@ public class AmazonS3BucketTest
         // Arrange
         var mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>(MockBehavior.Strict);
         var perfilFile = new ImagemPerfilUsuario { Name = "non-existing-file.jpg" };
-        mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(perfilFile)).Returns(async () => false);
+        mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(perfilFile)).ReturnsAsync(() => false);
 
         // Act
         var result = await mockAmazonS3Bucket.Object.DeleteObjectNonVersionedBucketAsync(perfilFile);

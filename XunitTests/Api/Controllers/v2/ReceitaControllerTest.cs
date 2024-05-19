@@ -8,7 +8,7 @@ using Business.Dtos.Core.Profile;
 
 namespace Api.Controllers.v2;
 
-public class ReceitaControllerTest
+public sealed class ReceitaControllerTest
 {
     private Mock<IBusinessBase<ReceitaDto, Receita>> _mockReceitaBusiness;
     private ReceitaController _receitaController;
@@ -39,7 +39,9 @@ public class ReceitaControllerTest
         Assert.IsType<OkObjectResult>(result);
         Assert.NotNull(result.Value);
         Assert.IsType<List<ReceitaDto>>(result.Value);
-        Assert.Empty(result.Value as List<ReceitaDto>);
+        var lstReceita = result.Value as List<ReceitaDto>;
+        Assert.NotNull(lstReceita);
+        Assert.Empty(lstReceita);
         _mockReceitaBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
 
@@ -221,7 +223,7 @@ public class ReceitaControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message = (bool)result.Value;
+        var message = (bool?)result.Value;
         Assert.True(message);
         _mockReceitaBusiness.Verify(business => business.FindById(receitaDto.Id, idUsuario),Times.Once);
         _mockReceitaBusiness.Verify(b => b.Delete(receitaDto), Times.Once);

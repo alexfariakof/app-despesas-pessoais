@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class DespesaTest
+public sealed class DespesaTest
 {
     [Theory]
     [InlineData(1, "Descrição 1", 10.0, 1, 1)]

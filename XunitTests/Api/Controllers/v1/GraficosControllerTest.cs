@@ -1,39 +1,15 @@
 ﻿using Business.Abstractions;
 using despesas_backend_api_net_core.Controllers.v1;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using Fakers.v1;
 
 namespace Api.Controllers.v1;
 
-public class GraficosControllerTest
+public sealed class GraficosControllerTest
 {
-    protected Mock<IGraficosBusiness> _mockGraficoBusiness;
-    protected GraficosController _GraficoController;
-
-    private void SetupBearerToken(int idUsuario)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
-        };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-
-        var httpContext = new DefaultHttpContext
-        {
-            User = claimsPrincipal
-        };
-        httpContext.Request.Headers["Authorization"] = "Bearer " + Usings.GenerateJwtToken(idUsuario);
-
-        _GraficoController.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
-
+    private Mock<IGraficosBusiness> _mockGraficoBusiness;
+    private  GraficosController _GraficoController;
+    
     public GraficosControllerTest()
     {            
         _mockGraficoBusiness = new Mock<IGraficosBusiness>();
@@ -47,8 +23,7 @@ public class GraficosControllerTest
         var dadosGrafico = GraficoFaker.GetNewFaker();
         int idUsuario = 1;
         DateTime anoMes = DateTime.Today;
-        SetupBearerToken(idUsuario);
-
+        Usings.SetupBearerToken(idUsuario, _GraficoController);
         _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(idUsuario, anoMes)).Returns(dadosGrafico);
 
         // Act
@@ -66,8 +41,7 @@ public class GraficosControllerTest
         // Arrange
         var dadosGrafico = GraficoFaker.GetNewFaker();
         int idUsuario = 1;
-        DateTime anoMes = DateTime.Today;
-        SetupBearerToken(0);
+        DateTime anoMes = DateTime.Today;        Usings.SetupBearerToken(0, _GraficoController);
 
         _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(idUsuario, anoMes)).Throws(new Exception());
 

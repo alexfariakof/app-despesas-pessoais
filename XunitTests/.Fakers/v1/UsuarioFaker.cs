@@ -2,7 +2,7 @@
 using Domain.Entities.ValueObjects;
 
 namespace Fakers.v1;
-public class UsuarioFaker
+public sealed class UsuarioFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -36,7 +36,7 @@ public class UsuarioFaker
                 .RuleFor(u => u.Telefone, f => f.Phone.PhoneNumber())
                 .RuleFor(u => u.Email, f => f.Internet.Email())
                 .RuleFor(u => u.StatusUsuario, f => f.PickRandom<StatusUsuario>())
-            .Generate();
+                .Generate();
             usuarioFaker.PerfilUsuario = counter % 2 == 0 ? new PerfilUsuario(PerfilUsuario.PerfilType.Administrador) : new PerfilUsuario(PerfilUsuario.PerfilType.Usuario);
             return usuarioFaker;
         }
@@ -55,7 +55,6 @@ public class UsuarioFaker
                 .RuleFor(u => u.SobreNome, f => f.Name.LastName())
                 .RuleFor(u => u.Telefone, f => f.Phone.PhoneNumber())
                 .RuleFor(u => u.Email, f => f.Internet.Email());
-
             return usuarioFaker.Generate();
         }
     }

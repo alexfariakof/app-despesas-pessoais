@@ -49,7 +49,7 @@ public class CategoriaBusinessImplTest
     }
 
     [Fact]
-    public async void FindAll_Should_Returns_List_Of_CategoriaDto()
+    public void FindAll_Should_Returns_List_Of_CategoriaDto()
     {
         // Arrange
         var categoria = _categorias.First();

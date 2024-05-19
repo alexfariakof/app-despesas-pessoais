@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class GraficoTest
+public sealed class GraficoTest
 {
     [Fact]
     public void Grafico_Should_Set_Properties_Correctly()

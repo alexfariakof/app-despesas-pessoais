@@ -1,5 +1,4 @@
 ﻿using Domain.Core;
-using Domain.Entities;
 using Domain.Entities.ValueObjects;
 using Fakers.v2;
 using Repository.Persistency.Abstractions;
@@ -7,7 +6,7 @@ using Repository.Persistency.Implementations.Fixtures;
 using System.Linq.Expressions;
 
 namespace Repository.Persistency.Implementations;
-public class ControleAcessoRepositorioImplTest : IClassFixture<ControleAcessoRepositorioFixture>
+public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAcessoRepositorioFixture>
 {
     private readonly ControleAcessoRepositorioFixture _fixture;
 

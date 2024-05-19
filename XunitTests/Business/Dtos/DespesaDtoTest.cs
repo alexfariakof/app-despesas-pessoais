@@ -2,7 +2,7 @@
 using Fakers.v1;
 
 namespace Business.Dtos;
-public class DespesaDtoTest
+public sealed class DespesaDtoTest
 {
     [Fact]
     public void DespesaDto_Should_Set_Properties_Correctly()
@@ -18,7 +18,7 @@ public class DespesaDtoTest
         Assert.Equal(despesa.Valor, despesaDto.Valor);
         Assert.Equal(despesa.DataVencimento, despesaDto.DataVencimento);
         Assert.Equal(despesa.UsuarioId, despesaDto.UsuarioId);
-        Assert.Equal(despesa.Categoria.Id, despesaDto.IdCategoria);
+        Assert.Equal(despesa?.Categoria?.Id, despesaDto.IdCategoria);
     }
     
 }

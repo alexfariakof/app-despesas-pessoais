@@ -23,10 +23,8 @@ public class ControleAcessoBusinessImplTest
     public ControleAcessoBusinessImplTest()
     {
         var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
-
         var signingConfigurations = new SigningConfigurations();
         configuration.GetSection("TokenConfigurations").Bind(signingConfigurations);
-
         var tokenConfigurations = new TokenConfiguration();
         configuration.GetSection("TokenConfigurations").Bind(tokenConfigurations);
         _tokenConfigurationMock = new Mock<ITokenConfiguration>();
@@ -79,7 +77,7 @@ public class ControleAcessoBusinessImplTest
     {
         // Arrange
         var loginDto = new LoginDto { Email = "teste@teste.com" };
-        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns((ControleAcesso)null);
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns<ControleAcesso>(null);
 
         // Act
         var result = _controleAcessoBusiness.ValidateCredentials(loginDto);
@@ -120,7 +118,7 @@ public class ControleAcessoBusinessImplTest
         };
 
         _repositorioMock.Setup(repo => repo.IsValidPassword(loginDto.Email, loginDto.Senha)).Returns(true);
-        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns((ControleAcesso)null);
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns<ControleAcesso>(null);
 
         // Act
         var result = _controleAcessoBusiness.ValidateCredentials(loginDto);
@@ -266,7 +264,6 @@ public class ControleAcessoBusinessImplTest
     public void ValidateCredentials_Should_Return_Authentication_Exception_When_RefreshToken_Is_Invalid()
     {
         // Arrange
-        int idUsuario = 1;
         var authenticationDto = new AuthenticationDto
         {
             RefreshToken = "invalid_refresh_token"

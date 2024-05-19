@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class ControleAcessoTest
+public sealed class ControleAcessoTest
 {
     [Theory]
     [InlineData(1, "Teste@teste.com", "Teste password 1 ", 1 )]

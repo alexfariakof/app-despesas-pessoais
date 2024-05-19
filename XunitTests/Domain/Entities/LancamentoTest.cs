@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities;
-public class LancamentoTest
+public sealed class LancamentoTest
 {
     [Theory]
     [InlineData(1, 100.6, "Descrição 1", 1, 1, 1, 1)]

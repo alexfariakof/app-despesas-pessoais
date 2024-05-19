@@ -1,5 +1,5 @@
 ﻿namespace Fakers.v2;
-public class GraficoFaker
+public sealed class GraficoFaker
 {
     public static Grafico GetNewFaker()
     {
@@ -34,6 +34,5 @@ public class GraficoFaker
             { "Novembro", f.Random.Decimal(1, 5000) },
             { "Dezembro", f.Random.Decimal(1, 5000) },
         });
-
     }
 }

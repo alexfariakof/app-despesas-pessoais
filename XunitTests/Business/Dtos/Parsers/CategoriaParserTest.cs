@@ -2,7 +2,7 @@
 using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos.Parser;
-public class CategoriaParserTest
+public sealed class CategoriaParserTest
 {
     [Fact]
     public void Should_Parse_CategoriaDto_To_Categoria()

@@ -3,7 +3,7 @@ using Fakers.v1;
 using Repository.Persistency.Abstractions;
 
 namespace Repository.Persistency.Implementations.Fixtures;
-public class GraficoRepositorioFixture : IDisposable
+public sealed class GraficoRepositorioFixture : IDisposable
 {
     public RegisterContext Context { get; private set; }
     public Mock<IGraficosRepositorio> MockRepository { get; private set; }
@@ -22,10 +22,10 @@ public class GraficoRepositorioFixture : IDisposable
         Context.TipoCategoria.Add(new TipoCategoria(TipoCategoria.CategoriaType.Receita));
         Context.SaveChanges();
 
-        var despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 60);
+        var despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 20);
         despesas.ForEach(d => d.Categoria.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == 1));
         Context.AddRange(despesas);
-        despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 60);
+        despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 20);
         despesas.ForEach(d => d.Categoria.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == 1));
         Context.AddRange(despesas);
         Context.SaveChanges();

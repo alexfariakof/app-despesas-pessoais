@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Repository.Mapping;
-public class UsuarioMapTest
+public sealed class UsuarioMapTest
 {
     [Fact]
     public void EntityConfiguration_IsValid()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "InMemoryDatabase").Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "UsuarioMapTest").Options;
 
         using (var context = new RegisterContext(options))
         {

@@ -13,7 +13,7 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
     private readonly IRepositorio<Receita> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
     private readonly IMapper _mapper;    
-    public ReceitaBusinessImpl(IMapper mapper, IUnitOfWork<Receita> unitOfWork, IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria): base (mapper, unitOfWork)
+    public ReceitaBusinessImpl(IMapper mapper, IUnitOfWork<Receita> unitOfWork, IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria): base (mapper, repositorio, unitOfWork)
     {
         _mapper = mapper;
         _repositorio = repositorio;

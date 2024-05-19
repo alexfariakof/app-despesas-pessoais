@@ -3,7 +3,7 @@ using Fakers.v2;
 using Repository.Persistency.Abstractions;
 
 namespace Repository.Persistency.Implementations.Fixtures;
-public class ControleAcessoRepositorioFixture : IDisposable
+public sealed class ControleAcessoRepositorioFixture : IDisposable
 {
     public RegisterContext Context { get; private set; }
     public Mock<ControleAcessoRepositorioImpl> Repository { get; set; }
@@ -17,7 +17,7 @@ public class ControleAcessoRepositorioFixture : IDisposable
         Context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
         Context.SaveChanges();
 
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(20);
+        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(5);
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
         Context.AddRange(lstControleAcesso);
         Context.SaveChanges();

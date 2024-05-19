@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Repository.Mapping;
-public class ReceitaParserTest
+public sealed class ReceitaParserTest
 {
     [Fact]
     public void EntityConfiguration_IsValid()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "ReceitaParserTest").Options;
 
         using (var context = new RegisterContext(options))
         {

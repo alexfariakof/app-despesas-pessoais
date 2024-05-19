@@ -1,50 +1,16 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.v1;
 using despesas_backend_api_net_core.Controllers.v1;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using Fakers.v1;
 using Business.Dtos.Core;
+using Fakers.v1;
 
 namespace Api.Controllers.v1;
 
-public class ControleAcessoControllerTest
+public sealed class ControleAcessoControllerTest
 {
-    protected readonly Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>> _mockControleAcessoBusiness;
-    protected readonly ControleAcessoController _controleAcessoController;
-
-    private ControleAcessoDto CreateValidControleAcessoDto()
-    {
-        return new ControleAcessoDto
-        {
-            Nome = "Teste ",
-            SobreNome = "Controle Acesso",
-            Email = "teste@teste.com",
-            Telefone = "(21) 9999-9999",
-            Senha = "!12345",
-            ConfirmaSenha = "!12345"
-        };
-    }
-
-    private void SetupBearerToken(int userId)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, userId.ToString())
-        };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
-        var claimsPrincipal = new ClaimsPrincipal(identity);
-
-        var httpContext = new DefaultHttpContext { User = claimsPrincipal };
-        httpContext.Request.Headers["Authorization"] =
-            "Bearer " + Usings.GenerateJwtToken(userId);
-
-        _controleAcessoController.ControllerContext = new ControllerContext
-        {
-            HttpContext = httpContext
-        };
-    }
+    private readonly Mock<IControleAcessoBusiness<ControleAcessoDto, LoginDto>> _mockControleAcessoBusiness;
+    private readonly ControleAcessoController _controleAcessoController;
 
     public ControleAcessoControllerTest()
     {
@@ -56,7 +22,7 @@ public class ControleAcessoControllerTest
     public void Post_With_ValidData_Returns_OkResult()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>()));
 
         // Act
@@ -66,9 +32,7 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
-
-        var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
-
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.True(message);
     }
 
@@ -76,7 +40,7 @@ public class ControleAcessoControllerTest
     public void Post_With_ValidData_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws<Exception>();
 
         // Act
@@ -94,7 +58,7 @@ public class ControleAcessoControllerTest
     public void Post_With_Null_Telefone_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.Telefone = String.Empty;
 
         // Act
@@ -112,7 +76,7 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_Email_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.Email = String.Empty;
 
         // Act
@@ -130,7 +94,7 @@ public class ControleAcessoControllerTest
     public void Post_With_InvalidEmail_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.Email = "email Inválido";
 
         // Act
@@ -148,7 +112,7 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_Password_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.Senha = String.Empty;
 
         // Act
@@ -166,7 +130,7 @@ public class ControleAcessoControllerTest
     public void Post_With_NUll_ConfirmedPassword_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.ConfirmaSenha = String.Empty;
 
         // Act
@@ -184,7 +148,7 @@ public class ControleAcessoControllerTest
     public void Post_With_Password_Mismatch_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = CreateValidControleAcessoDto();
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.ConfirmaSenha = "senha Errada";
 
         // Act
@@ -288,7 +252,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
         _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345"));
 
         // Act
@@ -298,7 +262,7 @@ public class ControleAcessoControllerTest
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
-        var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.True(message);
     }
 
@@ -307,7 +271,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        SetupBearerToken(2);
+        Usings.SetupBearerToken(2, _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -325,7 +289,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "", ConfirmaSenha = "!12345" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -343,7 +307,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -361,7 +325,7 @@ public class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
         _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, It.IsAny<string>())).Throws<Exception>();
 
         // Act
@@ -390,7 +354,7 @@ public class ControleAcessoControllerTest
         Assert.IsType<OkObjectResult>(result);
         var value = result.Value;
 
-        var message = (bool)value.GetType().GetProperty("message").GetValue(value, null);
+        var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
     }
@@ -451,7 +415,7 @@ public class ControleAcessoControllerTest
         // Arrange
         var email = "email@invalido.com";
         _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
-        SetupBearerToken(1);
+        Usings.SetupBearerToken(1, _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;

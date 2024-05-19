@@ -3,7 +3,7 @@ using Fakers.v1;
 using Repository.Persistency.Abstractions;
 
 namespace Repository.Persistency.Implementations.Fixtures;
-public class LancamentoRepositorioFixture : IDisposable
+public sealed class LancamentoRepositorioFixture : IDisposable
 {
     public RegisterContext Context;
     public Mock<ILancamentoRepositorio> MockRepository;
@@ -21,18 +21,18 @@ public class LancamentoRepositorioFixture : IDisposable
         Context.TipoCategoria.Add(new TipoCategoria(TipoCategoria.CategoriaType.Receita));
         Context.SaveChanges();
 
-        var despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 60);
+        var despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 10);
         despesas.ForEach(d => d.Categoria.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == 1));
         Context.AddRange(despesas);
-        despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 60);
+        despesas = DespesaFaker.Instance.Despesas(MockUsuario, MockUsuario.Id, 10);
         despesas.ForEach(d => d.Categoria.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == 1));
         Context.AddRange(despesas);
         Context.SaveChanges();
 
-        var receitas = ReceitaFaker.Instance.Receitas(MockUsuario, MockUsuario.Id, 60);
+        var receitas = ReceitaFaker.Instance.Receitas(MockUsuario, MockUsuario.Id, 10);
         receitas.ForEach(r => r.Categoria.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == 2));
         Context.AddRange(receitas);
-        receitas = ReceitaFaker.Instance.Receitas(MockUsuario, MockUsuario.Id, 60);
+        receitas = ReceitaFaker.Instance.Receitas(MockUsuario, MockUsuario.Id, 10);
         receitas.ForEach(r => r.Categoria.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == 2));
         Context.AddRange(receitas);
         Context.SaveChanges();

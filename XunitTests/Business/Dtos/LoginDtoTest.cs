@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Business.Dtos;
-public class LoginDtoTest
+public sealed class LoginDtoTest
 {
     [Theory]
     [InlineData("user1@user1.com", "userTeste1")]

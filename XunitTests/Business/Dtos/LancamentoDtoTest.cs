@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Business.Dtos;
-public class LancamentoDtoTest
+public sealed class LancamentoDtoTest
 {
     [Theory]
     [InlineData(1, 1, 2, 0, 200.00, "Teste Descripition Despesa ", "Despesa")]

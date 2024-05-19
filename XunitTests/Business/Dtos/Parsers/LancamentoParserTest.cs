@@ -3,7 +3,7 @@ using Domain.Entities.ValueObjects;
 using Fakers.v1;
 
 namespace Business.Dtos.Parser;
-public class LancamentoParserTest
+public sealed class LancamentoParserTest
 {
     [Fact]
     public void Should_Parse_LancamentoDto_To_Lancamento()
@@ -55,14 +55,15 @@ public class LancamentoParserTest
 
         // Act
         var lancamentoDto = lancamentoParser.Parse(lancamento);
-
-        // Assert
+        
+        
         // Assert
         Assert.Equal(lancamentoDto.Id, lancamento.Id);
         Assert.Equal(lancamentoDto.UsuarioId, lancamento.UsuarioId);
         Assert.Equal(lancamentoDto.IdDespesa, lancamento.DespesaId);
         Assert.Equal(lancamentoDto.IdReceita, lancamento.ReceitaId);
         Assert.Equal(lancamentoDto.Valor, lancamento.Valor);
+        lancamentoDto.Data = lancamentoDto.Data ?? String.Empty;
         Assert.Equal(DateTime.Parse(lancamentoDto.Data).ToShortDateString(), lancamento.Data.ToShortDateString());
         //Assert.Equal(lancamentoDto.Descricao, lancamento.Descricao);
     }

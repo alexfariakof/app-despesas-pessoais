@@ -1,13 +1,13 @@
 ﻿using Fakers.v1;
 
 namespace Repository.Persistency.Generic;
-public class GenericRepositorioTest
+public sealed class GenericRepositorioTest
 {
     private Mock<RegisterContext> _dbContextMock;
     public GenericRepositorioTest()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "GenericRepositorioTest").Options;
         _dbContextMock = new Mock<RegisterContext>(options);
         _dbContextMock.Setup(c => c.Set<List<Categoria>>());
     }
@@ -24,7 +24,7 @@ public class GenericRepositorioTest
 
         // Assert
         _dbContextMock.Verify(c => c.SaveChanges(), Times.Once);
-        Assert.NotNull(item.Id);
+        Assert.NotNull(item?.Id);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class GenericRepositorioTest
         // Arrange
         var dataSet = CategoriaFaker.Instance.Categorias();
         var existingItem = dataSet.First();
-        var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase_Update_Generic").Options);
+        var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Update_Should_Update_Item_And_SaveChanges").Options);
 
         var repository = new GenericRepositorio<Categoria>(dbContext);
 
@@ -99,7 +99,7 @@ public class GenericRepositorioTest
         // Arrange
         var lstUsuarios = UsuarioFaker.Instance.GetNewFakersUsuarios();
         var usuario = lstUsuarios.First();
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase_Delete_Generic").Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Delete_Should_Set_Inativo_And_Return_True_When_Usuario_IsDeleted").Options;
         var _dbContextMock = new RegisterContext(options);
         _dbContextMock.Usuario.AddRange(lstUsuarios.Take(2));
         _dbContextMock.SaveChanges();
@@ -118,12 +118,7 @@ public class GenericRepositorioTest
         // Arrange
         var dataSet = CategoriaFaker.Instance.Categorias();
         var existingItem = dataSet.First();
-
-        var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "TestDatabase")
-            .Options);
-
-
+        var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Update_Should_Try_Update_Item_And_Return_Null").Options);
         var repository = new GenericRepositorio<Categoria>(dbContext);
 
         // Act &  Assert 

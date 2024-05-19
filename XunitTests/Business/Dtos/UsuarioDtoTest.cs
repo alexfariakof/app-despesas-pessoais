@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Business.Dtos;
-public class UsuarioDtoTest
+public sealed class UsuarioDtoTest
 {
 
     [Theory]

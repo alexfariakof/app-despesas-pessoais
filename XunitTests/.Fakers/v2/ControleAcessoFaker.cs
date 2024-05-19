@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v2;
 
 namespace Fakers.v2;
-public class ControleAcessoFaker
+public sealed class ControleAcessoFaker
 {
     static int counter = 1;
     private static ControleAcessoFaker? _instance;
@@ -25,12 +25,11 @@ public class ControleAcessoFaker
             if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker(); 
 
             var controleAcessoFaker = new Faker<ControleAcesso>()
-            .RuleFor(ca => ca.Id, counter++)
-            .RuleFor(ca => ca.Login, usuario.Email)
-            .RuleFor(ca => ca.Senha, f => f.Internet.Password(8, false, "", "!12345"))
-            .RuleFor(ca => ca.UsuarioId, usuario.Id)
-            .RuleFor(ca => ca.Usuario, usuario);
-
+                .RuleFor(ca => ca.Id, counter++)
+                .RuleFor(ca => ca.Login, usuario.Email)
+                .RuleFor(ca => ca.Senha, f => f.Internet.Password(8, false, "", "!12345"))
+                .RuleFor(ca => ca.UsuarioId, usuario.Id)
+                .RuleFor(ca => ca.Usuario, usuario);
             return controleAcessoFaker.Generate();
         }
     }
@@ -42,12 +41,12 @@ public class ControleAcessoFaker
             if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker();
 
             var controleAcessoDtoFaker = new Faker<ControleAcessoDto>()
-            .RuleFor(ca => ca.Nome, usuario.Nome)
-            .RuleFor(ca => ca.SobreNome, usuario.SobreNome)
-            .RuleFor(ca => ca.Email, usuario.Email)
-            .RuleFor(ca => ca.Telefone, usuario.Telefone)
-            .RuleFor(ca => ca.Senha, f => f.Internet.Password(8, false, "", "!12345"))
-            .Generate();
+                .RuleFor(ca => ca.Nome, usuario.Nome)
+                .RuleFor(ca => ca.SobreNome, usuario.SobreNome)
+                .RuleFor(ca => ca.Email, usuario.Email)
+                .RuleFor(ca => ca.Telefone, usuario.Telefone)
+                .RuleFor(ca => ca.Senha, f => f.Internet.Password(8, false, "", "!12345"))
+                .Generate();
             controleAcessoDtoFaker.ConfirmaSenha = controleAcessoDtoFaker.Senha;
             return controleAcessoDtoFaker;
         }

@@ -6,11 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Fakers.v1;
 
 namespace Api.Controllers.v1;
-
-public class DespesaControllerTest
+public sealed class DespesaControllerTest
 {
-    protected Mock<IBusiness<DespesaDto, Despesa>> _mockDespesaBusiness;
-    protected DespesaController _despesaController;
+    private Mock<IBusiness<DespesaDto, Despesa>> _mockDespesaBusiness;
+    private DespesaController _despesaController;
 
     public DespesaControllerTest()
     {

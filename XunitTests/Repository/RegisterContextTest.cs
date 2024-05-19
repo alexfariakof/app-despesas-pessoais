@@ -1,12 +1,12 @@
 ﻿namespace Repository;
 
-public class RegisterContextTest
+public sealed class RegisterContextTest
 {
     [Fact]
     public void RegisterContext_Should_Have_DbSets()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RegisterContext_Should_Have_DbSets").Options;
 
         // Act
         using (var context = new RegisterContext(options))
@@ -26,7 +26,7 @@ public class RegisterContextTest
     public void RegisterContext_Should_Apply_Configurations()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RegisterContext_Should_Apply_Configurations").Options;
 
         // Act
         using (var context = new RegisterContext(options))

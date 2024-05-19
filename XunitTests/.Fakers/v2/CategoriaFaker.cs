@@ -3,7 +3,7 @@ using Business.Dtos.v2;
 using Domain.Entities.ValueObjects;
 
 namespace Fakers.v2;
-public class CategoriaFaker
+public sealed class CategoriaFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -58,8 +58,8 @@ public class CategoriaFaker
             if (idUsuario == null)
                 baseUsuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random(1).Next(1, 10));
 
+            baseUsuarioDto = baseUsuarioDto ?? new UsuarioDto();
             var categoriaDto = GetNewFakerVM(baseUsuarioDto, tipoCategoria);
-
             listCategoriaDto.Add(categoriaDto);
         }
         return listCategoriaDto;
@@ -70,7 +70,7 @@ public class CategoriaFaker
         var listCategoria = new List<Categoria>();
         for (int i = 0; i < 10; i++)
         {
-            Categoria categoria = null;
+            Categoria categoria;
 
             if (idUsuario == null)
             {
@@ -79,6 +79,7 @@ public class CategoriaFaker
             }
             else
             {
+                usuario = usuario ?? new();
                 categoria = GetNewFaker(usuario, tipoCategoria, idUsuario);
             }
 

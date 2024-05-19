@@ -9,7 +9,7 @@ public class Usuario : BaseModel
     public string Telefone { get; set; } = String.Empty;
     public string Email { get; set; } = String.Empty;
     public virtual StatusUsuario StatusUsuario { get; set; }
-    public virtual PerfilUsuario? PerfilUsuario { get; set; }
+    public virtual PerfilUsuario PerfilUsuario { get; set; }
     public virtual IList<Categoria> Categorias { get; set; }  = new List<Categoria>();
 
     public Usuario CreateUsuario(Usuario newUsuario)

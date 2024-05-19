@@ -61,7 +61,7 @@ public class Usings
             .Returns(
                 (int id) =>
                 {
-                    return _dataSet.SingleOrDefault(item => item.Id == id);
+                    return _dataSet.Single(item => item.Id == id);
                 }
             );
 

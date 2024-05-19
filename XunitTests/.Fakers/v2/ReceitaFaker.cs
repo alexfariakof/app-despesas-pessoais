@@ -3,7 +3,7 @@ using Business.Dtos.v2;
 using Domain.Entities.ValueObjects;
 
 namespace Fakers.v2;
-public class ReceitaFaker
+public sealed class ReceitaFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -25,14 +25,15 @@ public class ReceitaFaker
     public Receita GetNewFaker(Usuario usuario, Categoria categoria)
     {
         var receitaFaker = new Faker<Receita>()
-        .RuleFor(r => r.Id, f => counter++)
-        .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
-        .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
-        .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
-        .RuleFor(r => r.UsuarioId, usuario.Id)
-        .RuleFor(r => r.Usuario, usuario)
-        .RuleFor(r => r.Categoria, CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Receita, usuario.Id))
-        .Generate();
+            .RuleFor(r => r.Id, f => counter++)
+            .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
+            .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
+            .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
+            .RuleFor(r => r.UsuarioId, usuario.Id)
+            .RuleFor(r => r.Usuario, usuario)
+            .RuleFor(r => r.Categoria, CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Receita, usuario.Id))
+            .Generate();
+        receitaFaker.Categoria = receitaFaker.Categoria ?? new();
         receitaFaker.CategoriaId = receitaFaker.Categoria.Id;
         return receitaFaker;
 
@@ -42,16 +43,14 @@ public class ReceitaFaker
     {
 
         var receitaFaker = new Faker<ReceitaDto>()
-        .RuleFor(r => r.Id, f => counterVM++)
-        .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
-        .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
-        .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
-        .RuleFor(r => r.UsuarioId, idUsuario)
-        .RuleFor(r => r.IdCategoria, CategoriaFaker.Instance.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM(idUsuario), TipoCategoriaDto.Receita, idUsuario).Id
-    );
-
+            .RuleFor(r => r.Id, f => counterVM++)
+            .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
+            .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
+            .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
+            .RuleFor(r => r.UsuarioId, idUsuario)
+            .RuleFor(r => r.IdCategoria, CategoriaFaker.Instance.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM(idUsuario), TipoCategoriaDto.Receita, idUsuario).Id
+            );
         return receitaFaker.Generate();
-
     }
 
     public List<ReceitaDto> ReceitasVMs(UsuarioDtoBase? usuarioDto = null, int? idUsuario = null)
@@ -62,6 +61,7 @@ public class ReceitaFaker
             if (idUsuario == null)
                 usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
+            usuarioDto = usuarioDto ?? new UsuarioDto();
             var categoriaDto = CategoriaFaker.Instance.GetNewFakerVM(usuarioDto);
 
             var receitaDto = GetNewFakerVM(usuarioDto.Id, categoriaDto.Id);
@@ -77,7 +77,8 @@ public class ReceitaFaker
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));
-
+            
+            usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Receita, usuario.Id);
 
             var receita = GetNewFaker(usuario, categoria);

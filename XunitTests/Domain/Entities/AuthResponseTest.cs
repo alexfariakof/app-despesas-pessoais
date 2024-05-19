@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.Core;
 
 namespace Domain.Entities;
-public class AuthResponseTest
+public sealed class AuthResponseTest
 {
     [Theory]
     [InlineData(true, "20231006", "31536000", "0123456789ABCDEF", "Acesso realizado com sucesso")]

@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Repository.Mapping;
-public class ControleAcessoMapTest
+public sealed class ControleAcessoMapTest
 {
     [Fact]
     public void EntityConfiguration_IsValid()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>()
-            .UseInMemoryDatabase(databaseName: "InMemoryDatabase")
-            .Options;
+        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "ControleAcessoMapTest").Options;
 
         using (var context = new RegisterContext(options))
         {
@@ -26,8 +24,8 @@ public class ControleAcessoMapTest
 
             var loginProperty = entityType?.FindProperty("Login");
             var usuarioIdProperty = entityType?.FindProperty("UsuarioId");
-
-            var loginIndex = entityType?.FindIndex(new[] { loginProperty });
+            var index = new[] { loginProperty  };
+            var loginIndex = entityType?.FindIndex(index);
 
             // Assert
             Assert.NotNull(idProperty);

@@ -4,6 +4,7 @@ public interface IBusinessBase<Dto, Entity> where Dto : class where Entity : cla
     Dto Create(Dto usuarioDto);
 
     Dto FindById(int id, int idUsuario);
+    Dto FindById(int id);
 
     List<Dto> FindAll(int idUsuario);
 

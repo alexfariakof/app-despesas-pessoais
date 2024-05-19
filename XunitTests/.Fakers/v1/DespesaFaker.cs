@@ -3,7 +3,7 @@ using Business.Dtos.v1;
 using Domain.Entities.ValueObjects;
 
 namespace Fakers.v1;
-public class DespesaFaker
+public sealed class DespesaFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -36,7 +36,8 @@ public class DespesaFaker
         .RuleFor(r => r.Usuario, usuario)
         .RuleFor(r => r.Categoria, CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Despesa, usuario.Id))
         .Generate();
-        despesaFaker.CategoriaId = despesaFaker.Categoria.Id;
+        despesaFaker.Categoria  = despesaFaker.Categoria ?? new();
+        despesaFaker.CategoriaId = despesaFaker.Categoria.Id ;
         return despesaFaker;
 
     }
@@ -67,8 +68,8 @@ public class DespesaFaker
             if (idUsuario == null)
                 usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
 
+            usuarioDto = usuarioDto ?? new UsuarioDto();
             var categoriaDto = CategoriaFaker.Instance.GetNewFakerVM(usuarioDto, TipoCategoriaDto.Despesa);
-
             var despesaDto = GetNewFakerVM(usuarioDto.Id, categoriaDto.Id);
             listDespesaDto.Add(despesaDto);
         }
@@ -84,6 +85,7 @@ public class DespesaFaker
             if (idUsurio == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));
 
+            usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Despesa, usuario.Id);
 
             var despesa = GetNewFaker(usuario, categoria);

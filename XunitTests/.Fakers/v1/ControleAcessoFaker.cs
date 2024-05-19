@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Fakers.v1;
-public class ControleAcessoFaker
+public sealed class ControleAcessoFaker
 {
     static int counter = 1;
     private static ControleAcessoFaker? _instance;

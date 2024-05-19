@@ -1,13 +1,12 @@
 ﻿using despesas_backend_api_net_core.CommonDependenceInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
-using System.Globalization;
 
 namespace CommonDependenceInject;
-public class SupportCulturesDependenceInjectTest
+public sealed class SupportCulturesDependenceInjectTest
 {
     [Fact]
-    public async Task AddSupporteCulturesPtBr_Should_Set_Correct_Cultures()
+    public void AddSupporteCulturesPtBr_Should_Set_Correct_Cultures()
     {
         // Arrange
         var builder = WebApplication.CreateBuilder();
@@ -19,10 +18,11 @@ public class SupportCulturesDependenceInjectTest
 
         // Assert
         var localizationOptions = app.Services.GetService(typeof(IOptions<RequestLocalizationOptions>)) as IOptions<RequestLocalizationOptions>;
-        var defaultCulture = localizationOptions.Value.DefaultRequestCulture.Culture;
-        var supportedCultures = localizationOptions.Value.SupportedCultures;
+        var defaultCulture = localizationOptions?.Value.DefaultRequestCulture.Culture;
+        var supportedCultures = localizationOptions?.Value.SupportedCultures;
 
         Assert.NotNull(defaultCulture);
+        Assert.NotNull(supportedCultures);
         Assert.NotEmpty(supportedCultures);
         //Assert.True(defaultCulture.Name == "pt-BR" || defaultCulture.Name == "en-US");
         //Assert.True(supportedCultures.Contains(new CultureInfo("pt-BR")) || supportedCultures.Contains(new CultureInfo("en-US")));

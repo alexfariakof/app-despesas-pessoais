@@ -8,7 +8,7 @@ using Business.Authentication;
 using despesas_backend_api_net_core.CommonDependenceInject;
 
 namespace CommonDependenceInject;
-public class AuthorizationInjectDependenceTest
+public sealed class AuthorizationInjectDependenceTest
 {
     [Fact]
     public void AddAuthConfigurations_ShouldAddAuthenticationAndAuthorizationConfigurations()

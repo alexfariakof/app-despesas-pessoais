@@ -6,7 +6,7 @@ using Repository.CommonDependenceInject;
 
 namespace CommonDependenceInject;
 
-public class DataSeedersDependenceInjectTest
+public sealed class DataSeedersDependenceInjectTest
 {
     [Fact]
     public void AddDataSeeders_Should_Register_DataSeeder_Service()
@@ -25,7 +25,7 @@ public class DataSeedersDependenceInjectTest
     }
 
     [Fact]
-    public async Task RunDataSeeders_Should_Invoke_SeedData_Method()
+    public void RunDataSeeders_Should_Invoke_SeedData_Method()
     {
         // Arrange
         var builder = WebApplication.CreateBuilder();

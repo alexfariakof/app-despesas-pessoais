@@ -13,7 +13,7 @@ public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness
     private readonly IMediator _mediator;
     private readonly IUnitOfWork<Categoria> _unitOfWork;
     private readonly IRepositorio<Categoria> _repositorio;
-    public CategoriaBusinessImpl(IMediator mediator, IMapper mapper, IUnitOfWork<Categoria> unitOfWork, IRepositorio<Categoria> repositorio) : base (mapper, unitOfWork)
+    public CategoriaBusinessImpl(IMediator mediator, IMapper mapper, IUnitOfWork<Categoria> unitOfWork, IRepositorio<Categoria> repositorio) : base (mapper, repositorio, unitOfWork)
     {
         _mediator = mediator;
         _unitOfWork = unitOfWork;

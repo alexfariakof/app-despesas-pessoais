@@ -2,7 +2,7 @@
 using Fakers.v1;
 
 namespace Repository.Persistency.Implementations;
-public class UsuarioRepositorioImplTest
+public sealed class UsuarioRepositorioImplTest
 {
     private RegisterContext _context;
     private UsuarioRepositorioImpl _repository;

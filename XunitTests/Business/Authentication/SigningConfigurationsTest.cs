@@ -1,7 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Authentication;
-public class SigningConfigurationsTest
+public sealed class SigningConfigurationsTest
 {
     [Fact]
     public void SigningConfigurations_Should_Initialize_Correctly()

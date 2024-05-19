@@ -68,7 +68,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="XunitTests/**,  **/Migrations.MsMySqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/DataSeeders/**, **/CrossCutting/**" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/DataSeeders/**, **/CrossCutting/**" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"
           dotnet tool install -g dotnet-reportgenerator-globaltool
           # Executa Build Restore com Teste e coleta o GUID gerado          
           dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"

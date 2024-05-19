@@ -2,7 +2,7 @@
 using Fakers.v1;
 
 namespace Business.Dtos.Parser;
-public class ReceitaParserTest
+public sealed class ReceitaParserTest
 {
     [Fact]
     public void Should_Parse_ReceitaDto_To_Receita()

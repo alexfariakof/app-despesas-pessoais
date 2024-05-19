@@ -2,7 +2,7 @@
 using Fakers.v1;
 
 namespace Business.Dtos.Parser;
-public class ImagemPerfilUsuarioParserTest
+public sealed class ImagemPerfilUsuarioParserTest
 {
     [Fact]
     public void Should_Parse_ImagemPerfilUsuarioDto_To_ImagemPerfilUsuario()

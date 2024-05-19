@@ -1,7 +1,7 @@
 ﻿using Business.Dtos.v1;
 
 namespace Fakers.v1;
-public class ImagemPerfilUsuarioFaker
+public sealed class ImagemPerfilUsuarioFaker
 {
     static int counter = 1;
     static int counterVM = 1;
@@ -57,8 +57,8 @@ public class ImagemPerfilUsuarioFaker
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker();
 
+            usuario = usuario ?? new();
             var imagem = GetNewFaker(usuario);
-
             imagens.Add(imagem);
         }
         return imagens;
@@ -71,7 +71,8 @@ public class ImagemPerfilUsuarioFaker
         {
             if (idUsuario == null)
                 usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
-
+            
+            usuarioDto = usuarioDto ?? new();
             var imagemVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerVM(usuarioDto);
 
             imagensVM.Add(imagemVM);

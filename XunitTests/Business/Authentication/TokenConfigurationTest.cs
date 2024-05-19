@@ -1,5 +1,5 @@
 ﻿namespace Business.Authentication;
-public class TokenConfigurationTest
+public sealed class TokenConfigurationTest
 {
     [Fact]
     public void Properties_Should_Be_Set_Correctly()
