@@ -1,11 +1,7 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.Parser;
-<<<<<<<< HEAD:despesas-backend-api-net-core.XUnit/Api/Controllers/v2/UsuarioControllerTest.cs
-using despesas_backend_api_net_core.Controllers.v2;
-========
 using Business.Dtos.v1;
 using despesas_backend_api_net_core.Controllers.v1;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Api/Controllers/v1/UsuarioControllerTest.cs
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,10 +10,6 @@ using Domain.Entities.ValueObjects;
 
 namespace Api.Controllers.v1;
 
-<<<<<<<< HEAD:despesas-backend-api-net-core.XUnit/Api/Controllers/v2/UsuarioControllerTest.cs
-namespace Api.Controllers.v2;
-========
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Api/Controllers/v1/UsuarioControllerTest.cs
 public class UsuarioControllerTest
 {
     protected Mock<IUsuarioBusiness<UsuarioDto>> _mockUsuarioBusiness;
@@ -640,13 +632,8 @@ public class UsuarioControllerTest
     public void PutAdministrador_Should_Returns_BadRequest_When_Usuario_Is_Not_Administrador()
     {
         // Arrange
-<<<<<<<< HEAD:despesas-backend-api-net-core.XUnit/Api/Controllers/v2/UsuarioControllerTest.cs
-        var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(15);
-        var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Usuario).First());
-========
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).First());
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Api/Controllers/v1/UsuarioControllerTest.cs
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
         int idUsuario = usuarioDto.Id;
         SetupBearerToken(idUsuario);

@@ -1,11 +1,7 @@
-<<<<<<<< HEAD:XunitTests/Business/Dtos/Parsers/CategoriaDtoTest.cs
-﻿namespace Business.Dtos;
-========
 ﻿using Business.Dtos.Core;
 using Business.Dtos.v1;
 
 namespace Business.Dtos;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Business/Dtos/CategoriaDtoTest.cs
 public class CategoriaDtoTest
 {
 

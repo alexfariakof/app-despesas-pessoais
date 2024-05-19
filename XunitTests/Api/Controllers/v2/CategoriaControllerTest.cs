@@ -1,13 +1,6 @@
-<<<<<<<< HEAD:despesas-backend-api-net-core.XUnit/Api/Controllers/v2/CategoriaControllerTest.cs
-﻿using Business.Abstractions;
-using despesas_backend_api_net_core.Controllers.v2;
-using Domain.Entities.Abstractions;
-using Microsoft.AspNetCore.Http;
-========
 ﻿using Business.Dtos.v2;
 using despesas_backend_api_net_core.Controllers.v2;
 using Domain.Entities.ValueObjects;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Api/Controllers/v2/CategoriaControllerTest.cs
 using Microsoft.AspNetCore.Mvc;
 using Fakers.v2;
 using Business.Dtos.Core;

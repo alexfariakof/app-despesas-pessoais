@@ -26,15 +26,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
-                                                                                                                                                 
-if (builder.Environment.IsProduction()) 
+
+if (builder.Environment.IsProduction())
 {
     builder.Services.CreateDataBaseInMemory();
 }
 else if (builder.Environment.EnvironmentName.Equals("Azure"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureMsSqlConnectionString")));
-}    
+}
 else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
@@ -43,7 +43,7 @@ else if (builder.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
     builder.Services.CreateDataBaseInMemory();
 }
-else 
+else
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
@@ -68,8 +68,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
-<<<<<<< HEAD
-=======
 
 if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
@@ -79,6 +77,5 @@ if (app.Environment.IsDevelopment())
     app.UseDefaultFiles();
     app.UseStaticFiles();
 }
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 app.RunDataSeeders();
 app.Run();

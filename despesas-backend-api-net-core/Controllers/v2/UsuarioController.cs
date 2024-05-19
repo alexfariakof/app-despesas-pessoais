@@ -1,10 +1,6 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-<<<<<<< HEAD
-using Business.Dtos;
-=======
 using Business.Dtos.v2;
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 using Business.HyperMedia.Filters;
 using Domain.Entities.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
@@ -59,11 +55,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-<<<<<<< HEAD
-            UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
-=======
-           var _usuario = _usuarioBusiness.FindById(IdUsuario);
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
+            var _usuario = _usuarioBusiness.FindById(IdUsuario);
             if (_usuario == null) throw new Exception();
             return Ok(_usuario);
         }
@@ -108,11 +100,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-<<<<<<< HEAD
-            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
-=======
             var updateUsuario = _usuarioBusiness.Update(usuarioDto);
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
@@ -141,11 +129,7 @@ public class UsuarioController : AuthController
             if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
-<<<<<<< HEAD
-            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
-=======
             var updateUsuario = _usuarioBusiness.Update(usuarioDto);
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 

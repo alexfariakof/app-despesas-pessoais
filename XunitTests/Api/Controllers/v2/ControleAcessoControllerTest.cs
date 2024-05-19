@@ -3,12 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Business.Abstractions;
 using despesas_backend_api_net_core.Controllers.v2;
-<<<<<<<< HEAD:despesas-backend-api-net-core.XUnit/Api/Controllers/v2/ControleAcessoControllerTest.cs
-========
 using Business.Dtos.v2;
 using Fakers.v2;
 using Business.Dtos.Core;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Api/Controllers/v2/ControleAcessoControllerTest.cs
 
 namespace Api.Controllers.v2;
 public class ControleAcessoControllerTest

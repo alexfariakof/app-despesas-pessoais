@@ -1,11 +1,6 @@
 ﻿using Asp.Versioning;
-<<<<<<< HEAD
-using Business.Dtos;
-using Business.Generic;
-=======
 using Business.Abstractions;
 using Business.Dtos.v2;
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 using Business.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -26,10 +21,7 @@ public class DespesaController : AuthController
     [HttpGet]
     [Authorize("Bearer")]
     [ProducesResponseType(200, Type = typeof(IList<DespesaDto>))]
-<<<<<<< HEAD
-=======
     [ProducesResponseType(400, Type = typeof(string))]
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
     [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()

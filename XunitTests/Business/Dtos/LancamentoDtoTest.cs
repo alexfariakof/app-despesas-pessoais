@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:XunitTests/Business/Dtos/Parsers/LancamentoDtoTest.cs
-﻿namespace Business.Dtos;
-========
 ﻿using Business.Dtos.v1;
 
 namespace Business.Dtos;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Business/Dtos/LancamentoDtoTest.cs
 public class LancamentoDtoTest
 {
     [Theory]

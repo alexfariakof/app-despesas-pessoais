@@ -23,7 +23,7 @@ public class SaldoController : AuthController
         try
         {
             var saldo = _saldoBusiness.GetSaldo(IdUsuario);
-            return Ok(new { message = true, saldo = saldo});
+            return Ok(new { message = true, saldo = saldo });
         }
         catch
         {

@@ -1,9 +1,5 @@
 ﻿using Business.Abstractions;
-<<<<<<<< HEAD:despesas-backend-api-net-core.XUnit/Api/Controllers/v2/ImagemPerfilUsuarioControllerTest.cs
-using Business.Dtos.Parser;
-========
 using Business.Dtos.v2;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Api/Controllers/v2/ImagemPerfilUsuarioControllerTest.cs
 using despesas_backend_api_net_core.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

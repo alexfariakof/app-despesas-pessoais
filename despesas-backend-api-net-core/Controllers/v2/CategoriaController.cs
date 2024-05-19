@@ -1,11 +1,7 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-<<<<<<< HEAD
-using Business.Dtos;
-=======
 using Business.Dtos.Core;
 using Business.Dtos.v2;
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 using Business.HyperMedia.Filters;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -73,11 +69,7 @@ public class CategoriaController : AuthController
         }
         else
         {
-<<<<<<< HEAD
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Result.Where(prop => prop.IdTipoCategoria.Equals((int)tipoCategoria)).ToList();
-=======
             var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdTipoCategoria.Equals((int)tipoCategoria)).ToList();
->>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             return Ok(_categoria);
         }
     }

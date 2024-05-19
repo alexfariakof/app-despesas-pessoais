@@ -1,10 +1,6 @@
-<<<<<<<< HEAD:XunitTests/Business/Dtos/Parsers/LoginDtoTest.cs
-﻿namespace Business.Dtos;
-========
 ﻿using Business.Dtos.v1;
 
 namespace Business.Dtos;
->>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER:XunitTests/Business/Dtos/LoginDtoTest.cs
 public class LoginDtoTest
 {
     [Theory]
