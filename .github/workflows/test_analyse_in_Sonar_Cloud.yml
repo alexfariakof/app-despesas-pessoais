@@ -70,8 +70,6 @@ jobs:
         run: |          
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/DataSeeders/**, **/CrossCutting/**" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          # Executa Build Restore com Teste e coleta o GUID gerado          
-          dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
             
           # Encontra o diretório mais recente na pasta TestResults
           $baseDirectory = Get-Location
@@ -81,7 +79,9 @@ jobs:
           $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
           $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
           
-          dotnet test ./XunitTests/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+          # Executa Build Restore com Teste e coleta o GUID gerado          
+          dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+
           reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
           
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
