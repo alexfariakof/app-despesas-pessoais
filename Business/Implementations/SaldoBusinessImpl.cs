@@ -1,6 +1,6 @@
 ﻿using Business.Abstractions;
-using Business.Dtos;
-using Repository.Persistency;
+using Business.Dtos.v2;
+using Repository.Persistency.Abstractions;
 
 namespace Business.Implementations;
 public class SaldoBusinessImpl : ISaldoBusiness
@@ -11,14 +11,17 @@ public class SaldoBusinessImpl : ISaldoBusiness
     {
         _repositorio = repositorio;
     }
+
     public SaldoDto GetSaldo(int idUsuario)
     {
         return _repositorio.GetSaldo(idUsuario);
     }
+
     public SaldoDto GetSaldoAnual(DateTime ano, int idUsuario)
     {
         return _repositorio.GetSaldoByAno(ano, idUsuario);
     }
+
     public SaldoDto GetSaldoByMesAno(DateTime mesAno, int idUsuario)
     {
         return _repositorio.GetSaldoByMesAno(mesAno, idUsuario);

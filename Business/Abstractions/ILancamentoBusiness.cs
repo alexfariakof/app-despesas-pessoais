@@ -1,7 +1,5 @@
-﻿using Business.Dtos;
-
-namespace Business.Abstractions;
-public interface ILancamentoBusiness
+﻿namespace Business.Abstractions;
+public interface ILancamentoBusiness<Dto> where Dto : class, new()
 {
-    List<LancamentoDto> FindByMesAno(DateTime data, int idUsuario); 
+    List<Dto> FindByMesAno(DateTime data, int idUsuario); 
 }

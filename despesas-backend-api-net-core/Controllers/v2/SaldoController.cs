@@ -1,6 +1,10 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
+<<<<<<< HEAD
 using Business.Dtos;
+=======
+using Business.Dtos.v2;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,16 @@
 ﻿using Asp.Versioning;
+<<<<<<< HEAD
 using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Generic;
+=======
+using Business.Dtos.v1;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Domain.Entities;
+using Business.Abstractions.Generic;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -11,8 +19,13 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class DespesaController : AuthController
 {
+<<<<<<< HEAD
     private IBusiness<DespesaDto> _despesaBusiness;
     public DespesaController(IBusiness<DespesaDto> despesaBusiness)
+=======
+    private IBusiness<DespesaDto, Despesa> _despesaBusiness;
+    public DespesaController(IBusiness<DespesaDto, Despesa> despesaBusiness)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
     {
         _despesaBusiness = despesaBusiness;
     }
@@ -49,7 +62,11 @@ public class DespesaController : AuthController
     {
         try
         {
+<<<<<<< HEAD
             despesa.IdUsuario = IdUsuario;
+=======
+            despesa.UsuarioId = IdUsuario;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             return new OkObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
         }
         catch
@@ -62,7 +79,11 @@ public class DespesaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
+<<<<<<< HEAD
         despesa.IdUsuario = IdUsuario;
+=======
+        despesa.UsuarioId = IdUsuario;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         var updateDespesa = _despesaBusiness.Update(despesa);
         if (updateDespesa == null)
             return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });
@@ -75,7 +96,11 @@ public class DespesaController : AuthController
     public IActionResult Delete(int idDespesa)
     {
         DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
+<<<<<<< HEAD
         if (despesa == null || IdUsuario != despesa.IdUsuario)
+=======
+        if (despesa == null || IdUsuario != despesa.UsuarioId)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

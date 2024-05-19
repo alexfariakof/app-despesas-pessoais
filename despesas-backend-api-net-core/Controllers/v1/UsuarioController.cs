@@ -1,10 +1,19 @@
 ﻿using Asp.Versioning;
+<<<<<<< HEAD
 using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
 using Domain.Entities;
 using System.Text.RegularExpressions;
+=======
+using Business.Dtos.v1;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Business.Abstractions;
+using System.Text.RegularExpressions;
+using Domain.Entities.ValueObjects;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -13,9 +22,15 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class UsuarioController : AuthController
 {
+<<<<<<< HEAD
     private IUsuarioBusiness _usuarioBusiness;
     private readonly IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
     public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
+=======
+    private IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
+    private readonly IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> _imagemPerfilBussiness;
+    public UsuarioController(IUsuarioBusiness<UsuarioDto> usuarioBusiness, IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> imagemPerfilBussiness)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
     {
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
@@ -26,7 +41,11 @@ public class UsuarioController : AuthController
     public IActionResult Get()
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
+<<<<<<< HEAD
         if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+=======
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -38,7 +57,11 @@ public class UsuarioController : AuthController
     [Authorize("Bearer")]
     public IActionResult GetUsuario()
     {
+<<<<<<< HEAD
         UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+=======
+        var _usuario = _usuarioBusiness.FindById(IdUsuario);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         if (_usuario == null)
             return BadRequest(new { message ="Usuário não encontrado!" });
 
@@ -50,7 +73,11 @@ public class UsuarioController : AuthController
     public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
+<<<<<<< HEAD
         if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+=======
+        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -80,7 +107,11 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
+<<<<<<< HEAD
         UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+=======
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         if (updateUsuario == null)
             return  BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -92,7 +123,11 @@ public class UsuarioController : AuthController
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
+<<<<<<< HEAD
         if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+=======
+        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -106,7 +141,11 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
+<<<<<<< HEAD
         UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+=======
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         if (updateUsuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -118,7 +157,11 @@ public class UsuarioController : AuthController
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
+<<<<<<< HEAD
         if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+=======
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -134,7 +177,11 @@ public class UsuarioController : AuthController
     public IActionResult GetImage()
     {
         var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
+<<<<<<< HEAD
             .Find(prop => prop.IdUsuario.Equals(IdUsuario));
+=======
+            .Find(prop => prop.UsuarioId.Equals(IdUsuario));
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 
         if (imagemPerfilUsuario != null)
             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -167,7 +214,11 @@ public class UsuarioController : AuthController
     {
         try
         {
+<<<<<<< HEAD
             var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+=======
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -215,7 +266,11 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
+<<<<<<< HEAD
                     IdUsuario = IdUsuario,
+=======
+                    UsuarioId = IdUsuario,
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

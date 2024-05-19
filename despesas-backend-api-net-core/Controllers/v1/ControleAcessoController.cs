@@ -1,8 +1,15 @@
 ﻿using Asp.Versioning;
+<<<<<<< HEAD
 using Business.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
+=======
+using Business.Abstractions;
+using Business.Dtos.v1;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
@@ -12,8 +19,13 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class ControleAcessoController : AuthController
 {
+<<<<<<< HEAD
     private IControleAcessoBusiness _controleAcessoBusiness;
     public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
+=======
+    private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
+    public ControleAcessoController(IControleAcessoBusiness<ControleAcessoDto, LoginDto> controleAcessoBusiness)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
     {
         _controleAcessoBusiness = controleAcessoBusiness;
     }

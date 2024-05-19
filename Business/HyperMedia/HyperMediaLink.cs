@@ -1,7 +1,6 @@
 ﻿using System.Text;
 
 namespace Business.HyperMedia;
-
 public class HyperMediaLink
 {
     public HyperMediaLink()  { }

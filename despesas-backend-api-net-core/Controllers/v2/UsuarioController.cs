@@ -1,8 +1,12 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
+<<<<<<< HEAD
 using Business.Dtos;
+=======
+using Business.Dtos.v2;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 using Business.HyperMedia.Filters;
-using Domain.Entities;
+using Domain.Entities.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,9 +16,9 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class UsuarioController : AuthController
 {
-    private IUsuarioBusiness _usuarioBusiness;
-    private readonly IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
-    public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
+    private IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
+    private readonly IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> _imagemPerfilBussiness;
+    public UsuarioController(IUsuarioBusiness<UsuarioDto> usuarioBusiness, IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> imagemPerfilBussiness)
     {
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
@@ -31,7 +35,7 @@ public class UsuarioController : AuthController
         try
         {
             var adm = _usuarioBusiness.FindById(IdUsuario);
-            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+            if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             return Ok(_usuarioBusiness.FindAll(IdUsuario));
@@ -55,7 +59,11 @@ public class UsuarioController : AuthController
     {
         try
         {
+<<<<<<< HEAD
             UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+=======
+           var _usuario = _usuarioBusiness.FindById(IdUsuario);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             if (_usuario == null) throw new Exception();
             return Ok(_usuario);
         }
@@ -78,7 +86,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            usuarioDto.IdUsuario = IdUsuario;
+            usuarioDto.UsuarioId = IdUsuario;
             return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
         }
         catch (Exception ex)
@@ -100,7 +108,11 @@ public class UsuarioController : AuthController
     {
         try
         {
+<<<<<<< HEAD
             UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+=======
+            var updateUsuario = _usuarioBusiness.Update(usuarioDto);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
@@ -126,10 +138,14 @@ public class UsuarioController : AuthController
         try
         {
             var usuario = _usuarioBusiness.FindById(IdUsuario);
-            if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+            if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
+<<<<<<< HEAD
             UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+=======
+            var updateUsuario = _usuarioBusiness.Update(usuarioDto);
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
             if (updateUsuario == null)
                 throw new ArgumentException("Usuário não encontrado!");
 
@@ -155,7 +171,7 @@ public class UsuarioController : AuthController
         try
         {
             var adm = _usuarioBusiness.FindById(IdUsuario);
-            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+            if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             if (_usuarioBusiness.Delete(usuarioDto))
@@ -183,8 +199,7 @@ public class UsuarioController : AuthController
         try
         {
 
-            var imagemPerfilUsuario = _imagemPerfilBussiness
-                .FindAll(IdUsuario).Find(prop => prop.IdUsuario.Equals(IdUsuario));
+            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario).Find(prop => prop.UsuarioId.Equals(IdUsuario));
 
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -210,8 +225,8 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
-            ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            var _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
 
             if (_imagemPerfilUsuario != null)
                 return Ok(_imagemPerfilUsuario);
@@ -237,7 +252,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -297,7 +312,7 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    IdUsuario = IdUsuario,
+                    UsuarioId = IdUsuario,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

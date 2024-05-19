@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
+<<<<<<< HEAD
 using Business.Dtos;
+=======
+using Business.Dtos.v1;
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -11,8 +15,13 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class LancamentoController : AuthController
 {
+<<<<<<< HEAD
     private ILancamentoBusiness _lancamentoBusiness;
     public LancamentoController(ILancamentoBusiness lancamentoBusiness)
+=======
+    private ILancamentoBusiness<LancamentoDto> _lancamentoBusiness;
+    public LancamentoController(ILancamentoBusiness<LancamentoDto> lancamentoBusiness)
+>>>>>>> feature/Create-Migrations-AZURE_SQL_SERVER
     {
         _lancamentoBusiness = lancamentoBusiness;
     }

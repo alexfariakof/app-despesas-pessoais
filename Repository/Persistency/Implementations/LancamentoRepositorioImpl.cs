@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Repository.Persistency.Abstractions;
 using System.Data;
 
 namespace Repository.Persistency.Implementations;
@@ -19,6 +20,7 @@ public class LancamentoRepositorioImpl : ILancamentoRepositorio
         {
             var despesas = _context.Despesa
                 .Include(d => d.Categoria)
+                .Include(tc => tc.Categoria.TipoCategoria)
                 .Where(d => d.Data.Month == mes && d.Data.Year == ano && d.UsuarioId == idUsuario)
                 .Select(d => new Lancamento
                 {
@@ -38,6 +40,7 @@ public class LancamentoRepositorioImpl : ILancamentoRepositorio
 
             var receitas = _context.Receita
                 .Include(r => r.Categoria)
+                .Include(tc => tc.Categoria.TipoCategoria)
                 .Where(r => r.Data.Month == mes && r.Data.Year == ano && r.UsuarioId == idUsuario)
                 .Select(r => new Lancamento
                 {

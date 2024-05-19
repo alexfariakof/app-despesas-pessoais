@@ -1,6 +1,6 @@
 ﻿using Domain.Core;
-using Domain.Entities.Abstractions;
 using MediatR;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace CrossCutting.CQRS.Queries;
 
