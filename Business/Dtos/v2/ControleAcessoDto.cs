@@ -27,7 +27,7 @@ public class ControleAcessoDto : ControleAcessoDtoBase, IValidatableObject
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
 
-        if (string.IsNullOrEmpty(ConfirmaSenha) | string.IsNullOrWhiteSpace(ConfirmaSenha))
+        if (string.IsNullOrEmpty(ConfirmaSenha) || string.IsNullOrWhiteSpace(ConfirmaSenha))
             yield return new ValidationResult("Campo Confirma Senha não pode ser em branco ou nulo");
 
         if (Senha != ConfirmaSenha)

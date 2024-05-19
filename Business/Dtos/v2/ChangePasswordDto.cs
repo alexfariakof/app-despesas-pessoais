@@ -15,7 +15,7 @@ public class ChangePasswordDto : ChangePasswordDtoBase, IValidatableObject
         if (string.IsNullOrEmpty(Senha) || string.IsNullOrWhiteSpace(Senha))
             yield return new ValidationResult("Campo Senha não pode ser em branco ou nulo!");
 
-        if (string.IsNullOrEmpty(ConfirmaSenha) | string.IsNullOrWhiteSpace(ConfirmaSenha))
+        if (string.IsNullOrEmpty(ConfirmaSenha) || string.IsNullOrWhiteSpace(ConfirmaSenha))
             yield return new ValidationResult("Campo Confirma Senha não pode ser em branco ou nulo!");
     }
 }

@@ -134,7 +134,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         };
     }
 
-    private string IsValidEmail(string email)
+    private void IsValidEmail(string email)
     {
         if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email não pode ser em branco ou nulo!");
@@ -147,7 +147,5 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
 
         if (!regex.IsMatch(email))
             throw new ArgumentException("Email inválido!");
-
-        return email;
     }
 }
