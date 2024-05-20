@@ -1,5 +1,5 @@
 ﻿using Domain.Core;
-using Domain.Entities.Abstractions;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Repository.Persistency.UnitOfWork;
 public class UnitOfWork<T>: IUnitOfWork<T> where T : BaseModel

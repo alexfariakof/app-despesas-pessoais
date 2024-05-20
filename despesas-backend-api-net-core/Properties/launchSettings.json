@@ -8,7 +8,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42535"
+      "applicationUrl": "http://localhost:42535",
+      "nativeDebugging": true
     },
     "MySqlServer": {
       "commandName": "Project",
@@ -21,7 +22,17 @@
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:42535"
     },
-
+    "DatabaseInMemory": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "DatabaseInMemory"
+      },
+      "nativeDebugging": true,
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:42535"
+    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,

@@ -1,5 +1,6 @@
 ﻿using Repository;
 using Domain.Entities;
+using Domain.Entities.ValueObjects;
 
 namespace DataSeeders.Implementations;
 public class DataSeederUsuario : IDataSeeder
@@ -13,56 +14,54 @@ public class DataSeederUsuario : IDataSeeder
     {
         if (!_context.Usuario.Any())
         {
+
+            var administrador = _context.PerfilUsuario.First(pu => pu.Id.Equals(1));
+            var usuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(2));
             _context.Usuario.AddRange(
                 new Usuario
                 {
-                    Id = 1,
                     Nome = "Alex",
                     SobreNome = "Ribeiro de Faria",
                     Telefone = "(21) 99287-9319",
                     Email = "alexfariakof@gmail.com",
                     StatusUsuario = StatusUsuario.Ativo,
-                    PerfilUsuario = PerfilUsuario.Administrador
+                    PerfilUsuario = administrador
                 },
                 new Usuario
                 {
-                    Id = 2,
                     Nome = "Teste",
                     SobreNome = "Teste",
                     Telefone = "(21) 9999-9999",
                     Email = "teste@teste.com",
                     StatusUsuario = StatusUsuario.Ativo,
-                    PerfilUsuario = PerfilUsuario.Usuario
+                    PerfilUsuario = usuario
                 },
                 new Usuario
                 {
-                    Id = 3,
                     Nome = "dns",
                     SobreNome = "AWS dns",
                     Telefone = "(21) 9999-9999",
                     Email = "dns@dns.com",
                     StatusUsuario = StatusUsuario.Ativo,
-                    PerfilUsuario = PerfilUsuario.Usuario
+                    PerfilUsuario = usuario
                 },
                 new Usuario
                 {
-                    Id = 4,
                     Nome = "João",
                     SobreNome = "da Silva",
                     Telefone = "(21) 8888-8888",
                     Email = "joao.silva5@gmail.com",
                     StatusUsuario = StatusUsuario.Ativo,
-                    PerfilUsuario = PerfilUsuario.Usuario
+                    PerfilUsuario = usuario
                 },
                 new Usuario
                 {
-                    Id = 5,
                     Nome = "Alexsandro Clóvis",
                     SobreNome = "Sacramento",
                     Telefone = "21992320175",
                     Email = "lequinho.mumu@gmail.com",
                     StatusUsuario = StatusUsuario.Ativo,
-                    PerfilUsuario = PerfilUsuario.Usuario
+                    PerfilUsuario = usuario
                 });
             _context.SaveChanges();
         }

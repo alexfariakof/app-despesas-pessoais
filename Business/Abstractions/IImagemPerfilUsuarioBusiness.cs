@@ -1,12 +1,10 @@
-﻿using Business.Dtos;
-
-namespace Business.Abstractions;
-public interface IImagemPerfilUsuarioBusiness
+﻿namespace Business.Abstractions;
+public interface IImagemPerfilUsuarioBusiness<Dto, DtoUsuario> where Dto : class where DtoUsuario: class, new()
 {
-    ImagemPerfilDto Create(ImagemPerfilDto obj);
-    ImagemPerfilDto FindById(int id, int idUsuario);
-    List<ImagemPerfilDto> FindAll(int idUsuario);
-    ImagemPerfilDto Update(ImagemPerfilDto obj);
+    Dto Create(Dto obj);
+    Dto FindById(int id, int idUsuario);
+    List<Dto> FindAll(int idUsuario);
+    Dto Update(Dto obj);
     bool Delete(int idUsuario);
-    UsuarioDto FindByIdUsuario(int idUsuario);
+    DtoUsuario FindByIdUsuario(int idUsuario);
 }

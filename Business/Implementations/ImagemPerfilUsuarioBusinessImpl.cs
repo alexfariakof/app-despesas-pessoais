@@ -1,36 +1,35 @@
-﻿using Business.Abstractions;
-using Business.Dtos;
-using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Abstractions;
+using Business.Dtos.Core;
 using Domain.Core;
 using Domain.Core.Interfaces;
 using Domain.Entities;
 using Repository.Persistency.Generic;
 
 namespace Business.Implementations;
-
-public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
+public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsuarioBusiness<Dto, DtoUsuario> where Dto : ImagemPerfilDtoBase, new() where DtoUsuario : UsuarioDtoBase, new()
 {
+    private readonly IMapper _mapper;
     private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
-    private readonly IRepositorio<Usuario> _repositorioUsuario;
-    private readonly ImagemPerfilUsuarioParser _converter;
+    private readonly IRepositorio<Usuario> _repositorioUsuario;    
     private readonly IAmazonS3Bucket _amazonS3Bucket;
-    public ImagemPerfilUsuarioBusinessImpl(IRepositorio<ImagemPerfilUsuario> repositorio, IRepositorio<Usuario> repositorioUsuario,  IAmazonS3Bucket amazonS3Bucket = null)
+    public ImagemPerfilUsuarioBusinessImpl(IMapper mapper, IRepositorio<ImagemPerfilUsuario> repositorio, IRepositorio<Usuario> repositorioUsuario,  IAmazonS3Bucket amazonS3Bucket = null)
     {
+        _mapper = mapper;
         _repositorio = repositorio;
-        _repositorioUsuario = repositorioUsuario;
-        _converter = new ImagemPerfilUsuarioParser();
+        _repositorioUsuario = repositorioUsuario;        
         _amazonS3Bucket = amazonS3Bucket == null ? AmazonS3Bucket.GetInstance : amazonS3Bucket; 
     }
 
-    public ImagemPerfilDto Create(ImagemPerfilDto obj)
+    public Dto Create(Dto obj)
     {
-        ImagemPerfilUsuario? perfilFile = _converter.Parse(obj);
+        ImagemPerfilUsuario? perfilFile = _mapper.Map<ImagemPerfilUsuario>(obj);
         try
         {
             perfilFile.Url = _amazonS3Bucket.WritingAnObjectAsync(perfilFile, obj.Arquivo).GetAwaiter().GetResult();
             perfilFile.Usuario = _repositorioUsuario.Get(perfilFile.UsuarioId);
             _repositorio.Insert(ref perfilFile);
-            return _converter.Parse(perfilFile);
+            return _mapper.Map<Dto>(perfilFile);
         }
         catch
         {
@@ -39,27 +38,27 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         return null;
     }
 
-    public List<ImagemPerfilDto> FindAll(int idUsuario)
+    public List<Dto> FindAll(int idUsuario)
     {
         var lstPerfilFile = _repositorio.GetAll();
-        return _converter.ParseList(lstPerfilFile);
+        return _mapper.Map<List<Dto>>(lstPerfilFile);
     }
 
-    public ImagemPerfilDto FindById(int id, int idUsuario)
+    public Dto FindById(int id, int idUsuario)
     {
-        var imagemPerfilUsuario = _converter.Parse(_repositorio.Get(id));
-        if (imagemPerfilUsuario.IdUsuario != idUsuario)
+        var imagemPerfilUsuario = _mapper.Map<Dto>(_repositorio.Get(id));
+        if (imagemPerfilUsuario.UsuarioId != idUsuario)
             return null;
 
         return imagemPerfilUsuario;
     }
 
-    public UsuarioDto FindByIdUsuario(int idUsuario)
+    public DtoUsuario FindByIdUsuario(int idUsuario)
     {
         try
         {
             var usuario = _repositorio?.GetAll()?.Find(u => u.UsuarioId == idUsuario)?.Usuario;
-            return new UsuarioParser().Parse(usuario);
+            return _mapper.Map<DtoUsuario>(usuario);
         }
         catch 
         { 
@@ -67,18 +66,18 @@ public class ImagemPerfilUsuarioBusinessImpl : IImagemPerfilUsuarioBusiness
         }            
     }
 
-    public ImagemPerfilDto Update(ImagemPerfilDto obj)
+    public Dto Update(Dto obj)
     {        
         try
         {
-            var validImagemPerfil = _repositorio.GetAll().Find(prop => prop.UsuarioId.Equals(obj.IdUsuario));
+            var validImagemPerfil = _repositorio.GetAll().Find(prop => prop.UsuarioId.Equals(obj.UsuarioId));
             if (validImagemPerfil == null)
                 throw new ArgumentException("Erro ao atualizar iamgem do perfil!");
 
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
             validImagemPerfil.Url = _amazonS3Bucket.WritingAnObjectAsync(validImagemPerfil, obj.Arquivo).GetAwaiter().GetResult();
             _repositorio.Update(ref validImagemPerfil);            
-            return _converter.Parse(validImagemPerfil);
+            return _mapper.Map<Dto>(validImagemPerfil);
         }
         catch
         {

@@ -1,8 +1,10 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Business.Generic;
+using Domain.Entities;
+using Business.Dtos.Core;
+using Business.Abstractions.Generic;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -10,17 +12,18 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [Route("v1/[controller]")]
 public class CategoriaController : AuthController
 {
-    private IBusiness<CategoriaDto> _categoriaBusiness;
-    public CategoriaController(IBusiness<CategoriaDto> categoriaBusiness)
+    private IBusiness<CategoriaDto, Categoria> _categoriaBusiness;
+    public CategoriaController(IBusiness<CategoriaDto, Categoria> categoriaBusiness)
     {
         _categoriaBusiness = categoriaBusiness;
     }
 
     [HttpGet]
     [Authorize("Bearer")]
+    [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
     public IActionResult Get()
     {
-        List<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario);
+        var _categoria = _categoriaBusiness.FindAll(IdUsuario);
         return Ok(_categoria);
     }
 
@@ -29,18 +32,18 @@ public class CategoriaController : AuthController
     public IActionResult GetById([FromRoute] int idCategoria)
     {
 
-        CategoriaDto _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+        var _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
         return Ok(_categoria);
     }
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
     [Authorize("Bearer")]
-    public IActionResult GetByTipoCategoria([FromRoute] Domain.Entities.TipoCategoria tipoCategoria)
+    public IActionResult GetByTipoCategoria([FromRoute] TipoCategoriaDto tipoCategoria)
     {
-        if (tipoCategoria == Domain.Entities.TipoCategoria.Todas)
+        if (tipoCategoria == TipoCategoriaDto.Todas)
         {
             var _categoria = _categoriaBusiness.FindAll(IdUsuario)
-                             .FindAll(prop => prop.IdUsuario.Equals(IdUsuario));
+                             .FindAll(prop => prop.UsuarioId.Equals(IdUsuario));
             return Ok(_categoria);
         }
         else
@@ -48,7 +51,7 @@ public class CategoriaController : AuthController
             var _categoria = _categoriaBusiness.FindAll(IdUsuario)
                             .FindAll(prop => prop.IdTipoCategoria.Equals(((int)tipoCategoria)));
             return Ok(_categoria);
-        }           
+        }
     }
 
     [HttpPost]
@@ -56,12 +59,12 @@ public class CategoriaController : AuthController
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.IdTipoCategoria == (int)Domain.Entities.TipoCategoria.Todas)
-            return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!"});
+        if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
+            return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
         try
         {
-            categoria.IdUsuario = IdUsuario;
+            categoria.UsuarioId = IdUsuario;
             return Ok(new { message = true, categoria = _categoriaBusiness.Create(categoria) });
         }
         catch
@@ -75,11 +78,11 @@ public class CategoriaController : AuthController
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
 
-        if (categoria.TipoCategoria == Domain.Entities.TipoCategoria.Todas)
+        if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
             return BadRequest(new { message = "Nenhum tipo de Categoria foi selecionado!" });
 
-        categoria.IdUsuario = IdUsuario;
-        CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
+        categoria.UsuarioId = IdUsuario;
+        var updateCategoria = _categoriaBusiness.Update(categoria);
 
         if (updateCategoria == null)
             return BadRequest(new { message = "Erro ao atualizar categoria!" });
@@ -91,8 +94,8 @@ public class CategoriaController : AuthController
     [Authorize("Bearer")]
     public IActionResult Delete(int idCategoria)
     {
-        CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-        if (categoria == null || IdUsuario != categoria.IdUsuario)
+        var categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+        if (categoria == null || IdUsuario != categoria.UsuarioId)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -103,5 +106,5 @@ public class CategoriaController : AuthController
         }
 
         return new BadRequestObjectResult(new { message = false });
-    }        
+    }
 }

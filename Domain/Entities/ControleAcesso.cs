@@ -18,15 +18,15 @@ public class ControleAcesso : BaseModel
     }
     public int UsuarioId { get; set; }
 
-    public string? RefreshToken { get; set; }
+    public string RefreshToken { get; set; } = String.Empty;
 
     public DateTime? RefreshTokenExpiry { get; set; }
 
     public virtual Usuario? Usuario { get; set; }
-    public void CreateAccount(Usuario usuario, string email, string senha)
+    public void CreateAccount(Usuario usuario, string senha)
     {
-        Login = email;
-        Senha = senha;
-        Usuario = usuario;        
+        this.Login = usuario.Email;
+        this.Senha = senha;
+        this.Usuario = usuario;        
     }
 }

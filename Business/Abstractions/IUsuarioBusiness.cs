@@ -1,11 +1,11 @@
-﻿using Business.Dtos;
+﻿using Business.Dtos.Core;
 
 namespace Business.Abstractions;
-public interface IUsuarioBusiness
+public interface IUsuarioBusiness<Dto> where Dto : UsuarioDtoBase, new()
 {
-    UsuarioDto Create(UsuarioDto usuarioDto);
-    UsuarioDto FindById(int id);
-    List<UsuarioDto> FindAll(int idUsuario);
-    UsuarioDto Update(UsuarioDto usuarioDto);
-    bool Delete(UsuarioDto usuarioDto);
+    Dto Create(Dto usuarioDto);
+    Dto FindById(int id);
+    List<Dto> FindAll(int idUsuario);
+    Dto Update(Dto usuarioDto);
+    bool Delete(Dto usuarioDto);
 }

@@ -8,12 +8,19 @@ public class ReceitaMap: IEntityTypeConfiguration<Receita>
     public void Configure(EntityTypeBuilder<Receita> builder)
     {
         builder.ToTable(nameof(Receita));
-        builder.HasKey(m => m.Id);
-        builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
-        builder.Property(m => m.UsuarioId).IsRequired();
-        builder.Property(m => m.Descricao).IsRequired(false).HasMaxLength(100);
-        builder.Property(m => m.CategoriaId).IsRequired();
-        builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();        
-        builder.Property(m => m.Valor).HasColumnType("decimal(10, 2)").HasDefaultValue(0);
+        builder.HasKey(r => r.Id);
+        builder.Property(r => r.Id).ValueGeneratedOnAdd().IsRequired();
+        builder.Property(r => r.UsuarioId).IsRequired();
+        builder.Property(r => r.Descricao).IsRequired(false).HasMaxLength(100);
+        builder.Property(r => r.CategoriaId).IsRequired();
+
+        // MySqlServer
+        //builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();
+
+        // MsSqlServer
+        builder.Property(r => r.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()").IsRequired();        
+
+        builder.Property(r => r.Valor).HasColumnType("decimal(10, 2)").HasDefaultValue(0);
+        builder.HasOne(r => r.Usuario).WithMany().HasForeignKey(r => r.UsuarioId).OnDelete(DeleteBehavior.NoAction);
     }
 }
