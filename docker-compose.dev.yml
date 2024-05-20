@@ -10,7 +10,7 @@ services:
       dockerfile: despesas-backend-api-net-core/Dockerfile.development
     environment:
       TZ: America/Sao_Paulo
-      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: DatabaseInMemory
     ports:
       - 42536:42536
     networks:

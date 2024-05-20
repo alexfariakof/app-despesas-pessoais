@@ -72,7 +72,7 @@ app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{
 if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
     app.UseDefaultFiles();
     app.UseStaticFiles();

@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
 EXPOSE 42534
-ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_ENVIRONMENT=DatabaseInMemory
 ENV ASPNETCORE_URLS=http://+:42536
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -10,6 +10,7 @@ WORKDIR /src
 COPY . .
 
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
+RUN dotnet build "./despesas-backend-api-net-core/./despesas-backend-api-net-core.csproj" --restore
 RUN dotnet test "./XunitTests/XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
 RUN /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html
 
