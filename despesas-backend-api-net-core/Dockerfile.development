@@ -10,7 +10,7 @@ WORKDIR /src
 COPY . .
 
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
-RUN dotnet test "./despesas-backend-api-net-core.XUnit/XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
+RUN dotnet test "./XunitTests/XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
 RUN /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html
 
 FROM build AS publish

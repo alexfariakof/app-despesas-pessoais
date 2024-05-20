@@ -37,7 +37,7 @@ else if (builder.Environment.EnvironmentName.Equals("Azure"))
 }
 else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? "MySqlConnectionString"));
 }
 else if (builder.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
