@@ -12,6 +12,6 @@ public class CategoriaMap: IEntityTypeConfiguration<Categoria>
         builder.Property(c => c.Id).ValueGeneratedOnAdd().IsRequired();
         builder.Property(c => c.Descricao).IsRequired(false).HasMaxLength(100);
         builder.Property(m => m.UsuarioId).IsRequired();
-        builder.Property(c => c.TipoCategoria).IsRequired();
-    }    
+        builder.HasOne(c => c.TipoCategoria).WithMany();
+    }
 }

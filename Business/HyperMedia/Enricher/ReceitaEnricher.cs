@@ -1,4 +1,4 @@
-﻿using Business.Dtos;
+﻿using Business.Dtos.v2;
 using Business.HyperMedia.Constants;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -39,6 +39,43 @@ public class ReceitaEnricher : ContentResponseEnricher<ReceitaDto>
         });
 
         content.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.DELETE,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultDelete
+        });
+
+        var categoriaContent = content.Categoria;
+        path = "categoria";
+        link = GetLink(categoriaContent.Id, urlHelper, path);
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.GET,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultGet
+        });
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.POST,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultPost
+        });
+
+
+        categoriaContent.Links.Add(new HyperMediaLink()
+        {
+            Action = HttpActionVerb.PUT,
+            Href = link,
+            Rel = RelationType.self,
+            Type = ResponseTypeFormat.DefaultPut
+        });
+
+        categoriaContent.Links.Add(new HyperMediaLink()
         {
             Action = HttpActionVerb.DELETE,
             Href = link,

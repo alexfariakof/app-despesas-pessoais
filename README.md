@@ -2,13 +2,19 @@
 
 ## Introduction
 
-In summary, this project involves an update of the Restful API application created in the current final project, upgrading from .NET Core 3.1 to .NET Core 7.0. Test-Driven Development (TDD) is implemented using XUnit, generating test coverage reports locally with ReportGenerator. CI/CD is implemented with GitActions/Workflows, which perform "Build, Unit Testing, and Static Code Analysis in the cloud using Sonar Cloud." The Restful API documentation is created using Swagger, and the application is dockerized. Document and image storage is done on an Amazon S3 bucket file server, with integration with either MySql Server or Sql Server through the Entity Framework using Migrations to control versioning of entities or tables created or updated during the project's evolution. The application is currently in production on an AWS EC2 server, ensuring high availability.
+In summary, this project involves an update of the Restful API application created in the current final project, upgrading from .NET Core 3.1 to .NET Core 8.0. Test-Driven Development (TDD) is implemented using XUnit, generating test coverage reports locally with ReportGenerator. CI/CD is implemented with GitActions/Workflows, which perform "Build, Unit Testing, and Static Code Analysis in the cloud using Sonar Cloud." The Restful HATEOAS API documentation is created using Swagger, and the application is dockerized. Document and image storage is done on an Amazon S3 bucket file server, with integration with either MySql Server or Sql Server through the Entity Framework using Migrations to control versioning of entities or tables created or updated during the project's evolution. The application is currently in production on an AWS EC2 server, ensuring high availability.
+
+## Postman Documentation 
+This project can be access [Postman Documentation](https://bold-eclipse-872793.postman.co/workspace/local-api-despesas-pessoais~bb08206c-ff0d-44c9-b49e-55339a554a3b/overview)
 
 ## Application in Production 
-[Postman Documentation](https://www.postman.com/bold-eclipse-872793/workspace/api-despesas-pessoais/collection/16681680-86c1aecc-60d3-4133-9643-5f3d4a106575?action=share&creator=16681680)
+This project can be access at [Production API Restful Despesas Pessoais](http://alexfariakof.com:42535/swagger).
 
-This project can be access at [API Restful Despesas Pessoais](http://alexfariakof.com:42535/swagger).
-![backend](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/d715b8d3-e275-4998-beb7-cb8c9690513f)
+## Application in Development 
+This project can be access at [Development API Restful Despesas Pessoais](http://alexfariakof.com:42536/swagger).
+
+![image](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/c0abe2f5-da31-4907-90dc-bbb06a95d2f3)
+
 
 ## Build
 
@@ -73,6 +79,7 @@ Make sure have instaled tool ReportGenerator, if not Run `dotnet tool install --
 
 Run  `./generate_coverage_report.ps1` if using windows, or Run `./generate_coverage_report.sh` if using linux. The Report will open in default browser automatically.
 
+[Overview Report Coverage Results](http://alexfariakof.com:42536/) 
 ![reportTestCoverage](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/afd1b5e4-5a2f-490c-bf4f-a530df41c1ae)
 
 ## Security Settings

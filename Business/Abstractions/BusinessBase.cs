@@ -1,20 +1,32 @@
-﻿using CrossCutting.CQRS.Queries;
-using Domain.Entities.Abstractions;
+﻿using AutoMapper;
+using Repository.Persistency.Generic;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Abstractions;
-public abstract class BusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
+public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
 {
     protected IUnitOfWork<Entity> UnitOfWork { get;  }
-    protected BusinessBase(IUnitOfWork<Entity> unitOfWork)
+    protected IMapper Mapper { get; set; }
+
+    protected IRepositorio<Entity> Repository { get; }
+
+    protected BusinessBase(IMapper mapper, IRepositorio<Entity> repository, IUnitOfWork<Entity> unitOfWork = null)
     {
+        Repository = repository;
+        Mapper = mapper;
         UnitOfWork = unitOfWork;
     }
 
     public abstract Dto Create(Dto usuarioDto);
 
-    public abstract Dto FindById(int id, int idUsuario);
+    public virtual Dto FindById(int id)
+    {
+        throw new NotImplementedException("Este método não foi implementado.");
+    }
 
-    public abstract Task<IList<Dto>> FindAll(int idUsuario);
+    public virtual Dto FindById(int id, int idUsuario) { return null; }
+
+    public abstract List<Dto> FindAll(int idUsuario);
 
     public abstract  Dto Update(Dto usuario);
 

@@ -1,8 +1,8 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Abstractions;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Business.Abstractions;
 using System.Text.RegularExpressions;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
@@ -12,12 +12,12 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class ControleAcessoController : AuthController
 {
-    private IControleAcessoBusiness _controleAcessoBusiness;
-    public ControleAcessoController(IControleAcessoBusiness controleAcessoBusiness)
+    private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
+    public ControleAcessoController(IControleAcessoBusiness<ControleAcessoDto, LoginDto> controleAcessoBusiness)
     {
         _controleAcessoBusiness = controleAcessoBusiness;
     }
-    
+
     [AllowAnonymous]
     [HttpPost]
     public IActionResult Post([FromBody] ControleAcessoDto controleAcessoDto)
@@ -41,7 +41,7 @@ public class ControleAcessoController : AuthController
             return BadRequest(new { message = "Senha e Confirma Senha são diferentes!" });
 
         try
-        {        
+        {
             _controleAcessoBusiness.Create(controleAcessoDto);
             return Ok(new { message = true });
         }
@@ -49,9 +49,9 @@ public class ControleAcessoController : AuthController
         {
             return BadRequest(new { message = "Não foi possível realizar o cadastro." });
         }
-            
+
     }
-    
+
     [AllowAnonymous]
     [HttpPost("SignIn")]
     public IActionResult SignIn([FromBody] LoginDto login)
@@ -67,7 +67,7 @@ public class ControleAcessoController : AuthController
             return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
         var result = _controleAcessoBusiness.ValidateCredentials(login);
-        
+
         if (result == null)
             return BadRequest(new { message = "Erro ao realizar login!" });
 
@@ -75,7 +75,7 @@ public class ControleAcessoController : AuthController
     }
 
     [HttpPost("ChangePassword")]
-    [Authorize("Bearer")]        
+    [Authorize("Bearer")]
     public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
 

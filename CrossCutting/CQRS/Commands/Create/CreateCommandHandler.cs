@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Domain.Entities.Abstractions;
 using MediatR;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace CrossCutting.CQRS.Commands.Create;
 

@@ -1,5 +1,7 @@
 ﻿using Business.Dtos.Parser.Interfaces;
+using Business.Dtos.v1;
 using Domain.Entities;
+using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos.Parser;
 public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categoria, CategoriaDto>
@@ -11,8 +13,8 @@ public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categori
         {
             Id = origin.Id,
             Descricao = origin.Descricao,
-            TipoCategoria = origin.IdTipoCategoria == 1 ? TipoCategoria.Despesa : TipoCategoria.Receita,
-            UsuarioId = origin.IdUsuario
+            TipoCategoria = origin.IdTipoCategoria == 1 ? (int)TipoCategoria.CategoriaType.Despesa : (int)TipoCategoria.CategoriaType.Receita,
+            UsuarioId = origin.UsuarioId
         };
     }
 
@@ -23,8 +25,8 @@ public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categori
         {
             Id = origin.Id,
             Descricao = origin.Descricao,
-            IdTipoCategoria = (int)origin.TipoCategoria,
-            IdUsuario = origin.UsuarioId                
+            IdTipoCategoria = origin.TipoCategoria.Id,
+            UsuarioId = origin.UsuarioId                
         };
     }
 

@@ -1,7 +1,8 @@
 version: '3.4'
 
 services:
-  db:
+  migrations.mysqlserver:
+    domainname: migrations
     container_name: mysql-server-in-docker
     image: mysql-server-db-img
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_ai_ci --default-authentication-plugin=mysql_native_password

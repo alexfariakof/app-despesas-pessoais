@@ -1,20 +1,21 @@
-﻿using Business.Abstractions;
-using Business.Dtos;
-using Business.Dtos.Parser;
-using Repository.Persistency;
+﻿using AutoMapper;
+using Business.Abstractions;
+using Repository.Persistency.Abstractions;
 
 namespace Business.Implementations;
-public class LancamentoBusinessImpl : ILancamentoBusiness
+public class LancamentoBusinessImpl<Dto> : ILancamentoBusiness<Dto> where Dto : class, new()
 {
     private readonly ILancamentoRepositorio _repositorio;
-    private readonly LancamentoParser _converter;
-    public LancamentoBusinessImpl(ILancamentoRepositorio repositorio)
+    private readonly IMapper _mapper;
+    public LancamentoBusinessImpl(IMapper mapper, ILancamentoRepositorio repositorio)
     {
+        _mapper = mapper;
         _repositorio = repositorio;
-        _converter = new LancamentoParser();
+
     }
-    public List<LancamentoDto> FindByMesAno(DateTime data, int idUsuario)
+
+    public List<Dto> FindByMesAno(DateTime data, int idUsuario)
     {
-       return  _converter.ParseList(_repositorio.FindByMesAno(data, idUsuario));
+       return  _mapper.Map<List<Dto>>(_repositorio.FindByMesAno(data, idUsuario));
     }
 }

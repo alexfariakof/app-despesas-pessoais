@@ -1,8 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using despesas_backend_api_net_core.CommonDependenceInject;
 using Business.CommonDependenceInject;
 using Repository.CommonDependenceInject;
-using Microsoft.EntityFrameworkCore;
 using CrossCutting.CommonDependenceInject;
+using Migrations.MsSqlServer.CommonInjectDependence;
+using Migrations.MySqlServer.CommonInjectDependence;
 using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,11 +26,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
-                                                                                                                                                 
-if (builder.Environment.IsProduction()) 
+
+if (builder.Environment.IsProduction())
+{
+    builder.Services.CreateDataBaseInMemory();
+}
+else if (builder.Environment.EnvironmentName.Equals("Azure"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("AzureMsSqlConnectionString")));
-}    
+}
 else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
@@ -37,12 +43,15 @@ else if (builder.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
     builder.Services.CreateDataBaseInMemory();
 }
-else 
+else
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+    builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
+    builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 
 // Add CommonInjectDependences 
+builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
 builder.Services.AddAuthConfigurations(builder.Configuration);
 builder.Services.AddRepositories();
@@ -54,16 +63,19 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.AddSupporteCulturesPtBr();
-app.AddSwaggerApiVersioning();
 app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
-app.UseDefaultFiles();
-app.UseStaticFiles();
 
 if (!app.Environment.IsProduction())
-    app.RunDataSeeders();
+    app.AddSwaggerUIApiVersioning();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+}
+app.RunDataSeeders();
 app.Run();

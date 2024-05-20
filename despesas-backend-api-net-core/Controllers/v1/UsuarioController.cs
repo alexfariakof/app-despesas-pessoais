@@ -1,10 +1,10 @@
 ﻿using Asp.Versioning;
-using Business.Dtos;
+using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
-using Domain.Entities;
 using System.Text.RegularExpressions;
+using Domain.Entities.ValueObjects;
 
 namespace despesas_backend_api_net_core.Controllers.v1;
 
@@ -13,9 +13,9 @@ namespace despesas_backend_api_net_core.Controllers.v1;
 [ApiController]
 public class UsuarioController : AuthController
 {
-    private IUsuarioBusiness _usuarioBusiness;
-    private readonly IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
-    public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
+    private IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
+    private readonly IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> _imagemPerfilBussiness;
+    public UsuarioController(IUsuarioBusiness<UsuarioDto> usuarioBusiness, IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> imagemPerfilBussiness)
     {
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
@@ -26,21 +26,21 @@ public class UsuarioController : AuthController
     public IActionResult Get()
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
 
         return Ok(_usuarioBusiness.FindAll(IdUsuario));
     }
-            
+
     [HttpGet("GetUsuario")]
     [Authorize("Bearer")]
     public IActionResult GetUsuario()
     {
-        UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+        var _usuario = _usuarioBusiness.FindById(IdUsuario);
         if (_usuario == null)
-            return BadRequest(new { message ="Usuário não encontrado!" });
+            return BadRequest(new { message = "Usuário não encontrado!" });
 
         return Ok(_usuario);
     }
@@ -50,7 +50,7 @@ public class UsuarioController : AuthController
     public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -80,9 +80,9 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
-            return  BadRequest(new { message = "Usuário não encontrado!" });
+            return BadRequest(new { message = "Usuário não encontrado!" });
 
         return new OkObjectResult(updateUsuario);
     }
@@ -92,7 +92,7 @@ public class UsuarioController : AuthController
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
+        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -106,7 +106,7 @@ public class UsuarioController : AuthController
         if (!IsValidEmail(usuarioDto.Email))
             return BadRequest(new { message = "Email inválido!" });
 
-        UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -118,23 +118,23 @@ public class UsuarioController : AuthController
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
-            
+
         if (_usuarioBusiness.Delete(usuarioDto))
             return new OkObjectResult(new { message = true });
         else
             return BadRequest(new { message = "Erro ao excluir Usuário!" });
     }
-    
+
     [HttpGet("ImagemPerfil")]
     [Authorize("Bearer")]
     public IActionResult GetImage()
     {
         var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
-            .Find(prop => prop.IdUsuario.Equals(IdUsuario));
+            .Find(prop => prop.UsuarioId.Equals(IdUsuario));
 
         if (imagemPerfilUsuario != null)
             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -167,7 +167,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -210,12 +210,13 @@ public class UsuarioController : AuthController
             {
                 await file.CopyToAsync(memoryStream);
 
-                ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto {
+                ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto
+                {
 
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    IdUsuario = IdUsuario,
+                    UsuarioId = IdUsuario,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

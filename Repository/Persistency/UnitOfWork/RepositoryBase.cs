@@ -1,6 +1,6 @@
 ﻿using Domain.Core;
-using Domain.Entities.Abstractions;
 using Microsoft.EntityFrameworkCore;
+using Repository.Persistency.UnitOfWork.Abstractions;
 using System.Linq.Expressions;
 
 namespace Repository.UnitOfWork;

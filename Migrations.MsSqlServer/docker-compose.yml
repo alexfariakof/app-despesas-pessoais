@@ -1,7 +1,8 @@
 version: '3.4'
 
 services:
-  db:
+  migrations.mssqlserver:
+    domainname: migrations
     container_name: mssql-server-in-docker
     image: mssql-server-db-img
     environment:

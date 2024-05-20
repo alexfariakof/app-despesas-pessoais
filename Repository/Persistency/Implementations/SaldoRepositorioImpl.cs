@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Repository.Persistency.Abstractions;
 
 namespace Repository.Persistency.Implementations;
 public class SaldoRepositorioImpl : ISaldoRepositorio
@@ -22,6 +23,7 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
             throw new Exception("SaldoRepositorioImpl_GetSaldo_Erro");
         }
     }
+
     public decimal GetSaldoByAno(DateTime mesAno, int idUsuario)
     {
         int ano = mesAno.Year;
@@ -38,6 +40,7 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
             throw new Exception("SaldoRepositorioImpl_GetSaldoByAno_Erro");
         }
     }
+
     public decimal GetSaldoByMesAno(DateTime mesAno, int idUsuario)
     {
         int mes = mesAno.Month;

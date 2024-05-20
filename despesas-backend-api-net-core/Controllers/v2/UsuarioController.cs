@@ -1,8 +1,7 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
-using Business.Dtos;
+using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
-using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,37 +11,13 @@ namespace despesas_backend_api_net_core.Controllers.v2;
 [Route("v{version:apiVersion}/[controller]")]
 public class UsuarioController : AuthController
 {
-    private IUsuarioBusiness _usuarioBusiness;
-    private readonly IImagemPerfilUsuarioBusiness _imagemPerfilBussiness;
-    public UsuarioController(IUsuarioBusiness usuarioBusiness, IImagemPerfilUsuarioBusiness imagemPerfilBussiness)
+    private readonly IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
+    private readonly IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> _imagemPerfilBussiness;
+    
+    public UsuarioController(IUsuarioBusiness<UsuarioDto> usuarioBusiness, IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> imagemPerfilBussiness)
     {
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
-    }
-
-    [HttpGet]
-    [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(IList<UsuarioDto>))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Get()
-    {
-        try
-        {
-            var adm = _usuarioBusiness.FindById(IdUsuario);
-            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
-                throw new ArgumentException("Usuário não permitido a realizar operação!");
-
-            return Ok(_usuarioBusiness.FindAll(IdUsuario));
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
-
-            return Ok(new List<UsuarioDto>());
-        }
     }
 
     [HttpGet("GetUsuario")]
@@ -51,42 +26,20 @@ public class UsuarioController : AuthController
     [ProducesResponseType(400, Type = typeof(string))]
     [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetUsuario()
+    public IActionResult GetUsuarioById()
     {
         try
         {
-            UsuarioDto _usuario = _usuarioBusiness.FindById(IdUsuario);
+            var _usuario = _usuarioBusiness.FindById(IdUsuario);
             if (_usuario == null) throw new Exception();
             return Ok(_usuario);
         }
-        catch (Exception ex)
+        catch(Exception ex) 
         {
             if (ex is ArgumentException argEx)
                 return BadRequest(argEx.Message);
 
             return BadRequest("Usuário não encontrado!");
-        }
-    }
-
-    [HttpPost]
-    [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Post([FromBody] UsuarioDto usuarioDto)
-    {
-        try
-        {
-            usuarioDto.IdUsuario = IdUsuario;
-            return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
-
-            return BadRequest("Erro ao cadastar novo Usuário!");
         }
     }
 
@@ -100,11 +53,8 @@ public class UsuarioController : AuthController
     {
         try
         {
-            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
-            if (updateUsuario == null)
-                throw new ArgumentException("Usuário não encontrado!");
-
-            return new OkObjectResult(updateUsuario);
+            usuarioDto.UsuarioId = IdUsuario;            
+            return new OkObjectResult(_usuarioBusiness.Update(usuarioDto));
         }
         catch (Exception ex)
         {
@@ -112,63 +62,6 @@ public class UsuarioController : AuthController
                 return BadRequest(argEx.Message);
 
             return BadRequest("Erro ao atualizar Usuário!");
-        }
-    }
-
-    [HttpPut("UpdateUsuario")]
-    [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
-    {
-        try
-        {
-            var usuario = _usuarioBusiness.FindById(IdUsuario);
-            if (usuario.PerfilUsuario != PerfilUsuario.Administrador)
-                throw new ArgumentException("Usuário não permitido a realizar operação!");
-
-            UsuarioDto updateUsuario = _usuarioBusiness.Update(usuarioDto);
-            if (updateUsuario == null)
-                throw new ArgumentException("Usuário não encontrado!");
-
-            return new OkObjectResult(updateUsuario);
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
-
-            return BadRequest("Erro ao atualizar Usuário!");
-        }
-    }
-
-    [HttpDelete]
-    [Authorize("Bearer")]
-    [ProducesResponseType(200, Type = typeof(bool))]
-    [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
-    [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
-    {
-        try
-        {
-            var adm = _usuarioBusiness.FindById(IdUsuario);
-            if (adm.PerfilUsuario != PerfilUsuario.Administrador)
-                throw new ArgumentException("Usuário não permitido a realizar operação!");
-
-            if (_usuarioBusiness.Delete(usuarioDto))
-                return new OkObjectResult(true);
-            else
-                throw new Exception();
-        }
-        catch (Exception ex)
-        {
-            if (ex is ArgumentException argEx)
-                return BadRequest(argEx.Message);
-
-            return BadRequest("Erro ao excluir Usuário!");
         }
     }
 
@@ -183,8 +76,7 @@ public class UsuarioController : AuthController
         try
         {
 
-            var imagemPerfilUsuario = _imagemPerfilBussiness
-                .FindAll(IdUsuario).Find(prop => prop.IdUsuario.Equals(IdUsuario));
+            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario).Find(prop => prop.UsuarioId.Equals(IdUsuario));
 
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -210,8 +102,8 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
-            ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            var _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
 
             if (_imagemPerfilUsuario != null)
                 return Ok(_imagemPerfilUsuario);
@@ -237,7 +129,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -297,7 +189,7 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    IdUsuario = IdUsuario,
+                    UsuarioId = IdUsuario,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

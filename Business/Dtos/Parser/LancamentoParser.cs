@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Business.Dtos.Parser.Interfaces;
+using Business.Dtos.v1;
 
 namespace Business.Dtos.Parser;
 public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lancamento, LancamentoDto>
@@ -52,7 +53,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             Id = origin.Id,
             DespesaId = origin.IdDespesa,
             ReceitaId = origin.IdReceita,
-            UsuarioId = origin.IdUsuario,
+            UsuarioId = origin.UsuarioId,
             Data = DateTime.Parse(origin.Data),
             DataCriacao = DateTime.Now,
             Valor = origin.Valor,
@@ -68,7 +69,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             Id = origin.Id,
             IdDespesa = origin.DespesaId.Value,
             IdReceita = origin.ReceitaId.Value,
-            IdUsuario = origin.UsuarioId,
+            UsuarioId = origin.UsuarioId,
             Data = origin.Data.ToShortDateString(),
             Valor = origin.Valor,
             Descricao = origin.Descricao,

@@ -1,70 +1,71 @@
-﻿using Business.Abstractions;
-using Business.Dtos;
-using Business.Dtos.Parser;
+﻿using AutoMapper;
+using Business.Abstractions;
+using Business.Dtos.Core;
 using Domain.Entities;
+using Domain.Entities.ValueObjects;
 using Repository.Persistency.Generic;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Implementations;
-public class UsuarioBusinessImpl : IUsuarioBusiness
+public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusiness<Dto> where Dto : UsuarioDtoBase, new()
 {
     private readonly IRepositorio<Usuario> _repositorio;
-    private readonly UsuarioParser _converter;
+    private readonly IMapper _mapper;
 
-    public UsuarioBusinessImpl(IRepositorio<Usuario> repositorio)
+    public UsuarioBusinessImpl(IMapper mapper, IRepositorio<Usuario> repositorio, IUnitOfWork<Usuario> unitOfWork = null) : base(mapper, repositorio, unitOfWork)
     {
+        _mapper = mapper;
         _repositorio = repositorio;
-        _converter = new UsuarioParser();
     }
 
-    public UsuarioDto Create(UsuarioDto usuarioDto)
+    public override Dto Create(Dto usuarioDto)
     {
-        var isValidUsuario = _repositorio.Get(usuarioDto.IdUsuario);
-        if (isValidUsuario.PerfilUsuario != PerfilUsuario.Administrador)
-            throw new ArgumentException("Usuário não permitido a realizar operação!");
-        
-        var usuario = new Usuario().CreateUsuario(
-            usuarioDto.Nome,
-            usuarioDto.SobreNome,
-            usuarioDto.Email,
-            usuarioDto.Telefone,
-            StatusUsuario.Ativo,
-            PerfilUsuario.Usuario);
-
+        IsValidPrefilAdministratdor(usuarioDto);
+        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        usuario = usuario.CreateUsuario(usuario);
         _repositorio.Insert(ref usuario);
-        return _converter.Parse(usuario);
+        return _mapper.Map<Dto>(usuario);
     }
 
-    public List<UsuarioDto> FindAll(int idUsuario)
+    public override List<Dto> FindAll(int idUsuario)
     {
-        var usuario = FindById(idUsuario);
-        if (usuario.PerfilUsuario == PerfilUsuario.Administrador)
-            return _converter.ParseList(_repositorio.GetAll());
-        return null;
-    }      
-
-    public UsuarioDto FindById(int id)
-    {
-        var usuario = _repositorio.Get(id);
-        return _converter.Parse(usuario);
+        var usuario = _repositorio?.Find(u => u.Id == idUsuario)?.FirstOrDefault();
+        IsValidPrefilAdministratdor(usuario);
+        return _mapper.Map<List<Dto>>(_repositorio.GetAll());
     }
-    public UsuarioDto Update(UsuarioDto usuarioDto)
+
+    public override Dto Update(Dto usuarioDto)
     {
-        var usuario = new Usuario
-        {
-            Id = usuarioDto.Id,
-            Nome = usuarioDto.Nome,
-            SobreNome = usuarioDto.SobreNome,
-            Email = usuarioDto.Email,
-            Telefone = usuarioDto.Telefone,
-            StatusUsuario = StatusUsuario.Ativo
-        };
-        
+        var usuario = _mapper.Map<Usuario>(usuarioDto);
         _repositorio.Update(ref usuario);
-        return _converter.Parse(usuario);
+        if (usuario is null) throw new ArgumentException("Usuário não encontrado!");
+        return _mapper.Map<Dto>(usuario);
     }
 
-    public bool Delete(UsuarioDto usuarioDto)
+    public override Dto FindById(int idUsuario)
     {
-        return _repositorio.Delete(new Usuario{ Id = usuarioDto.Id });
+        var usuario = _repositorio?.Find(u => u.Id == idUsuario)?.FirstOrDefault();
+        return this.Mapper.Map<Dto>(usuario);
+    }
+
+    public override bool Delete(Dto usuarioDto)
+    {
+        IsValidPrefilAdministratdor(usuarioDto);
+        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        return _repositorio.Delete(usuario);
+    }
+
+    private void IsValidPrefilAdministratdor(Dto usuarioDto)
+    {
+        var adm = _repositorio.Get(usuarioDto.UsuarioId);
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+            throw new ArgumentException("Usuário não permitido a realizar operação!");
+    }
+
+    private void IsValidPrefilAdministratdor(Usuario usuario)
+    {
+        var adm = _repositorio.Get(usuario.Id);
+        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+            throw new ArgumentException("Usuário não permitido a realizar operação!");
     }
 }
