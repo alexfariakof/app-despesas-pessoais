@@ -37,7 +37,7 @@ else if (builder.Environment.EnvironmentName.Equals("Azure"))
 }
 else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString")));
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? "MySqlConnectionString"));
 }
 else if (builder.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
@@ -72,7 +72,7 @@ app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{
 if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
     app.UseDefaultFiles();
     app.UseStaticFiles();

@@ -39,7 +39,7 @@ public static class SwaggerApiVersioningDependenceInject
             c.DocInclusionPredicate((docName, apiDesc) =>
             {
                 if (!apiDesc.TryGetMethodInfo(out MethodInfo methodInfo)) return false;
-                var controllerNamespace = methodInfo.DeclaringType.Namespace;
+                var controllerNamespace = methodInfo?.DeclaringType?.Namespace;
 
                 if (docName == "v1")
                     return controllerNamespace != null && controllerNamespace.Contains("Controllers.v1");

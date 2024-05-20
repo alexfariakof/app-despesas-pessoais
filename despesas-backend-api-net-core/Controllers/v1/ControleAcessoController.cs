@@ -123,11 +123,7 @@ public class ControleAcessoController : AuthController
 
     private bool IsValidEmail(string email)
     {
-        if (email.Length > 256)
-        {
-            return false;
-        }
-
+        if (email.Length > 256) return false;
         string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
         Regex regex = new Regex(pattern);
         return regex.IsMatch(email);
