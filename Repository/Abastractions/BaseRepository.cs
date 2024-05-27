@@ -50,7 +50,7 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
         return Context.Set<T>().ToList();
     }
 
-    public virtual T Get(int id)
+    public virtual T? Get(int id)
     {
         return Context.Set<T>().Find(id) ?? new();
     }

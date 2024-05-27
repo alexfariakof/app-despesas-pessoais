@@ -68,7 +68,7 @@ public class ControleAcessoController : AuthController
                 return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
             var result = _controleAcessoBusiness.ValidateCredentials(login);            
-            if (result == null) throw new Exception();
+            if (result == null) throw new NullReferenceException();
             return new OkObjectResult(result);
         }
         catch

@@ -12,40 +12,41 @@ public class UsuarioRepositorioImpl : BaseRepository<Usuario>, IRepositorio<Usua
         _context = context;
     }
 
-    public void Insert(ref Usuario entity)
+    public override void Insert(ref Usuario entity)
     {
         var controleAcesso = new ControleAcesso();
         controleAcesso.CreateAccount(entity, Guid.NewGuid().ToString().Substring(0, 8));
-        controleAcesso.Usuario.PerfilUsuario = this._context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
-        controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = this._context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
+        controleAcesso.Usuario.PerfilUsuario = _context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
+        controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = _context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
         _context.Add(controleAcesso);
         _context.SaveChanges();
     }
 
-    public List<Usuario> GetAll()
+    public override List<Usuario> GetAll()
     {
         return _context.Usuario.ToList();
     }
 
-    public Usuario Get(int id)
+    public override Usuario Get(int id)
     {
         return _context.Usuario.Single(prop => prop.Id.Equals(id));
     }
 
-    public void Update(ref Usuario entity)
+    public override void Update(ref Usuario entity)
     {
         var usuarioId = entity.Id;
-        var controleAcesso = _context.Set<ControleAcesso>().Single(prop => prop.UsuarioId.Equals(usuarioId));
-        if (controleAcesso == null)
+        var usuario = _context.Set<Usuario>().Single(prop => prop.Id.Equals(usuarioId));
+        if (usuario == null)
             throw new AggregateException("Usuário não possui conta de acesso!");
 
-        controleAcesso.Usuario.PerfilUsuario = this._context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
-        controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = this._context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
-        _context.Entry(controleAcesso.Usuario).CurrentValues.SetValues(entity);
+        usuario.PerfilUsuario = _context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(usuario.PerfilUsuario.Id));
+        usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = _context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
+        _context.Usuario.Entry(usuario).CurrentValues.SetValues(entity);
         _context.SaveChanges();
+        entity = usuario;
     }
 
-    public bool Delete(Usuario obj)
+    public override bool Delete(Usuario obj)
     {
         var result = _context.Usuario.SingleOrDefault(prop => prop.Id.Equals(obj.Id));
         if (result != null)
@@ -58,7 +59,7 @@ public class UsuarioRepositorioImpl : BaseRepository<Usuario>, IRepositorio<Usua
         return false;
     }
 
-    public bool Exists(int? id)
+    public override bool Exists(int? id)
     {
         return _context.Usuario.Any(prop => prop.Id.Equals(id));
     }

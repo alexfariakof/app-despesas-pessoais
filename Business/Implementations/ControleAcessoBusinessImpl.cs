@@ -35,17 +35,17 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         _repositorio.Create(controleAcesso);
     }
 
-    public AuthenticationDto ValidateCredentials(DtoLogin dto)
+    public AuthenticationDto ValidateCredentials(DtoLogin loginDto)
     {
-        ControleAcesso baseLogin = _repositorio.Find(c => c.Login.Equals(dto.Email)) ?? throw new ArgumentException("Usuário inexistente!");
+        ControleAcesso baseLogin = _repositorio.Find(c => c.Login.Equals(loginDto.Email)) ?? throw new ArgumentException("Usuário inexistente!");
 
         if (baseLogin?.Usuario?.StatusUsuario == StatusUsuario.Inativo)
             return AuthenticationException("Usuário Inativo!");
 
-        if (!Crypto.Instance.IsEquals(dto?.Senha ?? "", baseLogin?.Senha ?? ""))
+        if (!Crypto.Instance.IsEquals(loginDto?.Senha ?? "", baseLogin?.Senha ?? ""))
             return AuthenticationException("Senha inválida!");
 
-        bool credentialsValid = baseLogin != null && dto.Email == baseLogin.Login;
+        bool credentialsValid = baseLogin is not null && loginDto?.Email == baseLogin.Login;
         if (credentialsValid && baseLogin is not null)
         {
             baseLogin.RefreshToken =  _singingConfiguration.TokenConfiguration.GenerateRefreshToken();
@@ -60,14 +60,14 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     {
         var baseLogin = _repositorio.FindByRefreshToken(refreshToken);
         var credentialsValid = 
-            baseLogin != null 
+            baseLogin is not null 
             && baseLogin.RefreshTokenExpiry >= DateTime.UtcNow
             && refreshToken.Equals(baseLogin.RefreshToken)
             && _singingConfiguration.TokenConfiguration.ValidateRefreshToken(refreshToken);
 
         if (credentialsValid && baseLogin is not null)
             return AuthenticationSuccess(baseLogin);
-        else if (baseLogin != null)
+        else if (baseLogin is not null)
             this.RevokeToken(baseLogin.Id);
 
         return AuthenticationException("Refresh Token Inválido!");
@@ -127,7 +127,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         };
     }
 
-    private void IsValidEmail(string email)
+    private static void IsValidEmail(string email)
     {
         if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email não pode ser em branco ou nulo!");

@@ -21,8 +21,8 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 
         try
         {
-            controleAcesso.Usuario.PerfilUsuario = this._context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
-            controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = this._context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
+            controleAcesso.Usuario.PerfilUsuario = _context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
+            controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = _context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
             _context.Add(controleAcesso);
             _context.SaveChanges();
         }
@@ -40,7 +40,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
             var entity = _context.Set<ControleAcesso>().First(c => c.Login.Equals(email));
             var controleAcesso = entity as ControleAcesso;
             controleAcesso.Senha = newPassword;
-            this._context.ControleAcesso.Entry(entity).CurrentValues.SetValues(controleAcesso);
+            _context.ControleAcesso.Entry(entity).CurrentValues.SetValues(controleAcesso);
             _context.SaveChanges();
             return true;
         }
