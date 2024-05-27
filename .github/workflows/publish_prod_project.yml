@@ -7,7 +7,7 @@ on:
 jobs:
   trigger_build_and_test:
     name: Triggered Deploy Prod
-    uses: alexfariakof/despesas-backend-api-net-core/.github/workflows/build_and_test.yml@main
+    uses: alexfariakof/api-backend-despesas/.github/workflows/build_and_test.yml@main
     secrets: inherit     
         
   deploy:
