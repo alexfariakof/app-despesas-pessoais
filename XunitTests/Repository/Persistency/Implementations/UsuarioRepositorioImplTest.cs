@@ -1,46 +1,29 @@
 ﻿using Domain.Entities.ValueObjects;
-using Fakers.v1;
+using Fakers.v2;
+using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
-public sealed class UsuarioRepositorioImplTest
+
+public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
 {
-    private RegisterContext _context;
+    private readonly DatabaseFixture _fixture;
     private UsuarioRepositorioImpl _repository;
 
-    public UsuarioRepositorioImplTest()
+    public UsuarioRepositorioImplTest(DatabaseFixture fixture)
     {
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "UsuarioRepositorioImplTestDatabaseInMemory").Options;
-        _context = new RegisterContext(options);
-
-        _context.TipoCategoria.Add(new TipoCategoria(TipoCategoria.CategoriaType.Despesa));
-        _context.TipoCategoria.Add(new TipoCategoria(TipoCategoria.CategoriaType.Receita));
-        _context.SaveChanges();
-
-        _context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
-        _context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
-        _context.SaveChanges();
-
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(20);
-        lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = _context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
-        _context.AddRange(lstControleAcesso);
-        _context.SaveChanges();
-
-        var usuarios = lstControleAcesso.Select(c => c.Usuario).ToList();
-        var categorias = usuarios.SelectMany(u => u.Categorias).ToList();
-        categorias.ForEach(c => c.TipoCategoria = _context.TipoCategoria.First(tc => tc.Id == c.Id));
-        var dbSetMockCategoria = Usings.MockDbSet(categorias);        
-        _repository = new UsuarioRepositorioImpl(_context);
+        _fixture = fixture;
+        _repository = new UsuarioRepositorioImpl(_fixture.Context);
     }
-/*
+
     [Fact]
     public void Insert_Should_Add_Item_And_SaveChanges()
     {
         // Arrange
         var newUser = UsuarioFaker.Instance.GetNewFaker();
-        
+
         // Act
         _repository.Insert(ref newUser);
-        var insertedUser = newUser;
+        var insertedUser = _fixture.Context.Usuario.Find(newUser.Id);
 
         // Assert
         Assert.NotNull(insertedUser);
@@ -48,37 +31,20 @@ public sealed class UsuarioRepositorioImplTest
     }
 
     [Fact]
-    public void Insert_Should_Throws_Erro_When_Try_To_Insert_New_Usuario()
+    public void Insert_Should_Throws_Exception_When_Try_To_Insert_Null()
     {
         // Arrange
-        var newUser = (Usuario?)null;
-    
-        // Act
-        Action result = () => _repository.Insert(ref newUser);
+        Usuario newUser = null;
 
-        // Assert
-        Assert.NotNull(result);
-        var exception = Assert.Throws<NullReferenceException>(() => _repository.Insert(ref newUser));
+        // Act & Assert
+        Assert.Throws<NullReferenceException>(() => _repository.Insert(ref newUser));
     }
 
-    
     [Fact]
     public void Update_Should_Update_Item_And_SaveChanges()
     {
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Update_Should_Update_Item_And_SaveChanges").Options;
-        var context = new RegisterContext(options);
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
-        context.SaveChanges();
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(2);
-        lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
-        context.AddRange(lstControleAcesso);
-        context.SaveChanges();
-        var repository = new UsuarioRepositorioImpl(context);
-        var existingItem = context.Usuario.First() as Usuario;
-
-        // Act
+        var existingItem = _fixture.Context.Usuario.First(u => u.PerfilUsuario.Id == 2);
         var updatedItem = new Usuario
         {
             Id = existingItem.Id,
@@ -90,27 +56,112 @@ public sealed class UsuarioRepositorioImplTest
             Telefone = existingItem.Telefone
         };
 
-        repository.Update(ref updatedItem);
+        // Act
+        _repository.Update(ref updatedItem);
+        var result = _repository.Get(updatedItem.Id);
 
         // Assert
-        Assert.NotNull(updatedItem);
-        Assert.NotEqual(existingItem, updatedItem);
-        Assert.Equal(updatedItem.Email, updatedItem.Email);
-        Assert.Equal(updatedItem, updatedItem);
+        Assert.NotNull(result);
+        Assert.Equal(updatedItem.Id, result.Id);
+        Assert.Equal(updatedItem.Nome, result.Nome);
+        Assert.Equal(updatedItem.Email, result.Email);
+        Assert.Equal(updatedItem.SobreNome, result.SobreNome);
+        Assert.Equal(updatedItem.PerfilUsuario, result.PerfilUsuario);
+        Assert.Equal(updatedItem.StatusUsuario, result.StatusUsuario);
+        Assert.Equal(updatedItem.Telefone, result.Telefone);
     }
 
     [Fact]
-    public void Delete_With_Non_Existing_Item_Should_Not_Remove_Item_And_Return_False()
+    public void Update_Should_Throws_Exception_When_User_Not_Found()
     {
         // Arrange
-        var entity = new Usuario { Id = 0 };
+        var updatedItem = new Usuario { Id = 999 };
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => _repository.Update(ref updatedItem));
+    }
+
+    [Fact]
+    public void Delete_With_Existing_Item_Should_Set_Status_Inativo_And_SaveChanges()
+    {
+        // Arrange
+        var existingItem = _fixture.Context.Usuario.First();
+
+        // Act
+        var result = _repository.Delete(existingItem);
+        var deletedItem = _fixture.Context.Usuario.Find(existingItem.Id);
+
+        // Assert
+        Assert.True(result);
+        Assert.NotNull(deletedItem);
+        Assert.Equal(StatusUsuario.Inativo, deletedItem.StatusUsuario);
+    }
+
+    [Fact]
+    public void Delete_With_Non_Existing_Item_Should_Return_False()
+    {
+        // Arrange
+        var entity = new Usuario { Id = 999 };
 
         // Act
         var result = _repository.Delete(entity);
 
         // Assert
-        Assert.IsType<bool>(result);
         Assert.False(result);
     }
-*/
+
+    [Fact]
+    public void GetAll_Should_Return_All_Users()
+    {
+        // Act
+        var result = _repository.GetAll();
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(_fixture.Context.Usuario.ToList(), result);
+    }
+
+    [Fact]
+    public void Get_Should_Return_User_By_Id()
+    {
+        // Arrange
+        var existingItem = _fixture.Context.Usuario.First();
+
+        // Act
+        var result = _repository.Get(existingItem.Id);
+
+        // Assert
+        Assert.NotNull(result);
+        Assert.Equal(existingItem, result);
+    }
+
+    [Fact]
+    public void Get_Should_Throws_Exception_When_User_Not_Found()
+    {
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => _repository.Get(999));
+    }
+
+    [Fact]
+    public void Exists_Should_Return_True_When_User_Exists()
+    {
+        // Arrange
+        var existingItem = _fixture.Context.Usuario.First();
+
+        // Act
+        var result = _repository.Exists(existingItem.Id);
+
+        // Assert
+        Assert.True(result);
+    }
+
+    [Fact]
+    public void Exists_Should_Return_False_When_User_Not_Exists()
+    {
+        // Act
+        var result = _repository.Exists(999);
+
+        // Assert
+        Assert.False(result);
+    }
 }

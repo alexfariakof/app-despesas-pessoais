@@ -21,8 +21,8 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 
         try
         {
-            controleAcesso.Usuario.PerfilUsuario = this._context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
-            controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = this._context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
+            controleAcesso.Usuario.PerfilUsuario = _context.Set<PerfilUsuario>().First(perfil => perfil.Id.Equals(controleAcesso.Usuario.PerfilUsuario.Id));
+            controleAcesso.Usuario.Categorias.ToList().ForEach(c => c.TipoCategoria = _context.Set<TipoCategoria>().First(tc => tc.Id.Equals(c.TipoCategoria.Id)));
             _context.Add(controleAcesso);
             _context.SaveChanges();
         }
@@ -33,17 +33,16 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 
     }
 
-    public bool RecoveryPassword(string email)
+    public bool RecoveryPassword(string email, string newPassword)
     {
         try
         {
             var entity = _context.Set<ControleAcesso>().First(c => c.Login.Equals(email));
             var controleAcesso = entity as ControleAcesso;
-            controleAcesso.Senha = Guid.NewGuid().ToString().Substring(0, 8);
-            this._context.ControleAcesso.Entry(entity).CurrentValues.SetValues(controleAcesso);
+            controleAcesso.Senha = newPassword;
+            _context.ControleAcesso.Entry(entity).CurrentValues.SetValues(controleAcesso);
             _context.SaveChanges();
             return true;
-
         }
         catch
         {
@@ -68,12 +67,6 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         {
             throw new Exception("ChangePassword_Erro", ex);
         }
-    }
-
-    public bool IsValidPassword(string email, string encryptyPassword)
-    {
-        var senhaToCompare = _context.Set<ControleAcesso>().Single(prop => prop.Login.Equals(email)).Senha;
-        return encryptyPassword.Equals(senhaToCompare);
     }
 
     public void RevokeRefreshToken(int idUsuario)

@@ -4,7 +4,7 @@ cls
 $baseDirectory = Get-Location
 $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"
 $sourceDirs = "$baseDirectory\Business;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\despesas-backend-api-net-core;"
-$filefilters = "$baseDirectory\DataSeeders\**;$baseDirectory\Migrations.MySqlServer\**;$baseDirectory\Migrations.MsSqlServer\**;$baseDirectory\CrossCutting\**"
+$filefilters = "$baseDirectory\DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\CrossCutting\**;-$baseDirectory\Business\HyperMedia\**"
 $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
 $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
 
@@ -35,6 +35,7 @@ Remove-TestPath-Results
 
 # Executa o teste e coleta o GUID gerado
 dotnet clean > $null 2>&1
+dotnet build ./XunitTests/XUnit.Tests > $null 2>&1
 dotnet test ./XunitTests/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
 Invoke-Item $coverageXmlPath\index.html

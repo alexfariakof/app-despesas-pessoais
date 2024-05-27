@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CrossCutting\CrossCutting.csproj" />
+		<ProjectReference Include="..\Cryptography\Cryptography.csproj" />
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 		<ProjectReference Include="..\Repository\Repository.csproj" />
 	</ItemGroup>

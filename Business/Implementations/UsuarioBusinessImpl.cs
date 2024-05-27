@@ -31,7 +31,7 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
     {
         var usuario = _repositorio?.Find(u => u.Id == idUsuario)?.FirstOrDefault();
         IsValidPrefilAdministratdor(usuario);
-        return _mapper.Map<List<Dto>>(_repositorio.GetAll());
+        return _mapper.Map<List<Dto>>(_repositorio?.GetAll());
     }
 
     public override Dto Update(Dto usuarioDto)

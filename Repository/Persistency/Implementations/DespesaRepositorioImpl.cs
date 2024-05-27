@@ -12,30 +12,32 @@ public class DespesaRepositorioImpl : BaseRepository<Despesa>, IRepositorio<Desp
         _context = context;
     }
 
-    public override Despesa Get(int id)
+    public override Despesa? Get(int id)
     {
         return _context.Despesa.Include(d => d.Categoria).Include(d => d.Usuario).FirstOrDefault(d => d.Id.Equals(id));
     }
 
     public override List<Despesa> GetAll()
     {
-        return _context.Despesa.Include(d => d.Categoria).Include(d => d.Usuario).ToList() ?? new();
+        return _context.Despesa.Include(d => d.Categoria).Include(d => d.Usuario).ToList();
     }
 
     public override void Insert(ref Despesa entity)
     {
         var categoriaId = entity.CategoriaId;
-        entity.Categoria = this._context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
+        entity.Categoria = _context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
         _context.Add(entity);
         _context.SaveChanges();
     }
 
     public override void Update(ref Despesa entity)
     {
+        var despesaId = entity.Id;
         var categoriaId = entity.CategoriaId;
-        entity.Categoria = this._context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
-        var existingEntity = _context.Despesa.Find(entity.Id);
-        _context.Entry(existingEntity).CurrentValues.SetValues(entity);
-        _context.SaveChanges();
+        entity.Categoria = _context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
+        var existingEntity = _context.Despesa.Single(d => d.Id.Equals(despesaId));
+        _context?.Entry(existingEntity).CurrentValues.SetValues(entity);        
+        _context?.SaveChanges();
+        entity = existingEntity;
     }
 }

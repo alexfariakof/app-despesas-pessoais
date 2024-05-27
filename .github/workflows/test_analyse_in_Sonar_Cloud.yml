@@ -75,13 +75,12 @@ jobs:
           $baseDirectory = Get-Location
           $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"
           $sourceDirs = "$baseDirectory\Business;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\despesas-backend-api-net-core;"
-          $filefilters = "$baseDirectory\DataSeeders\**;$baseDirectory\Migrations.MySqlServer\**;$baseDirectory\Migrations.MsSqlServer\**;$baseDirectory\CrossCutting\**"
+          $filefilters = "$baseDirectory\DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\CrossCutting\**;-$baseDirectory\Business\HyperMedia\**"
           $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
           $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
           
           # Executa Build Restore com Teste e coleta o GUID gerado          
           dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-
           reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
           
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

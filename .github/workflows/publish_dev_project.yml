@@ -10,7 +10,7 @@ permissions:
 jobs:
   trigger_build_and_test:
     name: Triggered Deploy Dev
-    uses: alexfariakof/despesas-backend-api-net-core/.github/workflows/build_and_test.yml@main
+    uses: alexfariakof/api-backend-despesas/.github/workflows/build_and_test.yml@main
     secrets: inherit     
 
         
@@ -57,6 +57,6 @@ jobs:
   trigger_e2e_tests:
     needs: deploy_dev
     name: Tests End-to-End Triggered
-    uses: alexfariakof/despesas-backend-api-net-core/.github/workflows/tests_E2E.yml@main
+    uses: alexfariakof/api-backend-despesas/.github/workflows/tests_E2E.yml@main
     secrets: inherit
 

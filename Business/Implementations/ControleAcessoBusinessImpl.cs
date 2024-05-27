@@ -2,13 +2,12 @@
 using Business.Abstractions;
 using Business.Authentication;
 using Business.Dtos.Core;
-using Domain.Core;
+using Cryptography;
 using Domain.Core.Interfaces;
 using Domain.Entities;
 using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text.RegularExpressions;
 
 namespace Business.Implementations;
@@ -18,14 +17,12 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
     private readonly SigningConfigurations _singingConfiguration;
-    private readonly TokenConfiguration _tokenConfiguration;   
 
-    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, SigningConfigurations singingConfiguration, TokenConfiguration tokenConfiguration, IEmailSender emailSender)
+    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, SigningConfigurations singingConfiguration, IEmailSender emailSender)
     {
         _mapper = mapper;
         _repositorio = repositorio;
         _singingConfiguration = singingConfiguration;
-        _tokenConfiguration = tokenConfiguration;
         _emailSender = emailSender;
     }
 
@@ -34,28 +31,25 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         var usuario = _mapper.Map<Usuario>(controleAcessoDto);
         usuario = new Usuario().CreateUsuario(usuario);
         ControleAcesso controleAcesso = new ControleAcesso();
-        controleAcesso.CreateAccount(usuario, controleAcessoDto.Senha);
+        controleAcesso.CreateAccount(usuario, controleAcessoDto.Senha ?? "");
         _repositorio.Create(controleAcesso);
     }
 
-    public AuthenticationDto ValidateCredentials(DtoLogin login)
+    public AuthenticationDto ValidateCredentials(DtoLogin loginDto)
     {
-        ControleAcesso? baseLogin = _repositorio.Find(c => c.Login.Equals(login.Email));
+        ControleAcesso baseLogin = _repositorio.Find(c => c.Login.Equals(loginDto.Email)) ?? throw new ArgumentException("Usuário inexistente!");
 
-        if (baseLogin is null)
-            return AuthenticationException("Usuário inexistente!");                
-        else if (baseLogin.Usuario.StatusUsuario == StatusUsuario.Inativo)
+        if (baseLogin?.Usuario?.StatusUsuario == StatusUsuario.Inativo)
             return AuthenticationException("Usuário Inativo!");
-        
-        baseLogin.Senha = login.Senha;
-        if (!_repositorio.IsValidPassword(login.Email, baseLogin.Senha))
+
+        if (!Crypto.Instance.IsEquals(loginDto?.Senha ?? "", baseLogin?.Senha ?? ""))
             return AuthenticationException("Senha inválida!");
 
-        bool credentialsValid = baseLogin != null && login.Email == baseLogin.Login;
-        if (credentialsValid)
+        bool credentialsValid = baseLogin is not null && loginDto?.Email == baseLogin.Login;
+        if (credentialsValid && baseLogin is not null)
         {
-            baseLogin.RefreshToken = _tokenConfiguration.GenerateRefreshToken();
-            baseLogin.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_tokenConfiguration.DaysToExpiry);         
+            baseLogin.RefreshToken =  _singingConfiguration.TokenConfiguration.GenerateRefreshToken();
+            baseLogin.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_singingConfiguration.TokenConfiguration.DaysToExpiry);         
             _repositorio.RefreshTokenInfo(baseLogin);
             return AuthenticationSuccess(baseLogin);
         }
@@ -66,14 +60,14 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     {
         var baseLogin = _repositorio.FindByRefreshToken(refreshToken);
         var credentialsValid = 
-            baseLogin != null 
+            baseLogin is not null 
             && baseLogin.RefreshTokenExpiry >= DateTime.UtcNow
             && refreshToken.Equals(baseLogin.RefreshToken)
-            && _tokenConfiguration.ValidateRefreshToken(refreshToken);
+            && _singingConfiguration.TokenConfiguration.ValidateRefreshToken(refreshToken);
 
         if (credentialsValid && baseLogin is not null)
             return AuthenticationSuccess(baseLogin);
-        else if (baseLogin != null)
+        else if (baseLogin is not null)
             this.RevokeToken(baseLogin.Id);
 
         return AuthenticationException("Refresh Token Inválido!");
@@ -87,10 +81,11 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     public void RecoveryPassword(string email)
     {
         IsValidEmail(email);
-        var result = _repositorio.RecoveryPassword(email);
+        var newPassword = Guid.NewGuid().ToString().Substring(0, 8);
+        var result = _repositorio.RecoveryPassword(email, newPassword);
         var controleAcesso = _repositorio.Find(c => c.Login.Equals(email));
 
-        if (result && _emailSender.SendEmailPassword(controleAcesso.Usuario, Crypto.GetInstance.Decrypt(controleAcesso.Senha)))
+        if (result && _emailSender.SendEmailPassword(controleAcesso?.Usuario, newPassword))
             throw new ArgumentException("Erro ao enviar email de recuperação de senha!");
     }
 
@@ -111,17 +106,15 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     private AuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
     {
 
-        ClaimsIdentity identity = new ClaimsIdentity(
-            new GenericIdentity(controleAcesso.Login, "Login"),
-            new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-                new Claim(JwtRegisteredClaimNames.UniqueName, controleAcesso.Login)
-            });
+        ClaimsIdentity identity = new ClaimsIdentity(new[]
+        {
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
+            new Claim("IdUsuario",  controleAcesso.UsuarioId.ToString())
+        });
 
         DateTime createDate = DateTime.Now;
-        DateTime expirationDate = createDate + TimeSpan.FromSeconds(_tokenConfiguration.Seconds);        
-        string token = _singingConfiguration.GenerateAccessToken(identity, _tokenConfiguration, controleAcesso.Usuario.Id);
+        DateTime expirationDate = createDate + TimeSpan.FromSeconds(_singingConfiguration.TokenConfiguration.Seconds);        
+        string token = _singingConfiguration.CreateAccessToken(identity);
 
         return new AuthenticationDto
         {
@@ -134,7 +127,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         };
     }
 
-    private void IsValidEmail(string email)
+    private static void IsValidEmail(string email)
     {
         if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(email))
             throw new ArgumentException("Email não pode ser em branco ou nulo!");

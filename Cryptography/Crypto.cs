@@ -1,53 +1,64 @@
-﻿using Domain.Core.Interfaces;
+﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Domain.Core;
+namespace Cryptography;
+
 public class Crypto : ICrypto
 {
-    private readonly byte[] Key; // Chave fixa de 256 bits
-    private static ICrypto? Instance;
+    private readonly byte[] Key; // Chave fixa de 256 bits    
     private static readonly object LockObject = new object();
-    public static ICrypto GetInstance
+    private static ICrypto? _crypto;
+
+    public static ICrypto Instance
+
     {
         get
         {
             lock (LockObject)
             {
-                if (Instance == null)
+                if (_crypto == null)
                 {
-                    Instance = new Crypto();
+                    _crypto = new Crypto();
                 }
 
-                return Instance;
+                return _crypto;
             }
         }
     }
+
     private Crypto()
     {
-        var key = GetHashKey();
+        var key = CreateHashKey();
         var keyByte = Convert.FromBase64String(key);
-        Key = keyByte;
+        this.Key = keyByte;
     }
 
-    private string? GetHashKey()
+    public Crypto(IOptions<CryptoOptions> options)
+    {
+        var key = options?.Value?.Key?.ToUpper() ?? "";
+        var keyByte = Convert.FromBase64String(key);
+        this.Key = keyByte;
+    }
+
+    private string CreateHashKey()
     {
         var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-
         if (File.Exists(jsonFilePath))
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);
-            var cryptoKey = config["Crypto"]?["Key"]?.ToString();
-
+            var cryptoKey = config["Crypto"]?["Key"]?.ToString() ?? "";
+            ValidateKey(cryptoKey);
             return cryptoKey;
         }
         else
         {
-            throw new ArgumentException("Arquivo com chave de criptografia não encontrado");
+            throw new ArgumentException("Arquivo appsettings.json não encontrado.");
         }
     }
+
     public string Encrypt(string password)
     {
         byte[] iv = GenerateIV();
@@ -68,7 +79,7 @@ public class Crypto : ICrypto
         }
     }
 
-    public string Decrypt(string encryptedText)
+    private string Decrypt(string encryptedText)
     {
         byte[] encryptedData = Convert.FromBase64String(encryptedText);
         byte[] iv = new byte[16];
@@ -88,21 +99,28 @@ public class Crypto : ICrypto
             return Encoding.UTF8.GetString(decryptedBytes);
         }
     }
+
+    public bool IsEquals(string plaintText, string encryptedText)
+    {
+        return this.Decrypt(encryptedText) == plaintText;
+    }
+
     private static byte[] GenerateIV()
     {
         byte[] iv = new byte[16];
-        using (RNGCryptoServiceProvider rngCsp = new RNGCryptoServiceProvider())
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
         {
-            rngCsp.GetBytes(iv);
+            rng.GetBytes(iv);
         }
-
         return iv;
     }
+
     private static byte[] PerformCryptography(string data, ICryptoTransform transform)
     {
         byte[] inputBytes = Encoding.UTF8.GetBytes(data);
         return PerformCryptography(inputBytes, transform);
     }
+
     private static byte[] PerformCryptography(byte[] data, ICryptoTransform transform)
     {
         using (MemoryStream memoryStream = new MemoryStream())
@@ -114,5 +132,20 @@ public class Crypto : ICrypto
                 return memoryStream.ToArray();
             }
         }
+    }
+
+    private void ValidateKey(string cryptoKey)
+    {
+        if (!cryptoKey.All(IsHexadecimalDigit))
+            throw new ArgumentException("A chave obtida contém caracteres inválidos.");
+
+
+        if (cryptoKey.Length != 32)
+            throw new ArgumentException("A chave obtida não é uma string válida da Base-64.");
+    }
+
+    private bool IsHexadecimalDigit(char c)
+    {
+        return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
     }
 }

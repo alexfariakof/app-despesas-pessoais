@@ -3,7 +3,7 @@
 namespace Business.Abstractions;
 public interface IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : class where DtoLogin : class
 {
-    AuthenticationDto ValidateCredentials(DtoLogin login);
+    AuthenticationDto ValidateCredentials(DtoLogin loginDto);
     AuthenticationDto ValidateCredentials(string refreshToken);
     void Create(DtoCa controleAcessoDto);
     void ChangePassword(int idUsuario, string password);
