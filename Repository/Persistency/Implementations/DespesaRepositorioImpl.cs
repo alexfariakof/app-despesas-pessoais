@@ -32,9 +32,10 @@ public class DespesaRepositorioImpl : BaseRepository<Despesa>, IRepositorio<Desp
 
     public override void Update(ref Despesa entity)
     {
+        var despesaId = entity.Id;
         var categoriaId = entity.CategoriaId;
         entity.Categoria = _context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
-        var existingEntity = _context.Despesa.Find(entity.Id);
+        var existingEntity = _context.Despesa.Single(d => d.Id.Equals(despesaId));
         _context?.Entry(existingEntity).CurrentValues.SetValues(entity);        
         _context?.SaveChanges();
         entity = existingEntity;

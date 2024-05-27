@@ -21,7 +21,7 @@ public class CategoriaRepositorioImpl : BaseRepository<Categoria>, IRepositorio<
 
     public override List<Categoria> GetAll()
     {
-        return _context.Categoria.Include(d => d.TipoCategoria).Include(d => d.Usuario).ToList() ?? new();
+        return _context.Categoria.Include(d => d.TipoCategoria).Include(d => d.Usuario).ToList();
     }
 
     public override void Insert(ref Categoria entity)

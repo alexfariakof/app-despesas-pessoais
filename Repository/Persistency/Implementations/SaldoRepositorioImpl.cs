@@ -9,6 +9,7 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
     {
         _context = context;
     }
+
     public decimal GetSaldo(int idUsuario)
     {
         try

@@ -32,11 +32,12 @@ public class ReceitaRepositorioImpl : BaseRepository<Receita>, IRepositorio<Rece
 
     public override void Update(ref Receita entity)
     {
+        var receitaId = entity.Id;
         var categoriaId = entity.CategoriaId;
         entity.Categoria = _context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
-        var existingEntity = _context.Receita.Find(entity.Id);
-        this?._context?.Entry(existingEntity).CurrentValues.SetValues(entity);
-        _context.SaveChanges();
+        var existingEntity = _context.Receita.Single(prop => prop.Id.Equals(receitaId));
+        _context?.Entry(existingEntity).CurrentValues.SetValues(entity);
+        _context?.SaveChanges();
         entity = existingEntity;
     }
 }
