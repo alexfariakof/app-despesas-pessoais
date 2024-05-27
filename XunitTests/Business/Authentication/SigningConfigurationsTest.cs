@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Authentication;
 public sealed class SigningConfigurationsTest
@@ -7,7 +8,14 @@ public sealed class SigningConfigurationsTest
     public void SigningConfigurations_Should_Initialize_Correctly()
     {
         // Arrange & Act
-        var signingConfigurations = new SigningConfigurations();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "XUnit-Issuer",
+            Audience = "XUnit-Audience",
+            Seconds = 3600
+        });
+
+        var signingConfigurations = new SigningConfigurations(options);
 
         // Assert
         Assert.NotNull(signingConfigurations.Key);
@@ -18,7 +26,14 @@ public sealed class SigningConfigurationsTest
     public void Key_Should_Be_RSA_SecurityKey()
     {
         // Arrange
-        var signingConfigurations = new SigningConfigurations();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "XUnit-Issuer",
+            Audience = "XUnit-Audience",
+            Seconds = 3600
+        });
+
+        var signingConfigurations = new SigningConfigurations(options);
 
         // Assert
         Assert.IsType<RsaSecurityKey>(signingConfigurations.Key);
@@ -28,7 +43,14 @@ public sealed class SigningConfigurationsTest
     public void SigningCredentials_Should_Be_Correct_Algorithm()
     {
         // Arrange
-        var signingConfigurations = new SigningConfigurations();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "XUnit-Issuer",
+            Audience = "XUnit-Audience",
+            Seconds = 3600
+        });
+
+        var signingConfigurations = new SigningConfigurations(options);
 
         // Assert
         Assert.NotNull(signingConfigurations.SigningCredentials.Algorithm);

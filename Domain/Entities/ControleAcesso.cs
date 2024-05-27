@@ -1,4 +1,5 @@
-﻿using Domain.Core;
+﻿using Cryptography;
+using Domain.Core;
 
 namespace Domain.Entities;
 public class ControleAcesso : BaseModel
@@ -14,7 +15,7 @@ public class ControleAcesso : BaseModel
     public string Senha
     {
         get => _senha;
-        set => _senha = Crypto.GetInstance.Encrypt(value);
+        set => _senha = Crypto.Instance.Encrypt(value);
     }
     public int UsuarioId { get; set; }
 

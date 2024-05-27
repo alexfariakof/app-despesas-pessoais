@@ -83,6 +83,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
     public void RecoveryPassword_Should_Returns_True()
     {
         // Arrange
+        var newPassword = "!12345";
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RecoveryPassword_Should_Returns_True").Options;
         var context = new RegisterContext(options);
         context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
@@ -96,7 +97,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var repository = new Mock<ControleAcessoRepositorioImpl>(context);        
 
         // Act
-        var result = repository.Object.RecoveryPassword(mockControleAcesso.Login);
+        var result = repository.Object.RecoveryPassword(mockControleAcesso.Login, newPassword);
 
         //Assert
         Assert.IsType<bool>(result);
@@ -112,26 +113,24 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var mockUsuario = new Usuario { Email = string.Empty };
         var mockControleAcesso = context.ControleAcesso.ToList().First();
         context.Usuario = Usings.MockDbSet(new List<Usuario> { mockUsuario }).Object;
+        var newPassword = "!12345";
         ControleAcesso MockControleAcesso = new ControleAcesso
         {
             Id = mockControleAcesso.Id,
             Login = mockControleAcesso.Login,
-            Senha = "!12345",
+            Senha = newPassword,
             Usuario = mockControleAcesso.Usuario,
             UsuarioId = mockControleAcesso.UsuarioId
         };
-        context.ControleAcesso = Usings
-            .MockDbSet(new List<ControleAcesso> { MockControleAcesso })
-            .Object;
+        context.ControleAcesso = Usings.MockDbSet(new List<ControleAcesso> { MockControleAcesso }).Object;
 
         context.SaveChanges();
-
         var emailSender = new Mock<EmailSender>();
         mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(mockControleAcesso);
-        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login)).Returns(false);
+        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login, It.IsAny<string>())).Returns(false);
 
         // Act
-        var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
+        var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login, newPassword);
 
         //Assert
         Assert.IsType<bool>(result);
@@ -151,7 +150,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var mockControleAcesso = dataset.First();
 
         // Act
-        var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login);
+        var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login, "newPassword");
 
         //Assert
         Assert.IsType<bool>(result);
@@ -226,69 +225,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         Assert.Equal("ChangePassword_Erro", exception.Message);
         Assert.True(true);
     }
-
-    [Fact]
-    public void IsValidPassword_Should_Returns_True()
-    {
-        // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "IsValidPassword_Should_Returns_True").Options;
-        var context = new RegisterContext(options);
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
-        context.SaveChanges();
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(2);
-        lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
-        context.AddRange(lstControleAcesso);
-        context.SaveChanges();
-        var controleAcesso = context.ControleAcesso.Take(4).Last();                
-        context.ControleAcesso.Update(controleAcesso);
-        context.SaveChanges();
-        ControleAcesso _controleAcesso = new ControleAcesso
-        {
-            Id = controleAcesso.Id,
-            Login = controleAcesso.Login,
-            Senha = "!12345",
-            Usuario = controleAcesso.Usuario,
-            UsuarioId = controleAcesso.UsuarioId
-        };
-        var repository = new ControleAcessoRepositorioImpl(context);
-
-        // Act
-        var result = repository.IsValidPassword(_controleAcesso.Login, controleAcesso.Senha);
-
-        //Assert
-        Assert.IsType<bool>(result);
-        Assert.True(result);
-    }
-
-    [Fact]
-    public void IsValidPassword_Should_Returns_False()
-    {
-        // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var controleAcesso = context.ControleAcesso.ToList().First();
-        controleAcesso.Senha = Crypto.GetInstance.Encrypt("!12345");
-        ControleAcesso _controleAcesso = new ControleAcesso
-        {
-            Id = controleAcesso.Id,
-            Login = controleAcesso.Login,
-            Senha = "!123456",
-            Usuario = controleAcesso.Usuario,
-            UsuarioId = controleAcesso.UsuarioId
-        };
-
-        mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(controleAcesso);
-        mockRepository.Setup(repo => repo.IsValidPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-
-        // Act
-        var result = mockRepository.Object.IsValidPassword(controleAcesso.Login, "!123456");
-
-        //Assert
-        Assert.IsType<bool>(result);
-        Assert.False(result);
-    }
-
+     
     [Fact]
     public void Create_Should_Throw_Exception_When_User_Already_Exists()
     {

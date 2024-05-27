@@ -33,17 +33,16 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 
     }
 
-    public bool RecoveryPassword(string email)
+    public bool RecoveryPassword(string email, string newPassword)
     {
         try
         {
             var entity = _context.Set<ControleAcesso>().First(c => c.Login.Equals(email));
             var controleAcesso = entity as ControleAcesso;
-            controleAcesso.Senha = Guid.NewGuid().ToString().Substring(0, 8);
+            controleAcesso.Senha = newPassword;
             this._context.ControleAcesso.Entry(entity).CurrentValues.SetValues(controleAcesso);
             _context.SaveChanges();
             return true;
-
         }
         catch
         {
@@ -68,12 +67,6 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         {
             throw new Exception("ChangePassword_Erro", ex);
         }
-    }
-
-    public bool IsValidPassword(string email, string encryptyPassword)
-    {
-        var senhaToCompare = _context.Set<ControleAcesso>().Single(prop => prop.Login.Equals(email)).Senha;
-        return encryptyPassword.Equals(senhaToCompare);
     }
 
     public void RevokeRefreshToken(int idUsuario)

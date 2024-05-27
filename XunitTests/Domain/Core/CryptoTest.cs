@@ -1,6 +1,6 @@
-﻿using Domain.Core.Interfaces;
+﻿using Cryptography;
 
-namespace Domain.Core;
+namespace Domain.Core.Cryptography;
 public sealed class CryptoTest
 {
     public CryptoTest() { }
@@ -10,15 +10,16 @@ public sealed class CryptoTest
     {
         // Arrange
         string originalText = "!12345";
-        ICrypto crypto = Crypto.GetInstance;
+        ICrypto crypto = Crypto.Instance;
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        string decryptedText = crypto.Decrypt(encryptedText);
+        var IsEquals = crypto.IsEquals(originalText, encryptedText);
+
 
         // Assert
         Assert.NotEqual(originalText, encryptedText);
-        Assert.Equal(originalText, decryptedText);
+        Assert.True(IsEquals);
     }
 
     [Fact]
@@ -26,7 +27,7 @@ public sealed class CryptoTest
     {
         // Arrange
         string originalText = "!12345";
-        ICrypto crypto = Crypto.GetInstance;
+        ICrypto crypto = Crypto.Instance;
 
         // Act
         string encryptedText1 = crypto.Encrypt(originalText);

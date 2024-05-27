@@ -1,5 +1,4 @@
 ﻿using Domain.Core;
-using Domain.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.CommonDependenceInject;
@@ -8,6 +7,7 @@ using Repository.Persistency.Abstractions;
 using Business.Abstractions;
 using Repository.Persistency.UnitOfWork.Abstractions;
 using Repository.UnitOfWork;
+using Domain.Core.Interfaces;
 
 namespace CommonDependenceInject;
 public sealed class ServicesDependenceInjectTest

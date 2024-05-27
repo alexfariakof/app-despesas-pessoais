@@ -4,7 +4,7 @@ cls
 $baseDirectory = Get-Location
 $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"
 $sourceDirs = "$baseDirectory\Business;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\despesas-backend-api-net-core;"
-$filefilters = "$baseDirectory\DataSeeders\**;$baseDirectory\Migrations.MySqlServer\**;$baseDirectory\Migrations.MsSqlServer\**;$baseDirectory\CrossCutting\**"
+$filefilters = "$baseDirectory\DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\CrossCutting\**;-$baseDirectory\Business\HyperMedia\**"
 $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
 $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
 

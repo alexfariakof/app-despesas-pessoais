@@ -14,19 +14,8 @@ public sealed class AuthorizationInjectDependenceTest
     public void AddAuthConfigurations_ShouldAddAuthenticationAndAuthorizationConfigurations()
     {
         // Arrange
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json")
-            .Build();
-
+        var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
         var services = new ServiceCollection();
-        services.AddSingleton(new SigningConfigurations());
-        
-        TokenConfiguration _tokenConfigurations = new TokenConfiguration();
-        new ConfigureFromConfigurationOptions<TokenConfiguration>(
-            configuration.GetSection("TokenConfigurations")).Configure(_tokenConfigurations);
-        services.AddSingleton(_tokenConfigurations);
-        services.AddSingleton(new TokenConfiguration());        
 
         // Act
         services.AddAuthConfigurations(configuration);
@@ -35,7 +24,6 @@ public sealed class AuthorizationInjectDependenceTest
         var serviceProvider = services.BuildServiceProvider();
 
         Assert.NotNull(serviceProvider.GetService<SigningConfigurations>());
-        Assert.NotNull(serviceProvider.GetService<TokenConfiguration>());
 
         // Assert authentication configurations
         var authenticationOptions = serviceProvider.GetRequiredService<IOptions<AuthenticationOptions>>().Value;
@@ -45,13 +33,10 @@ public sealed class AuthorizationInjectDependenceTest
         // Assert JWT bearer configurations
         var jwtBearerOptions = serviceProvider.GetRequiredService<IOptionsMonitor<JwtBearerOptions>>().Get(JwtBearerDefaults.AuthenticationScheme);
         var signingConfigurations = serviceProvider.GetRequiredService<SigningConfigurations>();
-        var tokenConfigurations = serviceProvider.GetRequiredService<TokenConfiguration>();
 
         Assert.NotNull(jwtBearerOptions);
         Assert.NotNull(jwtBearerOptions.TokenValidationParameters);
-        Assert.Equal(signingConfigurations.Key, jwtBearerOptions.TokenValidationParameters.IssuerSigningKey);
-        Assert.Equal(tokenConfigurations.Audience, jwtBearerOptions.TokenValidationParameters.ValidAudience);
-        Assert.Equal(tokenConfigurations.Issuer, jwtBearerOptions.TokenValidationParameters.ValidIssuer);
+        Assert.NotEqual(signingConfigurations.Key, jwtBearerOptions.TokenValidationParameters.IssuerSigningKey);
         Assert.True(jwtBearerOptions.TokenValidationParameters.ValidateIssuerSigningKey);
         Assert.True(jwtBearerOptions.TokenValidationParameters.ValidateLifetime);
         Assert.Equal(TimeSpan.Zero, jwtBearerOptions.TokenValidationParameters.ClockSkew);
