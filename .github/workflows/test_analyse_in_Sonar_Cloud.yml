@@ -68,14 +68,14 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/DataSeeders/**, **/CrossCutting/**" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"
           dotnet tool install -g dotnet-reportgenerator-globaltool
             
           # Encontra o diretório mais recente na pasta TestResults
           $baseDirectory = Get-Location
           $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"
-          $sourceDirs = "$baseDirectory\Business;$baseDirectory\Domain;$baseDirectory\Repository;$baseDirectory\despesas-backend-api-net-core;"
-          $filefilters = "$baseDirectory\DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\CrossCutting\**;-$baseDirectory\Business\HyperMedia\**"
+          $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;$baseDirectory\Despesas.WebApi;$baseDirectory\Despesas.Infrastructure"
+          $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"
           $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
           $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
           
