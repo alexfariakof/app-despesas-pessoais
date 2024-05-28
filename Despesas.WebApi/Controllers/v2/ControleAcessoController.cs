@@ -73,7 +73,7 @@ public class ControleAcessoController : AuthController
             if (IdUsuario.Equals(2))
                 throw new ArgumentException("A senha deste usuário não pode ser atualizada!");
 
-            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha);
+            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha ?? "");
             return Ok(true);
         }
         catch (Exception ex)

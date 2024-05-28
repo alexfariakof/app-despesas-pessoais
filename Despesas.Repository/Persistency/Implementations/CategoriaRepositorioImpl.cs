@@ -26,7 +26,7 @@ public class CategoriaRepositorioImpl : BaseRepository<Categoria>, IRepositorio<
 
     public override void Insert(ref Categoria entity)
     {
-        var tipoCategoriaId = entity.TipoCategoria.Id;
+        var tipoCategoriaId = entity?.TipoCategoria?.Id;
         entity.TipoCategoria = Context.Set<TipoCategoria>().First(tc => tc.Id.Equals(tipoCategoriaId));
         Context.Categoria.Add(entity);
         Context.SaveChanges();
@@ -34,9 +34,9 @@ public class CategoriaRepositorioImpl : BaseRepository<Categoria>, IRepositorio<
 
     public override void Update(ref Categoria entity)
     {
-        var tipoCategoriaId = entity.TipoCategoria.Id;
+        var tipoCategoriaId = entity?.TipoCategoria?.Id;
         entity.TipoCategoria = Context.Set<TipoCategoria>().First(tc => tc.Id.Equals(tipoCategoriaId));
-        var existingEntity = Context.Categoria.Find(entity.Id);
+        var existingEntity = Context.Categoria.Find(entity.Id) ?? throw new();
         Context?.Entry(existingEntity).CurrentValues.SetValues(entity);
         Context?.SaveChanges();
     }

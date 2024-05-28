@@ -11,6 +11,7 @@ public static class AutorizationDependenceInject
     {
         services.Configure<TokenOptions>(configuration.GetSection("TokenConfigurations"));
         var options = services.BuildServiceProvider().GetService<IOptions<TokenOptions>>();
+        if (options is null) throw new ArgumentNullException(nameof(options));
         var signingConfigurations = new SigningConfigurations(options);
         services.AddSingleton<SigningConfigurations>(signingConfigurations);
         services.AddAuthentication(authOptions =>

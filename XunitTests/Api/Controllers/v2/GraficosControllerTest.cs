@@ -43,7 +43,7 @@ public sealed class GraficosControllerTest
         int idUsuario = 1;
         DateTime anoMes = DateTime.Today;
         Usings.SetupBearerToken(0, _GraficoController);
-        _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(idUsuario, anoMes)).Throws(new Exception());
+        _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(It.IsAny<int>(), It.IsAny<DateTime>())).Throws(new Exception());
 
         // Act
         var result = _GraficoController.GetByAnoByIdUsuario(anoMes) as ObjectResult;
