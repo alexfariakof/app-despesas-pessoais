@@ -24,7 +24,7 @@ public sealed class UpdateCommandHandler<T> : IRequestHandler<UpdateCommand<T>, 
         if (existingEntity is null)
             throw new InvalidOperationException($"{ nameof(existingEntity) } not found !");
 
-        await _unitOfWork.Repository.Update(ref entityToUpdate);
+        await _unitOfWork.Repository.Update(entityToUpdate);
         await _unitOfWork.CommitAsync();
         return entityToUpdate;        
     }

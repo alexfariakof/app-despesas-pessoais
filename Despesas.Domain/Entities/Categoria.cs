@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 namespace Domain.Entities;
 public class Categoria : BaseModel
 {        
-    public string Descricao { get; set; }
+    public string Descricao { get; set; } = String.Empty;
     public int UsuarioId { get; set; }        
-    public virtual Usuario Usuario { get; set; }    
-    public virtual TipoCategoria TipoCategoria { get; set; }    
+    public virtual Usuario? Usuario { get; set; }    
+    public virtual TipoCategoria? TipoCategoria { get; set; }    
     public Categoria() { }
 
     public Categoria(string descricao, int usuarioId, Usuario usuario, TipoCategoria tipoCategoria)

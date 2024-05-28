@@ -7,5 +7,5 @@ public class ImagemPerfilUsuario : BaseModel
     public string Name { get; set; } = string.Empty;
     public string ContentType { get; set; } = string.Empty;    
     public int UsuarioId { get; set; }
-    public virtual Usuario Usuario { get; set; } = new();
+    public virtual Usuario? Usuario { get; set; } = new();
 }

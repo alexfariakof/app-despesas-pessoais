@@ -18,7 +18,7 @@ public sealed class CreateCommandHandler<T> : IRequestHandler<CreateCommand<T>, 
     public async Task<T> Handle(CreateCommand<T> request, CancellationToken cancellationToken)
     {
         var newEntity = _mapper.Map<T>(request);
-        await _unitOfWork.Repository.Insert(ref newEntity);
+        await _unitOfWork.Repository.Insert(newEntity);
         await _unitOfWork.CommitAsync();
         return newEntity;
     }

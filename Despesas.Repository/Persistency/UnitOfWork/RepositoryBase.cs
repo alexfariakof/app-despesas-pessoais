@@ -13,30 +13,30 @@ public sealed class UnitOfWork<T>: IRepositoy<T> where T : BaseModel
         Context = context;
     }
 
-    public async Task<T> GetById(int entityId)
+    public async Task<T?> GetById(int entityId)
     {
-        return await this.Context.Set<T>().FindAsync(entityId);
+        return await Context.Set<T>().FindAsync(entityId);
     }
 
     public async Task<IEnumerable<T>> GetAll()
     {
-        return await this.Context.Set<T>().ToListAsync();
+        return await Context.Set<T>().ToListAsync();
     }
 
-    public Task Insert(ref T entity)
+    public Task Insert(T entity)
     {
         if (entity == null) 
             throw new ArgumentNullException(nameof(entity));
 
-        return this.Context.AddAsync(entity).AsTask(); 
+        return Context.AddAsync(entity).AsTask(); 
     }
 
-    public Task Update(ref T entity)
+    public Task? Update(T entity)
     {
         if (entity == null)
             throw new ArgumentNullException(nameof(entity));
 
-        return this.Context.Update(entity) as Task;
+        return Context.Update(entity) as Task;
     }
 
     public async void Delete(int entityId)

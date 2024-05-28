@@ -35,7 +35,7 @@ public class CategoriaBusinessImplTest
         var categoria = _categorias.First();
         var categoriaDto = _mapper.Map<CategoriaDto>(categoria);
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Categoria>.IsAny));
-        _unitOfWorkMock.Setup(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny));
+        _unitOfWorkMock.Setup(repo => repo.Repository.Insert(It.IsAny<Categoria>()));
 
         // Act
         var result = _categoriaBusiness.Create(categoriaDto);
@@ -44,7 +44,7 @@ public class CategoriaBusinessImplTest
         Assert.NotNull(result);
         Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoriaDto.Id, result.Id);
-        _unitOfWorkMock.Verify(repo => repo.Repository.Insert(ref It.Ref<Categoria>.IsAny), Times.Never);
+        _unitOfWorkMock.Verify(repo => repo.Repository.Insert(It.IsAny<Categoria>()), Times.Never);
         _repositorioMock.Verify(repo => repo.Insert(ref It.Ref<Categoria>.IsAny), Times.Once);
     }
 
@@ -114,7 +114,7 @@ public class CategoriaBusinessImplTest
         var categoriaDto = _mapper.Map<CategoriaDto>(categoria);        
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(categoria);
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Categoria>.IsAny));
-        _unitOfWorkMock.Setup(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny));        
+        _unitOfWorkMock.Setup(repo => repo.Repository.Update(It.IsAny<Categoria>()));        
         
         // Act
         var result = _categoriaBusiness.Update(categoriaDto) as CategoriaDto;
@@ -123,7 +123,7 @@ public class CategoriaBusinessImplTest
         Assert.NotNull(result);
         Assert.IsType<CategoriaDto>(result);
         Assert.Equal(categoria.Id, result.Id);
-        _unitOfWorkMock.Verify(repo => repo.Repository.Update(ref It.Ref<Categoria>.IsAny), Times.Never);
+        _unitOfWorkMock.Verify(repo => repo.Repository.Update(It.IsAny<Categoria>()), Times.Never);
         _repositorioMock.Verify(repo => repo.Update(ref It.Ref<Categoria>.IsAny), Times.Once);
         _repositorioMock.Verify(repo => repo.Get(It.IsAny<int>()), Times.Once);
     }
