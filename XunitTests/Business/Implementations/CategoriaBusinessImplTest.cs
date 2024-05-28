@@ -100,7 +100,7 @@ public class CategoriaBusinessImplTest
         var result = _categoriaBusiness.FindById(0, categoria.UsuarioId);
 
         // Assert
-        Assert.Equal(0, result.Id);
+        Assert.Null(result);
         _repositorioMock.Verify(repo => repo.Find(It.IsAny<Expression<Func<Categoria, bool>>>()), Times.Once);
         _unitOfWorkMock.Verify(repo => repo.Repository.Find(It.IsAny<Expression<Func<Categoria, bool>>>()), Times.Never);
     }
