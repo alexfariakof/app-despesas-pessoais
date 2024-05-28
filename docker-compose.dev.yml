@@ -7,7 +7,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: despesas-backend-api-net-core/Dockerfile.development
+      dockerfile: Despesas.WebApi/Dockerfile.development
     environment:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: DatabaseInMemory

@@ -47,7 +47,7 @@ public class ControleAcessoController : AuthController
         {
             var result = _controleAcessoBusiness.ValidateCredentials(login);
             if (result == null)
-                throw new Exception();
+                throw new();
 
             return new OkObjectResult(result);
         }
@@ -95,7 +95,7 @@ public class ControleAcessoController : AuthController
         try
         {
             if (IdUsuario.Equals(2))
-                throw new Exception();
+                throw new();
 
             _controleAcessoBusiness.RecoveryPassword(email);
             return Ok(true);
@@ -116,7 +116,7 @@ public class ControleAcessoController : AuthController
         {
             var result = _controleAcessoBusiness.ValidateCredentials(refreshToken);
             if (result is null)
-                throw new NullReferenceException();
+                throw new();
 
             return Ok(result);
         }

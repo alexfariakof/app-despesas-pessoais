@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstractions;
 using Business.Dtos.Core;
-using Despesas.Infrastructure.Amazon;
 using Despesas.Infrastructure.Amazon.Abstractions;
 using Domain.Entities;
 using Repository.Persistency.Generic;
@@ -13,12 +12,12 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
     private readonly IRepositorio<ImagemPerfilUsuario> _repositorio;
     private readonly IRepositorio<Usuario> _repositorioUsuario;    
     private readonly IAmazonS3Bucket _amazonS3Bucket;
-    public ImagemPerfilUsuarioBusinessImpl(IMapper mapper, IRepositorio<ImagemPerfilUsuario> repositorio, IRepositorio<Usuario> repositorioUsuario,  IAmazonS3Bucket amazonS3Bucket = null)
+    public ImagemPerfilUsuarioBusinessImpl(IMapper mapper, IRepositorio<ImagemPerfilUsuario> repositorio, IRepositorio<Usuario> repositorioUsuario,  IAmazonS3Bucket amazonS3Bucket)
     {
         _mapper = mapper;
         _repositorio = repositorio;
         _repositorioUsuario = repositorioUsuario;        
-        _amazonS3Bucket = amazonS3Bucket == null ? AmazonS3Bucket.GetInstance : amazonS3Bucket; 
+        _amazonS3Bucket = amazonS3Bucket;
     }
 
     public Dto Create(Dto obj)
@@ -27,15 +26,15 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
         try
         {
             perfilFile.Url = _amazonS3Bucket.WritingAnObjectAsync(perfilFile, obj.Arquivo).GetAwaiter().GetResult();
-            perfilFile.Usuario = _repositorioUsuario.Get(perfilFile.UsuarioId);
+            perfilFile.Usuario = _repositorioUsuario.Get(perfilFile.UsuarioId) ?? throw new();
             _repositorio.Insert(ref perfilFile);
             return _mapper.Map<Dto>(perfilFile);
         }
         catch
         {
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(perfilFile).GetAwaiter();
+            throw new ArgumentException("Erro ao criar imagem de perfil.");
         }
-        return null;
     }
 
     public List<Dto> FindAll(int idUsuario)
@@ -72,7 +71,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
         {
             var validImagemPerfil = _repositorio.GetAll().Find(prop => prop.UsuarioId.Equals(obj.UsuarioId));
             if (validImagemPerfil == null)
-                throw new ArgumentException("Erro ao atualizar iamgem do perfil!");
+                throw new();
 
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(validImagemPerfil).GetAwaiter().GetResult();
             validImagemPerfil.Url = _amazonS3Bucket.WritingAnObjectAsync(validImagemPerfil, obj.Arquivo).GetAwaiter().GetResult();
@@ -81,7 +80,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
         }
         catch
         {
-            return null;
+            throw new ArgumentException("Erro ao atualizar iamgem do perfil!");
         }
     }
 

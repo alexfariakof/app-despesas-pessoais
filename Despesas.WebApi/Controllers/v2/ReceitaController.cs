@@ -99,7 +99,7 @@ public class ReceitaController : AuthController
         {
             receita.UsuarioId = IdUsuario;
             var updateReceita = _receitaBusiness.Update(receita);
-            if (updateReceita == null) throw new Exception();
+            if (updateReceita == null) throw new();
             return new OkObjectResult(updateReceita);
         }
         catch (Exception ex)
@@ -128,7 +128,7 @@ public class ReceitaController : AuthController
             if (_receitaBusiness.Delete(receita))
                 return new OkObjectResult(true);
             else
-                throw new Exception();
+                throw new();
         }
         catch (Exception ex)
         {

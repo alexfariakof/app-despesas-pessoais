@@ -99,7 +99,7 @@ public class DespesaController : AuthController
             despesa.UsuarioId = IdUsuario;
             var updateDespesa = _despesaBusiness.Update(despesa);
             if (updateDespesa == null)
-                throw new Exception();
+                throw new();
 
             return new OkObjectResult(updateDespesa);
         }
@@ -131,7 +131,7 @@ public class DespesaController : AuthController
             if (_despesaBusiness.Delete(despesa))
                 return new OkObjectResult(true);
             else
-                throw new Exception();
+                throw new();
         }
         catch (Exception ex)
         {

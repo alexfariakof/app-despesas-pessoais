@@ -9,9 +9,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
-
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
-RUN dotnet build "./despesas-backend-api-net-core/./despesas-backend-api-net-core.csproj" --restore
+RUN dotnet build "./Despesas.WebApi/./Despesas.WebApi.csproj" --restore
 RUN dotnet test "./XunitTests/XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
 
 RUN baseDirectory=/src \
@@ -19,10 +18,10 @@ RUN baseDirectory=/src \
     /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -filefilters:-$filefilters
 
 FROM build AS publish
-RUN dotnet publish "despesas-backend-api-net-core/despesas-backend-api-net-core.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Despesas.WebApi/Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY --from=build /app/test ./wwwroot
-ENTRYPOINT ["dotnet", "despesas-backend-api-net-core.dll"]
+ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]

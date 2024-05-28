@@ -12,7 +12,7 @@ public sealed class AmazonS3BucketTest
 
     public AmazonS3BucketTest()
     {
-        _amazonS3Bucket = AmazonS3Bucket.GetInstance;
+        _amazonS3Bucket = AmazonS3Bucket.Instance;
         _bucketName = "Amazon.Server";
     }
 

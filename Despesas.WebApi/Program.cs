@@ -54,6 +54,7 @@ else
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
 builder.Services.AddAuthConfigurations(builder.Configuration);
+builder.Services.AddAmazonS3BucketConfigurations(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();

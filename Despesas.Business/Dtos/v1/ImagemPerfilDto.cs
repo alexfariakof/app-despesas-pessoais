@@ -1,9 +1,11 @@
-﻿using Business.Dtos.Core;
+﻿using AutoMapper.Configuration.Annotations;
+using Business.Dtos.Core;
 using System.Text.Json.Serialization;
 
 namespace Business.Dtos.v1;
 public class ImagemPerfilDto : ImagemPerfilDtoBase
 {
+    [Ignore]
     public override string? Url { get; set; }
 
     [JsonIgnore]

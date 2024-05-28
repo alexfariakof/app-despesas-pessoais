@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities.ValueObjects;
-public sealed record PerfilUsuario : IDisposable 
+public sealed record PerfilUsuario
 {
     public static implicit operator PerfilType(PerfilUsuario pu) => (PerfilType)pu.Id;
     public static implicit operator PerfilUsuario(int perfilType) => new PerfilUsuario((PerfilType)perfilType);
@@ -31,10 +31,5 @@ public sealed record PerfilUsuario : IDisposable
             return "Usuario";
 
         throw new ArgumentException("Perfil de usuário inexistente!");
-    }
-
-    public void Dispose()
-    {
-        this.Dispose();
     }
 }

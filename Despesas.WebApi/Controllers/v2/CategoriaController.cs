@@ -114,7 +114,7 @@ public class CategoriaController : AuthController
         {
             categoria.UsuarioId = IdUsuario;
             CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
-            if (updateCategoria == null) throw new Exception();
+            if (updateCategoria == null) throw new();
             return Ok(updateCategoria);
         }
         catch (Exception ex)

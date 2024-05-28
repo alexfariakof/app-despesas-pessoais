@@ -31,7 +31,7 @@ public class UsuarioController : AuthController
         try
         {
             var _usuario = _usuarioBusiness.FindById(IdUsuario);
-            if (_usuario == null) throw new Exception();
+            if (_usuario == null) throw new();
             return Ok(_usuario);
         }
         catch(Exception ex) 
@@ -81,7 +81,7 @@ public class UsuarioController : AuthController
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
             else
-                throw new Exception();
+                throw new();
         }
         catch (Exception ex)
         {
@@ -108,7 +108,7 @@ public class UsuarioController : AuthController
             if (_imagemPerfilUsuario != null)
                 return Ok(_imagemPerfilUsuario);
             else
-                throw new Exception();
+                throw new();
         }
         catch (Exception ex)
         {
@@ -134,7 +134,7 @@ public class UsuarioController : AuthController
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
             else
-                throw new Exception();
+                throw new();
         }
         catch (Exception ex)
         {
@@ -158,7 +158,7 @@ public class UsuarioController : AuthController
             if (_imagemPerfilBussiness.Delete(IdUsuario))
                 return Ok(true);
             else
-                throw new Exception();
+                throw new();
         }
         catch (Exception ex)
         {

@@ -6,7 +6,7 @@ services:
     image: ${DOCKER_REGISTRY-}despesasbackendapinetcore
     build:
       context: .
-      dockerfile: despesas-backend-api-net-core/Dockerfile
+      dockerfile: Despesas.WebApi/Dockerfile
     environment:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: Development

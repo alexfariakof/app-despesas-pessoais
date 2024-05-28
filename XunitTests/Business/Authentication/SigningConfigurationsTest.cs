@@ -12,7 +12,8 @@ public sealed class SigningConfigurationsTest
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
-            Seconds = 3600
+            Seconds = 3600,
+            DaysToExpiry = 1
         });
 
         var signingConfigurations = new SigningConfigurations(options);
@@ -30,7 +31,8 @@ public sealed class SigningConfigurationsTest
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
-            Seconds = 3600
+            Seconds = 3600,
+            DaysToExpiry = 1
         });
 
         var signingConfigurations = new SigningConfigurations(options);
@@ -47,7 +49,8 @@ public sealed class SigningConfigurationsTest
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
-            Seconds = 3600
+            Seconds = 3600,
+            DaysToExpiry = 1 
         });
 
         var signingConfigurations = new SigningConfigurations(options);

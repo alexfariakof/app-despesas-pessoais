@@ -33,7 +33,7 @@ public sealed class ImagemPerfilUsuarioFaker
         }
     }
 
-    public ImagemPerfilDto GetNewFakerVM(UsuarioDto usuarioDto)
+    public ImagemPerfilDto GetNewFakerDto(UsuarioDto usuarioDto)
     {
         lock (LockObject)
         {
@@ -46,6 +46,20 @@ public sealed class ImagemPerfilUsuarioFaker
             return imagemFaker.Generate();
         }
     }
+
+    public ImagemPerfilDto GetNewDtoFrom(ImagemPerfilUsuario imagemPerfil)
+    {
+        var imagemFaker = new ImagemPerfilDto()
+        {
+            Id = imagemPerfil.Id,
+            Url = imagemPerfil.Url,
+            Name = imagemPerfil.Name,
+            UsuarioId = imagemPerfil.UsuarioId,
+            ContentType = imagemPerfil.ContentType
+        };
+        return imagemFaker;        
+    }
+
 
     public List<ImagemPerfilUsuario> ImagensPerfilUsuarios(Usuario? usuario = null, int? idUsuario = null)
     {
@@ -71,7 +85,7 @@ public sealed class ImagemPerfilUsuarioFaker
                 usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
 
             usuarioDto = usuarioDto ?? new();
-            var imagemVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerVM(usuarioDto);
+            var imagemVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerDto(usuarioDto);
 
             imagensVM.Add(imagemVM);
         }

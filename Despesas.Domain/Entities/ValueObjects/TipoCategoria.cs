@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities.ValueObjects;
-public record TipoCategoria : IDisposable
+public record TipoCategoria
 { 
     public static implicit operator CategoriaType(TipoCategoria tc) => (CategoriaType)tc.Id;
     public static implicit operator TipoCategoria(int tipoCategoria) =>  new TipoCategoria((CategoriaType)tipoCategoria);
@@ -40,11 +40,6 @@ public record TipoCategoria : IDisposable
 
 
         throw new ArgumentException("Tipo de Categoria inexistente!");
-    }
-
-    public void Dispose()
-    {
-        this.Dispose();
     }
 }
 

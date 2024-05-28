@@ -55,7 +55,7 @@ public class Crypto : ICrypto
         }
         else
         {
-            throw new ArgumentException("Arquivo appsettings.json não encontrado.");
+            throw new ArgumentException("File appsettings.json não encontrado.");
         }
     }
 
