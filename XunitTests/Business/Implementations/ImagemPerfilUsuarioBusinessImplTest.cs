@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Business.Dtos.Core.Profile;
 using Business.Dtos.v2;
-using Domain.Core.Interfaces;
+using Despesas.Infrastructure.Amazon.Abstractions;
 using Fakers.v2;
 
 namespace Business;

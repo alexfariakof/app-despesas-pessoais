@@ -12,6 +12,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Repository\Repository.csproj" />
+		<ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
 	</ItemGroup>
 </Project>

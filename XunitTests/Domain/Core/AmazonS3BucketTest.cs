@@ -1,6 +1,7 @@
 ﻿using Business.Dtos.Parser;
 using Business.Dtos.v1;
-using Domain.Core.Interfaces;
+using Despesas.Infrastructure.Amazon;
+using Despesas.Infrastructure.Amazon.Abstractions;
 
 namespace Domain.Core;
 public sealed class AmazonS3BucketTest

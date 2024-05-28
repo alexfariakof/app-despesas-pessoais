@@ -1,4 +1,4 @@
-﻿using Domain.Core;
+﻿using Despesas.Infrastructure.Email;
 using Domain.Entities.ValueObjects;
 using Fakers.v2;
 using Repository.Persistency.Abstractions;

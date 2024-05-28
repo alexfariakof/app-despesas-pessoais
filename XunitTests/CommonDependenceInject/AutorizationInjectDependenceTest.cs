@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Business.Authentication;
-using despesas_backend_api_net_core.CommonDependenceInject;
+using Despesas.WebApi.CommonDependenceInject;
 
 namespace CommonDependenceInject;
 public sealed class AuthorizationInjectDependenceTest

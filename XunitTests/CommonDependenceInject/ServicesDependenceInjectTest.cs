@@ -1,5 +1,4 @@
-﻿using Domain.Core;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Repository;
 using Repository.CommonDependenceInject;
 using Business.CommonDependenceInject;
@@ -7,7 +6,8 @@ using Repository.Persistency.Abstractions;
 using Business.Abstractions;
 using Repository.Persistency.UnitOfWork.Abstractions;
 using Repository.UnitOfWork;
-using Domain.Core.Interfaces;
+using Despesas.Infrastructure.Email.Abstractions;
+using Despesas.Infrastructure.Email;
 
 namespace CommonDependenceInject;
 public sealed class ServicesDependenceInjectTest

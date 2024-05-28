@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="Erudio.HATEOAS0101" Version="8.0.202.9" />
+		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Despesas.CrossCutting\Despesas.CrossCutting.csproj" />
+		<ProjectReference Include="..\Despesas.Cryptography\Despesas.Cryptography.csproj" />
+		<ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
+		<ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
+		<ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
+	</ItemGroup>
+</Project>
