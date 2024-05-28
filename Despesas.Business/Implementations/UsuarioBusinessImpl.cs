@@ -18,10 +18,10 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
         _repositorio = repositorio;
     }
 
-    public override Dto Create(Dto usuarioDto)
+    public override Dto Create(Dto dto)
     {
-        IsValidPrefilAdministratdor(usuarioDto);
-        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        IsValidPrefilAdministratdor(dto);
+        var usuario = _mapper.Map<Usuario>(dto);
         usuario = usuario.CreateUsuario(usuario);
         _repositorio.Insert(ref usuario);
         return _mapper.Map<Dto>(usuario);
@@ -34,30 +34,30 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
         return _mapper.Map<List<Dto>>(_repositorio?.GetAll());
     }
 
-    public override Dto Update(Dto usuarioDto)
+    public override Dto Update(Dto dto)
     {
-        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        var usuario = _mapper.Map<Usuario>(dto);
         _repositorio.Update(ref usuario);
         if (usuario is null) throw new ArgumentException("Usuário não encontrado!");
         return _mapper.Map<Dto>(usuario);
     }
 
-    public override Dto FindById(int idUsuario)
+    public override Dto FindById(int id)
     {
-        var usuario = _repositorio?.Find(u => u.Id == idUsuario)?.FirstOrDefault();
+        var usuario = _repositorio?.Find(u => u.Id == id)?.FirstOrDefault();
         return this.Mapper.Map<Dto>(usuario);
     }
 
-    public override bool Delete(Dto usuarioDto)
+    public override bool Delete(Dto dto)
     {
-        IsValidPrefilAdministratdor(usuarioDto);
-        var usuario = _mapper.Map<Usuario>(usuarioDto);
+        IsValidPrefilAdministratdor(dto);
+        var usuario = _mapper.Map<Usuario>(dto);
         return _repositorio.Delete(usuario);
     }
 
-    private void IsValidPrefilAdministratdor(Dto usuarioDto)
+    private void IsValidPrefilAdministratdor(Dto dto)
     {
-        var adm = _repositorio.Get(usuarioDto.UsuarioId);
+        var adm = _repositorio.Get(dto.UsuarioId);
         if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
             throw new ArgumentException("Usuário não permitido a realizar operação!");
     }

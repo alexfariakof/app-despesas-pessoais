@@ -20,9 +20,9 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
         _repoCategoria = repoCategoria;
     }
 
-    public override Dto Create(Dto obj)
+    public override Dto Create(Dto dto)
     {
-        Receita receita = _mapper.Map<Receita>(obj);
+        Receita receita = _mapper.Map<Receita>(dto);
         IsValidCategoria(receita);
         _repositorio.Insert(ref receita);
         return _mapper.Map<Dto>(receita);
@@ -44,31 +44,31 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
         return Dto;
     }
 
-    public override Dto Update(Dto obj)
+    public override Dto Update(Dto dto)
     {
-        Receita receita = _mapper.Map<Receita>(obj);
+        Receita receita = _mapper.Map<Receita>(dto);
         IsValidReceita(receita);
         IsValidCategoria(receita);
         _repositorio.Update(ref receita);
         return _mapper.Map<Dto>(receita);
     }
 
-    public override bool Delete(Dto obj)
+    public override bool Delete(Dto dto)
     {
-        Receita receita = _mapper.Map<Receita>(obj);
+        Receita receita = _mapper.Map<Receita>(dto);
         IsValidReceita(receita);
         return  _repositorio.Delete(receita);
     }
 
-    private void IsValidCategoria(Receita obj)
+    private void IsValidCategoria(Receita dto)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.CategoriaType.Receita && c.Id == obj.CategoriaId) == null)
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == dto.UsuarioId && c.TipoCategoria == TipoCategoria.CategoriaType.Receita && c.Id == dto.CategoriaId) == null)
             throw new ArgumentException("Categoria inválida para este usuário!");
     }
 
-    private void IsValidReceita(Receita obj)
+    private void IsValidReceita(Receita dto)
     {
-        if (_repositorio.Get(obj.Id)?.Usuario?.Id != obj.UsuarioId)
+        if (_repositorio.Get(dto.Id)?.Usuario?.Id != dto.UsuarioId)
             throw new ArgumentException("Receita inválida para este usuário!");
     }
 }

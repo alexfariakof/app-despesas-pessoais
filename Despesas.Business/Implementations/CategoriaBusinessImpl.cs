@@ -36,7 +36,7 @@ public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness
 
     public override Dto FindById(int id, int idUsuario)
     {
-        var categoria = _repositorio.Find(c => c.Id == id && c.Usuario.Id == idUsuario).FirstOrDefault() ?? new();
+        var categoria = _repositorio?.Find(c => c.Id == id && c.Usuario.Id == idUsuario)?.FirstOrDefault();
         return this.Mapper.Map<Dto>(categoria);
     }
 

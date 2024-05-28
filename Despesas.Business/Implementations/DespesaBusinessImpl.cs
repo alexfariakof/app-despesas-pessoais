@@ -20,9 +20,9 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>,IBusiness<Dto
         _mapper = mapper;
     }
 
-    public override Dto Create(Dto obj)
+    public override Dto Create(Dto dto)
     {
-        Despesa despesa = _mapper.Map<Despesa>(obj);
+        Despesa despesa = _mapper.Map<Despesa>(dto);
         IsValidCategoria(despesa);
         _repositorio.Insert(ref despesa);
         return _mapper.Map<Dto>(despesa);
@@ -45,31 +45,31 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>,IBusiness<Dto
         return despesaDto; 
     }
 
-    public override  Dto Update(Dto obj)
+    public override  Dto Update(Dto dto)
     {
-        Despesa despesa = _mapper.Map<Despesa>(obj);
+        Despesa despesa = _mapper.Map<Despesa>(dto);
         IsValidDespesa(despesa);
         IsValidCategoria(despesa);        
         _repositorio.Update(ref despesa);
         return _mapper.Map<Dto>(despesa);
     }
 
-    public override  bool Delete(Dto obj)
+    public override  bool Delete(Dto dto)
     {
-        Despesa despesa = _mapper.Map<Despesa>(obj);
+        Despesa despesa = _mapper.Map<Despesa>(dto);
         IsValidDespesa(despesa);
         return _repositorio.Delete(despesa);
     }
 
-    private void IsValidCategoria(Despesa obj)
+    private void IsValidCategoria(Despesa dto)
     {
-        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == obj.UsuarioId && c.TipoCategoria == TipoCategoria.CategoriaType.Despesa && c.Id == obj.CategoriaId) == null)
+        if (_repoCategoria.GetAll().Find(c => c.UsuarioId == dto.UsuarioId && c.TipoCategoria == TipoCategoria.CategoriaType.Despesa && c.Id == dto.CategoriaId) == null)
             throw new ArgumentException("Categoria inválida para este usuário!");
     }
 
-    private void IsValidDespesa(Despesa obj)
+    private void IsValidDespesa(Despesa dto)
     {
-        if (_repositorio.Get(obj.Id)?.Usuario?.Id != obj.UsuarioId)
+        if (_repositorio.Get(dto.Id)?.Usuario?.Id != dto.UsuarioId)
             throw new ArgumentException("Despesa inválida para este usuário!");
     }
 }

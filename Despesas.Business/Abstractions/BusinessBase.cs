@@ -17,7 +17,7 @@ public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> wher
         UnitOfWork = unitOfWork;
     }
 
-    public abstract Dto Create(Dto usuarioDto);
+    public abstract Dto Create(Dto dto);
 
     public virtual Dto FindById(int id)
     {
@@ -28,7 +28,7 @@ public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> wher
 
     public abstract List<Dto> FindAll(int idUsuario);
 
-    public abstract  Dto Update(Dto usuario);
+    public abstract  Dto Update(Dto dto);
 
-    public abstract  bool Delete(Dto usuario);
+    public abstract  bool Delete(Dto dto);
 }
