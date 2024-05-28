@@ -90,7 +90,7 @@ public class Usuario : BaseModel
         return newUsuario;
     }
 
-    private void IsValidUsuario(string nome, string email, string telefone)
+    private static void IsValidUsuario(string nome, string email, string telefone)
     {
         if (String.IsNullOrEmpty(nome) || String.IsNullOrWhiteSpace(nome))
             throw new ArgumentException("Nome não pode ser em branco ou nulo.");

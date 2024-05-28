@@ -295,7 +295,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         mockRepository.Object.RevokeRefreshToken(mockControleAcesso.Id);
 
         // Assert
-        Assert.Null(mockControleAcesso.RefreshToken);
+        Assert.Empty(mockControleAcesso.RefreshToken);
         Assert.Null(mockControleAcesso.RefreshTokenExpiry);
     }
 

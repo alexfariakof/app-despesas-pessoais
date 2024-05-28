@@ -23,7 +23,7 @@ public sealed record PerfilUsuario
         Name = GetPerfilUsuarioName(itipoPerfil);
     }
 
-    private string GetPerfilUsuarioName(PerfilType perfilUsuario = PerfilType.Usuario)
+    private static string GetPerfilUsuarioName(PerfilType perfilUsuario = PerfilType.Usuario)
     {
         if (PerfilType.Administrador == perfilUsuario)
             return "Administrador";

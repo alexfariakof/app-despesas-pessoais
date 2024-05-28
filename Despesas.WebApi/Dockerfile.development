@@ -10,11 +10,8 @@ WORKDIR /src
 COPY . .
 
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
-RUN dotnet build "./Despesas.WebApi/./Despesas.WebApi.csproj" --restore
 RUN dotnet test "./XunitTests/XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
-
-RUN baseDirectory=/src \
-    filefilters="$baseDirectory/DataSeeders/**;-$baseDirectory/Migrations.MySqlServer/**;-$baseDirectory/Migrations.MsSqlServer/**;-$baseDirectory/CrossCutting/**;-$baseDirectory/Business/HyperMedia/**" \
+RUN filefilters="/src/Despesas.DataSeeders/**;-/src/Migrations.MySqlServer/**;-/src/Migrations.MsSqlServer/**;-/src/Despesas.CrossCutting/**;-/src/Despesas.Business/HyperMedia/**" \
     /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -filefilters:-$filefilters
 
 FROM build AS publish

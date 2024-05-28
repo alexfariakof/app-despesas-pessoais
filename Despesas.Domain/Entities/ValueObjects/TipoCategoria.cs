@@ -29,7 +29,7 @@ public record TipoCategoria
         Name = GetTipoCategoriaName(tipoCategoria);
     }
 
-    private string GetTipoCategoriaName(CategoriaType tipoCategoria)
+    private static string GetTipoCategoriaName(CategoriaType tipoCategoria)
     {
         if (CategoriaType.Despesa == tipoCategoria)
             return "Despesa";

@@ -36,9 +36,9 @@ public class EmailSender : IEmailSender
             {
                 client.Send(message);
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception("EmailSender_SendEmail_Erro", ex);
+                throw new ArgumentException("EmailSender_SendEmail_Erro");
             }
         }
     }
@@ -62,9 +62,9 @@ public class EmailSender : IEmailSender
             }
 
         }
-        catch (Exception ex)
+        catch
         {
-            throw new Exception("Erro ao Enviar Email!", ex);
+            throw new ArgumentException("Erro ao Enviar Email!");
         }
     }    
 }

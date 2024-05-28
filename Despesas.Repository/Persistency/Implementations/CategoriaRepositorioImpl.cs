@@ -41,7 +41,7 @@ public class CategoriaRepositorioImpl : BaseRepository<Categoria>, IRepositorio<
         Context?.SaveChanges();
     }
 
-    public override IEnumerable<Categoria>? Find(Expression<Func<Categoria, bool>> expression)
+    public override IEnumerable<Categoria> Find(Expression<Func<Categoria, bool>> expression)
     {
         return Context.Categoria.Include(d => d.TipoCategoria).Include(d => d.Usuario).Where(expression);
     }

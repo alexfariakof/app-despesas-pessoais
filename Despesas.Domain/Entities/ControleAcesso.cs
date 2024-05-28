@@ -23,7 +23,7 @@ public class ControleAcesso : BaseModel
 
     public DateTime? RefreshTokenExpiry { get; set; }
 
-    public virtual Usuario? Usuario { get; set; }
+    public virtual Usuario Usuario { get; set; }
     public void CreateAccount(Usuario usuario, string senha)
     {
         this.Login = usuario.Email;

@@ -72,7 +72,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
     {
         var controleAcesso = Context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
         if (controleAcesso is null) throw new ArgumentException("Token inexistente!");
-        controleAcesso.RefreshToken = null;
+        controleAcesso.RefreshToken = String.Empty;
         controleAcesso.RefreshTokenExpiry = null;
         Context.SaveChanges();
     }

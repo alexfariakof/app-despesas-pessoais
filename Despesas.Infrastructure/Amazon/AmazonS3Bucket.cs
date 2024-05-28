@@ -10,7 +10,7 @@ namespace Despesas.Infrastructure.Amazon;
 public class AmazonS3Bucket : IAmazonS3Bucket
 {
     private static IAmazonS3Bucket? _amazonS3Bucket;
-    private IAmazonS3? _client;
+    private AmazonS3Client? _client;
     private readonly S3CannedACL _fileCannedACL = S3CannedACL.PublicRead;
     private readonly RegionEndpoint _bucketRegion = RegionEndpoint.SAEast1;    
     private readonly string? _accessKey;

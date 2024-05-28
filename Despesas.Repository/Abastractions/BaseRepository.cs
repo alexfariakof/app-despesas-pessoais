@@ -3,32 +3,33 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Repository.Abastractions;
-public abstract class BaseRepository<T> where T : BaseModel, new()
+public abstract class BaseRepository<TEntity> where TEntity : BaseModel, new()
 {
     private DbContext Context { get; set; }
 
-    public BaseRepository(DbContext context)
+    protected BaseRepository(DbContext context)
     {
         Context = context;
     }
 
-    public virtual void Insert(ref T entity)
+    public virtual void Insert(ref TEntity entity)
     {
         Context.Add(entity);
         Context.SaveChanges();
     }
 
-    public virtual void Update(ref T entity)
+    public virtual void Update(ref TEntity entity)
     {
-        var existingEntity = this.Context.Set<T>().Find(entity.Id);
-        this.Context.Entry(existingEntity).CurrentValues.SetValues(entity);
-        this.Context.SaveChanges();
+        var existingEntity = this.Context.Set<TEntity>().Find(entity.Id);
+        this.Context?.Entry(existingEntity).CurrentValues.SetValues(entity);
+        this.Context?.SaveChanges();
     }
-    public virtual bool Delete(T entity)
+
+    public virtual bool Delete(TEntity entity)
     {
         try
         {
-            var existingEntity = this.Context.Set<T>().Find(entity.Id);
+            var existingEntity = this.Context.Set<TEntity>().Find(entity.Id);
             if (existingEntity != null)
             {
                 this.Context.Remove(existingEntity);
@@ -45,19 +46,20 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
             return false;
         }
     }
-    public virtual IEnumerable<T> GetAll()
+
+    public virtual IEnumerable<TEntity> GetAll()
     {
-        return Context.Set<T>().ToList();
+        return Context.Set<TEntity>().ToList();
     }
 
-    public virtual T? Get(int id)
+    public virtual TEntity? Get(int id)
     {
-        return Context.Set<T>().Find(id) ?? new();
+        return Context.Set<TEntity>().Find(id) ?? new();
     }
 
-    public virtual IEnumerable<T>? Find(Expression<Func<T, bool>> expression)
+    public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression)
     {
-        return Context.Set<T>().Where(expression);
+        return Context.Set<TEntity>().Where(expression);
     }
 
     public virtual bool Exists(int? id)
@@ -65,7 +67,7 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
         return this.Get(id.Value) != null;
     }
 
-    public virtual bool Exists(Expression<Func<T, bool>> expression)
+    public virtual bool Exists(Expression<Func<TEntity, bool>> expression)
     {
         return Find(expression).Any();
     }
