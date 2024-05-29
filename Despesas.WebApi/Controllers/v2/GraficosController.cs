@@ -18,10 +18,11 @@ public class GraficosController : AuthController
     }
 
     [HttpGet("Bar/{ano}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(Dictionary<List<object>, List<string>>))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult GetByAnoByIdUsuario([FromRoute] DateTime ano)
     {
         try

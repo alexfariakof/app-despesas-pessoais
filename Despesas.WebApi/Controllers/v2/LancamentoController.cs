@@ -17,9 +17,10 @@ public class LancamentoController : AuthController
     }
 
     [HttpGet("{anoMes}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(List<LancamentoDto>))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult Get([FromRoute] DateTime anoMes)
     {
         try

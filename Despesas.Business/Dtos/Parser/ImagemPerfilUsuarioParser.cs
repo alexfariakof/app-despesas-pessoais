@@ -11,10 +11,10 @@ public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilDto, ImagemPerfilUs
         return new ImagemPerfilUsuario
         {
             Id = origin.Id,
-            Name = origin.Name,
-            ContentType = origin.ContentType,
-            Url = origin.Url,
-            UsuarioId = origin.UsuarioId,
+            Name = origin?.Name ?? "",
+            ContentType = origin?.ContentType ?? "",
+            Url = origin?.Url ?? "",
+            UsuarioId = origin?.UsuarioId ?? 0,
         };
     }
 

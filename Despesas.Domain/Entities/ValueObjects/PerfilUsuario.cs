@@ -1,15 +1,15 @@
 ﻿namespace Domain.Entities.ValueObjects;
 public sealed record PerfilUsuario
 {
-    public static implicit operator PerfilType(PerfilUsuario pu) => (PerfilType)pu.Id;
-    public static implicit operator PerfilUsuario(int perfilType) => new PerfilUsuario((PerfilType)perfilType);
-    public static bool operator ==(PerfilUsuario perfilUsuario, PerfilType perfilType) => perfilUsuario?.Id == (int)perfilType;
-    public static bool operator !=(PerfilUsuario perfilUsuario, PerfilType perfilType) => !(perfilUsuario?.Id == (int)perfilType);
+    public static implicit operator Perfil(PerfilUsuario pu) => (Perfil)pu.Id;
+    public static implicit operator PerfilUsuario(int perfilType) => new PerfilUsuario((Perfil)perfilType);
+    public static bool operator ==(PerfilUsuario perfilUsuario, Perfil perfilType) => perfilUsuario?.Id == (int)perfilType;
+    public static bool operator !=(PerfilUsuario perfilUsuario, Perfil perfilType) => !(perfilUsuario?.Id == (int)perfilType);
 
-    public enum PerfilType : int
+    public enum Perfil : int
     {
-        Administrador = 1,
-        Usuario = 2
+        Admin = 1,
+        User = 2
     }
 
     public int Id { get; set; }
@@ -17,17 +17,17 @@ public sealed record PerfilUsuario
     
     public PerfilUsuario() { }
 
-    public PerfilUsuario(PerfilType itipoPerfil)
+    public PerfilUsuario(Perfil itipoPerfil)
     {
         Id = (int)itipoPerfil;
         Name = GetPerfilUsuarioName(itipoPerfil);
     }
 
-    private static string GetPerfilUsuarioName(PerfilType perfilUsuario = PerfilType.Usuario)
+    private static string GetPerfilUsuarioName(Perfil perfilUsuario = Perfil.User)
     {
-        if (PerfilType.Administrador == perfilUsuario)
+        if (Perfil.Admin == perfilUsuario)
             return "Administrador";
-        else if (PerfilType.Usuario == perfilUsuario)
+        else if (Perfil.User == perfilUsuario)
             return "Usuario";
 
         throw new ArgumentException("Perfil de usuário inexistente!");

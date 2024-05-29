@@ -17,7 +17,7 @@ public class SaldoController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Get()
     {
         try
@@ -32,7 +32,7 @@ public class SaldoController : AuthController
     }
 
     [HttpGet("ByAno/{ano}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetSaldoByAno([FromRoute] DateTime ano)
     {
         try
@@ -47,7 +47,7 @@ public class SaldoController : AuthController
     }
 
     [HttpGet("ByMesAno/{anoMes}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
     {
         try

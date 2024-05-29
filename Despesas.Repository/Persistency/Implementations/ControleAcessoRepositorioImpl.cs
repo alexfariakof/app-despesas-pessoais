@@ -90,6 +90,6 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
 
     public ControleAcesso? Find(Expression<Func<ControleAcesso, bool>> expression)
     {
-        return Context.ControleAcesso.Include(x => x.Usuario).SingleOrDefault(expression);
+        return Context.ControleAcesso.Include(c => c.Usuario).Include(c => c.Usuario.PerfilUsuario).SingleOrDefault(expression);
     }
 }

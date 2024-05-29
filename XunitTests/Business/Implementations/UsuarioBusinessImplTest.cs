@@ -27,7 +27,7 @@ public class UsuarioBusinessImplTest
     {
         // Arrange
         var usuario = _usuarios.First();
-        usuario.PerfilUsuario = new PerfilUsuario(PerfilUsuario.PerfilType.Administrador);
+        usuario.PerfilUsuario = new PerfilUsuario(PerfilUsuario.Perfil.Admin);
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Usuario>.IsAny));
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
 
@@ -45,7 +45,7 @@ public class UsuarioBusinessImplTest
     public void FindAll_Should_Returns_List_of_UsuarioDto()
     {
         // Arrange         
-        var usuarios = _usuarios.Where(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador);
+        var usuarios = _usuarios.Where(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin);
         var usuario = usuarios.First();
         var idUsuario = usuario.Id;
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_usuarios);
@@ -67,7 +67,7 @@ public class UsuarioBusinessImplTest
     public void FindAll_Should_Returns_Thwors_Exception()
     {
         // Arrange         
-        var usuarios = _usuarios.Where(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario);
+        var usuarios = _usuarios.Where(u => u.PerfilUsuario == PerfilUsuario.Perfil.User);
         var usuario = usuarios.First();
         var idUsuario = usuario.Id;
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_usuarios);
@@ -124,7 +124,7 @@ public class UsuarioBusinessImplTest
     public void Delete_Should_Returns_True_when_Usuario_is_Administrador()
     {
         // Arrange
-        var usuario= _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador);
+        var usuario= _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin);
         var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(true);
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);       
@@ -143,7 +143,7 @@ public class UsuarioBusinessImplTest
     public void Delete_Should_Throws_Errro_When_Usuario_is_Not_Admintrador()
     {
         // Arrange
-        var usuario = _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario);
+        var usuario = _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.Perfil.User);
         var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(false);
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);

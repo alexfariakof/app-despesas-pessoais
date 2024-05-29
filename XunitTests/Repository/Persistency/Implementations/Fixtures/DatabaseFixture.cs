@@ -2,7 +2,7 @@
 
 namespace Repository.Persistency.Implementations.Fixtures;
 
-public class DatabaseFixture : IDisposable
+public sealed class DatabaseFixture : IDisposable
 {
     public RegisterContext Context { get; private set; }
 

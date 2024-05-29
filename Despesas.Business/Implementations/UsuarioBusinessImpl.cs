@@ -58,14 +58,14 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
     private void IsValidPrefilAdministratdor(Dto dto)
     {
         var adm = _repositorio.Get(dto.UsuarioId);
-        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.Perfil.Admin)
             throw new ArgumentException("Usuário não permitido a realizar operação!");
     }
 
     private void IsValidPrefilAdministratdor(Usuario usuario)
     {
         var adm = _repositorio.Get(usuario.Id);
-        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.Perfil.Admin)
             throw new ArgumentException("Usuário não permitido a realizar operação!");
     }
 }

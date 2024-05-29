@@ -19,14 +19,14 @@ public class DespesaController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Get()
     {
         return Ok(_despesaBusiness.FindAll(IdUsuario));
     }
 
     [HttpGet("GetById/{id}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Get([FromRoute] int id)
     {
         try
@@ -45,7 +45,7 @@ public class DespesaController : AuthController
     }
 
     [HttpPost]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Post([FromBody] DespesaDto despesa)
     {
         try
@@ -60,7 +60,7 @@ public class DespesaController : AuthController
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
         despesa.UsuarioId = IdUsuario;
@@ -72,7 +72,7 @@ public class DespesaController : AuthController
     }
 
     [HttpDelete("{idDespesa}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Delete(int idDespesa)
     {
         DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);

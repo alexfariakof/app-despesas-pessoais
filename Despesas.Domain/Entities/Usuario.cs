@@ -16,7 +16,7 @@ public class Usuario : BaseModel
     {
         IsValidUsuario(newUsuario.Nome, newUsuario.Email, newUsuario.Telefone);
         newUsuario.StatusUsuario = StatusUsuario.Ativo;
-        newUsuario.PerfilUsuario = new PerfilUsuario(PerfilUsuario.PerfilType.Usuario);
+        newUsuario.PerfilUsuario = new PerfilUsuario(PerfilUsuario.Perfil.User);
 
         List<Categoria> defaultCategorias = new List<Categoria>();
         defaultCategorias.Add(new Categoria

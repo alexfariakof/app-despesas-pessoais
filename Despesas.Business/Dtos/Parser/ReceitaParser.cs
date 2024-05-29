@@ -7,29 +7,29 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
 {    
     public Receita Parse(ReceitaDto origin)
     {
-        if (origin == null) return new Receita();
+        if (origin == null) return new();
         return new Receita
         {
             Id  = origin.Id,
-            Data = origin.Data.Value,
-            Descricao = origin.Descricao,                
-            Valor = origin.Valor,
-            CategoriaId = origin.IdCategoria.Value,
-            UsuarioId = origin.UsuarioId
+            Data = origin.Data.GetValueOrDefault(),
+            Descricao = origin?.Descricao ?? "",                
+            Valor = origin?.Valor ?? 0,
+            CategoriaId = origin?.IdCategoria.GetValueOrDefault() ?? 0,
+            UsuarioId = origin?.UsuarioId ?? 0
         };
     }
 
     public ReceitaDto Parse(Receita origin)
     {
-        if (origin == null) return new ReceitaDto();
+        if (origin == null) return new();
         return new ReceitaDto
         {
             Id = origin.Id,
             Data = origin.Data,
             Descricao = origin.Descricao,
             Valor = origin.Valor,                
-            IdCategoria =origin.Categoria.Id,
-            UsuarioId = origin.UsuarioId
+            IdCategoria =origin?.Categoria?.Id,
+            UsuarioId = origin?.UsuarioId ?? 0
         };
     }
 

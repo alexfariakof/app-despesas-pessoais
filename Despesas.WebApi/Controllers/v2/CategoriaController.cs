@@ -20,9 +20,10 @@ public class CategoriaController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -38,9 +39,10 @@ public class CategoriaController : AuthController
     }
 
     [HttpGet("GetById/{idCategoria}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(CategoriaDto))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetById([FromRoute] int idCategoria)
     {
@@ -56,9 +58,10 @@ public class CategoriaController : AuthController
     }
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetByTipoCategoria([FromRoute] TipoCategoriaDto tipoCategoria)
     {
@@ -75,18 +78,19 @@ public class CategoriaController : AuthController
     }
 
     [HttpPost]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(CategoriaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
-        if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
-            return BadRequest("Nenhum tipo de Categoria foi selecionado!");
-
         try
         {
+            if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
+                throw new ArgumentException("Nenhum tipo de Categoria foi selecionado!");
+
             categoria.UsuarioId = IdUsuario;
             return Ok(_categoriaBusiness.Create(categoria));
         }
@@ -100,21 +104,21 @@ public class CategoriaController : AuthController
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(CategoriaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
-        if (categoria.IdTipoCategoria == TipoCategoriaDto.Todas)
-            return BadRequest("Nenhum tipo de Categoria foi selecionado!");
-
         try
         {
+            if (categoria.IdTipoCategoria == TipoCategoriaDto.Todas)
+                throw new ArgumentException("Nenhum tipo de Categoria foi selecionado!");
+
             categoria.UsuarioId = IdUsuario;
-            CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria);
-            if (updateCategoria == null) throw new();
+            CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria) ?? throw new();
             return Ok(updateCategoria);
         }
         catch (Exception ex)
@@ -127,10 +131,11 @@ public class CategoriaController : AuthController
     }
 
     [HttpDelete("{idCategoria}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idCategoria)
     {
@@ -138,12 +143,12 @@ public class CategoriaController : AuthController
         {
             CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
             if (categoria == null || IdUsuario != categoria.UsuarioId)
-                return BadRequest("Usuário não permitido a realizar operação!");
+                throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             if (_categoriaBusiness.Delete(categoria))
                 return Ok(true);
 
-            return new OkObjectResult(false);
+            return Ok(false);
         }
         catch (Exception ex)
         {

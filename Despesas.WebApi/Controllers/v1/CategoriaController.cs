@@ -19,7 +19,7 @@ public class CategoriaController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(List<CategoriaDto>))]
     public IActionResult Get()
     {
@@ -28,7 +28,7 @@ public class CategoriaController : AuthController
     }
 
     [HttpGet("GetById/{idCategoria}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetById([FromRoute] int idCategoria)
     {
 
@@ -37,7 +37,7 @@ public class CategoriaController : AuthController
     }
 
     [HttpGet("GetByTipoCategoria/{tipoCategoria}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetByTipoCategoria([FromRoute] TipoCategoriaDto tipoCategoria)
     {
         if (tipoCategoria == TipoCategoriaDto.Todas)
@@ -55,7 +55,7 @@ public class CategoriaController : AuthController
     }
 
     [HttpPost]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Post([FromBody] CategoriaDto categoria)
     {
 
@@ -74,7 +74,7 @@ public class CategoriaController : AuthController
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Put([FromBody] CategoriaDto categoria)
     {
 
@@ -91,7 +91,7 @@ public class CategoriaController : AuthController
     }
 
     [HttpDelete("{idCategoria}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Delete(int idCategoria)
     {
         var categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);

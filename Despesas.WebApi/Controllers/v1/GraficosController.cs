@@ -19,7 +19,7 @@ public class GraficosController : AuthController
     }
 
     [HttpGet("Bar/{ano}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetByAnoByIdUsuario([FromRoute] DateTime ano)
     {
         try

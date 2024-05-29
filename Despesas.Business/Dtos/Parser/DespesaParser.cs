@@ -11,18 +11,18 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
         return new Despesa
         {
             Id  = origin.Id,
-            Data = origin.Data.Value,
-            Descricao = origin.Descricao,                
-            Valor = origin.Valor,
-            DataVencimento = origin.DataVencimento,
-            CategoriaId = origin.UsuarioId,
-            UsuarioId = origin.UsuarioId,
+            Data = origin.Data.GetValueOrDefault(),
+            Descricao = origin?.Descricao ?? "",                
+            Valor = origin?.Valor ?? 0,
+            DataVencimento = origin?.DataVencimento,
+            CategoriaId = origin?.IdCategoria.GetValueOrDefault() ?? 0,
+            UsuarioId = origin?.UsuarioId ?? 0,
         };
     }
 
     public DespesaDto Parse(Despesa origin)
     {
-        if (origin == null) return new DespesaDto();
+        if (origin == null) return new();
         return new DespesaDto
         {
             Id = origin.Id,
@@ -30,8 +30,8 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Descricao = origin.Descricao,
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
-            IdCategoria = origin.Categoria.Id,
-            UsuarioId = origin.UsuarioId       
+            IdCategoria = origin?.Categoria?.Id,
+            UsuarioId = origin?.UsuarioId ?? 0     
         };
     }
 

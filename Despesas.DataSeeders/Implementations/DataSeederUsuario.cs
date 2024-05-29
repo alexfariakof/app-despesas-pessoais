@@ -1,6 +1,5 @@
 ﻿using Repository;
 using Domain.Entities;
-using Domain.Entities.ValueObjects;
 
 namespace DataSeeders.Implementations;
 public class DataSeederUsuario : IDataSeeder

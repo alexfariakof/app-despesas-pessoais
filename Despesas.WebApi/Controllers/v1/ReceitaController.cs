@@ -19,14 +19,14 @@ public class ReceitaController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Get()
     {
         return Ok(_receitaBusiness.FindAll(IdUsuario));
     }
 
     [HttpGet("GetById/{id}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetById([FromRoute] int id)
     {
         try
@@ -45,7 +45,7 @@ public class ReceitaController : AuthController
     }
 
     [HttpPost]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Post([FromBody] ReceitaDto receita)
     {
         try
@@ -60,7 +60,7 @@ public class ReceitaController : AuthController
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
 
@@ -74,7 +74,7 @@ public class ReceitaController : AuthController
     }
 
     [HttpDelete("{idReceita}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Delete(int idReceita)
     {
         ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);

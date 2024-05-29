@@ -18,10 +18,11 @@ public class SaldoController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(SaldoDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -37,10 +38,11 @@ public class SaldoController : AuthController
     }
 
     [HttpGet("ByAno/{ano}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(SaldoDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByAno([FromRoute] DateTime ano)
     {
@@ -56,10 +58,11 @@ public class SaldoController : AuthController
     }
 
     [HttpGet("ByMesAno/{anoMes}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(SaldoDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetSaldoByMesAno([FromRoute] DateTime anoMes)
     {

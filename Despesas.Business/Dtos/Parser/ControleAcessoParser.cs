@@ -8,35 +8,35 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
 
     public ControleAcessoDto Parse(ControleAcesso origin)
     {
-        if (origin == null) return null;
+        if (origin == null) return new();
         return new ControleAcessoDto
         {
             Id = origin.Id,
             Email = origin.Login,
             Senha = origin.Senha,
             UsuarioId   = origin.UsuarioId,
-            Nome = origin.Usuario.Nome,
-            Telefone = origin.Usuario.Telefone,
-            SobreNome = origin.Usuario.SobreNome,
+            Nome = origin?.Usuario?.Nome,
+            Telefone = origin?.Usuario?.Telefone,
+            SobreNome = origin?.Usuario?.SobreNome,
         };
     }
 
     public ControleAcesso Parse(ControleAcessoDto origin)
     {
-        if (origin == null) return null;
+        if (origin == null) return new();
         return new ControleAcesso
         {
             Id = origin.Id,
-            Login = origin.Email,
+            Login = origin?.Email ?? "",
             UsuarioId = origin.UsuarioId,            
-            Senha = origin.Senha,
+            Senha = origin?.Senha ?? "",
             Usuario = new Usuario
             {
-                Id = origin.UsuarioId,
-                Nome = origin?.Nome,
-                SobreNome = origin?.SobreNome,
-                Telefone = origin?.Telefone,
-                Email = origin?.Email,
+                Id = origin?.UsuarioId ?? 0,
+                Nome = origin?.Nome ?? "",
+                SobreNome = origin?.SobreNome ?? "",
+                Telefone = origin?.Telefone ?? "",
+                Email = origin?.Email ?? "",
             }
         };
     }

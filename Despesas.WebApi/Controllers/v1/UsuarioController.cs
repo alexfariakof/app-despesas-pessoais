@@ -21,21 +21,8 @@ public class UsuarioController : AuthController
         _imagemPerfilBussiness = imagemPerfilBussiness;
     }
 
-    [HttpGet]
-    [Authorize("Bearer")]
-    public IActionResult Get()
-    {
-        var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
-        {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-        }
-
-        return Ok(_usuarioBusiness.FindAll(IdUsuario));
-    }
-
     [HttpGet("GetUsuario")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "Admin, User")]
     public IActionResult GetUsuario()
     {
         var _usuario = _usuarioBusiness.FindById(IdUsuario);
@@ -44,31 +31,9 @@ public class UsuarioController : AuthController
 
         return Ok(_usuario);
     }
-
-    [HttpPost]
-    [Authorize("Bearer")]
-    public IActionResult Post([FromBody] UsuarioDto usuarioDto)
-    {
-        var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
-        {
-            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
-        }
-
-        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
-
-        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
-
-        if (!IsValidEmail(usuarioDto.Email))
-            return BadRequest(new { message = "Email inválido!" });
-
-        return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
-    }
-
-    [HttpPut]
-    [Authorize("Bearer")]
+    
+    [HttpPut("UpdateUsuario")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Put([FromBody] UsuarioDto usuarioDto)
     {
         if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
@@ -87,12 +52,47 @@ public class UsuarioController : AuthController
         return new OkObjectResult(updateUsuario);
     }
 
-    [HttpPut("UpdateUsuario")]
-    [Authorize("Bearer")]
+    [HttpGet]
+    [Authorize("Bearer", Roles = "Admin")]
+    public IActionResult Get()
+    {
+        var adm = _usuarioBusiness.FindById(IdUsuario);
+        if (adm.PerfilUsuario != PerfilUsuario.Perfil.Admin)
+        {
+            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+        }
+
+        return Ok(_usuarioBusiness.FindAll(IdUsuario));
+    }
+
+    [HttpPost]
+    [Authorize("Bearer", Roles = "Admin")]
+    public IActionResult Post([FromBody] UsuarioDto usuarioDto)
+    {
+        var usuario = _usuarioBusiness.FindById(IdUsuario);
+        if (usuario.PerfilUsuario != PerfilUsuario.Perfil.Admin)
+        {
+            return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
+        }
+
+        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
+            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
+
+        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
+            return BadRequest(new { message = "Campo Login não pode ser em branco" });
+
+        if (!IsValidEmail(usuarioDto.Email))
+            return BadRequest(new { message = "Email inválido!" });
+
+        return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
+    }
+
+    [HttpPut]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
         var usuario = _usuarioBusiness.FindById(IdUsuario);
-        if (usuario.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+        if (usuario.PerfilUsuario != PerfilUsuario.Perfil.Admin)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -114,11 +114,11 @@ public class UsuarioController : AuthController
     }
 
     [HttpDelete]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
         var adm = _usuarioBusiness.FindById(IdUsuario);
-        if (adm.PerfilUsuario != PerfilUsuario.PerfilType.Administrador)
+        if (adm.PerfilUsuario != PerfilUsuario.Perfil.Admin)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
@@ -130,7 +130,7 @@ public class UsuarioController : AuthController
     }
 
     [HttpGet("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult GetImage()
     {
         var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
@@ -143,7 +143,7 @@ public class UsuarioController : AuthController
     }
 
     [HttpPost("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public async Task<IActionResult> PostImagemPerfil(IFormFile file)
     {
         try
@@ -162,7 +162,7 @@ public class UsuarioController : AuthController
     }
 
     [HttpPut("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public async Task<IActionResult> PutImagemPerfil(IFormFile file)
     {
         try
@@ -181,7 +181,7 @@ public class UsuarioController : AuthController
     }
 
     [HttpDelete("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult DeleteImagemPerfil()
     {
         try

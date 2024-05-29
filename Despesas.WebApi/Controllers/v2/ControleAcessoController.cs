@@ -45,11 +45,8 @@ public class ControleAcessoController : AuthController
     {
         try
         {
-            var result = _controleAcessoBusiness.ValidateCredentials(login);
-            if (result == null)
-                throw new();
-
-            return new OkObjectResult(result);
+            var result = _controleAcessoBusiness.ValidateCredentials(login) ?? throw new();
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -62,10 +59,11 @@ public class ControleAcessoController : AuthController
 
 
     [HttpPost("ChangePassword")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordVM)
     {
         try
@@ -86,10 +84,11 @@ public class ControleAcessoController : AuthController
     }
 
     [HttpPost("RecoveryPassword")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     public IActionResult RecoveryPassword([FromBody] string email)
     {
         try
@@ -106,18 +105,16 @@ public class ControleAcessoController : AuthController
         }
     }
 
-    [AllowAnonymous]
     [HttpGet("refresh/{refreshToken}")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(AuthenticationDto))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(403)]
     public IActionResult Refresh([FromRoute] string refreshToken)
     {
         try
         {
-            var result = _controleAcessoBusiness.ValidateCredentials(refreshToken);
-            if (result is null)
-                throw new();
-
+            var result = _controleAcessoBusiness.ValidateCredentials(refreshToken) ?? throw new();
             return Ok(result);
         }
         catch

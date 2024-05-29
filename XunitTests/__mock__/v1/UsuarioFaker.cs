@@ -37,7 +37,7 @@ public sealed class UsuarioFaker
                 .RuleFor(u => u.Email, f => f.Internet.Email())
                 .RuleFor(u => u.StatusUsuario, f => f.PickRandom<StatusUsuario>())
                 .Generate();
-            usuarioFaker.PerfilUsuario = counter % 2 == 0 ? new PerfilUsuario(PerfilUsuario.PerfilType.Administrador) : new PerfilUsuario(PerfilUsuario.PerfilType.Usuario);
+            usuarioFaker.PerfilUsuario = counter % 2 == 0 ? new PerfilUsuario(PerfilUsuario.Perfil.Admin) : new PerfilUsuario(PerfilUsuario.Perfil.User);
             return usuarioFaker;
         }
     }

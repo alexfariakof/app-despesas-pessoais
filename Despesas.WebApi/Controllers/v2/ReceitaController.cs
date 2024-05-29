@@ -19,10 +19,11 @@ public class ReceitaController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(IList<ReceitaDto>))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -40,21 +41,18 @@ public class ReceitaController : AuthController
     }
 
     [HttpGet("GetById/{id}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(ReceitaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetById([FromRoute] int id)
     {
         try
         {
-            var _receita = _receitaBusiness.FindById(id, IdUsuario);
-
-            if (_receita == null)
-                return BadRequest("Nenhuma receita foi encontrada.");
-
-            return new OkObjectResult(_receita);
+            var _receita = _receitaBusiness.FindById(id, IdUsuario) ?? throw new ArgumentException("Nenhuma receita foi encontrada.");
+            return Ok(_receita);
         }
         catch (Exception ex)
         {
@@ -66,17 +64,18 @@ public class ReceitaController : AuthController
     }
 
     [HttpPost]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(ReceitaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] ReceitaDto receita)
     {
         try
         {
             receita.UsuarioId = IdUsuario;
-            return new OkObjectResult(_receitaBusiness.Create(receita));
+            return Ok(_receitaBusiness.Create(receita));
         }
         catch (Exception ex)
         {
@@ -88,19 +87,19 @@ public class ReceitaController : AuthController
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(ReceitaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
         try
         {
             receita.UsuarioId = IdUsuario;
-            var updateReceita = _receitaBusiness.Update(receita);
-            if (updateReceita == null) throw new();
-            return new OkObjectResult(updateReceita);
+            var updateReceita = _receitaBusiness.Update(receita) ?? throw new();
+            return Ok(updateReceita);
         }
         catch (Exception ex)
         {
@@ -112,10 +111,11 @@ public class ReceitaController : AuthController
     }
 
     [HttpDelete("{idReceita}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idReceita)
     {
@@ -123,12 +123,9 @@ public class ReceitaController : AuthController
         {
             ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
             if (receita == null || IdUsuario != receita.UsuarioId)
-                return BadRequest("Usuário não permitido a realizar operação!");
+                throw new ArgumentException("Usuário não permitido a realizar operação!");
 
-            if (_receitaBusiness.Delete(receita))
-                return new OkObjectResult(true);
-            else
-                throw new();
+            return _receitaBusiness.Delete(receita) ? Ok(true) : throw new();
         }
         catch (Exception ex)
         {

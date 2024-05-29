@@ -2,7 +2,6 @@
 using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
-
 public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
 {
     private readonly DespesaFixture _fixture;

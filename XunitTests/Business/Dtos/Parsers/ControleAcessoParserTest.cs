@@ -42,7 +42,7 @@ public sealed class ControleAcessoParserTest
         {
             Id = 1,
             Nome = "Test",
-            PerfilUsuario = new PerfilUsuario(PerfilUsuario.PerfilType.Administrador),
+            PerfilUsuario = new PerfilUsuario(PerfilUsuario.Perfil.Admin),
             Telefone = "123456789",
             SobreNome = "User",
             Email = "test@example.com"

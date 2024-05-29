@@ -9,6 +9,7 @@ using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
+using static Domain.Entities.ValueObjects.PerfilUsuario;
 
 namespace Business.Implementations;
 public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : ControleAcessoDtoBase where DtoLogin : LoginDtoBase, new()
@@ -109,7 +110,8 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         ClaimsIdentity identity = new ClaimsIdentity(new[]
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new Claim("IdUsuario",  controleAcesso.UsuarioId.ToString())
+            new Claim("IdUsuario",  controleAcesso.UsuarioId.ToString()),
+            new Claim("role",  ((Perfil)controleAcesso.Usuario.PerfilUsuario.Id).ToString())
         });
 
         DateTime createDate = DateTime.Now;

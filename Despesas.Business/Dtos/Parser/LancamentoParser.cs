@@ -54,11 +54,11 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             DespesaId = origin.IdDespesa,
             ReceitaId = origin.IdReceita,
             UsuarioId = origin.UsuarioId,
-            Data = DateTime.Parse(origin.Data),
+            Data = DateTime.Parse(origin?.Data ?? DateTime.Now.ToString()),
             DataCriacao = DateTime.Now,
             Valor = origin.Valor,
-            Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin.Descricao },
-            Receita = new Receita { Id = origin.IdReceita, Descricao = origin.Descricao }
+            Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin?.Descricao ?? ""},
+            Receita = new Receita { Id = origin?.IdReceita ?? 0, Descricao = origin?.Descricao ?? "" }
         };
     }
     public LancamentoDto Parse(Lancamento origin)
@@ -67,14 +67,14 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         return new LancamentoDto
         {
             Id = origin.Id,
-            IdDespesa = origin.DespesaId.Value,
-            IdReceita = origin.ReceitaId.Value,
-            UsuarioId = origin.UsuarioId,
-            Data = origin.Data.ToShortDateString(),
-            Valor = origin.Valor,
-            Descricao = origin.Descricao,
-            TipoCategoria = origin.DespesaId == 0 ? "Receita" : "Despesa",
-            Categoria = origin.Categoria.Descricao
+            IdDespesa = origin?.DespesaId.GetValueOrDefault() ?? 0,
+            IdReceita = origin?.ReceitaId.GetValueOrDefault() ?? 0,
+            UsuarioId = origin?.UsuarioId ?? 0,
+            Data = origin?.Data.ToShortDateString(),
+            Valor = origin?.Valor ?? 0,
+            Descricao = origin?.Descricao,
+            TipoCategoria = origin?.DespesaId == 0 ? "Receita" : "Despesa",
+            Categoria = origin?.Categoria?.Descricao
         };
     }
     public List<Lancamento> ParseList(List<LancamentoDto> origin)

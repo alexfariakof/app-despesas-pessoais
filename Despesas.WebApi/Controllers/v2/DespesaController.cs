@@ -19,10 +19,11 @@ public class DespesaController : AuthController
     }
 
     [HttpGet]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(IList<DespesaDto>))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get()
     {
@@ -40,20 +41,18 @@ public class DespesaController : AuthController
     }
 
     [HttpGet("GetById/{id}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(DespesaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Get([FromRoute] int id)
     {
         try
         {
-            var _despesa = _despesaBusiness.FindById(id, IdUsuario);
-            if (_despesa == null)
-                return BadRequest("Nenhuma despesa foi encontrada.");
-
-            return new OkObjectResult(_despesa);
+            var _despesa = _despesaBusiness.FindById(id, IdUsuario) ?? throw new ArgumentException("Nenhuma despesa foi encontrada.");
+            return Ok(_despesa);
         }
         catch (Exception ex)
         {
@@ -65,17 +64,18 @@ public class DespesaController : AuthController
     }
 
     [HttpPost]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(DespesaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Post([FromBody] DespesaDto despesa)
     {
         try
         {
             despesa.UsuarioId = IdUsuario;
-            return new OkObjectResult(_despesaBusiness.Create(despesa));
+            return Ok(_despesaBusiness.Create(despesa));
         }
         catch (Exception ex)
         {
@@ -87,21 +87,19 @@ public class DespesaController : AuthController
     }
 
     [HttpPut]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(DespesaDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
         try
         {
             despesa.UsuarioId = IdUsuario;
-            var updateDespesa = _despesaBusiness.Update(despesa);
-            if (updateDespesa == null)
-                throw new();
-
-            return new OkObjectResult(updateDespesa);
+            var updateDespesa = _despesaBusiness.Update(despesa) ?? throw new();
+            return Ok(updateDespesa);
         }
         catch (Exception ex)
         {
@@ -113,10 +111,11 @@ public class DespesaController : AuthController
     }
 
     [HttpDelete("{idDespesa}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult Delete(int idDespesa)
     {
@@ -124,14 +123,9 @@ public class DespesaController : AuthController
         {
             DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
             if (despesa == null || IdUsuario != despesa.UsuarioId)
-            {
-                return BadRequest("Usuário não permitido a realizar operação!");
-            }
-
-            if (_despesaBusiness.Delete(despesa))
-                return new OkObjectResult(true);
-            else
-                throw new();
+                throw new ArgumentException("Usuário não permitido a realizar operação!");
+            
+            return _despesaBusiness.Delete(despesa) ? Ok(true) : throw new();
         }
         catch (Exception ex)
         {

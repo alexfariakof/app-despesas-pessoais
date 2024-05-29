@@ -19,12 +19,13 @@ public class UsuarioController : AuthController
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
     }
-
+    
     [HttpGet("GetUsuario")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(UsuarioDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult GetUsuarioById()
     {
@@ -43,18 +44,19 @@ public class UsuarioController : AuthController
         }
     }
 
-    [HttpPut]
-    [Authorize("Bearer")]
+    [HttpPut("UpdateUsuario")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(UsuarioDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Put([FromBody] UsuarioDto usuarioDto)
+    public IActionResult UpdateUsuario([FromBody] UsuarioDto usuarioDto)
     {
         try
         {
             usuarioDto.UsuarioId = IdUsuario;            
-            return new OkObjectResult(_usuarioBusiness.Update(usuarioDto));
+            return Ok(_usuarioBusiness.Update(usuarioDto));
         }
         catch (Exception ex)
         {
@@ -65,13 +67,108 @@ public class UsuarioController : AuthController
         }
     }
 
+    [HttpGet]
+    [Authorize("Bearer", Roles = "Admin")]
+    [ProducesResponseType(200, Type = typeof(List<UsuarioDto>))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Get()
+    {
+        try
+        {
+            var usuarios = _usuarioBusiness.FindAll(IdUsuario);
+            return Ok(usuarios);
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Não foi possível realizar a consulta de usuários.");
+        }       
+    }
+
+    [HttpPost]
+    [Authorize("Bearer", Roles = "Admin")]
+    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Post([FromBody] UsuarioDto usuarioDto)
+    {
+        try
+        {
+            usuarioDto.UsuarioId = IdUsuario;
+            return Ok(_usuarioBusiness.Create(usuarioDto));
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao cadastrar Usuário!");
+        }
+    }
+
+    [HttpPut]
+    [Authorize("Bearer", Roles = "Admin")]
+    [ProducesResponseType(200, Type = typeof(UsuarioDto))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Put([FromBody] UsuarioDto usuarioDto)
+    {
+        try
+        {
+            usuarioDto.UsuarioId = IdUsuario;
+            return Ok(_usuarioBusiness.Update(usuarioDto));
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao atualizar Usuário!");
+        }
+    }
+
+    [HttpDelete]
+    [Authorize("Bearer", Roles = "Admin")]
+    [ProducesResponseType(200, Type = typeof(bool))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
+    [TypeFilter(typeof(HyperMediaFilter))]
+    public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
+    {
+        try
+        {
+            if (_usuarioBusiness.Delete(usuarioDto))
+                return  Ok(true);
+
+            throw new ArgumentException("Não foi possivél excluir este usuário.");
+        }
+        catch (Exception ex)
+        {
+            if (ex is ArgumentException argEx)
+                return BadRequest(argEx.Message);
+
+            return BadRequest("Erro ao excluir Usuário!");
+        }
+    }
+
     [HttpGet("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(ImagemPerfilDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetImage()
+    public IActionResult GetImagemPerfil()
     {
         try
         {
@@ -93,10 +190,11 @@ public class UsuarioController : AuthController
     }
 
     [HttpPost("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(ImagemPerfilDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PostImagemPerfil(IFormFile file)
     {
@@ -120,10 +218,11 @@ public class UsuarioController : AuthController
     }
 
     [HttpPut("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(ImagemPerfilDto))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public async Task<IActionResult> PutImagemPerfil(IFormFile file)
     {
@@ -146,10 +245,11 @@ public class UsuarioController : AuthController
     }
 
     [HttpDelete("ImagemPerfil")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(bool))]
     [ProducesResponseType(400, Type = typeof(string))]
-    [ProducesResponseType(401, Type = typeof(UnauthorizedResult))]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
     public IActionResult DeleteImagemPerfil()
     {

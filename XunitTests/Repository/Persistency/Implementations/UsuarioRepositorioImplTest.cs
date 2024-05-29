@@ -51,7 +51,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
             Nome = "Teste Update Item",
             Email = "Teste@teste.com",
             SobreNome = existingItem.SobreNome,
-            PerfilUsuario = new PerfilUsuario(PerfilUsuario.PerfilType.Administrador),
+            PerfilUsuario = new PerfilUsuario(PerfilUsuario.Perfil.Admin),
             StatusUsuario = StatusUsuario.Ativo,
             Telefone = existingItem.Telefone
         };

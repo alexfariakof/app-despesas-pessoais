@@ -78,7 +78,7 @@ public class ControleAcessoController : AuthController
     }
 
     [HttpPost("ChangePassword")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "Admin, User")]
     public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
 
@@ -104,7 +104,7 @@ public class ControleAcessoController : AuthController
 
     [AllowAnonymous]
     [HttpPost("RecoveryPassword")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult RecoveryPassword([FromBody] string email)
     {
 
@@ -124,7 +124,7 @@ public class ControleAcessoController : AuthController
         }
     }
 
-    private bool IsValidEmail(string email)
+    private static bool IsValidEmail(string email)
     {
         if (email.Length > 256) return false;
         string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";

@@ -7,21 +7,21 @@ public class UsuarioParser : IParser<UsuarioDto, Usuario>, IParser<Usuario, Usua
 {
     public Usuario Parse(UsuarioDto origin)
     {
-        if (origin == null) return new Usuario();
+        if (origin == null) return new();
         return new Usuario
         {
             Id  = origin.Id,
-            Email = origin.Email,
-            Nome = origin.Nome,
-            SobreNome = origin.SobreNome,
-            Telefone = origin.Telefone,
-            PerfilUsuario = origin.PerfilUsuario                
+            Email = origin?.Email ?? "",
+            Nome = origin?.Nome ?? "",
+            SobreNome = origin?.SobreNome ?? "",
+            Telefone = origin?.Telefone ?? "",
+            PerfilUsuario = origin?.PerfilUsuario                
         };
     }
 
     public UsuarioDto Parse(Usuario origin)
     {
-        if (origin == null) return new UsuarioDto();
+        if (origin == null) return new();
         return new UsuarioDto
         {
             Id = origin.Id,
@@ -29,7 +29,7 @@ public class UsuarioParser : IParser<UsuarioDto, Usuario>, IParser<Usuario, Usua
             Nome = origin.Nome,
             SobreNome = origin.SobreNome,
             Telefone = origin.Telefone,
-            PerfilUsuario = origin.PerfilUsuario
+            PerfilUsuario = origin?.PerfilUsuario ?? new()
         };
     }
 

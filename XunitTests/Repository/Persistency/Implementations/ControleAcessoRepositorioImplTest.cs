@@ -86,8 +86,8 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var newPassword = "!12345";
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RecoveryPassword_Should_Returns_True").Options;
         var context = new RegisterContext(options);
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
+        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
+        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
         context.SaveChanges();
         var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(1).ToList();
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
@@ -181,8 +181,8 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         // Arrange
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "ChangePassword_Should_Returns_True").Options;
         var context = new RegisterContext(options);
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
+        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
+        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
         context.SaveChanges();
         var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(2);
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));

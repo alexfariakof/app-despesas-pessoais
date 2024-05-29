@@ -18,7 +18,7 @@ public class LancamentoController : AuthController
     }
 
     [HttpGet("{anoMes}")]
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "User")]
     public IActionResult Get([FromRoute] DateTime anoMes)
     {
         try
