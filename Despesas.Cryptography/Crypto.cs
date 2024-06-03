@@ -5,14 +5,20 @@ using System.Text;
 
 namespace Cryptography;
 
+/// <summary>
+/// Classe responsável por operações criptográficas, incluindo hashing com SHA-256 e comparação de hashes utilizando uma chave e um salt.
+/// </summary>
 public class Crypto : ICrypto
 {
-    private readonly byte[] Key; // Chave fixa de 256 bits    
+    private readonly byte[] _key; // SECURE_AUTH_KEY 256 bits    
+    private readonly byte[] _authSalt; // SECURE_AUTH_SALT
     private static readonly object LockObject = new object();
     private static ICrypto? _crypto;
 
+    /// <summary>
+    /// Instância singleton da classe Crypto.
+    /// </summary>
     public static ICrypto Instance
-
     {
         get
         {
@@ -28,29 +34,45 @@ public class Crypto : ICrypto
         }
     }
 
+    /// <summary>
+    /// Construtor privado que inicializa a chave e o salt a partir do arquivo de configuração.
+    /// </summary>
     private Crypto()
     {
-        var key = CreateHashKey();
+        var key = GetHashKey();
+        ValidateKey(key);
         var keyByte = Convert.FromBase64String(key);
-        this.Key = keyByte;
+        this._key = keyByte;
+        var authSalt = GetAuthSalt();
+        this._authSalt = Encoding.UTF8.GetBytes(authSalt);
     }
 
+    /// <summary>
+    /// Construtor público que inicializa a chave e o salt a partir das opções fornecidas.
+    /// </summary>
+    /// <param name="options">Opções de configuração para Crypto.</param>
     public Crypto(IOptions<CryptoOptions> options)
     {
-        var key = options?.Value?.Key?.ToUpper() ?? "";
+        var key = options?.Value?.Key?.ToUpper();
+        ValidateKey(key);
         var keyByte = Convert.FromBase64String(key);
-        this.Key = keyByte;
+        this._key = keyByte;
+        var authSalt = options?.Value?.AuthSalt?.ToString();
+        this._authSalt = Encoding.UTF8.GetBytes(authSalt); ;
     }
 
-    private string CreateHashKey()
+    /// <summary>
+    /// Cria a chave de hash a partir do arquivo de configuração.
+    /// </summary>
+    /// <returns>Chave de hash como string Base64.</returns>
+    private string GetHashKey()
     {
         var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
         if (File.Exists(jsonFilePath))
         {
             var jsonContent = File.ReadAllText(jsonFilePath);
             var config = JObject.Parse(jsonContent);
-            var cryptoKey = config["Crypto"]?["Key"]?.ToString() ?? "";
-            ValidateKey(cryptoKey);
+            var cryptoKey = config["Crypto"]?["Key"]?.ToString() ?? throw new ArgumentNullException("Chave não definida.");
             return cryptoKey;
         }
         else
@@ -59,91 +81,113 @@ public class Crypto : ICrypto
         }
     }
 
-    public string Encrypt(string password)
+    /// <summary>
+    /// Cria o salt a partir do arquivo de configuração.
+    /// </summary>
+    /// <returns>Salt como string.</returns>
+    private string GetAuthSalt()
     {
-        byte[] iv = GenerateIV();
-
-        using (Aes aes = Aes.Create())
+        var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+        if (File.Exists(jsonFilePath))
         {
-            aes.Key = Key;
-            aes.IV = iv;
-
-            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-            byte[] encryptedBytes = PerformCryptography(password, encryptor);
-
-            byte[] encryptedData = new byte[iv.Length + encryptedBytes.Length];
-            Buffer.BlockCopy(iv, 0, encryptedData, 0, iv.Length);
-            Buffer.BlockCopy(encryptedBytes, 0, encryptedData, iv.Length, encryptedBytes.Length);
-
-            return Convert.ToBase64String(encryptedData);
+            var jsonContent = File.ReadAllText(jsonFilePath);
+            var config = JObject.Parse(jsonContent);
+            var authSalt = config["Crypto"]?["AuthSalt"]?.ToString() ?? throw new ArgumentNullException("Chave Auth Salt não definida.");
+            return authSalt;
+        }
+        else
+        {
+            throw new ArgumentException("File appsettings.json não encontrado.");
         }
     }
 
-    private string Decrypt(string encryptedText)
+    /// <summary>
+    /// Gera um hash com salt para o input fornecido.
+    /// </summary>
+    /// <param name="input">Texto a ser hashado.</param>
+    /// <returns>Hash com salt em formato Base64.</returns>
+    public string Encrypt(string input)
     {
-        byte[] encryptedData = Convert.FromBase64String(encryptedText);
-        byte[] iv = new byte[16];
-        byte[] encryptedBytes = new byte[encryptedData.Length - 16];
+        byte[] salt = GenerateSalt();
+        byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+        byte[] inputWithSaltBytes = new byte[inputBytes.Length + salt.Length];
+        Buffer.BlockCopy(salt, 0, inputWithSaltBytes, 0, salt.Length);
+        Buffer.BlockCopy(inputBytes, 0, inputWithSaltBytes, salt.Length, inputBytes.Length);
+        byte[] keyWithSaltBytes = new byte[_key.Length + _authSalt.Length];
+        Buffer.BlockCopy(_key, 0, keyWithSaltBytes, 0, _key.Length);
+        Buffer.BlockCopy(_authSalt, 0, keyWithSaltBytes, _key.Length, _authSalt.Length);
 
-        Buffer.BlockCopy(encryptedData, 0, iv, 0, 16);
-        Buffer.BlockCopy(encryptedData, 16, encryptedBytes, 0, encryptedData.Length - 16);
-
-        using (Aes aes = Aes.Create())
+        using (SHA256 sha256 = SHA256.Create())
         {
-            aes.Key = Key;
-            aes.IV = iv;
+            byte[] hashBytes = sha256.ComputeHash(inputWithSaltBytes);
+            byte[] hashWithSaltBytes = new byte[salt.Length + hashBytes.Length];
+            Buffer.BlockCopy(salt, 0, hashWithSaltBytes, 0, salt.Length);
+            Buffer.BlockCopy(hashBytes, 0, hashWithSaltBytes, salt.Length, hashBytes.Length);
 
-            ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-            byte[] decryptedBytes = PerformCryptography(encryptedBytes, decryptor);
-
-            return Encoding.UTF8.GetString(decryptedBytes);
+            return Convert.ToBase64String(hashWithSaltBytes);
         }
     }
 
-    public bool IsEquals(string plaintText, string encryptedText)
+    /// <summary>
+    /// Verifica se o texto simples fornecido corresponde ao hash fornecido.
+    /// </summary
+    /// <param name="plainText">Texto simples a ser verificado.</param>
+    /// <param name="hash">Hash para comparação.</param>
+    /// <returns>True se o texto simples gerar o mesmo hash; caso contrário, false.</returns>
+    public bool IsEquals(string plainText, string hash)
     {
-        return this.Decrypt(encryptedText) == plaintText;
+        byte[] hashWithSaltBytes = Convert.FromBase64String(hash);
+        byte[] salt = new byte[_authSalt.Length];
+        byte[] storedHashBytes = new byte[hashWithSaltBytes.Length - salt.Length];
+        Buffer.BlockCopy(hashWithSaltBytes, 0, salt, 0, salt.Length);
+        Buffer.BlockCopy(hashWithSaltBytes, salt.Length, storedHashBytes, 0, storedHashBytes.Length);
+        byte[] inputBytes = Encoding.UTF8.GetBytes(plainText);
+        byte[] inputWithSaltBytes = new byte[inputBytes.Length + salt.Length];
+        Buffer.BlockCopy(salt, 0, inputWithSaltBytes, 0, salt.Length);
+        Buffer.BlockCopy(inputBytes, 0, inputWithSaltBytes, salt.Length, inputBytes.Length);
+        byte[] keyWithSaltBytes = new byte[_key.Length + _authSalt.Length];
+        Buffer.BlockCopy(_key, 0, keyWithSaltBytes, 0, _key.Length);
+        Buffer.BlockCopy(_authSalt, 0, keyWithSaltBytes, _key.Length, _authSalt.Length);
+
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            byte[] computedHashBytes = sha256.ComputeHash(inputWithSaltBytes);
+            return computedHashBytes.SequenceEqual(storedHashBytes);
+        }
     }
 
-    private static byte[] GenerateIV()
+    /// <summary>
+    /// Gera um salt aleatório baseado na chave Auth Salt definida em appsettings.json.
+    /// </summary>
+    /// <returns>Salt aleatório.</returns>
+    private byte[] GenerateSalt()
     {
-        byte[] iv = new byte[16];
+        byte[] salt = new byte[_authSalt.Length];
         using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
         {
-            rng.GetBytes(iv);
+            rng.GetBytes(salt);
         }
-        return iv;
+        return salt;
     }
 
-    private static byte[] PerformCryptography(string data, ICryptoTransform transform)
-    {
-        byte[] inputBytes = Encoding.UTF8.GetBytes(data);
-        return PerformCryptography(inputBytes, transform);
-    }
-
-    private static byte[] PerformCryptography(byte[] data, ICryptoTransform transform)
-    {
-        using (MemoryStream memoryStream = new MemoryStream())
-        {
-            using (CryptoStream cryptoStream = new CryptoStream(memoryStream, transform, CryptoStreamMode.Write))
-            {
-                cryptoStream.Write(data, 0, data.Length);
-                cryptoStream.FlushFinalBlock();
-                return memoryStream.ToArray();
-            }
-        }
-    }
-
+    /// <summary>
+    /// Valida a chave de criptografia para garantir que contenha apenas caracteres hexadecimais.
+    /// </summary>
+    /// <param name="cryptoKey">Chave de criptografia.</param>
     private void ValidateKey(string cryptoKey)
     {
         if (!cryptoKey.All(IsHexadecimalDigit))
             throw new ArgumentException("A chave obtida contém caracteres inválidos.");
 
-
         if (cryptoKey.Length != 32)
             throw new ArgumentException("A chave obtida não é uma string válida da Base-64.");
     }
 
+    /// <summary>
+    /// Verifica se um caractere é um dígito hexadecimal.
+    /// </summary>
+    /// <param name="c">Caractere a ser verificado.</param>
+    /// <returns>True se o caractere for hexadecimal; caso contrário, false.</returns>
     private bool IsHexadecimalDigit(char c)
     {
         return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');

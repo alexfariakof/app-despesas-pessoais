@@ -3,7 +3,7 @@ using Business.Dtos.v1;
 using Despesas.Infrastructure.Amazon;
 using Despesas.Infrastructure.Amazon.Abstractions;
 
-namespace Domain.Core;
+namespace XUnit.Infrastructure;
 public sealed class AmazonS3BucketTest
 {
     private IAmazonS3Bucket _amazonS3Bucket;
@@ -32,9 +32,9 @@ public sealed class AmazonS3BucketTest
         {
             Name = "test-image.jpg",
             ContentType = "image/jpeg",
-            Arquivo = new byte[] { 0x01, 0x02, 0x03 } 
+            Arquivo = new byte[] { 0x01, 0x02, 0x03 }
         };
-      
+
 
         var mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>(MockBehavior.Strict);
         mockAmazonS3Bucket.Setup(s => s.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync($"https://{_bucketName}.s3.amazonaws.com/{perfilFileVM.Name}");
@@ -52,7 +52,7 @@ public sealed class AmazonS3BucketTest
     {
         // Arrange
         var mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>(MockBehavior.Strict);
-        mockAmazonS3Bucket.Setup(s => s.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<Byte[]>())).Throws<Exception>(() => new Exception("AmazonS3Bucket_WritingAnObjectAsync_Errro"));
+        mockAmazonS3Bucket.Setup(s => s.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).Throws(() => new Exception("AmazonS3Bucket_WritingAnObjectAsync_Errro"));
         var perfilFileVM = new ImagemPerfilDto
         {
             Name = "test-image.jpg",
