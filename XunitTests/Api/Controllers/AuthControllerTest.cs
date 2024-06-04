@@ -1,4 +1,4 @@
-﻿using despesas_backend_api_net_core.Controllers;
+﻿using Despesas.WebApi.Controllers;
 using System.Reflection;
 
 namespace Api.Controllers;

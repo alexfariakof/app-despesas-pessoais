@@ -1,68 +1,50 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<RootNamespace>XUnit</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>XUnit</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>    
-  </PropertyGroup>
+	<ItemGroup>
+		<None Remove="appsettings.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Include=".Fakers\v1\CategoriaFaker.cs" />
-    <Compile Include=".Fakers\v1\DespesaFaker.cs" />
-    <Compile Include=".Fakers\v1\GraficoFaker.cs" />
-    <Compile Include=".Fakers\v1\ImagemPerfilUsuarioFaker.cs" />
-    <Compile Include=".Fakers\v1\LancamentoFaker.cs" />
-    <Compile Include=".Fakers\v1\ReceitaFaker.cs" />
-    <Compile Include=".Fakers\v1\ControleAcessoFaker.cs" />
-    <Compile Include=".Fakers\v1\UsuarioFaker.cs" />
-    <Compile Include=".Fakers\v2\CategoriaFaker.cs" />
-    <Compile Include=".Fakers\v2\ControleAcessoFaker.cs" />
-    <Compile Include=".Fakers\v2\DespesaFaker.cs" />
-    <Compile Include=".Fakers\v2\GraficoFaker.cs" />
-    <Compile Include=".Fakers\v2\ImagemPerfilUsuarioFaker.cs" />
-    <Compile Include=".Fakers\v2\LancamentoFaker.cs" />
-    <Compile Include=".Fakers\v2\ReceitaFaker.cs" />
-    <Compile Include=".Fakers\v2\UsuarioFaker.cs" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Bogus" Version="35.5.0" />
+		<PackageReference Include="coverlet.msbuild" Version="6.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+		<PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
+		<PackageReference Include="xunit" Version="2.7.0" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="coverlet.collector" Version="6.0.2">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
+	  <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
+	  <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
+	  <ProjectReference Include="..\Despesas.WebApi\Despesas.WebApi.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Bogus" Version="35.5.0" />
-    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-    <PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
-    <PackageReference Include="xunit" Version="2.7.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.2">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Business\Business.csproj" />
-    <ProjectReference Include="..\despesas-backend-api-net-core\despesas-backend-api-net-core.csproj" />    
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Repository\Repository.csproj" />
-  </ItemGroup>
 </Project>

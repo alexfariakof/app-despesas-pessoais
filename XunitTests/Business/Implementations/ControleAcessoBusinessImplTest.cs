@@ -1,6 +1,6 @@
 ﻿using Business.Authentication;
 using Business.Dtos.v2;
-using Domain.Core;
+using Despesas.Infrastructure.Email;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Persistency.Abstractions;

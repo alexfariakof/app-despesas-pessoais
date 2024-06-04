@@ -40,7 +40,7 @@ public sealed class CategoriaRepositorioImplTest : IClassFixture<DatabaseFixture
         Categoria? newCategoria = null;
 
         // Act & Assert
-        Assert.Throws<NullReferenceException>(() => _repository.Insert(ref newCategoria));
+        Assert.Throws<InvalidOperationException>(() => _repository.Insert(ref newCategoria));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public sealed class CategoriaRepositorioImplTest : IClassFixture<DatabaseFixture
         var updatedItem = new Categoria { Id = 999 };
 
         // Act & Assert
-        Assert.Throws<NullReferenceException>(() => _repository.Update(ref updatedItem));
+        Assert.Throws<InvalidOperationException>(() => _repository.Update(ref updatedItem));
     }
 
     [Fact]

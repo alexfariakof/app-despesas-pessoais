@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services:
     despesas-backend-api-net-core-prod:
@@ -7,7 +7,7 @@ services:
         restart: always
         build:
           context: .
-          dockerfile: despesas-backend-api-net-core/Dockerfile.production
+          dockerfile: Despesas.WebApi/Dockerfile.production
         
         environment:
             TZ: America/Sao_Paulo

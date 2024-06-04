@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Business.Dtos.Core.Profile;
 using Business.Dtos.v2;
-using Domain.Core.Interfaces;
+using Despesas.Infrastructure.Amazon.Abstractions;
 using Fakers.v2;
+using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business;
 public class ImagemPerfilUsuarioBusinessImplTests
@@ -30,13 +31,15 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public void Create_Should_Returns_ImagemPerfilUsuarioDto()
     {
         // Arrange
-        var imagemPerfilVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM());
-        var imagemPerfil = _mapper.Map<ImagemPerfilDto>(imagemPerfilVM);
+        var usuario = UsuarioFaker.Instance.GetNewFaker();
+        var imagemPerfil = ImagemPerfilUsuarioFaker.Instance.GetNewFaker(usuario);
+        var imagemPerfilDto = ImagemPerfilUsuarioFaker.Instance.GetNewDtoFrom(imagemPerfil);
         _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync("http://teste.url");
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<ImagemPerfilUsuario>.IsAny));
+        _repositorioUsuarioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
 
         // Act
-        var result = _imagemPerfilUsuarioBusiness.Create(imagemPerfilVM);
+        var result = _imagemPerfilUsuarioBusiness.Create(imagemPerfilDto);
 
         // Assert
         Assert.NotNull(result);
@@ -47,16 +50,13 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public void Create_Should_Throws_Exception_And_Return_Null()
     {
         // Arrange
-        var imagemPerfilVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM());
+        var imagemPerfilVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerDto(UsuarioFaker.Instance.GetNewFakerVM());
         var imagemPerfil = _mapper.Map<ImagemPerfilDto>(imagemPerfilVM);
         _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).Throws<Exception>();
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<ImagemPerfilUsuario>.IsAny));
 
-        // Act
-        var result = _imagemPerfilUsuarioBusiness.Create(imagemPerfilVM);
-
-        // Assert
-        Assert.Null(result);
+        // Act & Assert 
+        Assert.Throws<ArgumentException>(() => _imagemPerfilUsuarioBusiness.Create(imagemPerfilVM));
     }
 
     [Fact]
@@ -154,18 +154,15 @@ public class ImagemPerfilUsuarioBusinessImplTests
     }
 
     [Fact]
-    public void Update_Should_Return_Null()
+    public void Update_Should_Throws_ArgumentException_when_ImagemPerfil_is_Null()
     {
         // Arrange
         var imagemPerfil = _imagensPerfil.First();
         var imagemPerfilVM = _mapper.Map<ImagemPerfilDto>(imagemPerfil);
         _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(null);
 
-        // Act
-        var result = _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM);
-
-        // Assert
-        Assert.Null(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM));
     }
 
     [Fact]
@@ -179,11 +176,8 @@ public class ImagemPerfilUsuarioBusinessImplTests
         _mockAmazonS3Bucket.Setup(s => s.DeleteObjectNonVersionedBucketAsync(It.IsAny<ImagemPerfilUsuario>())).Throws<Exception>();
         _mockAmazonS3Bucket.Setup(x => x.WritingAnObjectAsync(It.IsAny<ImagemPerfilUsuario>(), It.IsAny<byte[]>())).ReturnsAsync("http://teste.url");
 
-        // Act
-        var result = _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM);
-
-        // Assert
-        Assert.Null(result);
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM));
     }
 
     [Fact]

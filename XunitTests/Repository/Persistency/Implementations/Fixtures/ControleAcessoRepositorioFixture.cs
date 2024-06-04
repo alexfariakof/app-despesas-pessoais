@@ -13,8 +13,8 @@ public sealed class ControleAcessoRepositorioFixture : IDisposable
     {
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "ControleAcessoRepositorioImpl").Options;
         Context = new RegisterContext(options);
-        Context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Administrador));
-        Context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.PerfilType.Usuario));
+        Context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
+        Context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
         Context.SaveChanges();
 
         var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(5);

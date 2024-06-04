@@ -1,6 +1,6 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.v2;
-using despesas_backend_api_net_core.Controllers.v2;
+using Despesas.WebApi.Controllers.v2;
 using Microsoft.AspNetCore.Mvc;
 using Fakers.v2;
 using Domain.Entities.ValueObjects;
@@ -25,8 +25,8 @@ public sealed class UsuarioControllerTest
         _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object, _mockImagemPerfilBusiness.Object);
         var usuarios = UsuarioFaker.Instance.GetNewFakersUsuarios(20);
         _mapper = new Mapper(new MapperConfiguration(cfg => {  cfg.AddProfile<UsuarioProfile>(); }));
-        administrador = _mapper.Map<UsuarioDto>(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).First());
-        usuarioNormal = _mapper.Map<UsuarioDto>(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).First());
+        administrador = _mapper.Map<UsuarioDto>(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).First());
+        usuarioNormal = _mapper.Map<UsuarioDto>(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).First());
         _usuarioDtos = _mapper.Map<List<UsuarioDto>>(usuarios);
     }
 
@@ -36,7 +36,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usauriosDtos = _mapper.Map<List<UsuarioDto>>(usaurios);
-        int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Usuario).Last().Id;
+        int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last().Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(It.IsAny<int>())).Returns(usauriosDtos.Find(u => u.Id == idUsuario) ?? new());
 
@@ -74,7 +74,7 @@ public sealed class UsuarioControllerTest
     public void Put_Should_Returns_BadRequest_When_Telefone_IsNull()
     {
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
-        var usuarioDto = _mapper.Map<UsuarioDto>(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.PerfilType.Administrador).First());
+        var usuarioDto = _mapper.Map<UsuarioDto>(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).First());
         usuarioDto.Telefone = null;
         var usauriosDtos = _mapper.Map<List<UsuarioDto>>(usaurios);
         int idUsuario = usuarioDto.Id;

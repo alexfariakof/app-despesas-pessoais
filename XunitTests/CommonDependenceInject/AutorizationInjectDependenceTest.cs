@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Business.Authentication;
-using despesas_backend_api_net_core.CommonDependenceInject;
+using Despesas.WebApi.CommonDependenceInject;
 
 namespace CommonDependenceInject;
 public sealed class AuthorizationInjectDependenceTest
@@ -36,7 +36,7 @@ public sealed class AuthorizationInjectDependenceTest
 
         Assert.NotNull(jwtBearerOptions);
         Assert.NotNull(jwtBearerOptions.TokenValidationParameters);
-        Assert.NotEqual(signingConfigurations.Key, jwtBearerOptions.TokenValidationParameters.IssuerSigningKey);
+        Assert.Equal(signingConfigurations.Key, jwtBearerOptions.TokenValidationParameters.IssuerSigningKey);
         Assert.True(jwtBearerOptions.TokenValidationParameters.ValidateIssuerSigningKey);
         Assert.True(jwtBearerOptions.TokenValidationParameters.ValidateLifetime);
         Assert.Equal(TimeSpan.Zero, jwtBearerOptions.TokenValidationParameters.ClockSkew);

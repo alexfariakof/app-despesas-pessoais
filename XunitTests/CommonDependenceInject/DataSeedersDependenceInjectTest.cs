@@ -1,5 +1,5 @@
 ﻿using DataSeeders;
-using despesas_backend_api_net_core.CommonDependenceInject;
+using Despesas.WebApi.CommonDependenceInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.CommonDependenceInject;

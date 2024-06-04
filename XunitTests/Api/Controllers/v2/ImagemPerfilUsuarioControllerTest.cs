@@ -1,6 +1,6 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.v2;
-using despesas_backend_api_net_core.Controllers.v2;
+using Despesas.WebApi.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -39,7 +39,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
-        var result = _usuarioController.GetImage() as ObjectResult;
+        var result = _usuarioController.GetImagemPerfil() as ObjectResult;
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
@@ -61,7 +61,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
-        var result = _usuarioController.GetImage() as ObjectResult;
+        var result = _usuarioController.GetImagemPerfil() as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
