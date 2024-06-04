@@ -90,7 +90,6 @@ public class Usings
 
     public static string GenerateJwtToken(int userId)
     {
-        //var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
         var options = Options.Create(new TokenOptions
         {
             Issuer = "XUnit-Issuer",
