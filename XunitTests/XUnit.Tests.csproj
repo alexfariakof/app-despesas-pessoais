@@ -41,7 +41,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
-	  <ProjectReference Include="..\Despesas.Cryptography\Despesas.Cryptography.csproj" />
 	  <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
 	  <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />

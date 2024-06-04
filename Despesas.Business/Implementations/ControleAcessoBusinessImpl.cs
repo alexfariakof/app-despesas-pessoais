@@ -2,7 +2,7 @@
 using Business.Abstractions;
 using Business.Authentication;
 using Business.Dtos.Core;
-using Cryptography;
+using EasyCryptoSalt;
 using Despesas.Infrastructure.Email.Abstractions;
 using Domain.Entities;
 using Repository.Persistency.Abstractions;
@@ -43,7 +43,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         if (baseLogin?.Usuario?.StatusUsuario == StatusUsuario.Inativo)
             return AuthenticationException("Usuário Inativo!");
 
-        if (!Crypto.Instance.IsEquals(loginDto?.Senha ?? "", baseLogin?.Senha ?? ""))
+        if (!Crypto.Instance.Verify(loginDto?.Senha ?? "", baseLogin?.Senha ?? ""))
             return AuthenticationException("Senha inválida!");
 
         bool credentialsValid = baseLogin is not null && loginDto?.Email == baseLogin.Login;

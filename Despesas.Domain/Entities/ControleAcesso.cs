@@ -1,4 +1,4 @@
-﻿using Cryptography;
+﻿using EasyCryptoSalt;
 using Domain.Core;
 
 namespace Domain.Entities;

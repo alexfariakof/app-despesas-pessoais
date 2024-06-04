@@ -4,8 +4,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<ProjectReference Include="..\Despesas.Cryptography\Despesas.Cryptography.csproj" />
+	  <PackageReference Include="EasyCryptoSalt" Version="1.0.1" />
 	</ItemGroup>
 </Project>

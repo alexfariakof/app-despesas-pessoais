@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using __mock__;
 using Microsoft.Extensions.Configuration;
+using __mock__;
+using EasyCryptoSalt;
 
 namespace Cryptography;
 
@@ -16,7 +17,7 @@ public sealed class CryptoTest
                        .Build();
 
         if (configuration is null) throw new ArgumentNullException("Arquivo appsettings.json não encontrado.");
-        _cryptoOptions = Options.Create(configuration.GetSection("Crypto").Get<CryptoOptions>()) ?? throw new ArgumentNullException("Configurações appsettings.json não encontradas.");
+        _cryptoOptions = Options.Create(configuration.GetSection("CryptoConfigurations").Get<CryptoOptions>()) ?? throw new ArgumentNullException("Configurações appsettings.json não encontradas.");
     }
 
     [Fact]
@@ -28,7 +29,7 @@ public sealed class CryptoTest
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        var isEquals = crypto.IsEquals(originalText, encryptedText);
+        var isEquals = crypto.Verify(originalText, encryptedText);
 
         // Assert
         Assert.NotEqual(originalText, encryptedText);
@@ -44,7 +45,7 @@ public sealed class CryptoTest
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        var isEquals = crypto.IsEquals(originalText, encryptedText);
+        var isEquals = crypto.Verify(originalText, encryptedText);
 
         // Assert
         Assert.NotEqual(originalText, encryptedText);
@@ -90,7 +91,7 @@ public sealed class CryptoTest
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        var isEquals = crypto.IsEquals(originalText, encryptedText);
+        var isEquals = crypto.Verify(originalText, encryptedText);
 
         // Assert
         Assert.True(isEquals);
@@ -105,7 +106,7 @@ public sealed class CryptoTest
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        var isEquals = crypto.IsEquals(originalText, encryptedText);
+        var isEquals = crypto.Verify(originalText, encryptedText);
 
         // Assert
         Assert.True(isEquals);
@@ -122,8 +123,8 @@ public sealed class CryptoTest
         // Act
         string encryptedTextInstance = crypto.Encrypt(originalText);
 
-        var isEquals = crypto.IsEquals(originalText, encryptedTextInstance);
-        var isEqualsOptions = cryptoOptions.IsEquals(originalText, encryptedTextInstance);
+        var isEquals = crypto.Verify(originalText, encryptedTextInstance);
+        var isEqualsOptions = cryptoOptions.Verify(originalText, encryptedTextInstance);
 
         // Assert
         Assert.True(isEquals);
@@ -139,7 +140,7 @@ public sealed class CryptoTest
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        var isEquals = crypto.IsEquals(originalText, encryptedText);
+        var isEquals = crypto.Verify(originalText, encryptedText);
 
         // Assert
         Assert.NotEqual(originalText, encryptedText);
@@ -155,65 +156,10 @@ public sealed class CryptoTest
 
         // Act
         string encryptedText = crypto.Encrypt(originalText);
-        var isEquals = crypto.IsEquals(originalText, encryptedText);
+        var isEquals = crypto.Verify(originalText, encryptedText);
 
         // Assert
         Assert.NotEqual(originalText, encryptedText);
         Assert.True(isEquals);
-    }
-
-    [Theory]
-    [InlineData("FF23456789EBCDEF0123456789ABCDEA", true)]  // Chave válida
-    [InlineData("9g23456789EBCDEF0123456789ABCDEA", false)] // Chave inválida (contém caracteres não hexadecimais)
-    [InlineData("FF23456789EBCDEF", false)]     // Chave inválida (tamanho diferente de 32)
-    public void ValidateKey_Should_Throw_Exception_For_Invalid_Keys(string key, bool isValid)
-    {
-        // Arrange
-        var options = Options.Create(new CryptoOptions()
-        {
-            Key = key,
-            AuthSalt = "SRTGE}46aSb$"
-        });
-
-        // Act & Assert
-        if (isValid)
-        {
-            Assert.IsType<Crypto>(new Crypto(options));
-        }
-        else
-        {
-            Assert.Throws<ArgumentException>(() => new Crypto(options));
-        }
-    }
-
-    [Theory]
-    [InlineData("FF23456789EBCDEF0123456789ABCDEA", true)] // Chave válida
-    [InlineData("09ABCDEF23456789abcdef0123456789", true)] // Chave válida
-    [InlineData("0123456789ABCDEFabcdef0123456789", true)] // Chave válida
-    [InlineData("FF23456789EBCDEF0123456789ABCDEF", true)] // Chave válida
-    [InlineData("0123456789abcdefABCDEF0123456789", true)] // Chave válida
-    [InlineData("9g23456789EBCDEF0123456789ABCDEA", false)] // Chave inválida
-    [InlineData("09:BCDEF23456789abcdef0123456789", false)] // Chave inválida
-    [InlineData("0123456789ABCGDEFabcdef012345678", false)] // Chave inválida
-    [InlineData("FF23456789EBZDEF0123456789ABCDEF", false)] // Chave inválida
-    [InlineData("0123456789abc:efABCDEF0123456789", false)] // Chave inválida
-    public void IsHexadecimalDigit_Should_Return_Correct_Result(string key, bool isValid)
-    {
-        // Arrange
-        var options = Options.Create(new CryptoOptions()
-        {
-            Key = key,
-            AuthSalt = "SRTGE}46aSb$"
-        });
-
-        // Act & Assert
-        if (isValid)
-        {
-            Assert.IsType<Crypto>(new Crypto(options));
-        }
-        else
-        {
-            Assert.Throws<ArgumentException>(() => new Crypto(options));
-        }
     }
 }

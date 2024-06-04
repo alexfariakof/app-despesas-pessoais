@@ -21,9 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despesas.Domain", "Despesas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despesas.Repository", "Despesas.Repository\Despesas.Repository.csproj", "{BC13045A-B84D-4835-88AF-6575E461907C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Despesas.Infrastructure", "Despesas.Infrastructure\Despesas.Infrastructure.csproj", "{14579B8B-FF8E-4067-A26E-831449278F1B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despesas.Cryptography", "Despesas.Cryptography\Despesas.Cryptography.csproj", "{2964D28D-8468-4B25-9F9A-D4E13CACAC98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despesas.Infrastructure", "Despesas.Infrastructure\Despesas.Infrastructure.csproj", "{14579B8B-FF8E-4067-A26E-831449278F1B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despesas.Business", "Despesas.Business\Despesas.Business.csproj", "{9E2DAAAA-2935-46AC-A700-1D1F45B6DC28}"
 EndProject
@@ -66,10 +64,6 @@ Global
 		{14579B8B-FF8E-4067-A26E-831449278F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14579B8B-FF8E-4067-A26E-831449278F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14579B8B-FF8E-4067-A26E-831449278F1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2964D28D-8468-4B25-9F9A-D4E13CACAC98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2964D28D-8468-4B25-9F9A-D4E13CACAC98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2964D28D-8468-4B25-9F9A-D4E13CACAC98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2964D28D-8468-4B25-9F9A-D4E13CACAC98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E2DAAAA-2935-46AC-A700-1D1F45B6DC28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E2DAAAA-2935-46AC-A700-1D1F45B6DC28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E2DAAAA-2935-46AC-A700-1D1F45B6DC28}.Release|Any CPU.ActiveCfg = Release|Any CPU
