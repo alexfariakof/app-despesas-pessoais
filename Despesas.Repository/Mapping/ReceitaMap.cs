@@ -15,10 +15,10 @@ public class ReceitaMap: IEntityTypeConfiguration<Receita>
         builder.Property(r => r.CategoriaId).IsRequired();
 
         // MySqlServer
-        //builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();
+        builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();
 
         // MsSqlServer
-        builder.Property(r => r.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()").IsRequired();        
+        //builder.Property(r => r.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()").IsRequired();        
 
         builder.Property(r => r.Valor).HasColumnType("decimal(10, 2)").HasDefaultValue(0);
         builder.HasOne(r => r.Usuario).WithMany().HasForeignKey(r => r.UsuarioId).OnDelete(DeleteBehavior.NoAction);

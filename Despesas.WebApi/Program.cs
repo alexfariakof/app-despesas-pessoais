@@ -29,7 +29,7 @@ builder.Services.AddSwaggerApiVersioning();
 
 if (builder.Environment.IsProduction())
 {
-    builder.Services.CreateDataBaseInMemory();
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? throw new()));
 }
 else if (builder.Environment.EnvironmentName.Equals("Azure"))
 {
@@ -37,7 +37,7 @@ else if (builder.Environment.EnvironmentName.Equals("Azure"))
 }
 else if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? "MySqlConnectionString"));
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? throw  new()));
 }
 else if (builder.Environment.EnvironmentName.Equals("DatabaseInMemory"))
 {
@@ -50,7 +50,7 @@ else
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 
-// Add CommonInjectDependences 
+// Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
 builder.Services.AddAuthConfigurations(builder.Configuration);
@@ -78,5 +78,8 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("D
     app.UseDefaultFiles();
     app.UseStaticFiles();
 }
-app.RunDataSeeders();
+
+if (!app.Environment.IsProduction())
+    app.RunDataSeeders();
+
 app.Run();

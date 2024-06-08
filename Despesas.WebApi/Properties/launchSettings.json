@@ -11,6 +11,17 @@
       "applicationUrl": "http://localhost:42535",
       "nativeDebugging": true
     },
+    "Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:42535",
+      "nativeDebugging": true
+    },
     "MySqlServer": {
       "commandName": "Project",
       "launchBrowser": true,
