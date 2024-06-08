@@ -8,7 +8,7 @@ on:
       - dev
 
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened]
     branches:       
       - main
 
