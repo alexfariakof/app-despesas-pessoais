@@ -50,7 +50,7 @@ else
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 
-// Add CommonInjectDependences 
+// Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
 builder.Services.AddAuthConfigurations(builder.Configuration);
