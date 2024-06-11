@@ -1,0 +1,12 @@
+@Despesas.WebApi.Server_HostAddress = http://localhost:42536
+
+GET {{Despesas.WebApi.Server_HostAddress}}/controleacesso/
+GET {{Despesas.WebApi.Server_HostAddress}}/categoria/
+GET {{Despesas.WebApi.Server_HostAddress}}/despesa/
+GET {{Despesas.WebApi.Server_HostAddress}}/receita/
+GET {{Despesas.WebApi.Server_HostAddress}}/lancamento/
+GET {{Despesas.WebApi.Server_HostAddress}}/saldo/
+GET {{Despesas.WebApi.Server_HostAddress}}/usuario/
+Accept: application/json
+
+###

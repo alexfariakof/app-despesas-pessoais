@@ -1,0 +1,28 @@
+
+.full-height {
+  height: 10%;
+}
+
+.footer {
+  position: fixed;
+  bottom:0;
+  width: 100%;
+}
+
+.tituloHeader {
+  color: lightcyan;
+}
+
+.menu button {
+  width: 100%;
+  padding: 0.6rem;
+  text-align: left;
+}
+
+.menu-select {
+    background: rgb(27, 115, 183) !important;
+    border-radius: 0.4rem;
+    border-color: rgb(233, 224, 255);
+    box-sizing: 1rem;
+    cursor: pointer;
+}

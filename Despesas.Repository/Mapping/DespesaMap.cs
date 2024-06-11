@@ -15,8 +15,8 @@ public class DespesaMap: IEntityTypeConfiguration<Despesa>
         builder.Property(d => d.CategoriaId).IsRequired();
 
         // MySqlServer 
-        builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();
-        builder.Property(m => m.DataVencimento).HasColumnType("timestamp").HasDefaultValueSql(null);
+        builder.Property(m => m.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("CURRENT_TIMESTAMP").IsRequired();
+        builder.Property(m => m.DataVencimento).HasColumnType("datetime").HasDefaultValueSql(null);
 
         // MsSqlServer
         //builder.Property(d => d.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()").IsRequired();

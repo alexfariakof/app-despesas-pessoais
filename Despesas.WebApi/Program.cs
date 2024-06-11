@@ -78,8 +78,8 @@ if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("D
     app.UseDefaultFiles();
     app.UseStaticFiles();
 }
-
 if (!app.Environment.IsProduction())
     app.RunDataSeeders();
 
+app.MapFallbackToFile("/index.html");
 app.Run();

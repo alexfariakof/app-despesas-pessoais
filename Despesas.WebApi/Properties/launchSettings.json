@@ -3,12 +3,13 @@
     "Default": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "",
+      "applicationUrl": "https://localhost:42535;http://localhost:42536",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42535",
       "nativeDebugging": true
     },
     "Production": {
@@ -19,7 +20,7 @@
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42535",
+      "applicationUrl": "http://localhost:42536",
       "nativeDebugging": true
     },
     "MySqlServer": {
@@ -31,7 +32,7 @@
       },
       "nativeDebugging": true,
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42535"
+      "applicationUrl": "http://localhost:42536"
     },
     "DatabaseInMemory": {
       "commandName": "Project",
@@ -42,7 +43,7 @@
       },
       "nativeDebugging": true,
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42535"
+      "applicationUrl": "http://localhost:42536"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -65,8 +66,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:42535",
-      "sslPort": 42536
+      "applicationUrl": "http://localhost:42536",
+      "sslPort": 42535
     }
   }
 }

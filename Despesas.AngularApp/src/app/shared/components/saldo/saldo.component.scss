@@ -1,0 +1,57 @@
+.header {
+  font-size: 1em;
+  font-weight: 600;
+  padding: 0;
+}
+
+.headerSaldo {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.textSaldo {
+  font-size: 1em;
+  font-weight: 300;
+}
+
+
+@media screen and (max-width: 653px) {
+  h2 {
+    font-size: 0.8em;
+    font-weight: 600;
+  }
+
+  .headerSaldo {
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+
+  .textSaldo {
+    font-size: 0.8em;
+    font-weight: 300;
+  }
+
+}
+
+@media screen and (max-width: 430px) {
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0;
+  }
+
+  .headerSaldo {
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .textSaldo {
+    font-size: 0.7rem;
+    font-weight: 300;
+  }
+
+  #saldoAnual {
+    display: none;
+  }
+
+}

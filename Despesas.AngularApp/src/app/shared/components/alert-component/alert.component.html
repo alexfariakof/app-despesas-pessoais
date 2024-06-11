@@ -1,0 +1,19 @@
+<div
+  class="alert d-flex flex-column justify-content-around m-1 p-0 border border-2 border-dark rounded-top-2 rounded-bottom-1"
+  role="alert"
+>
+  <div
+    class="modal-header bg-dark text-light mt-0 p-2 rounded-top-1 rounded-bottom-0"
+    style="position: relative; bottom: 0.1rem"
+  >
+    <h2 class="m-0 border-0" id="success">{{ header }}</h2>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      data-bs-dismiss="modal"
+      aria-label="Close"
+      (click)="close()"
+    ></button>
+  </div>
+  <i class="m-2 p-2" [ngClass]="alertTypeClass" role="alert"> {{ message }}</i>
+</div>
