@@ -79,7 +79,7 @@ Make sure have instaled tool ReportGenerator, if not Run `dotnet tool install --
 
 Run  `./generate_coverage_report.ps1` if using windows, or Run `./generate_coverage_report.sh` if using linux. The Report will open in default browser automatically.
 
-[Overview Report Coverage Results](http://alexfariakof.com:42536/) 
+[Overview Report Coverage Results](http://alexfariakof.com:42536/coveragereport/index.html) 
 ![reportTestCoverage](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/afd1b5e4-5a2f-490c-bf4f-a530df41c1ae)
 
 ## Security Settings
