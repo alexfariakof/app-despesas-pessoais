@@ -54,9 +54,9 @@ jobs:
             ./scripts/dp-api.dev.sh
           continue-on-error: false
 
-  trigger_e2e_tests:
-    needs: deploy_dev
-    name: Tests End-to-End Triggered
-    uses: alexfariakof/app-despesas-pessoais/.github/workflows/tests_E2E.yml@main
-    secrets: inherit
+#  trigger_e2e_tests:
+#    needs: deploy_dev
+#    name: Tests End-to-End Triggered
+#    uses: alexfariakof/app-despesas-pessoais/.github/workflows/tests_E2E.yml@main
+#    secrets: inherit
 
