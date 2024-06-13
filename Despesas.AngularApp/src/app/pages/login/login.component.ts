@@ -44,13 +44,8 @@ export class LoginComponent implements OnInit{
         }
       }),
       catchError((error) => {
-        if (error.status === 400) {
-          const validationErrors = error.errors;
-          if (validationErrors) {
-            Object.keys(validationErrors).forEach(field => {
-              throw validationErrors[field][0];
-            });
-          }
+        if (error && typeof error.message === 'string'){
+          throw (error.message);
         }
         throw (error);
       })

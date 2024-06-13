@@ -9,19 +9,18 @@ import { AbstractService } from '../base/AbstractService';
 
 export class SaldoService  extends AbstractService {
   constructor(public httpClient: HttpClient) {
-    super();
-    this.urlPath = 'Saldo';
+    super('Saldo');
   }
 
   getSaldo(): any {
-    return this.httpClient.get(`${ this.urlPath }`);
+    return this.httpClient.get(`${ this.routeUrl }`);
   }
 
   getSaldoAnual(ano: Dayjs): any {
-    return this.httpClient.get(`${ this.urlPath }/ByAno/${ano}`);
+    return this.httpClient.get(`${ this.routeUrl }/ByAno/${ano}`);
   }
 
   getSaldoByMesANo(mesAno: Dayjs): any {
-    return this.httpClient.get(`${ this.urlPath }/ByMesAno/${mesAno}`);
+    return this.httpClient.get(`${ this.routeUrl }/ByMesAno/${mesAno}`);
   }
 }

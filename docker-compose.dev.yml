@@ -1,8 +1,8 @@
 version: '3.9'
 
 services:
-  despesas-backend-api-net-core-dev:
-    container_name: api-in-memory-dev
+  app-despesas-pessoais-dev:
+    container_name: app-despesas-pessoais-dev
     image: alexfariakof/api-despesas-backend-netcore-dev-img
     restart: always
     build:
@@ -10,12 +10,6 @@ services:
       dockerfile: Despesas.WebApi/Dockerfile.development
     environment:
       TZ: America/Sao_Paulo
-      ASPNETCORE_ENVIRONMENT: DatabaseInMemory
+      ASPNETCORE_ENVIRONMENT: Development
     ports:
       - 42536:42536
-    networks:
-      - despesas-network
-
-networks:
-    despesas-network:
-        driver: bridge

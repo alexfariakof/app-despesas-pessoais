@@ -3,8 +3,11 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "app-despesas-pessoais",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
       "serviceActions": {
-        "despesas-backend-api-net-core": "StartDebugging"
+        "app-despesas-pessoais": "StartDebugging"
       }
     }
   }

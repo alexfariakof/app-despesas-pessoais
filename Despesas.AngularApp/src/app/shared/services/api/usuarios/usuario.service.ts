@@ -9,23 +9,22 @@ import { AbstractService } from '../base/AbstractService';
 
 export class UsuarioService extends AbstractService {
   constructor(public httpClient: HttpClient) {
-    super();
-    this.urlPath = 'Usuario';
+    super('Usuario');
   }
 
   getUsuario(): any {
-    return this.httpClient.get(`${ this.urlPath }/GetUsuario`);
+    return this.httpClient.get(`${ this.routeUrl }/GetUsuario`);
   }
 
   postUsuario(usuario: IUsuario): any {
-    return this.httpClient.post<IUsuario>(`${ this.urlPath }`, usuario);
+    return this.httpClient.post<IUsuario>(`${ this.routeUrl }`, usuario);
   }
 
   putUsuario(usuario: IUsuario): any {
-    return this.httpClient.put<IUsuario>(`${ this.urlPath }`, usuario);
+    return this.httpClient.put<IUsuario>(`${ this.routeUrl }`, usuario);
   }
 
   deleteUsuario(usuario: IUsuario): any {
-    return this.httpClient.delete<IUsuario>(`${ this.urlPath }`, { body: usuario });
+    return this.httpClient.delete<IUsuario>(`${ this.routeUrl }`, { body: usuario });
   }
 }

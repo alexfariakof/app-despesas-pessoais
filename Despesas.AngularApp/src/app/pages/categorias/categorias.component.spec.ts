@@ -1,6 +1,6 @@
 import { MenuService } from 'src/app/shared/services';
 import { CommonModule } from "@angular/common";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, tick, flush } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
@@ -13,7 +13,6 @@ import { CategoriaService } from "src/app/shared/services/api";
 import { SharedModule } from "src/app/shared/shared.module";
 import { CategoriasFormComponent } from "./categorias-form/categorias.form.component";
 import { CategoriasComponent } from "./categorias.component";
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
 describe('Unit Test CategoriasComponent', () => {
@@ -29,10 +28,11 @@ describe('Unit Test CategoriasComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    declarations: [CategoriasComponent, CategoriasFormComponent],
-    imports: [CommonModule, ReactiveFormsModule, MdbFormsModule, SharedModule],
-    providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, CategoriaService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      declarations: [CategoriasComponent, CategoriasFormComponent],
+      imports: [CommonModule, ReactiveFormsModule, MdbFormsModule, SharedModule, HttpClientTestingModule ],
+      providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent,  NgbActiveModal, CategoriaService
+      ]
+    });
     fixture = TestBed.createComponent(CategoriasComponent);
     component = fixture.componentInstance;
     component.dataTable = TestBed.inject(DataTableComponent);
@@ -85,7 +85,7 @@ describe('Unit Test CategoriasComponent', () => {
     // Assert
     expect(getCategoriasSpy).toHaveBeenCalled();
     expect(alertOpenSpy).toHaveBeenCalled();
-    expect(alertOpenSpy).toHaveBeenCalledWith(AlertComponent, undefined, AlertType.Warning);
+    expect(alertOpenSpy).toHaveBeenCalledWith(AlertComponent, errorMessage, AlertType.Warning);
   });
 
   it('should update data table on updateDatatable', () => {

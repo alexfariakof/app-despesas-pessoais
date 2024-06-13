@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { ChangePasswordComponent } from './change-password.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AlertComponent, AlertType } from 'src/app/shared/components';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,6 @@ import { ControleAcessoService } from 'src/app/shared/services/api';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ILogin } from 'src/app/shared/models';
 import { from, throwError } from 'rxjs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ChangePasswordComponent', () => {
   let component: ChangePasswordComponent;
@@ -17,10 +16,10 @@ describe('ChangePasswordComponent', () => {
   let controleAcessoService: ControleAcessoService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-    declarations: [ChangePasswordComponent],
-    imports: [CommonModule, MdbFormsModule, FormsModule, ReactiveFormsModule],
-    providers: [AlertComponent, ControleAcessoService, NgbActiveModal, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      declarations: [ChangePasswordComponent],
+      imports:[CommonModule, MdbFormsModule,  HttpClientTestingModule, FormsModule, ReactiveFormsModule],
+      providers: [AlertComponent, ControleAcessoService, NgbActiveModal ]
+    });
     fixture = TestBed.createComponent(ChangePasswordComponent);
     component = fixture.componentInstance;
     controleAcessoService = TestBed.inject(ControleAcessoService);

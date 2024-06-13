@@ -1,6 +1,6 @@
 import { MenuService } from 'src/app/shared/services';
 import { CommonModule } from "@angular/common";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
@@ -16,7 +16,6 @@ import { ReceitaService } from "src/app/shared/services/api";
 import { SharedModule } from "src/app/shared/shared.module";
 import { ReceitasFormComponent } from "./receitas-form/receitas.form.component";
 import { ReceitasComponent } from "./receitas.component";
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test ReceitasComponent', () => {
   let component: ReceitasComponent;
@@ -35,10 +34,10 @@ describe('Unit Test ReceitasComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    declarations: [ReceitasComponent, ReceitasFormComponent, MatDatepicker, MatSelect],
-    imports: [CommonModule, RouterTestingModule, SharedModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
-    providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, ReceitaService, ReceitasFormComponent, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      declarations: [ReceitasComponent, ReceitasFormComponent, MatDatepicker, MatSelect],
+      imports: [CommonModule, RouterTestingModule, SharedModule, HttpClientTestingModule, MatSelectModule , MatDatepickerModule, MatNativeDateModule],
+      providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, ReceitaService, ReceitasFormComponent ]
+    });
     fixture = TestBed.createComponent(ReceitasComponent);
     component = fixture.componentInstance;
     component.dataTable = TestBed.inject(DataTableComponent);

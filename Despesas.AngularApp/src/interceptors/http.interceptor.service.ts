@@ -2,20 +2,15 @@ import { AuthService } from 'src/app/shared/services';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, filter, finalize, switchMap, take, throwError } from 'rxjs';
-import { environment } from '../environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { LoadingComponent } from '../components';
-import { TokenStorageService } from '../services';
-import { IAuth } from '../models';
-
-const TOKEN_HEADER_KEY = 'x-access-token';
+import { LoadingComponent } from '../app/shared/components';
+import { TokenStorageService } from '../app/shared/services';
+import { IAuth } from '../app/shared/models';
 
 @Injectable()
 export class CustomInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  private baseUrl = environment.endPoint;
-
   constructor(private tokenService: TokenStorageService, private authService: AuthService, private modalService: NgbModal) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -30,10 +25,13 @@ export class CustomInterceptor implements HttpInterceptor {
         if (error.ok === false && error.status === 0)
           return throwError(() => 'Erro de conexão tente mais tarde.');
         else if (error.status === 400) {
-          return throwError(() => error.error);
+          return throwError(() => error.error );
         }
         else if (error.status === 401) {
           return this.handle401Error(request, next);
+        }
+        else if (error.status === 403) {
+          return throwError(() => 'Acesso não Autorizado!');
         }
         console.log(error);
         return throwError(() => 'Erro tente atualizar a página ou realize novamente o login..');
@@ -78,7 +76,6 @@ export class CustomInterceptor implements HttpInterceptor {
 
   private addTokenHeader(request: HttpRequest<any>) {
     return request.clone({
-      url: `${this.baseUrl}/${request.url}`,
       setHeaders: {
         Authorization: `Bearer ${ this.tokenService.getToken() }`
       }

@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app.routing.module';
@@ -25,14 +25,15 @@ describe('AppComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockAuthService = jasmine.createSpyObj('AuthService', [ 'isAuthenticated']);
     TestBed.configureTestingModule({
-    declarations: [AppComponent, LoginComponent, PrimeiroAcessoComponent],
-    imports: [RouterTestingModule, BrowserModule, AppRoutingModule, CommonModule, ReactiveFormsModule, FormsModule],
-    providers: [AuthService, AuthProvider,
-        { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService },
-        DateAdapter,
-        MatDatepickerIntl, provideHttpClient(withInterceptorsFromDi())]
-});
+        declarations: [AppComponent, LoginComponent, PrimeiroAcessoComponent],
+        imports: [RouterTestingModule, BrowserModule, AppRoutingModule, CommonModule,  ReactiveFormsModule, HttpClientModule, FormsModule],
+        providers: [AuthService, AuthProvider,
+          { provide: Router, useValue: mockRouter },
+          { provide: AuthService, useValue: mockAuthService },
+            DateAdapter,
+            MatDatepickerIntl
+        ]
+    });
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
     router = TestBed.inject(Router);

@@ -1,20 +1,21 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { ControleAcessoService } from './controle-acesso.service';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ILogin } from '../../../models/ILogin';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { IControleAcesso } from '../../../models/IControleAcesso';
-import { CustomInterceptor } from '../../../interceptors/http.interceptor.service';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { CustomInterceptor } from '../../../../../interceptors/http.interceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 describe('Unit Test ControleAcessoService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [],
-    providers: [ControleAcessoService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [HttpClientTestingModule],
+      providers:[ControleAcessoService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
+      ]
+    });
   });
 
   it('should be created', inject([ControleAcessoService], (service: ControleAcessoService) => {
@@ -33,7 +34,7 @@ describe('Unit Test ControleAcessoService', () => {
       service.signIn(loginData).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = `${environment.endPoint}/ControleAcesso/SignIn`;
+      const expectedUrl = `${environment.API_VERSION}/ControleAcesso/SignIn`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);
@@ -57,7 +58,7 @@ describe('Unit Test ControleAcessoService', () => {
       service.createUsuario(controleAcessoData).subscribe((response: any) => {
         expect(response).toBeTruthy();
       });
-      const expectedUrl = `${environment.endPoint}/ControleAcesso`;
+      const expectedUrl = `${environment.API_VERSION}/ControleAcesso`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);
@@ -78,7 +79,7 @@ describe('Unit Test ControleAcessoService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/ControleAcesso/ChangePassword`;
+      const expectedUrl = `${environment.API_VERSION}/ControleAcesso/ChangePassword`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
       req.flush(mockResponse);

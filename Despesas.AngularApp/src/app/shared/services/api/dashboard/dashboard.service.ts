@@ -9,11 +9,10 @@ import { AbstractService } from '../base/AbstractService';
 
 export class DashboardService extends AbstractService {
   constructor(public httpClient: HttpClient) {
-    super();
-    this.urlPath = 'Graficos';
+    super('Graficos');
   }
 
   getDataGraphicByYear(ano: Dayjs) : any {
-    return this.httpClient.get(`${ this.urlPath }/Bar/${ ano }`);
+    return this.httpClient.get(`${ this.routeUrl }/Bar/${ ano }`);
   }
 }

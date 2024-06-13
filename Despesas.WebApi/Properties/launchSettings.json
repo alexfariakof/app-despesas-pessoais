@@ -3,14 +3,12 @@
     "Default": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "",
-      "applicationUrl": "https://localhost:42535;http://localhost:42536",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "MySqlServer",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
       "dotnetRunMessages": true,
-      "nativeDebugging": true
+      "applicationUrl": "https://localhost:42535;http://localhost:42536"
     },
     "Production": {
       "commandName": "Project",
@@ -23,42 +21,29 @@
       "applicationUrl": "http://localhost:42536",
       "nativeDebugging": true
     },
-    "MySqlServer": {
+    "Development": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "",
+      "applicationUrl": "https://localhost:42535;http://localhost:42536",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "MySqlServer"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
-      "nativeDebugging": true,
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42536"
-    },
-    "DatabaseInMemory": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "DatabaseInMemory"
-      },
-      "nativeDebugging": true,
-      "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:42536"
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      "nativeDebugging": true
     },
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "DockerfileRunArguments": "-v \"{ProjectDir}/dist:/app/wwwroot\"",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTP_PORT": "{ServicePort}"
+      }
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",
@@ -66,8 +51,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:42536",
-      "sslPort": 42535
+      "applicationUrl": "http://localhost:30656",
+      "sslPort": 44391
     }
   }
 }

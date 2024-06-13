@@ -8,7 +8,7 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { LancamentosComponent } from "./lancamentos.component";
 import { DespesasFormComponent } from "../despesas/despesas-form/despesas.form.component";
 import { ReceitasFormComponent } from "../receitas/receitas-form/receitas.form.component";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { RouterTestingModule } from "@angular/router/testing";
 import { ILancamento } from 'src/app/shared/models';
 import { LancamentoDataSet } from 'src/app/shared/datatable-config/lancamentos';
@@ -18,7 +18,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test LancamentosComponent', () => {
   let component: LancamentosComponent;
@@ -36,12 +35,12 @@ describe('Unit Test LancamentosComponent', () => {
 
   beforeEach(() => {
       TestBed.configureTestingModule({
-    declarations: [LancamentosComponent, DespesasFormComponent, ReceitasFormComponent],
-    imports: [CommonModule, SharedModule, RouterTestingModule,
+      declarations: [LancamentosComponent, DespesasFormComponent, ReceitasFormComponent],
+      imports: [CommonModule, SharedModule, RouterTestingModule, HttpClientTestingModule,
         MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
-    providers: [MenuService, AlertComponent, NgbActiveModal, ModalFormComponent, ModalConfirmComponent,
-        FilterMesAnoService, DespesasFormComponent, ReceitasFormComponent, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      providers: [MenuService, AlertComponent, NgbActiveModal, ModalFormComponent, ModalConfirmComponent,
+        FilterMesAnoService, DespesasFormComponent, ReceitasFormComponent ]
+    });
     fixture = TestBed.createComponent(LancamentosComponent);
     component = fixture.componentInstance;
     lancamentoService = TestBed.inject(LancamentoService);

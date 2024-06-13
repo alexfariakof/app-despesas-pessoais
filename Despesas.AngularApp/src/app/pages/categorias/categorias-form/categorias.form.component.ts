@@ -37,12 +37,17 @@ export class CategoriasFormComponent implements OnInit {
     this.categoriatForm = this.formbuilder.group({
       id: [0, Validators.required],
       descricao: ['', Validators.required],
-      idTipoCategoria: ['', Validators.required]
+      idTipoCategoria: [0, Validators.required]
     }) as FormGroup & ICategoria;
   }
 
   onSaveClick = () => {
-    let categoria = this.categoriatForm.getRawValue();
+    let rawValue = this.categoriatForm.getRawValue();
+    let categoria: ICategoria = {
+      ...rawValue,
+      idTipoCategoria: Number(rawValue.idTipoCategoria)
+    };
+
     try {
       if (this.action === IAction.Create) {
 

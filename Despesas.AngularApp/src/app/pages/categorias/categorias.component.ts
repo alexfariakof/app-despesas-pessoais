@@ -40,8 +40,8 @@ export class CategoriasComponent implements BarraFerramentaClass, OnInit {
             this.dataTable.rerender();
           }
         },
-        error: (response: any) => {
-          this.modalAlert.open(AlertComponent, response.message, AlertType.Warning);
+        error: (errorMessage: any) => {
+          this.modalAlert.open(AlertComponent, errorMessage, AlertType.Warning);
         }
       });
   }
@@ -55,8 +55,8 @@ export class CategoriasComponent implements BarraFerramentaClass, OnInit {
             this.dataTable.rerender();
           }
         },
-        error: (response: any) => {
-          this.modalAlert.open(AlertComponent, response, AlertType.Warning);
+        error: (errorMessage: any) => {
+          this.modalAlert.open(AlertComponent, errorMessage, AlertType.Warning);
         }
       });
   }
@@ -88,8 +88,8 @@ export class CategoriasComponent implements BarraFerramentaClass, OnInit {
           if (categoria !== undefined && categoria !== null)
             this.editCategoria(categoria);
         },
-        error: (response: any) => {
-          this.modalAlert.open(AlertComponent, response, AlertType.Warning);
+        error: (errorMessage: any) => {
+          this.modalAlert.open(AlertComponent, errorMessage, AlertType.Warning);
         }
       });
   }
@@ -120,8 +120,8 @@ export class CategoriasComponent implements BarraFerramentaClass, OnInit {
             this.modalAlert.open(AlertComponent, 'Erro ao excluír categoria', AlertType.Warning);
           }
         },
-        error: (response: any) => {
-          this.modalAlert.open(AlertComponent, response, AlertType.Warning);
+        error: (errorMessage: any) => {
+          this.modalAlert.open(AlertComponent, errorMessage, AlertType.Warning);
         }
       });
   }

@@ -1,4 +1,4 @@
-import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -12,7 +12,6 @@ import { LoginComponent } from "./login.component";
 import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -24,12 +23,13 @@ describe('LoginComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockAuthService = jasmine.createSpyObj('AuthService', ['createAccessToken', 'isAuthenticated']);
     TestBed.configureTestingModule({
-    declarations: [LoginComponent],
-    imports: [ReactiveFormsModule, RouterTestingModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule],
-    providers: [AlertComponent, NgbActiveModal,
+      declarations: [LoginComponent],
+      imports: [ReactiveFormsModule,  RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule,  MatFormFieldModule, MatInputModule  ],
+      providers: [AlertComponent, NgbActiveModal,
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(),]
-});
+        { provide: AuthService, useValue: mockAuthService },
+      ]
+    });
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

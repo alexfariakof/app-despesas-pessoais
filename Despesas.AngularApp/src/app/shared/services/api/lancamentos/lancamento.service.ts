@@ -10,11 +10,10 @@ import { AbstractService } from '../base/AbstractService';
 export class LancamentoService extends AbstractService {
 
   constructor(public httpClient: HttpClient) {
-    super();
-    this.urlPath = 'Lancamento';
+    super('Lancamento');
   }
 
   getLancamentosByMesAno(mesAno: Dayjs): any {
-    return this.httpClient.get(`${ this.urlPath }/${mesAno}`);
+    return this.httpClient.get(`${ this.routeUrl }/${mesAno}`);
   }
 }

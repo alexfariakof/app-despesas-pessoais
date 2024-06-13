@@ -5,12 +5,11 @@ import { AlertComponent, AlertType, BarChartComponent } from 'src/app/shared/com
 import { AuthService, MenuService } from 'src/app/shared/services';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardService } from 'src/app/shared/services/api';
 import { from, throwError } from 'rxjs';
 import * as dayjs from 'dayjs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test DashboardComponent', () => {
   let component: DashboardComponent;
@@ -30,11 +29,12 @@ describe('Unit Test DashboardComponent', () => {
     mockAuthService.isAuthenticated.and.returnValue(true);
 
     TestBed.configureTestingModule({
-    declarations: [DashboardComponent, BarChartComponent],
-    imports: [CommonModule, SharedModule, NgChartsModule],
-    providers: [MenuService, AlertComponent, NgbActiveModal,
-        { provide: AuthService, useValue: mockAuthService }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(),]
-});
+      declarations: [DashboardComponent, BarChartComponent],
+      imports: [CommonModule, SharedModule, NgChartsModule, HttpClientTestingModule],
+      providers: [MenuService, AlertComponent, NgbActiveModal,
+        { provide: AuthService, useValue: mockAuthService },
+      ]
+    });
     fixture = TestBed.createComponent(DashboardComponent);
     component = fixture.componentInstance;
     component.barChartLabels = mockLabels;

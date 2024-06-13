@@ -1,9 +1,9 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { DespesaService } from './despesa.service';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CustomInterceptor } from '../../../interceptors/http.interceptor.service';
-import { environment } from 'src/app/shared/environments/environment';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from '../../../../../interceptors/http.interceptor.service';
+import { environment } from 'src/environments/environment';
 import { IDespesa } from 'src/app/shared/models/IDespesa';
 import * as dayjs from 'dayjs';
 import { ICategoria } from 'src/app/shared/models/ICategoria';
@@ -12,10 +12,11 @@ describe('Unit Test DespesaService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [],
-    providers: [DespesaService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [HttpClientTestingModule],
+      providers:[DespesaService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
+      ]
+    });
   });
 
   it('should be created', inject([DespesaService], (service: DespesaService) => {
@@ -36,7 +37,7 @@ describe('Unit Test DespesaService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Despesa`;
+      const expectedUrl = `${environment.API_VERSION}/Despesa`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 
@@ -63,7 +64,7 @@ describe('Unit Test DespesaService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Despesa/GetById/${idDespesa}`;
+      const expectedUrl = `${environment.API_VERSION}/Despesa/GetById/${idDespesa}`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 
@@ -93,7 +94,7 @@ describe('Unit Test DespesaService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Categoria/GetByTipoCategoria/1`;
+      const expectedUrl = `${environment.API_VERSION}/Categoria/GetByTipoCategoria/1`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 
@@ -119,7 +120,7 @@ describe('Unit Test DespesaService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Despesa`;
+      const expectedUrl = `${environment.API_VERSION}/Despesa`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
 
@@ -145,7 +146,7 @@ describe('Unit Test DespesaService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Despesa`;
+      const expectedUrl = `${environment.API_VERSION}/Despesa`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('PUT');
 
@@ -164,7 +165,7 @@ describe('Unit Test DespesaService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Despesa/${ mockIdDespesa }`;
+      const expectedUrl = `${environment.API_VERSION}/Despesa/${ mockIdDespesa }`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('DELETE');
 

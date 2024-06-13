@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <ImplicitUsings>enable</ImplicitUsings>
     <SpaRoot>..\Despesas.AngularApp\</SpaRoot>
-    <SpaProxyServerUrl>https://localhost:42535</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <RootNamespace>despesas_backend_api_net_core</RootNamespace>
     <UserSecretsId>ddd43c69-e4cc-4604-86df-99f1037aee37</UserSecretsId>
@@ -18,8 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
+      <Version>8.*-*</Version>
+    </PackageReference>
     <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="8.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
@@ -36,6 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Despesas.AngularApp\Despesas.AngularApp.esproj" >
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
     <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
     <ProjectReference Include="..\Despesas.DataSeeders\Despesas.DataSeeders.csproj" />
     <ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
@@ -73,14 +78,14 @@
 
   <Target Name="DockerDebuggeeProgram" BeforeTargets="Build" Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Staging'">
     <!-- Ensure angular project compilation -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <!-- As part of publishing, ensure the JS resources are freshly built in production and development mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
-
+    <Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build:dev " Condition="'$(Environment)' != 'Production'" />
+    <Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build:prod" Condition="'$(Environment)' == 'Production'" />
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
@@ -91,7 +96,8 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-  
+
+
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties appsettings_1docker_1json__JsonSchema="https://json.schemastore.org/appsscript.json" />

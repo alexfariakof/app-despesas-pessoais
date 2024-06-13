@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
-import { environment } from "src/app/shared/environments/environment";
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CustomInterceptor } from '../../../interceptors/http.interceptor.service';
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { environment } from "src/environments/environment";
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CustomInterceptor } from '../../../../../interceptors/http.interceptor.service';
 import * as dayjs from "dayjs";
 import { SaldoService } from './saldo.service';
 
@@ -10,10 +10,11 @@ describe('Unit Test SaldoService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [],
-    providers: [SaldoService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [HttpClientTestingModule],
+      providers: [SaldoService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
+      ]
+    });
   });
   it('should be created', inject([SaldoService], (service: SaldoService) => {
     expect(service).toBeTruthy();
@@ -29,7 +30,7 @@ describe('Unit Test SaldoService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Saldo`;
+      const expectedUrl = `${environment.API_VERSION}/Saldo`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 
@@ -48,7 +49,7 @@ describe('Unit Test SaldoService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Saldo/ByAno/${mockAno}`;
+      const expectedUrl = `${environment.API_VERSION}/Saldo/ByAno/${mockAno}`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 
@@ -68,7 +69,7 @@ describe('Unit Test SaldoService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Saldo/ByMesAno/${mockMesAno}`;
+      const expectedUrl = `${environment.API_VERSION}/Saldo/ByMesAno/${mockMesAno}`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 

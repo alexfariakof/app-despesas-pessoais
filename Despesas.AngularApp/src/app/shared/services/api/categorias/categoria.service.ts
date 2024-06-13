@@ -8,27 +8,26 @@ import { AbstractService } from '../base/AbstractService';
 
 export class CategoriaService extends AbstractService {
   constructor(public httpClient: HttpClient) {
-    super();
-    this.urlPath = 'Categoria';
+    super('Categoria');
   }
 
   getCategorias() : any {
-    return this.httpClient.get(`${ this.urlPath }`);
+    return this.httpClient.get(`${ this.routeUrl }`);
   }
 
   getCategoriaById(idCategoria: Number) : any {
-    return this.httpClient.get(`${ this.urlPath }/GetById/${idCategoria}`);
+    return this.httpClient.get(`${ this.routeUrl }/GetById/${idCategoria}`);
   }
 
   postCategoria(categoria: ICategoria): any {
-    return this.httpClient.post<ICategoria>(`${ this.urlPath }`, categoria);
+    return this.httpClient.post<ICategoria>(`${ this.routeUrl }`, categoria);
   }
 
   putCategoria(categoria: ICategoria): any {
-    return this.httpClient.put<ICategoria>(`${ this.urlPath }`, categoria);
+    return this.httpClient.put<ICategoria>(`${ this.routeUrl }`, categoria);
   }
 
   deleteCategoria(idCategoria: Number): any {
-    return this.httpClient.delete(`${ this.urlPath }/${idCategoria}`);
+    return this.httpClient.delete(`${ this.routeUrl }/${idCategoria}`);
   }
 }

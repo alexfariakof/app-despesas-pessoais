@@ -1,4 +1,4 @@
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -15,7 +15,6 @@ import { AlertComponent, AlertType } from 'src/app/shared/components';
 import { ICategoria, IDespesa, IAction } from 'src/app/shared/models';
 import { DespesaService } from 'src/app/shared/services/api';
 import { DespesasFormComponent } from './despesas.form.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 
 describe('Unit Test DespesasFormComponent', () => {
@@ -34,10 +33,10 @@ describe('Unit Test DespesasFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    declarations: [DespesasFormComponent, MatDatepicker, MatSelect],
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, CurrencyMaskModule],
-    providers: [FormBuilder, AlertComponent, NgbActiveModal, DespesaService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      declarations: [DespesasFormComponent, MatDatepicker, MatSelect],
+      imports: [ReactiveFormsModule, HttpClientTestingModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, CurrencyMaskModule],
+      providers: [FormBuilder, AlertComponent, NgbActiveModal, DespesaService ]
+    });
     fixture = TestBed.createComponent(DespesasFormComponent);
     component = fixture.componentInstance;
     despesaService = TestBed.inject(DespesaService);

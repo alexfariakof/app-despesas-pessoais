@@ -46,5 +46,5 @@ jobs:
   trigger_tests_sonarcloud:
     needs: build_and_test
     name: Test and Analysis Code In Sonar Cloud
-    uses: alexfariakof/api-backend-despesas/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
+    uses: alexfariakof/app-despesas-pessoais/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
     secrets: inherit

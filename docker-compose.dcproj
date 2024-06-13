@@ -2,12 +2,12 @@
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
-    <DockerTargetOS>Lin.ux</DockerTargetOS>
+    <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
     <ProjectGuid>7900f85a-9b75-409e-96b7-6fb47f630975</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>despesas-backend-api-net-core</DockerServiceName>
+    <DockerServiceName>app-despesas-pessoais</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.database.yml" />

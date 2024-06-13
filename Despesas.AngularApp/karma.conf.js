@@ -2,7 +2,7 @@
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 module.exports = function (config) {
-  const selectedBrowser = process.env.BROWSER || 'ChromeHeadless';
+  const selectedBrowser = process.env.BROWSER || 'Chrome';
 
   config.set({
     basePath: '',

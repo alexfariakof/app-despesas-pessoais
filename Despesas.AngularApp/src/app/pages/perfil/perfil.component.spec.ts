@@ -5,12 +5,11 @@ import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { AlertComponent, AlertType } from "src/app/shared/components";
 import { PerfilComponent } from "./perfil.component";
 import { FormsModule } from "@angular/forms";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { UsuarioService } from "src/app/shared/services/api";
 import { from, of, throwError } from "rxjs";
 import { IUsuario } from "src/app/shared/models";
 import { MenuService } from "src/app/shared/services";
-import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('Unit Test PerfilComponent', () => {
   let component: PerfilComponent;
@@ -19,9 +18,9 @@ describe('Unit Test PerfilComponent', () => {
 
   beforeEach(() => {
       TestBed.configureTestingModule({
-    imports: [CommonModule, RouterTestingModule, FormsModule],
-    providers: [MenuService, AlertComponent, NgbActiveModal, UsuarioService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [ CommonModule, RouterTestingModule, FormsModule, HttpClientTestingModule],
+      providers: [MenuService, AlertComponent, NgbActiveModal, UsuarioService ]
+    });
     fixture = TestBed.createComponent(PerfilComponent);
     component = fixture.componentInstance;
     usuarioService = TestBed.inject(UsuarioService);

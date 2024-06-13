@@ -1,19 +1,20 @@
 import { TestBed, inject } from "@angular/core/testing";
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
-import { environment } from "src/app/shared/environments/environment";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { environment } from "src/environments/environment";
 import { IUsuario } from "src/app/shared/models";
-import { CustomInterceptor } from "../../../interceptors/http.interceptor.service";
+import { CustomInterceptor } from "../../../../../interceptors/http.interceptor.service";
 import { UsuarioService } from "./usuario.service";
 
 describe('Unit Test UsuarioService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    imports: [],
-    providers: [UsuarioService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      imports: [HttpClientTestingModule],
+      providers: [UsuarioService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
+      ]
+    });
   });
 
   it('should be created', inject([UsuarioService], (service: UsuarioService) => {
@@ -36,7 +37,7 @@ describe('Unit Test UsuarioService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Usuario/GetUsuario`;
+      const expectedUrl = `${environment.API_VERSION}/Usuario/GetUsuario`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('GET');
 
@@ -61,7 +62,7 @@ describe('Unit Test UsuarioService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Usuario`;
+      const expectedUrl = `${environment.API_VERSION}/Usuario`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('POST');
 
@@ -87,7 +88,7 @@ describe('Unit Test UsuarioService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Usuario`;
+      const expectedUrl = `${environment.API_VERSION}/Usuario/UpdateUsuario`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('PUT');
 
@@ -115,7 +116,7 @@ describe('Unit Test UsuarioService', () => {
         expect(response).toBeTruthy();
       });
 
-      const expectedUrl = `${environment.endPoint}/Usuario`;
+      const expectedUrl = `${environment.API_VERSION}/Usuario`;
       const req = httpMock.expectOne(expectedUrl);
       expect(req.request.method).toBe('DELETE');
 

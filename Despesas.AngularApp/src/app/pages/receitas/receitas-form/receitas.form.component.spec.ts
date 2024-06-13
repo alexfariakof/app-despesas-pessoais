@@ -1,4 +1,4 @@
-import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -16,7 +16,6 @@ import { ICategoria, IReceita, IAction } from 'src/app/shared/models';
 import { AuthService } from 'src/app/shared/services';
 import { ReceitaService } from 'src/app/shared/services/api';
 import { ReceitasFormComponent } from './receitas.form.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test ReceitasFormComponent', () => {
   let component: ReceitasFormComponent;
@@ -34,10 +33,10 @@ describe('Unit Test ReceitasFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-    declarations: [ReceitasFormComponent, MatDatepicker, MatSelect],
-    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, CurrencyMaskModule],
-    providers: [FormBuilder, AlertComponent, NgbActiveModal, ReceitaService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
-});
+      declarations: [ReceitasFormComponent, MatDatepicker, MatSelect],
+      imports: [ReactiveFormsModule, HttpClientTestingModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, CurrencyMaskModule],
+      providers: [FormBuilder, AlertComponent, NgbActiveModal, ReceitaService ]
+    });
     fixture = TestBed.createComponent(ReceitasFormComponent);
     component = fixture.componentInstance;
     receitaService = TestBed.inject(ReceitaService);
