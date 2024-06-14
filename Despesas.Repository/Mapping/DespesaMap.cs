@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,12 +15,12 @@ public class DespesaMap: IEntityTypeConfiguration<Despesa>
         builder.Property(d => d.CategoriaId).IsRequired();
 
         // MySqlServer 
-        //builder.Property(m => m.Data).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()").IsRequired();
-        //builder.Property(m => m.DataVencimento).HasColumnType("timestamp").HasDefaultValueSql(null);
+        builder.Property(m => m.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("CURRENT_TIMESTAMP").IsRequired();
+        builder.Property(m => m.DataVencimento).HasColumnType("datetime").HasDefaultValueSql(null);
 
         // MsSqlServer
-        builder.Property(d => d.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()").IsRequired();
-        builder.Property(d => d.DataVencimento).HasColumnType("datetime").HasDefaultValueSql(null);
+        //builder.Property(d => d.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()").IsRequired();
+        //builder.Property(d => d.DataVencimento).HasColumnType("datetime").HasDefaultValueSql(null);
 
         builder.Property(d => d.Valor).HasColumnType("decimal(10, 2)").HasDefaultValue(0);
         builder.HasOne(d => d.Usuario).WithMany().HasForeignKey(d => d.UsuarioId).OnDelete(DeleteBehavior.NoAction);

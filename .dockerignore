@@ -14,6 +14,13 @@
 **/azds.yaml
 **/bin
 **/charts
+**/dist
+**/.angular
+**/*.ps1
+**/*.sh
+**/.github
+**/coverage
+**/TestResults
 **/docker-compose*
 **/Dockerfile*
 **/node_modules

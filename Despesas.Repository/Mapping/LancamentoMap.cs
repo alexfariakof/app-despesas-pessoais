@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
 
@@ -16,12 +16,12 @@ public class LancamentoMap: IEntityTypeConfiguration<Lancamento>
         builder.Property(l => l.UsuarioId).IsRequired();
 
         //MySqlServer
-        //builder.Property(m => m.Data).HasColumnType("timestamp").IsRequired();
-        //builder.Property(m => m.DataCriacao).HasColumnType("timestamp").HasDefaultValueSql<DateTime>("NOW()");
+        builder.Property(m => m.Data).HasColumnType("datetime").IsRequired();
+        builder.Property(m => m.DataCriacao).HasColumnType("datetime").HasDefaultValueSql<DateTime>("CURRENT_TIMESTAMP");
 
         // MsSqlServer
-        builder.Property(l => l.Data).HasColumnType("datetime").IsRequired();
-        builder.Property(l => l.DataCriacao).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()");            
+        //builder.Property(l => l.Data).HasColumnType("datetime").IsRequired();
+        //builder.Property(l => l.DataCriacao).HasColumnType("datetime").HasDefaultValueSql<DateTime>("GetDate()");            
 
         builder.Property(l => l.Valor).HasColumnType("decimal(10, 2)");
         builder.Property(l => l.Descricao).HasMaxLength(100);
