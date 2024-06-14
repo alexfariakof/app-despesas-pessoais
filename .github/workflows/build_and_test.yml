@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   build_and_test:
+    name: Build and Test .Net
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -42,9 +43,38 @@ jobs:
     - name:  Test .Net App
       run: dotnet test ./XunitTests/XUnit.Tests.csproj
       continue-on-error: false
+  
+  build_and_test_angular:
+    needs: build_and_test
+    name: Build and Test Angular App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install Angular dependencies
+        run: |
+          cd AngularApp
+          npm install npm@latest > /dev/null 2>&1
+          npm install -g @angular/core@16 @angular/cli@16 > /dev/null 2>&1
+          npm install 
+        continue-on-error: false
+    
+      - name: Build Angular App
+        run: |
+            cd AngularApp
+            npm run build
+        continue-on-error: false
+
+      - name: Test Angular App
+        run: |
+          cd AngularApp
+          npm run test:coverage
+        continue-on-error: false
 
   trigger_tests_sonarcloud:
-    needs: build_and_test
+    needs: build_and_test_angular
     name: Test and Analysis Code In Sonar Cloud
-    uses: alexfariakof/api-backend-despesas/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
+    uses: alexfariakof/app-despesas-pessoais/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
     secrets: inherit

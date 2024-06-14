@@ -1,0 +1,64 @@
+<div
+  barraFerramenta
+  class="d-flex flex-sm-row justify-content-around justify-content-sm-between"
+>
+  <div>
+    <div
+      class="md-form md-outline always-active-label input-with-post-icon datepicker m-2"
+      style="width: auto"
+      [ngClass]="{ 'd-none': !dtAno }"
+    >
+      <label class="form-label" for="filterDataAno">Ano</label>
+      <input
+        autofocus
+        id="filterDataAno"
+        name="filterDataAno"
+        type="number"
+        min="1900"
+        style="width: auto"
+        class="form-control filterDataAno pt-2"
+        [(ngModel)]="filterAnoService.dataAno"
+        (change)="onChangeDataAno()"
+      />
+    </div>
+    <div
+      id="filterDataMesAno"
+      class="md-form md-outline always-active-label input-with-post-icon datepicker m-2"
+      [ngClass]="{ 'd-none': !dtMesAno }"
+    >
+      <label class="form-label" for="filterDataMesAno">Mês/Ano</label>
+      <input
+        autofocus
+        id="filterDataMesAno"
+        name="filterDataMesAno"
+        type="month"
+        class="form-control filterDataMesAno pt-2"
+        [(ngModel)]="filterMesAnoService.dataMesAno"
+        (change)="onChangeDataMesAno()"
+      />
+    </div>
+  </div>
+  <div class="flex-grow-1"><app-saldo></app-saldo></div>
+  <div class="d-flex flex-row-reverse pt-2 pb-2 mb-0">
+    <div class="btn-barra-ferramenta">
+      <button
+        type="submit"
+        class="btn btn-primary btn-rounded"
+        (click)="clickBtnVoltar()"
+      >
+        <i class="bi bi-arrow-left-circle"></i>
+        Voltar
+      </button>
+    </div>
+    <div class="btn-barra-ferramenta" [ngClass]="{ 'd-none': !btnNovo }">
+      <button
+        type="submit"
+        class="btn btn-primary btn-rounded"
+        (click)="clickBtnNovo()"
+      >
+        <i class="bi bi-plus-circle"></i>
+        Novo
+      </button>
+    </div>
+  </div>
+</div>

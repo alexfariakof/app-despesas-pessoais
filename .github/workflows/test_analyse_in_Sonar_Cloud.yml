@@ -52,8 +52,7 @@ jobs:
         with:
             path: .\.sonar\scanner
             key: ${{ runner.os }}-sonar-scanner
-            restore-keys: ${{ runner.os }}-sonar-scanner      
-          
+            restore-keys: ${{ runner.os }}-sonar-scanner                
       
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
@@ -61,26 +60,22 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-      
+
+      - name: Install Angular dependencies
+        run: |
+          cd AngularApp
+          npm install npm@latest > $null 2>&1
+          npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
+          npm install 
+        continue-on-error: false
+    
       - name: Build and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-            
-          # Encontra o diretório mais recente na pasta TestResults
-          $baseDirectory = Get-Location
-          $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"
-          $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;$baseDirectory\Despesas.WebApi;$baseDirectory\Despesas.Infrastructure"
-          $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"
-          $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
-          $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
-          
-          # Executa Build Restore com Teste e coleta o GUID gerado          
-          dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-          reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
-          
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
+            dotnet tool install -g dotnet-reportgenerator-globaltool
+            dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"          
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

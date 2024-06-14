@@ -23,6 +23,31 @@ function Remove-TestPath-Results {
     }
 }
 
+function Remove-TestResults {    
+    if (Test-Path $reportPath) {
+        Remove-Item -Recurse -Force $reportPath
+    }
+}
+
+ function Wait-TestResults {
+    $REPEAT_WHILE = 0
+    while (-not (Test-Path $reportPath)) {
+        echo "Agaurdando TestResults..."
+        Start-Sleep -Seconds 10        
+        if ($REPEAT_WHILE -eq 6) { break }
+        $REPEAT_WHILE = $REPEAT_WHILE + 1
+    }
+
+    $REPEAT_WHILE = 0
+    while (-not (Test-Path $coverageXmlPath)) {
+        echo "Agaurdando Coverage Report..."
+        Start-Sleep -Seconds 10        
+        if ($REPEAT_WHILE -eq 6) { break }
+        $REPEAT_WHILE = $REPEAT_WHILE + 1
+    }   
+
+ } 
+
 # Encerra qualquer processo em segundo plano relacionado ao comando npm run test:watch
 Stop-ProcessesByName
 
@@ -35,7 +60,6 @@ Remove-TestPath-Results
 
 # Executa o teste e coleta o GUID gerado
 dotnet clean > $null 2>&1
-dotnet build ./XunitTests/XUnit.Tests > $null 2>&1
 dotnet test ./XunitTests/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
-reportgenerator -reports:$projectTestPath\coverage.cobertura.xml -targetdir:$coverageXmlPath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
+Wait-TestResults 
 Invoke-Item $coverageXmlPath\index.html
