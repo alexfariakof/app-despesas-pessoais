@@ -10,7 +10,6 @@
     <DockerServiceName>app-despesas-pessoais</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.database.yml" />
     <None Include="docker-compose.dev.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
