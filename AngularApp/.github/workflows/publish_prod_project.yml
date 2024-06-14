@@ -3,35 +3,22 @@ on:
   push:
     tags:
       - v*.*.*
+
 jobs:
-  build_and_test:
-    name: Build Test
+  trigger_build_and_test:
+    needs: build_and_test
+    name: Test and Analysis Code In Sonar Cloud
+    uses: alexfariakof/angular-frontend-despesas/.github/workflows/Build_And_Test_Code_ in_Sonar_Cloud.yml@master
+    secrets: inherit
+
+  build_and_deploy_docker_image:
+    needs: trigger_build_and_test
+    name: Build And Deploy Docker Image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: Install dependencies
-        run: |
-          npm install npm@latest
-          npm install -g @angular/cli
-          npm install
-        continue-on-error: false
-
-      - name: Build Project
-        run: ng build
-        continue-on-error: false
-
-      - name: Test and coverage
-        run: npm run test:coverage
-        continue-on-error: false
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Build Docker image
         env:
@@ -49,7 +36,6 @@ jobs:
             docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker push ${{ secrets.DOCKER_IMAGE }}
         continue-on-error: false
-
 
   deploy_prod:
     needs: build_and_test

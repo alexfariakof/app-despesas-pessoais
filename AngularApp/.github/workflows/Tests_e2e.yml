@@ -1,18 +1,9 @@
 name: Run End-to-End Tests
 on:
   workflow_call:
-    secrets:
-      ENV_PAT:
-        required: true
-
   push:
     branches:
       - release/*
-
-  pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - pre-release
 
 jobs:
   trigger-tests-e2e:

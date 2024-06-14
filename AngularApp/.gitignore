@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 .angular/**
 obj/**
+!sonar-project.properties

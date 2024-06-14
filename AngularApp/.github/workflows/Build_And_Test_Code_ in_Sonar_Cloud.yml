@@ -1,7 +1,9 @@
-name: Build And Test Code in Sonar Cloud
+name: Build And Test
 on:
+  workflow_call:
   push:
     branches:
+      - master
       - develop
       - hotfix/*
 
@@ -10,8 +12,6 @@ on:
     branches:
       - master
       - develop
-      - hotfix/*
-
 
 jobs:
   build_and_test:
@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install npm@latest
-          npm install -g @angular/cli
+          npm install -g @angular/core@16 @angular/cli@16
           npm install
         continue-on-error: false
 
@@ -37,28 +37,8 @@ jobs:
         run: npm run test
         continue-on-error: false
 
-  Test_Code_in_Sonar_Cloud:
+  trigger_tests_sonarcloud:
     needs: build_and_test
-    name: Test Code in Sonar Cloud
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Install dependencies
-        run: |
-          npm install npm@latest
-          npm install -g @angular/cli
-          npm install
-
-      - name: Test and coverage
-        run: npm run test:coverage
-        continue-on-error: false
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        continue-on-error: false
-
+    name: Test and Analysis Code In Sonar Cloud
+    uses: alexfariakof/angular-frontend-despesas/.github/workflows/tests_In_Sonar_Cloud.yml@master
+    secrets: inherit

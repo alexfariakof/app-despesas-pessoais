@@ -401,5 +401,5 @@ FodyWeavers.xsd
 despesas-backend-api-net-core/appsettings.Development.json
 despesas-backend-api-net-core/appsettings.json
 .config/
-
+sonar-project.properties
 

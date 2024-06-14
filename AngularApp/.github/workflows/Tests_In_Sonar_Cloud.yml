@@ -1,16 +1,17 @@
 name: Test and Analysis Code in Sonar Cloud
 on:
+  workflow_call:
   push:
     branches:
       - feature/*
       - bugfix/*
-
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - feature/*
       - bugfix/*
-
+permissions:
+    contents: read
 jobs:
   sonarcloud:
     name: Test and Analysis Code in Sonar Cloud
@@ -22,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install npm@latest
-          npm install -g @angular/cli
+          npm install -g @angular/core@16 @angular/cli@16
           npm install
 
       - name: Test and coverage
@@ -34,4 +35,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 
