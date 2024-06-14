@@ -1,0 +1,21 @@
+#stage 1
+FROM node:21-slim as node
+WORKDIR /app
+COPY . .
+RUN npm install -g npm@latest
+RUN npm install
+RUN npm run build --prod
+
+#stage 2
+FROM nginx:alpine
+COPY --from=node /app/dist/despesas-frontend-angular /usr/share/nginx/html
+COPY --from=node /app/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+EXPOSE 443
+
+#Gerando Certificado SSL
+RUN apk add --no-cache openssl
+COPY ./certificate/openssl.cnf /etc/nginx/certificate/openssl.cnf
+RUN openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -keyout /etc/nginx/certificate/ssl_certificate_key.pem -out /etc/nginx/certificate/ssl_certificate.pem  -config /etc/nginx/certificate/openssl.cnf
+
+CMD ["nginx", "-g", "daemon off;"]
