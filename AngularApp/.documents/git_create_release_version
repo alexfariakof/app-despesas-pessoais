@@ -8,6 +8,8 @@ git tag -a <v*.*.*> -m "Version tag"
 
 git tag -a v1.1.6 -m "Version Server Port Change"
 
+git tag -a v1.1.9 -m "New Api Rest Version 6.0.2"
+
 # Envia as alterações(commits) e as tags locais para o repositório remoto
 git push --follow-tags
 
