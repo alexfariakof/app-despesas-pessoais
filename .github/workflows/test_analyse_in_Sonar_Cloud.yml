@@ -52,8 +52,7 @@ jobs:
         with:
             path: .\.sonar\scanner
             key: ${{ runner.os }}-sonar-scanner
-            restore-keys: ${{ runner.os }}-sonar-scanner      
-          
+            restore-keys: ${{ runner.os }}-sonar-scanner                
       
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
@@ -65,8 +64,8 @@ jobs:
       - name: Install Angular dependencies
         run: |
           cd AngularApp
-          npm install npm@latest > /dev/null 2>&1
-          npm install -g @angular/cli > /dev/null 2>&1
+          npm install npm@latest > $null 2>&1
+          npm install -g @angular/cli > $null 2>&1
           npm install 
         continue-on-error: false
     
