@@ -65,7 +65,7 @@ jobs:
         run: |
           cd AngularApp
           npm install npm@latest > $null 2>&1
-          npm install -g @angular/core@16 @angular/cli@16 > /dev/null 2>&1
+          npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
           npm install 
         continue-on-error: false
     
