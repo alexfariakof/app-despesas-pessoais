@@ -3,16 +3,14 @@ on:
   push:
     branches:
       - staging
-
+      
 permissions:
     contents: read 
-
 jobs:
   trigger_build_and_test:
     name: Triggered Deploy Dev
     uses: alexfariakof/app-despesas-pessoais/.github/workflows/build_and_test.yml@main
     secrets: inherit     
-
         
   deploy_dev:
     needs: trigger_build_and_test
@@ -59,4 +57,3 @@ jobs:
 #    name: Tests End-to-End Triggered
 #    uses: alexfariakof/app-despesas-pessoais/.github/workflows/tests_E2E.yml@main
 #    secrets: inherit
-
