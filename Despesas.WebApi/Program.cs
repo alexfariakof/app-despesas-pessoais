@@ -60,21 +60,20 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.AddSupporteCulturesPtBr();
 app.UseCors();
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 
-if (!app.Environment.IsProduction())
+//if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
 
 app.UseRouting()
     .UseAuthorization()
     .UseEndpoints(endpoints =>
     {
+        endpoints.MapControllers();
         endpoints.MapFallbackToFile("index.html");
-    }); 
-
-
+    });
 
 if (!app.Environment.IsProduction())
     app.RunDataSeeders();

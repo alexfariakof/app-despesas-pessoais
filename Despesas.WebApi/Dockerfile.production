@@ -9,6 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
+WORKDIR /src/Despesas.WebApi
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_21.x | bash - && \
@@ -16,7 +17,7 @@ RUN apt-get update && \
 RUN npm install -g npm@10.2.5 && \
     npm install -g @angular/core@16 @angular/cli@16
 
-RUN dotnet publish "Despesas.WebApi/Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

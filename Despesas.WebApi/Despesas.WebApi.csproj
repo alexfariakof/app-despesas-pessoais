@@ -3,21 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <SpaRoot>..\Despesas.AngularApp\</SpaRoot>
-    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
-    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
-    <RootNamespace>despesas_backend_api_net_core</RootNamespace>
-    <UserSecretsId>ddd43c69-e4cc-4604-86df-99f1037aee37</UserSecretsId>
+    <UserSecretsId>16b59695-31ee-4aac-999b-212bfa53563f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>.</DockerfileContext>
-    <SonarQubeTestProject>false</SonarQubeTestProject>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
-    <CoverageReportFiles>..\XUnit.Tests\TestResults\coveragereport</CoverageReportFiles>
+    <DockerfileContext>..\..</DockerfileContext>
+    <SpaRoot>..\AngularApp</SpaRoot>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyCryptoSalt" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
       <Version>8.*-*</Version>
     </PackageReference>
@@ -27,7 +23,6 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
@@ -38,54 +33,32 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Despesas.AngularApp\Despesas.AngularApp.esproj" >
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
     <ProjectReference Include="..\Despesas.DataSeeders\Despesas.DataSeeders.csproj" />
     <ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
     <ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="$(CoverageReportFiles)\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <Link>wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </Content>
-  </ItemGroup>
-
+  
   <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <Build>
-      DebugEnsureNodeEnv;
-      DockerDebuggeeProgram;
-    </Build>
-  </PropertyGroup>
-
-  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
-    <!-- Ensure Node.js is installed -->
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-  </Target>
-
-  <Target Name="DockerDebuggeeProgram" BeforeTargets="Build" Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Staging'">
-    <!-- Ensure angular project compilation -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
-  </Target>
+  <ItemGroup>
+    <None Include="..\.dockerignore" Link=".dockerignore">
+      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+    </None>
+  </ItemGroup>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production and development mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build:dev " Condition="'$(Environment)' != 'Production'" />
-    <Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build:prod" Condition="'$(Environment)' == 'Production'" />
+    <Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build:dev" Condition="'$(Configuration)' == 'Development'" />    
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
@@ -96,11 +69,4 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-
-
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties appsettings_1docker_1json__JsonSchema="https://json.schemastore.org/appsscript.json" />
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>

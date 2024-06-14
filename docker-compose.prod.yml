@@ -3,14 +3,12 @@ services:
     app-despesas-pessoais-prod:
         container_name: app-despesas-pessoais-prod
         image: alexfariakof/api-despesas-backend-netcore-img
-        restart: always
         build:
-          context: .
-          dockerfile: Despesas.WebApi/Dockerfile.production
-        
+            context: .
+            dockerfile: Despesas.WebApi/Dockerfile.production        
         environment:
             TZ: America/Sao_Paulo
             ASPNETCORE_ENVIRONMENT: Production
         ports:
-            - 80:80
-            - 443:443
+           - 80:80
+           - 443:443
