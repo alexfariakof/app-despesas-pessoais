@@ -63,7 +63,7 @@ export class PrimeiroAcessoComponent  implements OnInit {
       })
     )
     .subscribe({
-      next: (result: Boolean) => {
+      next: (result: boolean) => {
         if (result){
           this.modalALert.open(AlertComponent, "Cadastro realizado com sucesso!", AlertType.Success);
           this.router.navigate(['/login']);

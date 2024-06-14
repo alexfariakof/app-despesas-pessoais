@@ -17,7 +17,7 @@ export class CategoriaService extends AbstractService {
     return this.httpClient.get(`${ this.routeUrl }`);
   }
 
-  getCategoriaById(idCategoria: Number) : any {
+  getCategoriaById(idCategoria: number) : any {
     return this.httpClient.get(`${ this.routeUrl }/GetById/${idCategoria}`);
   }
 
@@ -29,7 +29,7 @@ export class CategoriaService extends AbstractService {
     return this.httpClient.put<ICategoria>(`${ this.routeUrl }`, categoria);
   }
 
-  deleteCategoria(idCategoria: Number): any {
+  deleteCategoria(idCategoria: number): any {
     return this.httpClient.delete(`${ this.routeUrl }/${idCategoria}`);
   }
 }

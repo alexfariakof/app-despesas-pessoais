@@ -44,7 +44,7 @@ export class AuthService {
     return true;
   }
 
-  createAccessToken(auth: IAuth): Boolean {
+  createAccessToken(auth: IAuth): boolean {
     try {
       this.tokenStorage.saveToken(auth.accessToken);
       this.tokenStorage.saveRefreshToken(auth.refreshToken);

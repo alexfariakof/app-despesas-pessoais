@@ -82,7 +82,7 @@ export class CategoriasComponent implements BarraFerramentaClass, OnInit {
     });
   }
 
-  onClickEdit = (idCategoria: Number) => {
+  onClickEdit = (idCategoria: number) => {
     this.categoriaService.getCategoriaById(idCategoria)
       .subscribe({
         next: (categoria: ICategoria) => {
@@ -104,12 +104,12 @@ export class CategoriasComponent implements BarraFerramentaClass, OnInit {
     });
   }
 
-  onClickDelete = (idCategoria: Number) => {
+  onClickDelete = (idCategoria: number) => {
     const modalRef = this.modalConfirm.open(ModalConfirmComponent, `Deseja excluir a categoria ${this.dataTable.row.descricao} ?`);
     modalRef.componentInstance.setConfirmButton(() => this.deleteCategoria(idCategoria));
   }
 
-  deleteCategoria = (idCategoria: Number) => {
+  deleteCategoria = (idCategoria: number) => {
     this.categoriaService.deleteCategoria(idCategoria)
       .subscribe({
         next: (response: any) => {

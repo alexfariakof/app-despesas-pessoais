@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit{
       })
     )
     .subscribe({
-      next: (response: Boolean) => {
+      next: (response: boolean) => {
         if (response)
           this.router.navigate(['/dashboard']);
       },
