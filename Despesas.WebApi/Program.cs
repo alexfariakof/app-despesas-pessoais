@@ -21,7 +21,6 @@ builder.Services.AddCors(c =>
     });
 });
 
-
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -64,7 +63,7 @@ app.UseCors();
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 
-//if (!app.Environment.IsProduction())
+if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
 
 app.UseRouting()
