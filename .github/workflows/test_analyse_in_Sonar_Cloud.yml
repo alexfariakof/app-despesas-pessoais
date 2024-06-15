@@ -86,7 +86,8 @@ jobs:
             $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
             $sonarProjectFile = "$projectAngular\sonar-project.properties"
             Remove-Item -Path $sonarProjectFile -Force
-
+            
+            dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet test ./XUnit.Tests.csproj --configuration Release --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
             reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs
 
