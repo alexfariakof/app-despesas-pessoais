@@ -43,30 +43,32 @@ jobs:
   
   build_and_test_angular:
     needs: build_and_test
-    name: Build and Test Angular App
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Set AngularApp WorkDirectory
-        run : cd AngularApp
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.14.10'
 
       - name: Install Angular dependencies
-        run: |          
-          npm install npm@latest > /dev/null 2>&1
-          npm install -g @angular/core @angular/cli > /dev/null 2>&1
-          npm install 
-        continue-on-error: false
-    
+        run: |
+          npm install  npm@10.2.5
+          npm install -g @angular/core@16 @angular/cli@16
+          npm install
+        working-directory: AngularApp
+
       - name: Build Angular App
         run: npm run build
-        continue-on-error: false
+        working-directory: AngularApp
 
       - name: Test Angular App
         run: npm run test:coverage
-        continue-on-error: false
+        working-directory: AngularApp
 
   trigger_tests_sonarcloud:
     needs: build_and_test_angular
