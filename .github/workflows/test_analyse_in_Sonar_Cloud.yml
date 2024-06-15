@@ -59,13 +59,17 @@ jobs:
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '21.*.*'
+
       - name: Install Angular dependencies
         run: |
-          cd AngularApp
-          npm install npm@latest > $null 2>&1
-          npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
-          npm install 
-        continue-on-error: false
+          npm install  npm@10.2.5
+          npm install -g @angular/core@16 @angular/cli@16
+          npm install
+        working-directory: AngularApp
    
       - name: Build and analyze
         env:
