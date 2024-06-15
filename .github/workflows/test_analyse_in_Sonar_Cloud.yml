@@ -76,11 +76,21 @@ jobs:
         shell: powershell
         run: |          
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts, **/sonar-project.properties" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
-           $baseDirectory =  Get-Location
-           $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp")
-           $sonarProjectFile = "$projectAngular\sonar-project.properties"
-           Remove-Item -Path $sonarProjectFile -Force
+            $projectTestPath = Get-Location
+            $baseDirectory =  (Resolve-Path -Path ..).Path
+            $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp");
+            $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;"
+            $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"
+            $reportPath = Join-Path -Path (Get-Location) -ChildPath "TestResults"
+            $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
+            $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
+            $sonarProjectFile = "$projectAngular\sonar-project.properties"
+            Remove-Item -Path $sonarProjectFile -Force
 
-            dotnet tool install -g dotnet-reportgenerator-globaltool
-            dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+            dotnet test ./XUnit.Tests.csproj --configuration Release --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > $null 2>&1
+            reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs > $null 2>&1
+
+            # Executa Teste Unitários e gera o relatório de cobertura do Frontend  AngularApp
+            $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
+            $watchProcess.WaitForExit()	
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
