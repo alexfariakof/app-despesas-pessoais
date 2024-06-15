@@ -42,6 +42,7 @@ jobs:
       continue-on-error: false
   
   build_and_test_angular:
+    name: Build and Test AngularApp
     needs: build_and_test
     runs-on: ubuntu-latest
     steps:
