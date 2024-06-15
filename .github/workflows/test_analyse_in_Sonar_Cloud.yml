@@ -66,14 +66,6 @@ jobs:
           npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
           npm install 
         continue-on-error: false
-    
-      - name: Install Angular dependencies
-        run: |
-          cd AngularApp
-          npm install npm@latest > $null 2>&1
-          npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
-          npm install 
-        continue-on-error: false
    
       - name: Build and analyze
         env:
