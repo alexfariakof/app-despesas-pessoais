@@ -87,8 +87,8 @@ jobs:
             $sonarProjectFile = "$projectAngular\sonar-project.properties"
             Remove-Item -Path $sonarProjectFile -Force
 
-            dotnet test ./XUnit.Tests.csproj --configuration Release --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > $null 2>&1
-            reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs > $null 2>&1
+            dotnet test ./XUnit.Tests.csproj --configuration Release --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+            reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs
 
             # Executa Teste Unitários e gera o relatório de cobertura do Frontend  AngularApp
             $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
