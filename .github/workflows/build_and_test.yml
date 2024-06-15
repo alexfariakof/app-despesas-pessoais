@@ -50,24 +50,22 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Do to  AngularApp WorkDirectory 
+        run: cd AngularApp
+
       - name: Install Angular dependencies
         run: |
-          cd AngularApp
           npm install npm@latest > $null 2>&1
           npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
           npm install 
         continue-on-error: false
     
       - name: Build Angular App
-        run: |
-            cd AngularApp
-            npm run build
+        run: npm run build
         continue-on-error: false
 
       - name: Test Angular App
-        run: |
-          cd AngularApp
-          npm run test:coverage
+        run: npm run test:coverage
         continue-on-error: false
 
   trigger_tests_sonarcloud:
