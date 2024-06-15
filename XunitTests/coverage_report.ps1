@@ -22,16 +22,7 @@ $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
         Start-Sleep -Seconds 10        
         if ($REPEAT_WHILE -eq 6) { break }
         $REPEAT_WHILE = $REPEAT_WHILE + 1
-    }   
-
-    $REPEAT_WHILE = 0
-    while (-not (Test-Path $coveragePath)) {
-        echo "Agaurdando Coverage Report..."
-        Start-Sleep -Seconds 10        
-        if ($REPEAT_WHILE -eq 6) { break }
-        $REPEAT_WHILE = $REPEAT_WHILE + 1
-    }   
-
+    }          
  } 
 
   function Wait-Angular-TestResults {
@@ -42,7 +33,6 @@ $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
         if ($REPEAT_WHILE -eq 6) { break }
         $REPEAT_WHILE = $REPEAT_WHILE + 1
     }   
-
  } 
 
 # Excuta Teste Unitarios sem restore gera o relatório de cobertura do Backend
