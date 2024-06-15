@@ -1,6 +1,7 @@
 name: Test and Analysis Code In Sonar Cloud
 on:
   workflow_call:
+
   push:
     branches: 
       - hotfix/*
@@ -13,8 +14,10 @@ on:
       - hotfix/*
       - feature/*
       - bugfix/*  
+ 
 permissions:
     contents: read 
+
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud
@@ -61,9 +64,9 @@ jobs:
 
       - name: Install Angular dependencies
         run: |
-          npm install  npm@10.2.5
+          npm install npm@10.2.5
           npm install -g @angular/core@16 @angular/cli@16
-          npm install > $null 2>&1
+          npm install > $null
         working-directory: AngularApp
    
       - name: Build and analyze
@@ -76,8 +79,8 @@ jobs:
            $baseDirectory =  Get-Location
            $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp")
            $sonarProjectFile = "$projectAngular\sonar-project.properties"
-           Remove-Item -Path $sonarProjectFile -Force
+           Remove-Item -Path $sonarProjectFile -Force > $null
 
-            dotnet tool install -g dotnet-reportgenerator-globaltool
-            dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"          
+            dotnet tool install -g dotnet-reportgenerator-globaltool > $null
+            dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
