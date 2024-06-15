@@ -1,9 +1,6 @@
 name: Test and Analysis Code In Sonar Cloud
 on:
   workflow_call:
-    secrets:
-      ENV_PAT:
-        required: true
   push:
     branches: 
       - hotfix/*
@@ -17,6 +14,8 @@ on:
       - feature/*
       - bugfix/*  
 
+permissions:
+    contents: read 
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud
