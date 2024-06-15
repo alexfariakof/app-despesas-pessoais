@@ -81,6 +81,6 @@ jobs:
            $sonarProjectFile = "$projectAngular\sonar-project.properties"
            Remove-Item -Path $sonarProjectFile -Force > $null
 
-            dotnet tool install -g dotnet-reportgenerator-globaltool > $null
+            dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
