@@ -7,16 +7,46 @@ $reportPath = Join-Path -Path (Get-Location) -ChildPath "TestResults"
 $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
 $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
 
-# Gera o Relatório de Cobertura do Backend
-dotnet test ./XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore --no-build > $null 2>&1
-reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters > $null 2>&1
+ function Wait-TestResults {
+    $REPEAT_WHILE = 0
+    while (-not (Test-Path $reportPath)) {
+        echo "Agaurdando TestResults..."
+        Start-Sleep -Seconds 10        
+        if ($REPEAT_WHILE -eq 6) { break }
+        $REPEAT_WHILE = $REPEAT_WHILE + 1
+    }
+
+    $REPEAT_WHILE = 0
+    while (-not (Test-Path $coveragePath)) {
+        echo "Agaurdando Coverage Report..."
+        Start-Sleep -Seconds 10        
+        if ($REPEAT_WHILE -eq 6) { break }
+        $REPEAT_WHILE = $REPEAT_WHILE + 1
+    }          
+ } 
+
+  function Wait-Angular-TestResults {
+    $REPEAT_WHILE = 0
+    while (-not (Test-Path $coverageAngularPath)) {
+        echo "Agaurdando Coverage Report..."
+        Start-Sleep -Seconds 10        
+        if ($REPEAT_WHILE -eq 6) { break }
+        $REPEAT_WHILE = $REPEAT_WHILE + 1
+    }   
+ } 
+
+# Excuta Teste Unitarios sem restore gera o relatório de cobertura do Backend
+dotnet test ./XUnit.Tests.csproj --configuration Staging --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore --no-build > $null 2>&1
+reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs > $null 2>&1
+Wait-TestResults
 
 # Verifica se existe a pasta node_module, e sem não existir executa npm install 
 if (-not (Test-Path $projectAngular\node_modules)) {
-    $watchProcess = Start-Process npm -ArgumentList "install" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
-    $watchProcess.WaitForExit()	
+	cd $projectAngular
+	npm install
+	cd $projectTestPath 
 }
 
 # Executa Teste Unitários e gera o relatório de cobertura do Frontend 
-$watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
-$watchProcess.WaitForExit()	
+Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow
+Wait-Angular-TestResults
