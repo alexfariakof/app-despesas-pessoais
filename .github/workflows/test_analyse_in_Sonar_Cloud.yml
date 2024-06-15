@@ -62,9 +62,4 @@ jobs:
 
             dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet build ./XunitTests/XUnit.Tests.csproj
-            $baseDirectory =  Get-Location
-            $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp")
-            $sonarProjectFile = "$projectAngular\sonar-project.properties"
-            Remove-Item -Path $sonarProjectFile -Force
-
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
