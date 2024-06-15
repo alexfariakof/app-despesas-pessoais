@@ -62,7 +62,7 @@ jobs:
         run: |
           npm install  npm@10.2.5
           npm install -g @angular/core@16 @angular/cli@16
-          npm install
+          npm install > /dev/null 2>&1
         working-directory: AngularApp
 
       - name: Build Angular App
