@@ -1,8 +1,9 @@
-﻿using Business.Dtos.Core;
+﻿using Bogus;
+using Business.Dtos.Core;
 using Business.Dtos.v1;
 using Domain.Entities.ValueObjects;
 
-namespace Fakers.v1;
+namespace __mock__.v1;
 public sealed class ReceitaFaker
 {
     static int counter = 1;

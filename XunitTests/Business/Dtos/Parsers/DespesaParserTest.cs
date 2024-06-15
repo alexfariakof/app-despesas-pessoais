@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.ValueObjects;
-using Fakers.v1;
+using __mock__.v1;
 
 namespace Business.Dtos.Parser;
 public sealed class DespesaParserTest

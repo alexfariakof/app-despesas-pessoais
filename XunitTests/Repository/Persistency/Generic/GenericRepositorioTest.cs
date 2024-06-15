@@ -1,4 +1,5 @@
-﻿using Fakers.v1;
+﻿using __mock__.v1;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Generic;
 public sealed class GenericRepositorioTest

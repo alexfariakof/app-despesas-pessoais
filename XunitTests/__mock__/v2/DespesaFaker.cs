@@ -1,8 +1,9 @@
-﻿using Business.Dtos.Core;
+﻿using Bogus;
+using Business.Dtos.Core;
 using Business.Dtos.v2;
 using Domain.Entities.ValueObjects;
 
-namespace Fakers.v2;
+namespace __mock__.v2;
 public sealed class DespesaFaker
 {
     static int counter = 1;

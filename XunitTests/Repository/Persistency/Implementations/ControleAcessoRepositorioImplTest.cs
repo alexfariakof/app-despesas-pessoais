@@ -1,9 +1,10 @@
 ﻿using Despesas.Infrastructure.Email;
 using Domain.Entities.ValueObjects;
-using Fakers.v2;
+using __mock__.v2;
 using Repository.Persistency.Abstractions;
 using Repository.Persistency.Implementations.Fixtures;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Implementations;
 public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAcessoRepositorioFixture>

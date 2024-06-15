@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.ValueObjects;
-using Fakers.v1;
+using __mock__.v1;
 using Repository.Persistency.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Implementations.Fixtures;
 public sealed class GraficoRepositorioFixture : IDisposable

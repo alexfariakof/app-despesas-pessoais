@@ -1,5 +1,5 @@
 ﻿using Business.Dtos.Parser;
-using Fakers.v1;
+using __mock__.v1;
 
 namespace Business.Dtos;
 public sealed class DespesaDtoTest

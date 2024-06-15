@@ -1,4 +1,5 @@
-﻿using Repository.Persistency.Implementations.Fixtures;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
 public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepositorioFixture>

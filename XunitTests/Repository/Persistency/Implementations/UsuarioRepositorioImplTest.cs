@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.ValueObjects;
-using Fakers.v2;
+using __mock__.v2;
 using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;

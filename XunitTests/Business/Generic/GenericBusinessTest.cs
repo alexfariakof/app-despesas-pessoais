@@ -2,7 +2,8 @@
 using Business.Abstractions.Generic;
 using Business.Dtos.Core.Profile;
 using Business.Dtos.v1;
-using Fakers.v1;
+using __mock__.v1;
+using Repository.Persistency.Generic;
 
 namespace Business.Generic;
 public class GenericBusinessTests
