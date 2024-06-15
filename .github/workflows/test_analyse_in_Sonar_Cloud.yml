@@ -65,5 +65,5 @@ jobs:
            Remove-Item -Path $sonarProjectFile -Force
 
             dotnet tool install -g dotnet-reportgenerator-globaltool
-            dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+            dotnet test ./XunitTests/XUnit.Tests.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
