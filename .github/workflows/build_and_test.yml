@@ -73,4 +73,3 @@ jobs:
     name: Test and Analysis Code In Sonar Cloud
     uses: alexfariakof/app-despesas-pessoais/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
     secrets: inherit
-y
