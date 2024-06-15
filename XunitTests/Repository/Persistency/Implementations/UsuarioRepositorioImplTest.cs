@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.ValueObjects;
-using __mock__.v2;
+using __mock__.Repository;
 using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
@@ -19,7 +19,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
     public void Insert_Should_Add_Item_And_SaveChanges()
     {
         // Arrange
-        var newUser = UsuarioFaker.Instance.GetNewFaker();
+        var newUser = MockUsuario.Instance.GetUsuario();
 
         // Act
         _repository.Insert(ref newUser);

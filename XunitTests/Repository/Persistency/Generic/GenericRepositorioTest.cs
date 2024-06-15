@@ -1,4 +1,4 @@
-﻿using __mock__.v1;
+﻿using __mock__.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Generic;
@@ -32,7 +32,7 @@ public sealed class GenericRepositorioTest
     public void GetAll_Should_Return_All_Items()
     {
         // Arrange
-        var items = CategoriaFaker.Instance.Categorias();
+        var items = MockCategoria.Instance.GetCategorias();
         var dataSet = items;
         var dbSetMock = Usings.MockDbSet(dataSet);
         _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
@@ -50,7 +50,7 @@ public sealed class GenericRepositorioTest
     public void Get_Should_Return_Item_With_Matching_Id()
     {
         // Arrange
-        var itens = UsuarioFaker.Instance.GetNewFakersUsuarios();
+        var itens = MockUsuario.Instance.GetUsuarios(1);
         var item = itens.First();
         var itemId = item.Id;
 
@@ -72,7 +72,7 @@ public sealed class GenericRepositorioTest
     public void Update_Should_Update_Item_And_SaveChanges()
     {
         // Arrange
-        var dataSet = CategoriaFaker.Instance.Categorias();
+        var dataSet = MockCategoria.Instance.GetCategorias();
         var existingItem = dataSet.First();
         var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Update_Should_Update_Item_And_SaveChanges").Options);
 
@@ -98,7 +98,7 @@ public sealed class GenericRepositorioTest
     public void Delete_Should_Set_Inativo_And_Return_True_When_Usuario_IsDeleted()
     {
         // Arrange
-        var lstUsuarios = UsuarioFaker.Instance.GetNewFakersUsuarios();
+        var lstUsuarios = MockUsuario.Instance.GetUsuarios(1);
         var usuario = lstUsuarios.First();
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Delete_Should_Set_Inativo_And_Return_True_When_Usuario_IsDeleted").Options;
         var _dbContextMock = new RegisterContext(options);
@@ -117,7 +117,7 @@ public sealed class GenericRepositorioTest
     public void Update_Should_Try_Update_Item_And_Return_Null()
     {
         // Arrange
-        var dataSet = CategoriaFaker.Instance.Categorias();
+        var dataSet = MockCategoria.Instance.GetCategorias();
         var existingItem = dataSet.First();
         var dbContext = new RegisterContext(new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "Update_Should_Try_Update_Item_And_Return_Null").Options);
         var repository = new GenericRepositorio<Categoria>(dbContext);
@@ -130,7 +130,7 @@ public sealed class GenericRepositorioTest
     public void Delete_With_Existing_Item_Should_Remove_Item_And_SaveChanges()
     {
         // Arrange
-        var lstCategorias = CategoriaFaker.Instance.Categorias();
+        var lstCategorias = MockCategoria.Instance.GetCategorias(1);
         var item = lstCategorias.Last();
         var dataSet = lstCategorias;
 
@@ -150,8 +150,8 @@ public sealed class GenericRepositorioTest
     public void Delete_With_Non_Existing_Item_Should_Not_Remove_Item_And_Return_False()
     {
         // Arrange
-        var dataSet = CategoriaFaker.Instance.Categorias();
-        var item = new Categoria { Id = 0 };
+        var dataSet = MockCategoria.Instance.GetCategorias(2);
+        var item = new Categoria { Id = 99 };
         var dbSetMock = Usings.MockDbSet(dataSet);
         _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
         var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);
@@ -168,7 +168,7 @@ public sealed class GenericRepositorioTest
     public void Delete_Should_Throw_Exception()
     {
         // Arrange
-        var lstCategorias = CategoriaFaker.Instance.Categorias();
+        var lstCategorias = MockCategoria.Instance.GetCategorias();
         var item = lstCategorias.Last();
         var dataSet = lstCategorias;
 

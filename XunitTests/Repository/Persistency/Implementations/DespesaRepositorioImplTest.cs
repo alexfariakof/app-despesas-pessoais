@@ -1,4 +1,5 @@
-﻿using __mock__.v2;
+﻿using __mock__.Repository;
+using Domain.Entities.ValueObjects;
 using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
@@ -19,7 +20,7 @@ public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
         // Arrange
         var categoria = _fixture.Context.Categoria.Last();
         var usuario = _fixture.Context.Usuario.Last();
-        var newDespesa = DespesaFaker.Instance.GetNewFaker(usuario, categoria);
+        var newDespesa = MockDespesa.Instance.GetDespesa();
         newDespesa.CategoriaId = _fixture.Context.Categoria.First().Id;
         newDespesa.Categoria = null;
         newDespesa.Id = 0;
@@ -96,7 +97,7 @@ public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
     public void Get_Should_Return_Despesa_By_Id()
     {
         // Arrange
-        var existingItem = _fixture.Context.Despesa.Last();
+        var existingItem = _fixture.Context.Despesa.LastOrDefault(d => d.Categoria.TipoCategoria == (int)TipoCategoria.CategoriaType.Despesa);
 
         // Act
         var result = _repository.Get(existingItem.Id);
@@ -118,7 +119,7 @@ public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
     public void Find_Should_Return_Despesa_By_Expression()
     {
         // Arrange
-        var categoria = _fixture.Context.Categoria.First();
+        var categoria = _fixture.Context.Categoria.FirstOrDefault(c => c.TipoCategoria == (int)TipoCategoria.CategoriaType.Despesa);
         var expected = _fixture.Context.Despesa.Where(d => d.CategoriaId == categoria.Id);
 
         // Act

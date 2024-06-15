@@ -1,4 +1,4 @@
-﻿using __mock__.v2;
+﻿using __mock__.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Implementations.Fixtures;
@@ -13,7 +13,7 @@ public sealed class DatabaseFixture : IDisposable
         Context = new RegisterContext(options);
         Context.Database.EnsureCreated();
 
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(20);
+        var lstControleAcesso = MockControleAcesso.Instance.GetControleAcessos();
         lstControleAcesso.ForEach(c => c.Usuario = c.Usuario.CreateUsuario(c.Usuario));
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
         lstControleAcesso.Select(c => c.Usuario).ToList()

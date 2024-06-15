@@ -1,19 +1,21 @@
-﻿using __mock__.v2;
+﻿using __mock__.Repository;
+using Domain.Entities.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Implementations.Fixtures;
 
 public class ReceitaFixture : IDisposable
 {
-    public RegisterContext Context { get; set; }
+    public RegisterContext Context { get; private set; }
 
     public ReceitaFixture()
     {
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "ReceitaRepositorioImplTestDatabaseInMemory").Options;
         Context = new RegisterContext(options);
+        Context.Database.EnsureDeleted();
         Context.Database.EnsureCreated();
 
-        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var controleAcesso = MockControleAcesso.Instance.GetControleAcesso();
         controleAcesso.Usuario.CreateUsuario(controleAcesso.Usuario);
         controleAcesso.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == controleAcesso.Usuario.PerfilUsuario.Id);
         controleAcesso.Usuario.Categorias.ToList()
@@ -21,26 +23,18 @@ public class ReceitaFixture : IDisposable
         Context.Add(controleAcesso);
         Context.SaveChanges();
 
-        var ususario = Context.Usuario.First();
-        var receita = ReceitaFaker.Instance.GetNewFaker(ususario, null);
-        receita.Categoria = Context.Categoria.First(c => c.Usuario.Id == ususario.Id && c.TipoCategoria == 1);
-        Context.Add(receita);
-        Context.SaveChanges();
 
-        controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
-        controleAcesso.Usuario.CreateUsuario(controleAcesso.Usuario);
-        controleAcesso.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == controleAcesso.Usuario.PerfilUsuario.Id);
-        controleAcesso.Usuario.Categorias.ToList()
-            .ForEach(c => c.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == c.TipoCategoria.Id));
-        Context.Add(controleAcesso);
+        var usuario = Context.Usuario.First();
+        var receitas = MockReceita.Instance.GetReceitas();
+        foreach (var receita in receitas)
+        {
+            receita.Usuario = usuario;
+            receita.UsuarioId = usuario.Id;
+            receita.Categoria = Context.Categoria.FirstOrDefault(c => c.Usuario.Id == usuario.Id && c.TipoCategoria == (int)TipoCategoria.CategoriaType.Receita);
+            receita.CategoriaId = receita.Categoria.Id;
+        }
+        Context.Receita.AddRange(receitas);
         Context.SaveChanges();
-
-        ususario = Context.Usuario.First();
-        receita = ReceitaFaker.Instance.GetNewFaker(ususario, null);
-        receita.Categoria = Context.Categoria.First(c => c.Usuario.Id == ususario.Id && c.TipoCategoria == 1);
-        Context.Add(receita);
-        Context.SaveChanges();
-
     }
 
     public void Dispose()

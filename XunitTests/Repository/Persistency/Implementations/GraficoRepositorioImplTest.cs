@@ -1,4 +1,4 @@
-﻿using __mock__.v1;
+﻿using __mock__.Repository;
 using Microsoft.EntityFrameworkCore;
 using Repository.Persistency.Implementations.Fixtures;
 
@@ -18,7 +18,7 @@ public sealed class GraficoRepositorioImplTest : IClassFixture<GraficoRepositori
     {
         // Arrange
         var data = _fixture.MockAnoMes;
-        var idUsuario = _fixture.MockUsuario.Id;
+        var idUsuario = _fixture.UsuarioMock.Id;
 
         // Act
         var result = _fixture.MockRepository.Object.GetDadosGraficoByAno(idUsuario, data);
@@ -34,7 +34,7 @@ public sealed class GraficoRepositorioImplTest : IClassFixture<GraficoRepositori
     public void GetDadosGraficoByAno_Throws_Exception_And_Returns_Grafico_With_Default_Values()
     {
         // Arrange
-        var usuario = UsuarioFaker.Instance.GetNewFaker();
+        var usuario = MockUsuario.Instance.GetUsuario();
         var data = _fixture.MockAnoMes;
 
         var despesaDbSetMock = new Mock<DbSet<Despesa>>();

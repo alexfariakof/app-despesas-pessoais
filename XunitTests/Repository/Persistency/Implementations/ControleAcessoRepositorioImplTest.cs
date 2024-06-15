@@ -1,6 +1,6 @@
 ﻿using Despesas.Infrastructure.Email;
 using Domain.Entities.ValueObjects;
-using __mock__.v2;
+using __mock__.Repository;
 using Repository.Persistency.Abstractions;
 using Repository.Persistency.Implementations.Fixtures;
 using System.Linq.Expressions;
@@ -23,7 +23,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var context = _fixture.Context;
         var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
         mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>()));
-        var mockControleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var mockControleAcesso = MockControleAcesso.Instance.GetControleAcesso();
 
         // Act
         Action result = () => mockRepository.Object.Create(mockControleAcesso);
@@ -90,7 +90,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
         context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
         context.SaveChanges();
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(1).ToList();
+        var lstControleAcesso = MockControleAcesso.Instance.GetControleAcessos().ToList();
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
         var mockControleAcesso = new ControleAcesso { Login = lstControleAcesso.Last().Login };
         context.AddRange(lstControleAcesso);
@@ -185,7 +185,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
         context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
         context.SaveChanges();
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(2);
+        var lstControleAcesso = MockControleAcesso.Instance.GetControleAcessos();
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
         context.AddRange(lstControleAcesso);
         context.SaveChanges();
