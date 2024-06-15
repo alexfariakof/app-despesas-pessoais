@@ -20,7 +20,7 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:42535;http://localhost:42536",
+      "applicationUrl": "https://localhost:42535;http://localhost:42536"
     },
     "MySqlServer": {
       "commandName": "Project",
