@@ -64,9 +64,9 @@ jobs:
 
       - name: Install Angular dependencies
         run: |
-          npm install npm@10.2.5 > $null
-          npm install -g @angular/core@16 @angular/cli@16 > $null
-          npm install > $null
+          npm install npm@10.2.5 > $null 2>&1
+          npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
+          npm install > $null 2>&1
         working-directory: AngularApp
    
       - name: Build and analyze

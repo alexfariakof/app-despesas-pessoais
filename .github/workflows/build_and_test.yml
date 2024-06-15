@@ -60,9 +60,9 @@ jobs:
 
       - name: Install Angular dependencies
         run: |
-          npm install  npm@10.2.5 > /dev/null
-          npm install -g @angular/core@16 @angular/cli@16 > /dev/null
-          npm install > /dev/null
+          npm install  npm@10.2.5 >/dev/null 2>&1
+          npm install -g @angular/core@16 @angular/cli@16 >/dev/null 2>&1
+          npm install >/dev/null 2>&1
         working-directory: AngularApp
 
       - name: Build Angular App
