@@ -1,0 +1,60 @@
+.btn-barra-ferramenta {
+  margin-right: 4px;
+}
+
+#filterDataAno {
+  max-width: 4.8rem;
+}
+
+
+.md-outline.always-active-label .form-label {
+  transform: translateY(-0.4rem) translateY(0.2rem) scale(.8);
+  font-weight: bold;
+  position: absolute;
+}
+
+.md-outline.always-active-label .form-notch-middle {
+    border-right: none;
+    border-left: none;
+    border-top: 1px solid transparent !important;
+}
+
+@media (min-width: 768px) {
+  .btn-barra-ferramenta {
+    width: auto;
+  }
+
+  .btn-barra-ferramenta button {
+    width: auto;
+    margin-right: 4px;
+    padding: 8px;
+  }
+
+}
+
+@media screen and (max-width: 667px) {
+  .btn-barra-ferramenta {
+    width: auto;
+    font-size: 0.4rem;
+    margin: 0;
+  }
+
+  .btn-barra-ferramenta button {
+    width: auto;
+    height: auto;
+    margin-right: 0.4rem;
+    padding: 4px;
+  }
+
+  #filterDataAno {
+    width: auto;
+    font-size: 0.8rem;
+  }
+
+  #filterDataMesAno {
+    width: auto;
+    font-size: 0.6rem;
+  }
+
+}
+

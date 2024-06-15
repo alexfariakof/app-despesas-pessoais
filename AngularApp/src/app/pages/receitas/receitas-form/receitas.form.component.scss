@@ -1,0 +1,20 @@
+.error-bi-input {
+  display: inline;
+
+}
+
+.not-error-input {
+  display: none;
+}
+
+// Classe  Responsável por abrir elementos a frente do modalformComponent
+.cdk-overlay-container {
+  z-index: 1999;
+}
+
+.mat-datepicker-toggle-default-icon {
+  color: red;
+  border: 2px;
+  border-color: red;
+  text-decoration-color: red;
+}
