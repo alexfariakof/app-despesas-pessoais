@@ -66,14 +66,6 @@ jobs:
           npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
           npm install 
         continue-on-error: false
-    
-      - name: Install Angular dependencies
-        run: |
-          cd AngularApp
-          npm install npm@latest > $null 2>&1
-          npm install -g @angular/core@16 @angular/cli@16 > $null 2>&1
-          npm install 
-        continue-on-error: false
    
       - name: Build and analyze
         env:
@@ -81,7 +73,12 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts, **/sonar-project.properties" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
+          ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info" /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
+           $baseDirectory =  Get-Location
+           $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp")
+           $sonarProjectFile = "$projectAngular\sonar-project.properties"
+           Remove-Item -Path $sonarProjectFile -Force
+
             dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"          
           ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
