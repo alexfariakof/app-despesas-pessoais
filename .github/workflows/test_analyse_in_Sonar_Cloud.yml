@@ -14,9 +14,6 @@ on:
       - hotfix/*
       - feature/*
       - bugfix/*  
- 
-permissions:
-    contents: read 
 
 jobs:
   test_code_in_sonar:
