@@ -2,9 +2,9 @@
 FROM node:21-slim as node
 WORKDIR /app
 COPY . .
-RUN npm install -g npm@latest
-RUN npm install
-RUN npm run build:dev
+RUN npm install -g npm@latest >/dev/null 2>&1
+RUN npm install >/dev/null 2>&1
+RUN npm run build:dev >/dev/null 2>&1
 
 #stage 2
 FROM nginx:alpine

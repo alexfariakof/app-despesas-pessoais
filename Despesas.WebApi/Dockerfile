@@ -15,9 +15,10 @@ RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_21.x | bash - && \
     apt-get install -y nodejs
-RUN npm install -g npm@10.2.5 && \
-    npm install -g @angular/core@16 @angular/cli@16
+RUN npm install -g npm@latest >/dev/null 2>&1 && \
+    npm install -g @angular/core @angular/cli >/dev/null 2>&1
 
+WORKDIR /src/Despesas.WebApi
 RUN dotnet publish "./Despesas.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
