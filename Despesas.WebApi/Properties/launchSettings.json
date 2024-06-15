@@ -21,6 +21,7 @@
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:42535;http://localhost:42536"
+    },
     "MySqlServer": {
       "commandName": "Project",
       "launchBrowser": true,
