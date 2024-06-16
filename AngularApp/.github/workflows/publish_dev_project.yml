@@ -1,0 +1,71 @@
+name: Deploy Development Project
+on:
+  push:
+    branches:
+      - pre-release
+
+jobs:
+  trigger_build_and_test:
+    needs: build_and_test
+    name: Test and Analysis Code In Sonar Cloud
+    uses: alexfariakof/angular-frontend-despesas/.github/workflows/Build_And_Test_Code_ in_Sonar_Cloud.yml@master
+    secrets: inherit
+
+  build_and_deploy_docker_image:
+    needs: trigger_build_and_test
+    name: Build And Deploy Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Build Docker image
+        env:
+          DOCKER_CLI_AGGREGATE: 1
+        run: |
+          docker-compose -f docker-compose.dev.yml build
+        continue-on-error: false
+
+      - name: Push Docker image to Docker Hub
+        env:
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_CLI_AGGREGATE: 1
+        run: |
+            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker push ${{ secrets.DOCKER_IMAGE_DEV }}
+        continue-on-error: false
+
+
+  deploy_dev:
+    needs: build_and_deploy_docker_image
+    name: Deploy Developement Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Execute SSH Commands into EC2
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+          AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 22
+          script: |
+            ./scripts/dp-angular.dev.sh
+          continue-on-error: false
+
+  trigger_e2e_tests:
+    needs: deploy_dev
+    name: Trigger Run End-to-End Tests
+    uses: alexfariakof/despesas-frontend-angular/.github/workflows/Tests_e2e.yml@master
+    secrets: inherit

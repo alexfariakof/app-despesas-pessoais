@@ -1,0 +1,11 @@
+<app-layout>
+  <div class="flex-grow-0 bg-info w-100">
+    <app-barra-ferramenta [dtAno]="true"></app-barra-ferramenta>
+  </div>
+  <div class="h-100 m-0 p-0 flex-grow-1 flex-fill">
+    <app-bar-chart
+      class="w-100 h-100 m-0 p-0"
+      [datasets]="barChartDatasets"
+    ></app-bar-chart>
+  </div>
+</app-layout>
