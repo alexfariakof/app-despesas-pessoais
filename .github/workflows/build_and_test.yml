@@ -47,7 +47,7 @@ jobs:
           dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
     - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
-      uses: .\.sonar\scanner\dotnet-sonarscanner
+      uses: cache-sonar-scanner
       env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
 
