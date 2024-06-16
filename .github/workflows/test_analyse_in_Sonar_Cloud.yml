@@ -8,9 +8,12 @@ on:
       - bugfix/*  
 
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
     branches:       
-      - main
+      - hotfix/*
+      - feature/*
+      - bugfix/*  
+
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud

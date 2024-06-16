@@ -8,12 +8,13 @@ on:
       - dev
 
   pull_request:
-    types: [opened]
+    types: [opened, synchronize, reopened]
     branches:       
       - main
 
 permissions:
     contents: read 
+
 jobs:
   build_and_test:
     name: Build and Test .Net
@@ -24,32 +25,13 @@ jobs:
       with:
           projectBaseDir: .
           fetch-depth: 0  
-          path: ~\sonar\cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-    - name: Create if not Exist Cache Sonar Packages
-      if: steps.cache-sonar.outputs.cache-hit != 'true'
-      run: mkdir -p ~/sonar/cache 
-
-    - name: Cache SonarCloud scanner
-      id: cache-sonar-scanner
-      uses: actions/cache@v3
-      with:
-        path: .\.sonar\scanner
-        key: ${{ runner.os }}-sonar-scanner
-        restore-keys: ${{ runner.os }}-sonar-scanner
-
-    - name: Install SonarCloud scanner
-      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
-      run: |
-          mkdir .\.sonar\scanner
-          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
 
     - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
-      uses: cache-sonar-scanner
+      uses: SonarSource/sonarcloud-github-action@master
       env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+      with:
+          projectBaseDir: app-despesas-pessoais/
 
     - name: Cache .NET packages    
       uses: actions/cache@v3
