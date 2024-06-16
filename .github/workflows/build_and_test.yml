@@ -31,7 +31,7 @@ jobs:
       env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
       with:
-          projectBaseDir: app-despesas-pessoais/
+          projectBaseDir: .
 
     - name: Cache .NET packages    
       uses: actions/cache@v3
