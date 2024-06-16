@@ -1,5 +1,5 @@
 ﻿using Business.Dtos.v1;
-using Fakers.v1;
+using __mock__.v1;
 
 namespace Business.Dtos.Parser;
 public sealed class ImagemPerfilUsuarioParserTest

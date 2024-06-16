@@ -1,4 +1,4 @@
-﻿using Fakers.v2;
+﻿using __mock__.Repository;
 using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
@@ -19,9 +19,7 @@ public sealed class CategoriaRepositorioImplTest : IClassFixture<DatabaseFixture
     {
         // Arrange
         var usuario = _fixture.Context.Usuario.Last();
-        var newCategoria = CategoriaFaker.Instance.GetNewFaker(usuario);
-        newCategoria.Usuario = null;
-        newCategoria.Id = 0;
+        var newCategoria = MockCategoria.Instance.GetCategoria();
 
 
         // Act

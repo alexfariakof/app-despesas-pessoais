@@ -2,8 +2,9 @@
 using Business.Dtos.Core.Profile;
 using Business.Dtos.v2;
 using Despesas.Infrastructure.Amazon.Abstractions;
-using Fakers.v2;
-using Repository.Persistency.UnitOfWork.Abstractions;
+using __mock__.v2;
+using Repository.Persistency.Generic;
+using Business.Implementations;
 
 namespace Business;
 public class ImagemPerfilUsuarioBusinessImplTests

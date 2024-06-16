@@ -1,4 +1,6 @@
-﻿namespace Fakers.v2;
+﻿using Bogus;
+
+namespace __mock__.v2;
 public sealed class GraficoFaker
 {
     public static Grafico GetNewFaker()

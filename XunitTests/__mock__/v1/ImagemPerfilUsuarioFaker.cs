@@ -1,6 +1,7 @@
-﻿using Business.Dtos.v1;
+﻿using Bogus;
+using Business.Dtos.v1;
 
-namespace Fakers.v1;
+namespace __mock__.v1;
 public sealed class ImagemPerfilUsuarioFaker
 {
     static int counter = 1;

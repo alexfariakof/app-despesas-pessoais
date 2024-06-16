@@ -1,5 +1,6 @@
 ﻿using Repository.Persistency.Abstractions;
-using Fakers.v1;
+using __mock__.v1;
+using Business.Implementations;
 
 namespace Business;
 public class GraficosBusinessImplTest

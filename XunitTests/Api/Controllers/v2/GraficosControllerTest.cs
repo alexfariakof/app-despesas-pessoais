@@ -1,7 +1,7 @@
 ﻿using Business.Abstractions;
 using Despesas.WebApi.Controllers.v2;
 using Microsoft.AspNetCore.Mvc;
-using Fakers.v2;
+using __mock__.v2;
 
 namespace Api.Controllers.v2;
 

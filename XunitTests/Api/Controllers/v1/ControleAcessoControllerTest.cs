@@ -3,7 +3,7 @@ using Business.Dtos.v1;
 using Despesas.WebApi.Controllers.v1;
 using Microsoft.AspNetCore.Mvc;
 using Business.Dtos.Core;
-using Fakers.v1;
+using __mock__.v1;
 
 namespace Api.Controllers.v1;
 

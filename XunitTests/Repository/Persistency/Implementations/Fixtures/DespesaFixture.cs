@@ -1,4 +1,6 @@
-﻿using Fakers.v2;
+﻿using __mock__.Repository;
+using Domain.Entities.ValueObjects;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Persistency.Implementations.Fixtures;
 
@@ -12,7 +14,7 @@ public class DespesaFixture : IDisposable
         Context = new RegisterContext(options);
         Context.Database.EnsureCreated();
 
-        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var controleAcesso = MockControleAcesso.Instance.GetControleAcesso();
         controleAcesso.Usuario.CreateUsuario(controleAcesso.Usuario);
         controleAcesso.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == controleAcesso.Usuario.PerfilUsuario.Id);
         controleAcesso.Usuario.Categorias.ToList()
@@ -20,27 +22,17 @@ public class DespesaFixture : IDisposable
         Context.Add(controleAcesso);
         Context.SaveChanges();
 
-        var ususario = Context.Usuario.First();
-        var despesa = DespesaFaker.Instance.GetNewFaker(ususario, null);
-        despesa.Categoria = Context.Categoria.First(c => c.Usuario.Id == ususario.Id && c.TipoCategoria == 1);
-        Context.Add(despesa);
-        Context.SaveChanges();
-
-        controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
-        controleAcesso.Usuario.CreateUsuario(controleAcesso.Usuario);
-        controleAcesso.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == controleAcesso.Usuario.PerfilUsuario.Id);
-        controleAcesso.Usuario.Categorias.ToList()
-            .ForEach(c => c.TipoCategoria = Context.TipoCategoria.First(tc => tc.Id == c.TipoCategoria.Id));
-        Context.Add(controleAcesso);
-        Context.SaveChanges();
-
-        ususario = Context.Usuario.First();
-        despesa = DespesaFaker.Instance.GetNewFaker(ususario, null);
-        despesa.Categoria = Context.Categoria.First(c => c.Usuario.Id == ususario.Id && c.TipoCategoria == 1);
-        Context.Add(despesa);
-        Context.SaveChanges();
-
-
+        var usuario = Context.Usuario.First();
+        var despesas = MockDespesa.Instance.GetDespesas();
+        foreach (var despesa in despesas)
+        {
+            despesa.Usuario = usuario;
+            despesa.UsuarioId = usuario.Id;
+            despesa.Categoria = Context.Categoria.FirstOrDefault(c => c.Usuario.Id == usuario.Id && c.TipoCategoria == (int)TipoCategoria.CategoriaType.Despesa);
+            despesa.CategoriaId = despesa.Categoria.Id;
+        }
+        Context.AddRange(despesas);
+        Context.SaveChanges();       
     }
 
     public void Dispose()
