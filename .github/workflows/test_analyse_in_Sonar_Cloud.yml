@@ -2,13 +2,18 @@ name: Test and Analysis Code In Sonar Cloud
 on:
   workflow_call:
   push:
-    branches:
-      - main
+    branches: 
+      - hotfix/*
+      - feature/*
+      - bugfix/*  
+
   pull_request:
     types: [opened, synchronize, reopened]
+    branches:       
+      - main
 jobs:
-  build:
-    name: Build and analyze
+  test_code_in_sonar:
+    name: Test and Analysis Code In Sonar Cloud
     runs-on: windows-latest
     steps:
       - name: Set up JDK 17
@@ -46,6 +51,6 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"  /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"
             dotnet tool install -g dotnet-reportgenerator-globaltool            
-            dotnet test ./XunitTests/XUnit.Tests.csproj          
+            dotnet build ./XunitTests/XUnit.Tests.csproj          
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
