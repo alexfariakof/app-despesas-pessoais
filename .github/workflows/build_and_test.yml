@@ -32,8 +32,22 @@ jobs:
       if: steps.cache-sonar.outputs.cache-hit != 'true'
       run: mkdir -p ~/sonar/cache 
 
+    - name: Cache SonarCloud scanner
+      id: cache-sonar-scanner
+      uses: actions/cache@v3
+      with:
+        path: .\.sonar\scanner
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+
+    - name: Install SonarCloud scanner
+      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+      run: |
+          mkdir .\.sonar\scanner
+          dotnet tool update dotnet-sonarscanner --tool-path .\.sonar\scanner
+
     - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
-      uses: SonarSource/sonarcloud-github-action@main
+      uses: .\.sonar\scanner\dotnet-sonarscanner
       env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
 
