@@ -11,7 +11,7 @@ coveragePath="$reportPath/coveragereport"
 #coverageAngularPath="$projectAngular/coverage"
 
 # Gera o Relatório de Cobertura do Backend
-dotnet test ./XUnit.Tests.csproj --configuration Staging --results-directory "$reportPath" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > /dev/null 2>&1
+dotnet test ./XUnit.Tests.csproj --results-directory "$reportPath" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > /dev/null 2>&1
 reportgenerator -reports:$projectTestPath/coverage.cobertura.xml -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
 # Encontra o diretório mais recente na pasta TestResults
