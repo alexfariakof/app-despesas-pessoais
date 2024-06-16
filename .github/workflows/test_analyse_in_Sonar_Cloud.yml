@@ -46,6 +46,6 @@ jobs:
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.exclusions="**/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"  /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"
             dotnet tool install -g dotnet-reportgenerator-globaltool            
-            dotnet build ./XunitTests/XUnit.Tests.csproj          
+            dotnet test ./XunitTests/XUnit.Tests.csproj          
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
 
