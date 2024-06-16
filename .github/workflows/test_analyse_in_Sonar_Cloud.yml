@@ -34,7 +34,7 @@ jobs:
       
      - name: Create if not Exist Cache Sonar Packages
        if: steps.cache-sonar.outputs.cache-hit != 'true'
-       run: mokdir ~\sonar\cache
+       run: mkdir ~\sonar\cache
         
      - name: Cache SonarCloud scanner
        id: cache-sonar-scanner
