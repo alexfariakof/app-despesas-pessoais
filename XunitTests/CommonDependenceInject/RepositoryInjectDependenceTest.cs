@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Repository.CommonDependenceInject;
 using Repository.Persistency.Abstractions;
+using Repository.Persistency.Generic;
+using Repository.Persistency.Implementations;
 
 namespace CommonDependenceInject;
 public sealed class RepositoryInjectDependenceTest

@@ -8,8 +8,21 @@ $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
 $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
 
 # Gera o Relatório de Cobertura do Backend
-dotnet test ./XUnit.Tests.csproj --configuration Staging --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > $null 2>&1
-reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs > $null 2>&1
+dotnet test ./XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore
+reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
+
+# Encontra o diretório como os resultados do teste mais recente na pasta TestResults 
+$latestDir = Get-ChildItem -Directory -Path $reportPath | Where-Object { $_.Name -ne 'coveragereport' } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+
+# Verifica se encontrou um diretório e, em caso afirmativo, obtém o nome do diretório (GUID)
+if ($latestDir) {
+    $guid = $latestDir.Name    
+    $coverageXmlPath = "$projectTestPath\TestResults\$guid"
+    Copy-Item -Path "$coverageXmlPath\*" -Destination $reportPath -Recurse -Force
+} else {
+    Write-Output "Nenhum diretório de resultados encontrado."
+}
+
 
 # Verifica se existe a pasta node_module, e sem não existir executa npm install 
 if (-not (Test-Path $projectAngular\node_modules)) {

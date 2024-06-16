@@ -1,5 +1,5 @@
 ﻿namespace Business.Dtos.Parser;
-using Fakers.v1;
+using __mock__.v1;
 public sealed class UsuarioParserTest
 {
     [Fact]

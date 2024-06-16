@@ -8,7 +8,7 @@ on:
       - dev
 
   pull_request:
-    types: [opened]
+    types: [opened, synchronize, reopened]
     branches:       
       - main
 
@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  
+        projectBaseDir: .
 
     - name: Cache .NET packages    
       uses: actions/cache@v3
@@ -35,46 +38,22 @@ jobs:
       with:
         dotnet-version: 8.0.x
     
-    - name: Build and Restore App 
-      run: dotnet build  ./Despesas.WebApi/Despesas.WebApi.csproj --restore
-      continue-on-error: false
-
-    - name:  Test .Net App
-      run: dotnet test ./XunitTests/XUnit.Tests.csproj
+    - name: Build, Test and Restore 
+      run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool            
+          dotnet build  ./Despesas.WebApi/Despesas.WebApi.csproj -c Test --restore
       continue-on-error: false
   
-  build_and_test_angular:
-    name: Build and Test AngularApp
-    needs: build_and_test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '21.*.*'
-
-      - name: Install Angular dependencies
-        run: |
-          npm install npm@latest >/dev/null 2>&1
-          npm install -g @angular/core @angular/cli >/dev/null 2>&1
-          npm install >/dev/null 2>&1
-        working-directory: AngularApp
-
-      - name: Build Angular App
-        run: npm run build
-        working-directory: AngularApp
-
-      - name: Test Angular App
-        run: npm run test:coverage
-        working-directory: AngularApp
+    - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
+      uses: SonarSource/sonarcloud-github-action@master
+      env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+      with:
+          projectBaseDir: .
 
   trigger_tests_sonarcloud:
-    needs: build_and_test_angular
+    needs: build_and_test
     name: Test and Analysis Code In Sonar Cloud
     uses: alexfariakof/app-despesas-pessoais/.github/workflows/test_analyse_in_Sonar_Cloud.yml@main
     secrets: inherit

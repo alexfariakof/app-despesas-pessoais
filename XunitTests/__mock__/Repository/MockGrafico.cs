@@ -1,9 +1,9 @@
 ﻿using Bogus;
 
-namespace __mock__.v1;
-public sealed class GraficoFaker
+namespace __mock__.Repository;
+public sealed class MockGrafico
 {
-    public static Grafico GetNewFaker()
+    public static Grafico GetGrafico()
     {
         return new Faker<Grafico>()
         .RuleFor(g => g.SomatorioDespesasPorAno, f => new Dictionary<string, decimal>

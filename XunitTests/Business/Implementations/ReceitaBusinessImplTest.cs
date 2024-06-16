@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Business.Dtos.v2;
-using Fakers.v2;
+using __mock__.v2;
 using Repository.Persistency.UnitOfWork.Abstractions;
 using Business.Dtos.Core.Profile;
+using Repository.Persistency.Generic;
+using Business.Implementations;
 
 namespace Business;
 

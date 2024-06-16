@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.ValueObjects;
-using Fakers.v2;
 using Repository.Persistency.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using __mock__.Repository;
 
 namespace Repository.Persistency.Implementations.Fixtures;
 public sealed class ControleAcessoRepositorioFixture : IDisposable
@@ -17,7 +18,7 @@ public sealed class ControleAcessoRepositorioFixture : IDisposable
         Context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
         Context.SaveChanges();
 
-        var lstControleAcesso = ControleAcessoFaker.Instance.ControleAcessos(5);
+        var lstControleAcesso = MockControleAcesso.Instance.GetControleAcessos();
         lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = Context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
         Context.AddRange(lstControleAcesso);
         Context.SaveChanges();

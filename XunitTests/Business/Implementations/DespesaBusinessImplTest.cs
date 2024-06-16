@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Business.Dtos.v2;
-using Fakers.v2;
+using __mock__.v2;
 using Domain.Entities.ValueObjects;
 using Repository.Persistency.UnitOfWork.Abstractions;
 using Business.Dtos.Core.Profile;
+using Business.Implementations;
+using Repository.Persistency.Generic;
 
 namespace Business;
 

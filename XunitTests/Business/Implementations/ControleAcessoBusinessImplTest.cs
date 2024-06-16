@@ -5,12 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository.Persistency.Abstractions;
 using System.IdentityModel.Tokens.Jwt;
-using Fakers.v2;
+using __mock__.v2;
 using Business.Dtos.Core;
 using System.Linq.Expressions;
 using AutoMapper;
 using Business.Dtos.Core.Profile;
 using Microsoft.Extensions.Options;
+using Business.Implementations;
 
 namespace Business;
 public class ControleAcessoBusinessImplTest

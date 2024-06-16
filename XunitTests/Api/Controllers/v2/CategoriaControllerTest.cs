@@ -2,7 +2,7 @@
 using Despesas.WebApi.Controllers.v2;
 using Domain.Entities.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
-using Fakers.v2;
+using __mock__.v2;
 using Business.Dtos.Core;
 using Business.Abstractions;
 

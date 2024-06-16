@@ -30,6 +30,8 @@
             "inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": [
               "oidc-client",
+              "ng2-currency-mask",
+              "@angular/material/icon",
               "dayjs"
             ],
             "assets": [ "src/favicon.ico", "src/assets" ],
