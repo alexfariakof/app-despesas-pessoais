@@ -19,16 +19,25 @@ jobs:
     name: Build and Test .Net
     runs-on: ubuntu-latest
     steps:
+
     - uses: actions/checkout@v3
       with:
           projectBaseDir: .
           fetch-depth: 0  
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+    - name: Create if not Exist Cache Sonar Packages
+      if: steps.cache-sonar.outputs.cache-hit != 'true'
+      shell: powershell
+      run: |
+           New-Item -Path ~\sonar\cache -ItemType Directory   
 
     - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
-      uses: SonarSource/sonarcloud-github-action@main
+      uses: SonarSource/sonarcloud-github-action@master
       env: 
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
 
     - name: Cache .NET packages    
       uses: actions/cache@v3
