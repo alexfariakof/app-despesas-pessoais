@@ -70,7 +70,7 @@ jobs:
             $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;"
             $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"
             $reportPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests\TestResults"
-            $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport
+            $coverageXmlPath = Join-Path -Path $reportPath -ChildPath "coveragereport"
           
             dotnet tool install -g dotnet-reportgenerator-globaltool            
             dotnet test ./XunitTests/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"          
