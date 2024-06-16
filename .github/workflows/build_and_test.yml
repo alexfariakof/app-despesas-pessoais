@@ -33,7 +33,7 @@ jobs:
       run: mkdir -p ~/sonar/cache 
 
     - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
-      uses: SonarSource/sonarcloud-github-action@master
+      uses: SonarSource/sonarcloud-github-action@main
       env: 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
 
