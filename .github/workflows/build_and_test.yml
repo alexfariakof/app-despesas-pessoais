@@ -14,25 +14,12 @@ on:
 
 permissions:
     contents: read 
-
 jobs:
   build_and_test:
     name: Build and Test .Net
     runs-on: ubuntu-latest
     steps:
-
     - uses: actions/checkout@v3
-      with:
-          projectBaseDir: .
-          fetch-depth: 0  
-
-    - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
-      uses: SonarSource/sonarcloud-github-action@master
-      env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
-      with:
-          projectBaseDir: .
 
     - name: Cache .NET packages    
       uses: actions/cache@v3
@@ -54,7 +41,7 @@ jobs:
 
     - name:  Test .Net App
       run: dotnet test ./XunitTests/XUnit.Tests.csproj
-      continue-on-error: false  
+      continue-on-error: false
 
   trigger_tests_sonarcloud:
     needs: build_and_test
