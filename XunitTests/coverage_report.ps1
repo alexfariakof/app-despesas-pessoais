@@ -11,6 +11,7 @@ $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
 dotnet test ./XUnit.Tests.csproj --configuration Staging --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > $null 2>&1
 reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters > $null 2>&1
 
+Exit
 # Verifica se existe a pasta node_module, e sem não existir executa npm install 
 if (-not (Test-Path $projectAngular\node_modules)) {
     $watchProcess = Start-Process npm -ArgumentList "install" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
