@@ -62,10 +62,10 @@ jobs:
         shell: powershell
         run: |          
           ./.sonar/scanner/dotnet-sonarscanner begin /k:"alexfariakof_despesas-backend-api-net-core" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js, **/test.ts, **/sonar-project.properties" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/TestResults/coveragereport/lcov.info"  /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
-            $baseDirectory = Get-Location    
-            $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"               
+            $baseDirectory = Get-Location;
+            $projectTestPath = (Resolve-Path -Path "$baseDirectory\XunitTests");
             $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp");
-            $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;"
+            $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;";
 
             dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet test ./XunitTests/XUnit.Tests.csproj --configuration Release --results-directory $projectTestPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
