@@ -38,14 +38,10 @@ jobs:
       with:
         dotnet-version: 8.0.x
     
-    - name: Build and Restore App 
-      run: dotnet build  ./Despesas.WebApi/Despesas.WebApi.csproj --restore
-      continue-on-error: false
-
-    - name:  Test .Net App
+    - name: Build, Test and Restore 
       run: |
-        dotnet tool install -g dotnet-reportgenerator-globaltool            
-        dotnet test ./XunitTests/XUnit.Tests.csproj -c Test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+          dotnet tool install -g dotnet-reportgenerator-globaltool            
+          dotnet build  ./Despesas.WebApi/Despesas.WebApi.csproj -c Test --restore
       continue-on-error: false
   
     - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
