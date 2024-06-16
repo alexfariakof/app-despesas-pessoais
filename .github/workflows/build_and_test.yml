@@ -20,6 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  
+        projectBaseDir: .
 
     - name: Cache .NET packages    
       uses: actions/cache@v3
@@ -40,7 +43,9 @@ jobs:
       continue-on-error: false
 
     - name:  Test .Net App
-      run: dotnet test ./XunitTests/XUnit.Tests.csproj
+      run: |
+        dotnet tool install -g dotnet-reportgenerator-globaltool            
+        dotnet test ./XunitTests/XUnit.Tests.csproj  -c Test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
       continue-on-error: false
   
   build_and_test_angular:
@@ -72,6 +77,15 @@ jobs:
       - name: Test Angular App
         run: npm run test:coverage
         working-directory: AngularApp
+
+      - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
+        uses: SonarSource/sonarcloud-github-action@master
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+        with:
+          projectBaseDir: .
+
 
   trigger_tests_sonarcloud:
     needs: build_and_test_angular
