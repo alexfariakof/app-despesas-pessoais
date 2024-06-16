@@ -27,7 +27,7 @@ jobs:
      - name: Build and Generate Coverage Report
        run: |
             dotnet tool install -g dotnet-reportgenerator-globaltool            
-            dotnet test ./XunitTests/XUnit.Tests.csproj -c Test         
+            dotnet test ./XunitTests/XUnit.Tests.csproj  -c Test -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 
      - name: SonarCloud Scan #Reported that when working with GitHub Actions reusable workflows
        uses: SonarSource/sonarcloud-github-action@master
