@@ -21,10 +21,9 @@ jobs:
     steps:
      - uses: actions/checkout@v3
        with:
-          projectBaseDir: .
           fetch-depth: 0  
 
-     - name: Build and analyze
+     - name: Build and Generate Coverage Report
        run: |
             dotnet tool install -g dotnet-reportgenerator-globaltool            
             dotnet build ./XunitTests/XUnit.Tests.csproj          
