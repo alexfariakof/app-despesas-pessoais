@@ -10,7 +10,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:       
-      - main
+      - hotfix/*
+      - feature/*
+      - bugfix/*  
+ 
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud
@@ -61,11 +64,7 @@ jobs:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"  /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
-            $baseDirectory = Get-Location            
-            $sonarProjectFile = "$baseDirectory\sonar-project.properties"
-            Remove-Item -Path $sonarProjectFile -Force
-
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app-routing.module.ts, **/*.js" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"  /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
             dotnet tool install -g dotnet-reportgenerator-globaltool
             dotnet build ./XunitTests/XUnit.Tests.csproj -c Test
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
