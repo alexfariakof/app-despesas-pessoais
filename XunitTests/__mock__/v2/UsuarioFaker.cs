@@ -1,7 +1,8 @@
-﻿using Business.Dtos.v2;
+﻿using Bogus;
+using Business.Dtos.v2;
 using Domain.Entities.ValueObjects;
 
-namespace Fakers.v2;
+namespace __mock__.v2;
 public sealed class UsuarioFaker
 {
     static int counter = 1;

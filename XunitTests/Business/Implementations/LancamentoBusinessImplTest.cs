@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Business.Dtos.v1;
 using Repository.Persistency.Abstractions;
-using Fakers.v1;
+using __mock__.v1;
 using Business.Dtos.Core.Profile;
+using Business.Implementations;
 
 namespace Business;
 public class LancamentoBusinessImplTest

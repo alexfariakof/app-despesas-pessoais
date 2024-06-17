@@ -1,13 +1,16 @@
-﻿using Repository.Persistency.Implementations.Fixtures;
+﻿using Microsoft.EntityFrameworkCore;
+using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
 public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepositorioFixture>
 {
     private readonly LancamentoRepositorioFixture _fixture;
+    private LancamentoRepositorioImpl _repository;
 
     public LancamentoRepositorioImplTest(LancamentoRepositorioFixture fixture)
     {
         _fixture = fixture;
+        _repository = new LancamentoRepositorioImpl(fixture.Context);
     }
 
     [Fact]
@@ -15,10 +18,10 @@ public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepos
     {
         // Arrange
         var data = _fixture.MockAnoMes; 
-        var idUsuario = _fixture.MockUsuario.Id; 
+        var idUsuario = _fixture.Context.Usuario.First().Id; 
 
         // Act
-        var result = _fixture.MockRepository.Object.FindByMesAno(data, idUsuario); 
+        var result = _repository.FindByMesAno(data, idUsuario); 
 
         // Assert            
         Assert.NotNull(result);
@@ -55,14 +58,13 @@ public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepos
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "FindByMesAno_Throws_Exception_When_Despesa_Execute_Where").Options;
         var context = new RegisterContext(options);
         context.Despesa = despesaDbSetMock.Object;        
-        _fixture.Repository = new Mock<LancamentoRepositorioImpl>(context);
 
         // Act
-        Action result = () => _fixture.Repository.Object.FindByMesAno(data, idUsuario);
+        Action result = () => _fixture.MockRepository.FindByMesAno(data, idUsuario);
 
         // Assert
         Assert.NotNull(result);
-        var exception = Assert.Throws<Exception>(() => _fixture.Repository.Object.FindByMesAno(data, idUsuario));
+        var exception = Assert.Throws<Exception>(() => _fixture.MockRepository.FindByMesAno(data, idUsuario));
         Assert.Equal("LancamentoRepositorioImpl_FindByMesAno_Erro", exception.Message);
     }
 
@@ -77,14 +79,14 @@ public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepos
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "FindByMesAno Throws Exception When Receita Execute Where").Options;
         var context = new RegisterContext(options);
         context.Receita = receitaDbSetMock.Object;
-        _fixture.Repository = new Mock<LancamentoRepositorioImpl>(context);
+        _fixture.MockRepository = new LancamentoRepositorioImpl(context);
 
         // Act
-        Action result = () => _fixture.Repository.Object.FindByMesAno(data, idUsuario);
+        Action result = () => _fixture.MockRepository.FindByMesAno(data, idUsuario);
 
         // Assert
         Assert.NotNull(result);
-        var exception = Assert.Throws<Exception>(() => _fixture.Repository.Object.FindByMesAno(data, idUsuario));
+        var exception = Assert.Throws<Exception>(() => _fixture.MockRepository.FindByMesAno(data, idUsuario));
         Assert.Equal("LancamentoRepositorioImpl_FindByMesAno_Erro", exception.Message);
     }
 }

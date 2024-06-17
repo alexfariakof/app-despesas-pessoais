@@ -1,6 +1,7 @@
-﻿using Business.Dtos.v2;
+﻿using Bogus;
+using Business.Dtos.v2;
 
-namespace Fakers.v2;
+namespace __mock__.v2;
 public sealed class LancamentoFaker
 {
     static int counter = 1;

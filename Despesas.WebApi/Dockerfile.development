@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
-EXPOSE 42534
+EXPOSE 42536
 ENV ASPNETCORE_ENVIRONMENT=Development
 ENV ASPNETCORE_URLS=http://+:42536
 
@@ -9,21 +9,22 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
 
-
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_21.x | bash - && \
     apt-get install -y nodejs
-RUN npm install -g npm@10.2.5 && \
-    npm install -g @angular/core@16 @angular/cli@16
+RUN npm install -g npm@latest >/dev/null 2>&1 && \
+    npm install -g @angular/core @angular/cli >/dev/null 2>&1
 
 RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
 
 WORKDIR /src/XunitTests
-RUN dotnet test "./XUnit.Tests.csproj" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
+RUN dotnet test "./XUnit.Tests.csproj" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
 
-RUN filefilters="/src/Despesas.DataSeeders/**;-/src/Migrations.MySqlServer/**;-/src/Migrations.MsSqlServer/**;-/src/Despesas.CrossCutting/**;-/src/Despesas.Business/HyperMedia/**" \
-    /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -filefilters:-$filefilters
+RUN baseDirectory=$(realpath ..) \
+    sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi:$baseDirectory/AngularApp" \ 
+    filefilters="$baseDirectory/Despesas.DataSeeders/**;- $baseDirectory/Migrations.MySqlServer/**;- $baseDirectory/Migrations.MsSqlServer/**;- $baseDirectory/Despesas.CrossCutting/**;- $baseDirectory/Despesas.Business/HyperMedia/**" \
+    /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
 WORKDIR /src/Despesas.WebApi
 RUN dotnet publish "./Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false

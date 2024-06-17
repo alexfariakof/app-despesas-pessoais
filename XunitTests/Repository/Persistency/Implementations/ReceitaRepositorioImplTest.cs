@@ -1,4 +1,5 @@
-﻿using Fakers.v2;
+﻿using __mock__.Repository;
+using Domain.Entities.ValueObjects;
 using Repository.Persistency.Implementations.Fixtures;
 
 namespace Repository.Persistency.Implementations;
@@ -20,7 +21,7 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
         // Arrange
         var categoria = _fixture.Context.Categoria.Last();
         var usuario = _fixture.Context.Usuario.Last();
-        var newReceita = ReceitaFaker.Instance.GetNewFaker(usuario, categoria);
+        var newReceita = MockReceita.Instance.GetReceita();
         newReceita.CategoriaId = _fixture.Context.Categoria.First().Id;
         newReceita.Categoria = null;
         newReceita.Id = 0;
@@ -97,7 +98,7 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
     public void Get_Should_Return_Receita_By_Id()
     {
         // Arrange
-        var existingItem = _fixture.Context.Receita.Last();
+        var existingItem = _fixture.Context.Receita.LastOrDefault(r => r.Categoria.TipoCategoria == (int)TipoCategoria.CategoriaType.Receita);
 
         // Act
         var result = _repository.Get(existingItem.Id);
@@ -119,14 +120,14 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
     public void Find_Should_Return_Receita_By_Expression()
     {
         // Arrange
-        var categoria = _fixture.Context.Categoria.First();
-        var expected = _fixture.Context.Receita.Where(d => d.CategoriaId == categoria.Id);
+        var categoria = _fixture.Context.Categoria.FirstOrDefault(r => r.TipoCategoria == (int)TipoCategoria.CategoriaType.Receita);
+        var expected = _fixture.Context.Receita.Where(r => r.CategoriaId == categoria.Id).ToList();
 
         // Act
-        var result = _repository.Find(d => d.CategoriaId == categoria.Id);
+        var result = _repository.Find(r => r.CategoriaId == categoria.Id);
 
         // Assert
         Assert.NotNull(result);
         Assert.True(result.Count() > 0);
-    }
+    }    
 }

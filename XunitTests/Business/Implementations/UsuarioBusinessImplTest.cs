@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Business.Dtos.Core.Profile;
 using Business.Dtos.v2;
-using Fakers.v2;
+using __mock__.v2;
 using Domain.Entities.ValueObjects;
 using System.Linq.Expressions;
-using MySqlX.XDevAPI.Common;
-using Domain.Entities;
+using Business.Implementations;
+using Repository.Persistency.Generic;
 
 namespace Business;
 public class UsuarioBusinessImplTest

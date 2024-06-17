@@ -1,11 +1,6 @@
 global using Xunit;
 global using Moq;
-global using Bogus;
 global using Domain.Entities;
-global using Business.Implementations;
-global using Repository.Persistency.Generic;
-global using Repository.Persistency.Implementations;
-global using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Repository.Persistency.Generic;
 
 public class Usings
 {

@@ -4,7 +4,7 @@ using Business.Dtos.v1;
 using Despesas.WebApi.Controllers.v1;
 using Domain.Entities.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
-using Fakers.v1;
+using __mock__.v1;
 
 namespace Api.Controllers.v1;
 public sealed class CategoriaControllerTest

@@ -4,7 +4,7 @@ using Despesas.WebApi.Controllers.v2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
-using Fakers.v2;
+using __mock__.v2;
 using AutoMapper;
 using Business.Dtos.Core.Profile;
 

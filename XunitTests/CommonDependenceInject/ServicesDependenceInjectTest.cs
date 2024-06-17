@@ -8,6 +8,9 @@ using Repository.Persistency.UnitOfWork.Abstractions;
 using Repository.UnitOfWork;
 using Despesas.Infrastructure.Email.Abstractions;
 using Despesas.Infrastructure.Email;
+using Business.Implementations;
+using Repository.Persistency.Generic;
+using Repository.Persistency.Implementations;
 
 namespace CommonDependenceInject;
 public sealed class ServicesDependenceInjectTest
