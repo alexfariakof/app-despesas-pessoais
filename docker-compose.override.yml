@@ -1,0 +1,20 @@
+version: '3.9'
+services:
+  app-despesas-pessoais:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_HTTP_PORTS: 80
+      ASPNETCORE_HTTPS_PORTS: 443
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ./AngularApp/dist:/app/wwwroot
+      - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.json
+      - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.develpment.json
+    deploy:
+      update_config:
+        order: start-first

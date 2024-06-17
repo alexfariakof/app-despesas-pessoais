@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "types": [ "jasmine", "node" ]
+  },
+  "module": "esnext",
+  "sdk": "Microsoft.VisualStudio.JavaScript.Sdk/1.0.784122",
+  "files": [
+    "src/test.ts"
+  ],
+  "include": [
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "dist/**",
+    ".angular/**",
+    ".vscode/**",
+    "obj/**",
+    "covergae/**"
+  ]
+}

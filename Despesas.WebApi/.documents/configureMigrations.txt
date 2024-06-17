@@ -1,0 +1,20 @@
+﻿Install-Package Microsoft.EntityFrameworkCore.Tools
+Add-Migration InitialCreate
+Update-Database
+Enable-Migrations -EnableAutomaticMigrations -- comando obsoleto/ funciona apenas em Framework < .Net 6.0 && != .Net core
+
+dotnet ef migrations add MysqlInitialCreate
+Update-Database
+
+dotnet ef database update
+
+Update-Database -TargetMigration InitialCreate
+
+Lista 
+dotnet ef migrations list
+
+dotnet ef database update 20231012085042_initalCreate
+20231012085042_initalCreate
+
+
+dotnet ef database update 20231012085733_remove-prop-Endereco-From-UsuarioEntity
