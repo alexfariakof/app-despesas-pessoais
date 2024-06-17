@@ -1,7 +1,7 @@
 $projectTestPath = Get-Location
 $baseDirectory =  (Resolve-Path -Path ..).Path
 $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp");
-$sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;"
+$sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;$baseDirectory\AngularApp;"
 $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"
 $reportPath = Join-Path -Path (Get-Location) -ChildPath "TestResults"
 $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
