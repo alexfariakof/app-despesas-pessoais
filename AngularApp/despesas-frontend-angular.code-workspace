@@ -49,9 +49,7 @@
         "webRoot": "${workspaceFolder}",
         "sourceMaps": true,
         "sourceMapPathOverrides": {
-          "webpack:///./*": "${webRoot}/*"
-        },
-        "sourceMapPathOverrides": {
+          "webpack:///./*": "${webRoot}/*",
           "webpack:/*": "${webRoot}/*"
         },
         "userDataDir": "${workspaceFolder}/.vscode/chrome",
