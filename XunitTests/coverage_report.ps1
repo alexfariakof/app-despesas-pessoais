@@ -32,7 +32,7 @@ if (-not (Test-Path $projectAngular\node_modules)) {
 
 # Verifica se existe a pasta dist, e sem não existir executa npm build 
 if (-not (Test-Path $projectAngular\dist)) {
-    $watchProcess = Start-Process npm -ArgumentList "build" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
+    $watchProcess = Start-Process npm -ArgumentList "run", "build" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
     $watchProcess.WaitForExit()	
 }
 
