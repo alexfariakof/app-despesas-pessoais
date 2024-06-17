@@ -30,12 +30,6 @@ if (-not (Test-Path $projectAngular\node_modules)) {
     $watchProcess.WaitForExit()	
 }
 
-# Verifica se existe a pasta dist, e sem não existir executa npm build 
-if (-not (Test-Path $projectAngular\dist)) {
-    $watchProcess = Start-Process npm -ArgumentList "run", "build" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
-    $watchProcess.WaitForExit()	
-}
-
 # Executa Teste Unitários e gera o relatório de cobertura do Frontend 
 $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
 $watchProcess.WaitForExit()	
