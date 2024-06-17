@@ -1,8 +1,0 @@
-version: '3.9'
-services:
-  app-despesas-pessoais:
-    container_name: app-despesas-pessoais
-    image: ${DOCKER_REGISTRY-}despesasbackendapinetcore
-    build:
-      context: .
-      dockerfile: Despesas.WebApi/Dockerfile
