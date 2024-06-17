@@ -1,0 +1,52 @@
+name: Deploy Production Project in AWS
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  trigger_build_and_test:
+    name: Triggered Deploy Prod
+    uses: alexfariakof/app-despesas-pessoais/.github/workflows/build_and_test.yml@main
+    secrets: inherit     
+        
+  deploy:
+    needs: trigger_build_and_test
+    name: Docker Build and Publish in Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Build Docker image
+        env:
+          DOCKER_CLI_AGGREGATE: 1  
+        run: |          
+            docker-compose -f docker-compose.prod.yml build
+        continue-on-error: false
+
+      - name: Push Docker image to Docker Hub
+        env:
+          DOCKER_LOGIN: ${{ secrets.DOCKER_LOGIN }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_CLI_AGGREGATE: 1  
+        run: |
+            docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
+            docker push ${{ secrets.DOCKER_IMAGE }}
+        continue-on-error: false
+        
+      - name: Execute SSH Commands into EC2 
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+          AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+          port: 22
+          script: |            
+            ./scripts/dp-api.prod.sh
+          continue-on-error: false
