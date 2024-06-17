@@ -53,7 +53,6 @@
   <PropertyGroup>
     <Build>
       DebugEnsureNodeEnv;
-      DockerDebuggeProgram;
     </Build>
   </PropertyGroup>
 
@@ -65,11 +64,6 @@
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-  </Target>
-
-  <Target Name="DockerDebuggeeProgram" BeforeTargets="Build;Rebuild" Condition="Exists('$(SpaRoot)\node_modules')">
-    <!-- Ensure angular project compilation -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
