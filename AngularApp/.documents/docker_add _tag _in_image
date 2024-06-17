@@ -1,0 +1,1 @@
+docker tag <Current Image Name>:latest <Image Name>:v*.*

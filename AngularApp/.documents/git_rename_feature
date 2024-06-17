@@ -1,0 +1,11 @@
+# Renomeia uma branch local no Git
+git branch -m <old-feature-name> <new-feature-name>
+
+# Força a atualização da branch remota no Git
+git push origin -f <new-feature-name>
+
+# Deleta a branch localmente
+git branch -d <old-feature-name>
+
+# Deleta a branch remotamente
+git push origin --delete <old-feature-name>

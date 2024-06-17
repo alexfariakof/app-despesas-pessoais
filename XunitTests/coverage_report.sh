@@ -3,12 +3,12 @@
 # Diretórios base
 projectTestPath=$(pwd)
 baseDirectory=$(realpath ..)
-#projectAngular=$(realpath "$baseDirectory/AngularApp")
-sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi"
+projectAngular=$(realpath "$baseDirectory/AngularApp")
+sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi:$baseDirectory/AngularApp"
 filefilters="$baseDirectory/Despesas.DataSeeders/**;- $baseDirectory/Migrations.MySqlServer/**;- $baseDirectory/Migrations.MsSqlServer/**;- $baseDirectory/Despesas.CrossCutting/**;- $baseDirectory/Despesas.Business/HyperMedia/**"
 reportPath="$projectTestPath/TestResults"
 coveragePath="$reportPath/coveragereport"
-#coverageAngularPath="$projectAngular/coverage"
+coverageAngularPath="$projectAngular/coverage"
 
 # Gera o Relatório de Cobertura do Backend
 dotnet test ./XUnit.Tests.csproj --results-directory "$reportPath" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore > /dev/null 2>&1
@@ -27,9 +27,9 @@ else
 fi
 
 # Verifica se existe a pasta node_modules, e se não existir executa npm install
-#if [ ! -d "$projectAngular/node_modules" ]; then
-#    (cd $projectAngular && npm install)
-#fi
+if [ ! -d "$projectAngular/node_modules" ]; then
+    (cd $projectAngular && npm install)
+fi
 
 # Executa Testes Unitários e gera o relatório de cobertura do Frontend
-#(cd $projectAngular && npm run test:coverage)
+(cd $projectAngular && npm run test:coverage)
