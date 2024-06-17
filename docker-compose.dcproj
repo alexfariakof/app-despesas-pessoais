@@ -36,4 +36,10 @@
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
+
+  <Target Name="DockerDebuggeeProgram" BeforeTargets="Build;Rebuild" Condition="Exists('$(SpaRoot)\node_modules')">
+    <!-- Ensure angular project compilation -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+  </Target>
+
 </Project>
