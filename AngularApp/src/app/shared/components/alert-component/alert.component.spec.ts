@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { NgbModal, NgbModalConfig } from "@ng-bootstrap/ng-bootstrap";
-import { MockAlertComponent } from "../../../../../__mock__";
+import { MockAlertComponent } from "../../../../__mock__";
 import { AlertComponent, AlertType } from "./alert.component";
 import { AlertModule } from "./alert.component.module";
 

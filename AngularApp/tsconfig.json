@@ -31,5 +31,21 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
+  },
+  "lint": [
+    {
+      "file": "src/**/*.ts",
+      "rules": {
+        "prettier": true
+      }
+    }
+  ],
+  "formatOptions": {
+    "prettierConfig": {
+      "semi": true,
+      "singleQuote": true,
+      "tabWidth": 2,
+      "useTabs": false
+    }
   }
 }
