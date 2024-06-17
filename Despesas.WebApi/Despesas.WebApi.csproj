@@ -7,6 +7,9 @@
     <UserSecretsId>16b59695-31ee-4aac-999b-212bfa53563f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <SpaRoot>..\AngularApp</SpaRoot>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
     <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
     <ProjectReference Include="..\Despesas.DataSeeders\Despesas.DataSeeders.csproj" />
     <ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
