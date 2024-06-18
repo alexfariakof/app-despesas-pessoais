@@ -20,7 +20,13 @@
 		</Content>
 	</ItemGroup>
 
-	<ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
 		<PackageReference Include="Bogus" Version="35.5.0" />
 		<PackageReference Include="coverlet.msbuild" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
@@ -40,6 +46,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
 	  <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
 	  <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
 	  <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />

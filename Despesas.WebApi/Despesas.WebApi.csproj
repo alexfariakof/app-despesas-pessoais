@@ -46,6 +46,12 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
+
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production and development mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />

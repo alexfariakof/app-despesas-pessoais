@@ -34,7 +34,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
     public void Insert_Should_Throws_Exception_When_Try_To_Insert_Null()
     {
         // Arrange
-        Usuario newUser = null;
+        Usuario? newUser = null;
 
         // Act & Assert
         Assert.Throws<NullReferenceException>(() => _repository.Insert(ref newUser));
