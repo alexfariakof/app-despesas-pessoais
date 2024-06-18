@@ -17,9 +17,8 @@ function Wait-TestResults {
     }
  } 
 
-# Gera o Relatório de Cobertura do Backend
-dotnet build $baseDirectory/Despesas.WebApi/Despesas.WebApi.csproj #> $null 2>&1
-dotnet test  $projectTestPath/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore 
+# Gera o Relatório de Cobertura de Código 
+dotnet test  $projectTestPath/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 Wait-TestResults
 reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
