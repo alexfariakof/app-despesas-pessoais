@@ -8,7 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		generate_coverage_report.ps1 = generate_coverage_report.ps1
 		generate_coverage_report.sh = generate_coverage_report.sh
-		sonar-project.properties = sonar-project.properties
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations.MySqlServer", "Migrations.MySqlServer\Migrations.MySqlServer.csproj", "{5C6FAE48-3C97-40F4-857A-6EA1A2FAEC2A}"

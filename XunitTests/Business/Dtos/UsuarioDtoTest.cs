@@ -1,5 +1,6 @@
 ﻿using Business.Dtos.Core;
 using Business.Dtos.v1;
+using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos;
 public sealed class UsuarioDtoTest
@@ -20,7 +21,8 @@ public sealed class UsuarioDtoTest
             Nome = nome,
             SobreNome = sobreNome,
             Telefone = telefone,
-            Email = email
+            Email = email,
+            PerfilUsuario = new PerfilUsuario()
         };
 
         // Assert
@@ -29,6 +31,7 @@ public sealed class UsuarioDtoTest
         Assert.Equal(sobreNome, usuarioDto.SobreNome);
         Assert.Equal(telefone, usuarioDto.Telefone);
         Assert.Equal(email, usuarioDto.Email);
+        Assert.NotNull(usuarioDto.PerfilUsuario);
     }
 
     [Theory]
@@ -45,7 +48,8 @@ public sealed class UsuarioDtoTest
             Nome = nome,
             SobreNome = sobreNome,
             Telefone = telefone,
-            Email = email
+            Email = email,
+            PerfilUsuario = new PerfilUsuario()
         };
 
         // Assert
@@ -54,5 +58,6 @@ public sealed class UsuarioDtoTest
         Assert.Equal(sobreNome, usuarioDto.SobreNome);
         Assert.Equal(telefone, usuarioDto.Telefone);
         Assert.Equal(email, usuarioDto.Email);
+        Assert.NotNull(usuarioDto.PerfilUsuario);
     }
 }
