@@ -60,7 +60,12 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-           
+
+      - name: Install Angular dependencies
+        run: |
+          npm install npm@latest >/dev/null 2>&1
+          npm install -g @angular/core @angular/cli >/dev/null 2>&1
+
       - name: Build and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
