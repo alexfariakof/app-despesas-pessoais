@@ -72,7 +72,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Post_ImagemPerfilUsuario_Should_Create_And_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
+    public async Task Post_ImagemPerfilUsuario_Should_Create_And_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarios();
@@ -129,7 +129,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Post_ImagemPerfilUsuario_Should_Returns_BadRequest_For_Invalid_Images_Type()
+    public async Task Post_ImagemPerfilUsuario_Should_Returns_BadRequest_For_Invalid_Images_Type()
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
@@ -152,13 +152,13 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Post_ImagemPerfilUsuario_Should_Try_Create_And_Returns_BadRequest()
+    public async Task Post_ImagemPerfilUsuario_Should_Try_Create_And_Returns_BadRequest()
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto?)null);
 
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/jpg" } };
@@ -175,12 +175,12 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Post_Throws_Erro_And_Returns_BadRequest()
+    public async Task Post_Throws_Erro_And_Returns_BadRequest()
     {
         // Arrange
         var idUsuario = 1;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto?)null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
 
         // Act
@@ -196,7 +196,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Put_Should_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
+    public async Task Put_Should_Returns_OkResult_For_ImagesTypes_JPG_PNG_JPEG()
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
@@ -250,12 +250,12 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Put_Throws_Erro_And_Returns_BadRequest()
+    public async Task Put_Throws_Erro_And_Returns_BadRequest()
     {
         // Arrange
         int idUsuario = 1;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto?)null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
 
         // Act
@@ -272,7 +272,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Put_Should_Returns_BadRequest_For_Invalid_Images_Type()
+    public async Task Put_Should_Returns_BadRequest_For_Invalid_Images_Type()
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
@@ -294,13 +294,13 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public async void Put_Should_Returns_BadRequest_When_ImagemPerfil_IsNull()
+    public async Task Put_Should_Returns_BadRequest_When_ImagemPerfil_IsNull()
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
         int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto)null);
+        _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns((ImagemPerfilDto?)null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/jpg" } };
 

@@ -22,6 +22,6 @@ public class UsuarioDto : UsuarioDtoBase, ISupportHyperMedia
     public override string? Email { get; set; }
 
     [JsonIgnore]
-    public override PerfilUsuario PerfilUsuario { get; set; }
+    public override PerfilUsuario? PerfilUsuario { get; set; }
     public IList<HyperMediaLink> Links { get; set; } = new List<HyperMediaLink>();
 }

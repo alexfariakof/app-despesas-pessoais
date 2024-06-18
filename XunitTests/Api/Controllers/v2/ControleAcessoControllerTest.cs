@@ -405,7 +405,7 @@ public sealed class ControleAcessoControllerTest
         // Arrange
         var authenticationDto = new AuthenticationDto();
         _controleAcessoController.ModelState.AddModelError("Key", "Error");
-        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns((AuthenticationDto)null);
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns((AuthenticationDto?)null);
         // Act
         var result = _controleAcessoController.Refresh("fakeRefreshToken") as NoContentResult;
 
