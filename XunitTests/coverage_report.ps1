@@ -7,9 +7,20 @@ $reportPath = Join-Path -Path ($projectTestPath) -ChildPath "TestResults"
 $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
 $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
 
+function Wait-TestResults {
+    $REPEAT_WHILE = 0
+    while (-not (Test-Path $reportPath)) {
+        echo "Agaurdando TestResults..."
+        Start-Sleep -Seconds 10        
+        if ($REPEAT_WHILE -eq 6) { break }
+        $REPEAT_WHILE = $REPEAT_WHILE + 1
+    }
+ } 
+
 # Gera o Relatório de Cobertura do Backend
 dotnet build $baseDirectory/Despesas.WebApi/Despesas.WebApi.csproj #> $null 2>&1
 dotnet test  $projectTestPath/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" --no-restore 
+Wait-TestResults
 reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
 # Encontra o diretório como os resultados do teste mais recente na pasta TestResults 
