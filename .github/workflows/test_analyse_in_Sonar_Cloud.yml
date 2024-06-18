@@ -16,7 +16,7 @@ on:
       - hotfix/*
       - feature/*
       - bugfix/*  
- 
+
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud
@@ -78,11 +78,11 @@ jobs:
             $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
             $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
 
-            # Gera o Relatório de Cobertura de Código 
+            # Gera o Relatario de Cobertura de Codigo Backend
             dotnet test  $projectTestPath/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
             reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
-                       
-            # Executa Teste Unitários e gera o relatório de cobertura do Frontend 
+
+            # Dera o Relatario de Cobertura de Codigo do Frontend 
             $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
             $watchProcess.WaitForExit()
 
