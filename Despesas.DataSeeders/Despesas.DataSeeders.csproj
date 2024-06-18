@@ -6,6 +6,12 @@
 		<IsTestProject>false</IsTestProject>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
+  
 	<ItemGroup>
 		<ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
 	</ItemGroup>

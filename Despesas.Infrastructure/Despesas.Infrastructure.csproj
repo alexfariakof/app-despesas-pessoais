@@ -5,6 +5,12 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
+  
 	<ItemGroup>
 		<PackageReference Include="AWSSDK.S3" Version="3.7.307.13" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

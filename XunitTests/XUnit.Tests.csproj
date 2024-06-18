@@ -8,10 +8,12 @@
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<None Remove="appsettings.json" />
-	</ItemGroup>
-
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
+  
 	<ItemGroup>
 		<Content Include="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -40,24 +42,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
+    <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
 	  <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
 	  <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
 	  <ProjectReference Include="..\Despesas.WebApi\Despesas.WebApi.csproj" />
-	</ItemGroup>
-
-  <PropertyGroup>
-    <TestDependsOn>
-      AfterTest;
-    </TestDependsOn>
-  </PropertyGroup>
-
-  <Target Name="Test" AfterTargets="Build;Rebuild" DependsOnTargets="$(TestDependsOn)" />
-  <Target Name="AfterTest">
-    <!-- Check if OS is Windows -->
-    <Exec Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Release' And '$(OS)' == 'Windows_NT'" Command="powershell -File ./coverage_report.ps1" />
-    <!-- Check if OS is Linux Base -->
-    <Exec Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Release' And '$(OS)' != 'Windows_NT'" Command="bash ./coverage_report.sh" />
-  </Target>
+	</ItemGroup>  
 </Project>
