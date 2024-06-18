@@ -1,6 +1,10 @@
 name: Test and Analysis Code In Sonar Cloud
 on:
   workflow_call:
+  push: 
+   branches:
+    - test
+
   pull_request:
     types: [opened, synchronize, reopened]
     branches:       
