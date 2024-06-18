@@ -63,7 +63,7 @@ jobs:
 
       - name: Install Angular dependencies
         run: |
-          npm install npm@latest >/dev/null 2>&1
+          npm install npm@latest > $null 2>&1
           npm install -g @angular/core @angular/cli > $null 2>&1
 
       - name: Build and analyze
