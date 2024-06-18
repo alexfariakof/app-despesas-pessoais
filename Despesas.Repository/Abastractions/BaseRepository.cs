@@ -64,7 +64,7 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
 
     public virtual bool Exists(int? id)
     {
-        return this.Get(id.Value) != null;
+        return id == null ? false : this.Get(id.Value) != null;
     }
 
     public virtual bool Exists(Expression<Func<T, bool>> expression)

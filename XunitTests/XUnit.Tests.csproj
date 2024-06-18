@@ -1,63 +1,56 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<RootNamespace>XUnit</RootNamespace>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<None Remove="appsettings.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="appsettings.json">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Bogus" Version="35.5.0" />
-		<PackageReference Include="coverlet.msbuild" Version="6.0.2">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
-		<PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
-		<PackageReference Include="xunit" Version="2.7.0" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.collector" Version="6.0.2">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
-	  <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
-	  <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
-	  <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
-	  <ProjectReference Include="..\Despesas.WebApi\Despesas.WebApi.csproj" />
-	</ItemGroup>
-
   <PropertyGroup>
-    <TestDependsOn>
-      AfterTest;
-    </TestDependsOn>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>XUnit</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-  <Target Name="Test" AfterTargets="Build;Rebuild" DependsOnTargets="$(TestDependsOn)" />
-  <Target Name="AfterTest">
-    <!-- Check if OS is Windows -->
-    <Exec Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Release' And '$(OS)' == 'Windows_NT'" Command="powershell -File ./coverage_report.ps1" />
-    <!-- Check if OS is Linux Base -->
-    <Exec Condition="'$(Configuration)' != 'Debug' And '$(Configuration)' != 'Release' And '$(OS)' != 'Windows_NT'" Command="bash ./coverage_report.sh" />
-  </Target>
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="35.5.1" />
+    <PackageReference Include="coverlet.msbuild" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
+    <PackageReference Include="xunit" Version="2.8.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
+    <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
+    <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
+    <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
+    <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
+    <ProjectReference Include="..\Despesas.WebApi\Despesas.WebApi.csproj" />
+  </ItemGroup>
 </Project>

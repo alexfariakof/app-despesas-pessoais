@@ -14,8 +14,8 @@ public abstract class PropertiesBase<T> where T : class, new()
 
         foreach (PropertyInfo property in properties)
         {
-            object value = property.GetValue(source);
-            PropertyInfo destProperty = destination.GetType().GetProperty(property.Name);
+            object? value = property.GetValue(source);
+            PropertyInfo? destProperty = destination.GetType().GetProperty(property.Name);
             if (destProperty != null && destProperty.CanWrite)
             {
                 destProperty.SetValue(destination, value);
