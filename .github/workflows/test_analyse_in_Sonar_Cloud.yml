@@ -65,6 +65,8 @@ jobs:
         run: |
           npm install npm@latest > $null 2>&1
           npm install -g @angular/core @angular/cli > $null 2>&1
+          npm install > $null 2>&1
+        working-directory: AngularApp
 
       - name: Build and analyze
         env:
