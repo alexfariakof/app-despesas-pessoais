@@ -4,7 +4,7 @@ using Business.Dtos.v1;
 namespace Business.Dtos;
 public sealed class UsuarioDtoTest
 {
-    public class UsuarioDtoBaseTest : UsuarioDtoBase   {   }
+    public class UsuarioDtoBaseTest : UsuarioDtoBase { }
 
     [Theory]
     [InlineData(1, "Usuario 1", "Teste Usuario 1" ,"(21) 99999-9999", "user1@user.com")]
