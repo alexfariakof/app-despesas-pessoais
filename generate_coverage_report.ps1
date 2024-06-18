@@ -60,6 +60,6 @@ Remove-TestPath-Results
 
 # Executa o teste e coleta o GUID gerado
 dotnet clean > $null 2>&1
-dotnet test ./XunitTests/XUnit.Tests.csproj --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+dotnet test ./XunitTests/XUnit.Tests.csproj --configuration Test --results-directory $reportPath /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
 Wait-TestResults 
 Invoke-Item $coverageXmlPath\index.html
