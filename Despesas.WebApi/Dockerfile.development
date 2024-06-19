@@ -1,15 +1,22 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
 
-EXPOSE 42535
 EXPOSE 42536
-ENV ASPNETCORE_ENVIRONMENT=Staging
-ENV ASPNETCORE_URLS=http://+:42536;https://+:42535
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_URLS=http://+:42536
 
-FROM alexfariakof/dotnet-sdk-8.0-with-node AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY . . 
+COPY . .
+
+RUN apt-get update && \
+    apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+RUN npm install -g npm@latest >/dev/null 2>&1 && \
+    npm install -g @angular/core @angular/cli >/dev/null 2>&1
+
+RUN dotnet tool install dotnet-reportgenerator-globaltool --tool-path /tools
 
 WORKDIR /src/XunitTests
 RUN dotnet test "./XUnit.Tests.csproj" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
@@ -24,9 +31,6 @@ RUN dotnet publish "./Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseA
 
 FROM base AS final
 WORKDIR /app
-
 COPY --from=build /app/publish .
-COPY --from=build /app/publish/appsettings.develpment.docker.json ./appsettings.json
-COPY --from=build /app/publish/appsettings.develpment.docker.json ./appsettings.develpment.json
 COPY --from=build /app/test ./wwwroot/coveragereport
 ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]

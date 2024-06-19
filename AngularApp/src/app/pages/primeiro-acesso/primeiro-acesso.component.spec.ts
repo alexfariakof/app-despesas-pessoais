@@ -1,5 +1,6 @@
 import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
+import { ReactiveFormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { of, throwError } from "rxjs";
@@ -7,7 +8,6 @@ import { AlertComponent, AlertType } from "../../shared/components";
 import { IControleAcesso } from "../../shared/models";
 import { PrimeiroAcessoComponent } from "./primeiro-acesso.component";
 import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 describe('PrimeiroAcessoComponent', () => {
   let component: PrimeiroAcessoComponent;
@@ -17,8 +17,8 @@ describe('PrimeiroAcessoComponent', () => {
   beforeEach(() => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     TestBed.configureTestingModule({
-    declarations: [],
-    imports: [BrowserAnimationsModule] ,
+    declarations: [PrimeiroAcessoComponent],
+    imports: [ReactiveFormsModule],
     providers: [AlertComponent, NgbActiveModal,
         { provide: Router, useValue: mockRouter }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
 });

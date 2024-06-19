@@ -19,10 +19,10 @@ $my-theme: mat.define-theme((
     primary: mat.$azure-palette
   ),
   typography: (
-    brand-family: 'sans-serif'
+    brand-family: 'Helvetica Neue'
   ),
   density: (
-    scale: -5
+    scale: -4
   ))
 );
 
@@ -51,8 +51,8 @@ footer {
 }
 
 h2 {
-  font-size: smaller;
-  font-weight: lighter;
+  font-size: 5vw;
+  font-weight: bolder;
   margin: 2vw;
   color: white;
 }

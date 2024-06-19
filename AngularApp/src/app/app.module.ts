@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgbActiveModal, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { LoginComponent } from './pages/login/login.component';
@@ -18,24 +18,20 @@ import { AlertModule } from './shared/components/alert-component/alert.component
 import { AuthService, MenuService, CustomInterceptor } from './shared/services';
 import { ControleAcessoService } from './shared/services/api';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS, } from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MomentDateModule,  MAT_MOMENT_DATE_ADAPTER_OPTIONS,} from '@angular/material-moment-adapter';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-@NgModule({
-  declarations: [AppComponent, LoginComponent],
-  bootstrap: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, CommonModule, ReactiveFormsModule, AlertModule, PrimeiroAcessoComponent,
-    MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, MomentDateModule,
-    NgxMaskDirective, NgxMaskPipe],
-  providers: [AuthService, ControleAcessoService, MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, NgbDropdownModule,
-    { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-br' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-    provideNgxMask(), provideHttpClient(withInterceptorsFromDi()), provideAnimationsAsync()]
-})
+@NgModule({ declarations: [AppComponent, LoginComponent, PrimeiroAcessoComponent],
+    bootstrap: [AppComponent], imports: [BrowserModule, AppRoutingModule, CommonModule, ReactiveFormsModule, AlertModule,
+        MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, MomentDateModule,
+        NgxMaskDirective, NgxMaskPipe], providers: [AuthService, ControleAcessoService, MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, },
+        { provide: MAT_DATE_LOCALE, useValue: 'pt-br' },
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+        },
+        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+        provideNgxMask(), provideHttpClient(withInterceptorsFromDi()), provideAnimationsAsync()] })
 export class AppModule { }
