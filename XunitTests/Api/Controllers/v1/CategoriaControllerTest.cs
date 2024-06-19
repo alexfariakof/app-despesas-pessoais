@@ -1,4 +1,4 @@
-﻿using Business.Abstractions.Generic;
+using Business.Abstractions.Generic;
 using Business.Dtos.Core;
 using Business.Dtos.v1;
 using Despesas.WebApi.Controllers.v1;

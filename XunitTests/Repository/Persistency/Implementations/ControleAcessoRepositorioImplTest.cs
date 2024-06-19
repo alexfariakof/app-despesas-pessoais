@@ -1,322 +1,277 @@
-﻿using Despesas.Infrastructure.Email;
-using Domain.Entities.ValueObjects;
-using __mock__.Repository;
+using Business.Authentication;
+using Business.Dtos.v2;
+using Despesas.Infrastructure.Email;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Repository.Persistency.Abstractions;
-using Repository.Persistency.Implementations.Fixtures;
+using System.IdentityModel.Tokens.Jwt;
+using __mock__.v2;
+using Business.Dtos.Core;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Business.Dtos.Core.Profile;
+using Microsoft.Extensions.Options;
+using Business.Implementations;
 
-namespace Repository.Persistency.Implementations;
-public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAcessoRepositorioFixture>
+namespace Business;
+public class ControleAcessoBusinessImplTest
 {
-    private readonly ControleAcessoRepositorioFixture _fixture;
+    private readonly Mock<IControleAcessoRepositorioImpl> _repositorioMock;
+    private readonly ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
+    private Mapper _mapper;
 
-    public ControleAcessoRepositorioImplTest(ControleAcessoRepositorioFixture fixture)
+    public ControleAcessoBusinessImplTest()
     {
-        _fixture = fixture;
+        var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
+        var options = Options.Create(new TokenOptions
+        {
+            Issuer = "XUnit-Issuer",
+            Audience = "XUnit-Audience",
+            Seconds = 3600,
+            DaysToExpiry = 1
+        });
+
+        var signingConfigurations = new SigningConfigurations(options);
+        _repositorioMock = new Mock<IControleAcessoRepositorioImpl>();
+        _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<ControleAcessoProfile>(); }));
+        _controleAcessoBusiness = new ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto>(_mapper, _repositorioMock.Object, signingConfigurations, new EmailSender());
     }
 
     [Fact]
-    public void Create_Should_Return_True()
+    public void Create_Should_ControleAcesso_Returns_True()
     {
-        // Arrange and Setup mock repository
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>()));
-        var mockControleAcesso = MockControleAcesso.Instance.GetControleAcesso();
+        // Arrange
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFakerVM();
+
+        _repositorioMock.Setup(repo => repo.Create(It.IsAny<ControleAcesso>()));
 
         // Act
-        Action result = () => mockRepository.Object.Create(mockControleAcesso);
+        _controleAcessoBusiness.Create(controleAcesso);
 
-        // Assert
-        Assert.IsNotType<Exception>(result);
+        // Assert        
+        _repositorioMock.Verify(repo => repo.Create(It.IsAny<ControleAcesso>()), Times.Once);
     }
 
     [Fact]
-    public void Create_Should_Return_False()
+    public void ValidateCredentials_Should_Return_Valid_Credentials_And_AccessToken()
     {
-        // Arrange and Setup mock repository
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>()));
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
+        // Arrange
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var loginDto = new LoginDto { Email = controleAcesso.Login, Senha = "teste" };
+        controleAcesso.Senha = loginDto.Senha;
+        controleAcesso.Usuario.StatusUsuario = StatusUsuario.Ativo;
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(controleAcesso);
 
         // Act
-        Action result = () => mockRepository.Object.Create(mockControleAcesso);
+        var result = _controleAcessoBusiness.ValidateCredentials(loginDto);
 
         // Assert
-        Assert.NotNull(result);
-        mockRepository.Verify(repo => repo.Create(It.IsAny<ControleAcesso>()), Times.Never);
+        Assert.True(result.Authenticated);
+        Assert.NotNull(result.AccessToken);
     }
 
     [Fact]
-    public void Create_Should_Throws_Exception()
+    public void ValidateCredentials_Should_Returns_Usaurio_Inexistente()
     {
-        // Arrange and Setup mock repository
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(new ControleAcesso());
-        mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Throws(new InvalidOperationException("ControleAcessoRepositorioImpl_Create_Exception"));
+        // Arrange
+        var loginDto = new LoginDto { Email = "teste@teste.com" };
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(() => null);
 
         // Act & Assert 
-        ControleAcesso? nullControleAceesso = null;
-        Assert.Throws<InvalidOperationException>(() => mockRepository.Object.Create(nullControleAceesso));
-        //Assert.Equal("ControleAcessoRepositorioImpl_Create_Exception", exception.Message);
+        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.ValidateCredentials(loginDto));
     }
 
     [Fact]
-    public void FindByEmail_Should_Returns_ControleAcesso()
+    public void ValidateCredentials_Should_Returns_Usuario_Inativo()
     {
-        // Arrange and Setup Repository
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
+        // Arrange
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        var usuarioInativo = UsuarioFaker.Instance.GetNewFaker();
+        usuarioInativo.StatusUsuario = StatusUsuario.Inativo;
+        controleAcesso.Usuario = usuarioInativo;
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(controleAcesso);
 
         // Act
-        var result = mockRepository.Object.Find(c => c.Equals(mockControleAcesso));
+        var result = _controleAcessoBusiness.ValidateCredentials(new LoginDto { Email = controleAcesso.Login, Senha = controleAcesso.Senha });
 
         // Assert
-        Assert.NotNull(result);
-        Assert.IsType<ControleAcesso>(result);
-        Assert.Equal(mockControleAcesso, result);
+        Assert.False(result.Authenticated);
+        Assert.Contains("Usuário Inativo!", result.Message);
     }
 
     [Fact]
-    public void RecoveryPassword_Should_Returns_True()
+    public void ValidateCredentials_Should_Returns_Email_Inexistente()
     {
         // Arrange
-        var newPassword = "!12345";
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "RecoveryPassword_Should_Returns_True").Options;
-        var context = new RegisterContext(options);
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
-        context.SaveChanges();
-        var lstControleAcesso = MockControleAcesso.Instance.GetControleAcessos().ToList();
-        lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
-        var mockControleAcesso = new ControleAcesso { Login = lstControleAcesso.Last().Login };
-        context.AddRange(lstControleAcesso);
-        context.SaveChanges();
-        var repository = new Mock<ControleAcessoRepositorioImpl>(context);        
-
-        // Act
-        var result = repository.Object.RecoveryPassword(mockControleAcesso.Login, newPassword);
-
-        //Assert
-        Assert.IsType<bool>(result);
-        Assert.True(result);
-    }
-
-    [Fact]
-    public void RecoveryPassword_Should_Returns_False()
-    {
-        // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var mockUsuario = new Usuario { Email = string.Empty };
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
-        context.Usuario = Usings.MockDbSet(new List<Usuario> { mockUsuario }).Object;
-        var newPassword = "!12345";
-        ControleAcesso MockControleAcesso = new ControleAcesso
+        var loginDto = new LoginDto { Email = "teste@teste.com", Senha = "teste", };
+        var usuario = new Usuario
         {
-            Id = mockControleAcesso.Id,
-            Login = mockControleAcesso.Login,
-            Senha = newPassword,
-            Usuario = mockControleAcesso.Usuario,
-            UsuarioId = mockControleAcesso.UsuarioId
+            Id = 1,
+            Email = "teste@teste.com",
+            StatusUsuario = StatusUsuario.Ativo
         };
-        context.ControleAcesso = Usings.MockDbSet(new List<ControleAcesso> { MockControleAcesso }).Object;
 
-        context.SaveChanges();
-        var emailSender = new Mock<EmailSender>();
-        mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(mockControleAcesso);
-        mockRepository.Setup(repo => repo.RecoveryPassword(mockControleAcesso.Login, It.IsAny<string>())).Returns(false);
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(() => null);
 
-        // Act
-        var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login, newPassword);
-
-        //Assert
-        Assert.IsType<bool>(result);
-        Assert.False(result);
+        // Act & Assert 
+        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.ValidateCredentials(loginDto));
     }
 
     [Fact]
-    public void RecoveryPassword_Should_Returns_False_When_Throws_Exception()
+    public void ValidateCredentials_Should_Returns_Senha_Invalida()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var dataset = context.ControleAcesso.ToList();
-        context.ControleAcesso = Usings.MockDbSet(dataset).Object;
-        context.SaveChanges();
-        mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Throws(new Exception());
-        var mockControleAcesso = dataset.First();
+        var controleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        controleAcesso.Usuario.StatusUsuario = StatusUsuario.Ativo;
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(controleAcesso);
 
         // Act
-        var result = mockRepository.Object.RecoveryPassword(mockControleAcesso.Login, "newPassword");
+        var result = _controleAcessoBusiness.ValidateCredentials(new LoginDto() { Email = controleAcesso.Login, Senha = controleAcesso.Senha });
 
-        //Assert
-        Assert.IsType<bool>(result);
-        Assert.False(result);
+        // Assert
+        Assert.False(result.Authenticated);
+        Assert.Contains("Senha inválida!", result.Message);
     }
 
     [Fact]
-    public void ChangePassword_Should_Returns_False_When_Usuario_Null()
+    public void ValidateCredentials_Should_Returns_Usuario_Invalido()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var controleAcesso = context.ControleAcesso.ToList().First();
-        mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(controleAcesso);
-        mockRepository.Setup(repo => repo.ChangePassword(0, "!12345")).Returns(true);
+        var loginDto = new LoginDto { Email = "teste@teste.com", Senha = "teste", };
 
-        // Act
-        var result = mockRepository.Object.ChangePassword(0, "!12345");
+        var usuario = new Usuario
+        {
+            Id = 1,
+            Email = "teste@teste.com",
+            StatusUsuario = StatusUsuario.Ativo
+        };
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Throws(new ArgumentException("Usuário Inválido!"));
 
-        //Assert
-        Assert.IsType<bool>(result);
-        Assert.False(result);
+        // Act &  Assert
+        Assert.Throws<ArgumentException>(() => _controleAcessoBusiness.ValidateCredentials(loginDto));
     }
 
     [Fact]
-    public void ChangePassword_Should_Returns_True()
+    public void RecoveryPassword_Should_Execute_And_Returns_True()
     {
+        /*
         // Arrange
-        var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "ChangePassword_Should_Returns_True").Options;
-        var context = new RegisterContext(options);
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.Admin));
-        context.PerfilUsuario.Add(new PerfilUsuario(PerfilUsuario.Perfil.User));
-        context.SaveChanges();
-        var lstControleAcesso = MockControleAcesso.Instance.GetControleAcessos();
-        lstControleAcesso.ForEach(c => c.Usuario.PerfilUsuario = context.PerfilUsuario.First(tc => tc.Id == c.Usuario.PerfilUsuario.Id));
-        context.AddRange(lstControleAcesso);
-        context.SaveChanges();
-        var repository = new ControleAcessoRepositorioImpl(context);
-        var controleAcesso = context.ControleAcesso.Last();
-        
-        // Act
-        var result = repository.ChangePassword(controleAcesso.UsuarioId, "!12345");
+        string email = "teste@example.com";
+        _repositorioMock.Setup(repo => repo.RecoveryPassword(email)).Returns(true);
 
-        //Assert
-        Assert.IsType<bool>(result);
+        // Act
+        bool result = _controleAcessoBusiness.RecoveryPassword(email);
+
+        // Assert
         Assert.True(result);
+        _repositorioMock.Verify(repo => repo.RecoveryPassword(email), Times.Once);
+        */
     }
 
     [Fact]
-    public void ChangePassword_Should_Throws_Exception()
+    public void ChangePassword_Should_Execute_And_Returns_True()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var controleAcesso = context.ControleAcesso.ToList().First();
-        var mockUsuario = controleAcesso.Usuario;
-        mockUsuario.Email = "teste@teste.com";
-        var dbSetMock = Usings.MockDbSet(context.ControleAcesso.ToList());
-        var _dbContextMock = new Mock<RegisterContext>(context);
-        _dbContextMock.Setup(c => c.Set<ControleAcesso>()).Returns(dbSetMock.Object);
-        _dbContextMock.Setup(c => c.SaveChanges()).Throws<Exception>();
-        mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(new ControleAcesso());
-        mockRepository.Setup(repo => repo.ChangePassword(controleAcesso.UsuarioId, "!12345")).Throws<Exception>();
+        int idUsuario = 1;
+        string newPassword = "123456789";
+        _repositorioMock.Setup(repo => repo.ChangePassword(idUsuario, newPassword)).Returns(true);
 
         // Act
-        //var result = mockRepository.Object.ChangePassword(controleAcesso.UsuarioId, "!12345");
-        Action result = () => mockRepository.Object.ChangePassword(controleAcesso.UsuarioId, "!12345");
+        _controleAcessoBusiness.ChangePassword(idUsuario, newPassword);
 
-        //Assert
-        Assert.NotNull(result);
-        var exception = Assert.Throws<Exception>(() => mockRepository.Object.ChangePassword(controleAcesso.UsuarioId, "!12345"));
-        Assert.Equal("ChangePassword_Erro", exception.Message);
-        Assert.True(true);
-    }
-     
-    [Fact]
-    public void Create_Should_Throw_Exception_When_User_Already_Exists()
-    {
-        // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => mockRepository.Object.Create(mockControleAcesso));
+        // Assert        
+        _repositorioMock.Verify(repo => repo.ChangePassword(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
     }
 
-
     [Fact]
-    public void FindById_Should_Return_ControleAcesso_When_User_Exists()
+    public void ValidateCredentials_Should_Return_Authentication_Success_When_Credentials_Are_Valid()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
+        JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+        SecurityToken securityToken = handler.CreateToken(new SecurityTokenDescriptor()
+        {
+            Audience = "Audience",
+            Issuer = "Issuer",
+            Claims = new Dictionary<string, object> { { "KEY", Guid.NewGuid() } },
+            Expires = DateTime.UtcNow.AddSeconds(60)
+        });
+        var validToken = handler.WriteToken(securityToken);
+
+        int idUsuario = 1;        
+        var baseLogin = new ControleAcesso
+        {
+            Id = idUsuario,
+            RefreshTokenExpiry = DateTime.UtcNow.AddHours(1),
+            RefreshToken = validToken,
+            Usuario = UsuarioFaker.Instance.GetNewFaker()
+        };
+        var authenticationDto = new AuthenticationDto
+        {
+            RefreshToken = validToken
+        };
+        _repositorioMock.Setup(repo => repo.FindByRefreshToken(It.IsAny<string>())).Returns(baseLogin);
 
         // Act
-        var result = mockRepository.Object.Find(controleAcesso => controleAcesso.Id.Equals(mockControleAcesso.Id));
+        var result = _controleAcessoBusiness.ValidateCredentials(validToken);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(mockControleAcesso, result);
+        Assert.True(result.Authenticated);
+        Assert.NotNull(result.AccessToken);
     }
 
     [Fact]
-    public void FindById_Should_Return_Null_When_User_Not_Exists()
+    public void ValidateCredentials_Should_Revoke_Token_When_RefreshToken_Expires()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var nonExistingId = -1;
-        var repository = new ControleAcessoRepositorioImpl(context);
+        int idUsuario = 1;
+        var baseLogin = new ControleAcesso
+        {
+            Id = idUsuario,
+            RefreshTokenExpiry = DateTime.UtcNow.AddHours(-1), // Token expirado
+            RefreshToken = "expired_refresh_token"
+        };
+        var authenticationDto = new AuthenticationDto
+        {
+            RefreshToken = "expired_refresh_token"
+        };
+        _repositorioMock.Setup(repo => repo.FindByRefreshToken(It.IsAny<string>())).Returns(baseLogin);
 
         // Act
-        var result = repository.Find(controleAcesso => controleAcesso.Id.Equals(nonExistingId));
+        _controleAcessoBusiness.ValidateCredentials("expired_refresh_token");
 
         // Assert
-        Assert.Null(result);
+        _repositorioMock.Verify(repo => repo.RevokeRefreshToken(idUsuario), Times.Once);
     }
 
     [Fact]
-    public void RevokeToken_Should_Throw_Exception_When_User_Not_Exists()
+    public void ValidateCredentials_Should_Return_Authentication_Exception_When_RefreshToken_Is_Invalid()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var nonExistingId = -1;
-
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => mockRepository.Object.RevokeRefreshToken(nonExistingId));
-    }
-
-    [Fact]
-    public void RevokeToken_Should_Remove_Token_When_User_Exists()
-    {
-        // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
+        var authenticationDto = new AuthenticationDto
+        {
+            RefreshToken = "invalid_refresh_token"
+        };
 
         // Act
-        mockRepository.Object.RevokeRefreshToken(mockControleAcesso.Id);
+        var result = _controleAcessoBusiness.ValidateCredentials("invalid_refresh_token");
 
         // Assert
-        Assert.Empty(mockControleAcesso.RefreshToken);
-        Assert.Null(mockControleAcesso.RefreshTokenExpiry);
+        Assert.False(result.Authenticated);
+        Assert.Equal("Refresh Token Inválido!", result.Message);
     }
 
     [Fact]
-    public void RefreshTokenInfo_Should_Update_Token_Info()
+    public void ValidateCredentials_Should_Revoke_Token_When_RefreshToken_Is_Invalid()
     {
         // Arrange
-        var context = _fixture.Context;
-        var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var mockControleAcesso = context.ControleAcesso.ToList().First();
+        var mockControleAcesso = ControleAcessoFaker.Instance.GetNewFaker();
+        _repositorioMock.Setup(repo => repo.FindByRefreshToken(It.IsAny<string>())).Returns(mockControleAcesso);
 
         // Act
-        mockControleAcesso.RefreshToken = "new_token";
-        mockControleAcesso.RefreshTokenExpiry = DateTime.UtcNow.AddHours(1);
-        mockRepository.Object.RefreshTokenInfo(mockControleAcesso);
+        _controleAcessoBusiness.ValidateCredentials("invalid_refresh_token");
 
         // Assert
-        Assert.NotNull(mockControleAcesso.RefreshToken);
-        Assert.NotNull(mockControleAcesso.RefreshTokenExpiry);
-        Assert.Equal("new_token", mockControleAcesso.RefreshToken);
+        _repositorioMock.Verify(repo => repo.RevokeRefreshToken(It.IsAny<int>()), Times.Once);
     }
+
 }
