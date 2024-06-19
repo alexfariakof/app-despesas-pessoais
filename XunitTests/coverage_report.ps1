@@ -1,5 +1,5 @@
-$projectTestPath = Get-Location
-$baseDirectory =  (Resolve-Path -Path ..).Path
+$baseDirectory = ($PWD)
+$projectTestPath = Join-Path -Path ($baseDirectory) -ChildPath "XunitTests"
 $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp");
 $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;$baseDirectory\AngularApp;"
 $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"

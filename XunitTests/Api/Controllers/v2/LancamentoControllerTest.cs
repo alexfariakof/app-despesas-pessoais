@@ -52,7 +52,7 @@ public sealed class LancamentoControllerTest
         int idUsuario = _lancamentoDtos.First().UsuarioId;
         DateTime anoMes = DateTime.Now;
         Usings.SetupBearerToken(idUsuario, _lancamentoController);
-        _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns<List<LancamentoDto>>(null);
+        _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(() => null);
 
         // Act
         var result = _lancamentoController.Get(anoMes) as ObjectResult;

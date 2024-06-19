@@ -12,7 +12,7 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
     private readonly IRepositorio<Usuario> _repositorio;
     private readonly IMapper _mapper;
 
-    public UsuarioBusinessImpl(IMapper mapper, IRepositorio<Usuario> repositorio, IUnitOfWork<Usuario> unitOfWork = null) : base(mapper, repositorio, unitOfWork)
+    public UsuarioBusinessImpl(IMapper mapper, IRepositorio<Usuario> repositorio, IUnitOfWork<Usuario>? unitOfWork = null) : base(mapper, repositorio, unitOfWork)
     {
         _mapper = mapper;
         _repositorio = repositorio;

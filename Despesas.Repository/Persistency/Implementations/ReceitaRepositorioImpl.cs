@@ -12,7 +12,7 @@ public class ReceitaRepositorioImpl : BaseRepository<Receita>, IRepositorio<Rece
         Context = context;
     }
 
-    public override Receita? Get(int id)
+    public override Receita Get(int id)
     {
         return Context.Receita.Include(d => d.Categoria).Include(d => d.Usuario).FirstOrDefault(d => d.Id.Equals(id));
     }

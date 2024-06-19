@@ -25,7 +25,7 @@ public class ReceitaDto : ReceitaDtoBase, ISupportHyperMedia
         }
         set
         {
-            if (value != null)
+            if (value != null && this.Categoria != null)
             {
                 this.Categoria.Id = value.Value;
             }

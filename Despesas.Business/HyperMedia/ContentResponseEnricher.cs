@@ -46,11 +46,11 @@ public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : I
                     });
                 }
             }
-            await Task.FromResult<object>(null);
+            await Task.FromResult<object?>(null);
         }
         catch 
         {
-            await Task.FromResult<object>(null);
+            await Task.FromResult<object?>(null);
         }
     }
 }

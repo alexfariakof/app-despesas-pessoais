@@ -93,7 +93,7 @@ public class DespesaBusinessImplTest
         var despesa = DespesaFaker.Instance.Despesas().First();
         var id = despesa.Id;
 
-        _repositorioMock.Setup(repo => repo.Get(id)).Returns<Despesa>(null);
+        _repositorioMock.Setup(repo => repo.Get(id)).Returns(() => null);
 
         // Act
         var result = _despesaBusiness.FindById(id, 0);

@@ -283,7 +283,7 @@ public sealed class CategoriaControllerTest
         var categoriaDto = CategoriaFaker.Instance.CategoriasVMs().First();
         categoriaDto.IdTipoCategoria = (TipoCategoriaDto)1;
         Usings.SetupBearerToken(categoriaDto.UsuarioId, _categoriaController);
-        _mockCategoriaBusiness.Setup(b => b.Update(categoriaDto)).Returns<CategoriaDto>(null);
+        _mockCategoriaBusiness.Setup(b => b.Update(categoriaDto)).Returns(() => null);
 
         // Act
         var result = _categoriaController.Put(categoriaDto) as BadRequestObjectResult;
