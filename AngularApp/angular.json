@@ -18,14 +18,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
-            "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "main": "src/main.ts",
+            "polyfills": [ "src/polyfills.ts" ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": [
@@ -104,9 +102,12 @@
               ]
             },
             "local-development": {
+              "buildOptimizer": false,
               "optimization": false,
+              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -114,18 +115,22 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angularapp:build"
+            "buildTarget": "angularapp:build"
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angularapp:build:production"
+              "buildTarget": "angularapp:build:production"
             },
             "development": {
-              "browserTarget": "angularapp:build:development",
-              "proxyConfig": "src/proxy.conf.js"
+              "proxyConfig": "src/proxy.conf.js",
+              "buildTarget": "angularapp:build:development"
+            },
+            "local-development": {
+              "proxyConfig": "src/proxy.conf.js",
+              "buildTarget": "angularapp:build:local-development"
             }
           },
           "defaultConfiguration": "production"
