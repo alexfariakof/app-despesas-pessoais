@@ -1,59 +1,31 @@
-<div
-  class="flex-fill flex-grow-1 flex-fill border border-2 border-top-0 border-dark rounded-top-2 rounded-bottom-2"
->
-  <div
-    class="bg-dark w-100 d-flex flex-column align-items-center justify-content-center rounded-top-2"
-    style="position: relative; bottom: 0.1rem"
-  >
-    <h2 class="text-white m-2 fw-bolder">Imagem de Perfil</h2>
+<div class="flex-fill flex-grow-1 flex-fill border border-2 border-top-0 border-dark rounded-top-2 rounded-bottom-2">
+  <div class="bg-dark w-100 d-flex flex-column align-items-center justify-content-center rounded-top-2"
+    style="position: relative; bottom: 0.1rem">
+    <h2 class="text-white m-2">Imagem de Perfil</h2>
   </div>
   <div class="d-flex flex-row justify-content-center align-items-center p-2">
     <div class="text-center border border-primary border-2 rounded-4 p-2">
       <label for="upload-photo">
-        <img
-          id="imagemPerilAvatar"
-          class="avatar"
-          [src]="imagemPerfilUsuario.url"
-          alt="Imagem do perfil"
-          width="64"
-          height="64"
-          class="rounded-circle me-2"
-        />
+        <img id="imagemPerilAvatar" class="avatar" [src]="imagemPerfilUsuario.url" alt="Imagem do perfil" width="64"
+          height="64" class="rounded-circle me-2" />
       </label>
       <br />
-      <span *ngIf="!fileLoaded" style="color: red; margin-bottom: 1em"
-        >Escolha uma nova imagem.</span
-      >
-      <span *ngIf="fileLoaded" style="color: green; margin-bottom: 1em"
-        >Nova imagem carregada com sucesso!</span
-      >
-      <input
-        style="display: none"
-        id="upload-photo"
-        name="upload-photo"
-        type="file"
-        accept=".png, .jpg, .jpeg"
-        (change)="handleAvatarUpload($event)"
-      />
+      <span *ngIf="!fileLoaded" style="color: red; margin-bottom: 1em">Escolha uma nova imagem.</span>
+      <span *ngIf="fileLoaded" style="color: green; margin-bottom: 1em">Nova imagem carregada com sucesso!</span>
+      <input style="display: none" id="upload-photo" name="upload-photo" type="file" accept=".png, .jpg, .jpeg"
+        (change)="handleAvatarUpload($event)" />
     </div>
     <div class="d-flex flex-column w-25">
       <div class="m-2">
-        <button
-          class="btn btn-primary w-responsive"
-          (click)="handleImagePerfil()"
-          [ngClass]="{ disabled: !fileLoaded }"
-          [disabled]="!fileLoaded"
-        >
+        <button class="btn btn-primary w-responsive" (click)="handleImagePerfil()" [ngClass]="{ disabled: !fileLoaded }"
+          [disabled]="!fileLoaded">
           Salvar
         </button>
       </div>
       <div class="m-2">
-        <button
-          class="btn btn-warning w-responsive"
-          (click)="handleDeleteImagePerfil()"
+        <button class="btn btn-warning w-responsive" (click)="handleDeleteImagePerfil()"
           [ngClass]="{ disabled: imagemPerfilUsuario.id === undefined }"
-          [disabled]="imagemPerfilUsuario.id === undefined"
-        >
+          [disabled]="imagemPerfilUsuario.id === undefined">
           Excluir
         </button>
       </div>

@@ -1,14 +1,20 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
 import { map, catchError } from "rxjs";
 import { AlertComponent, AlertType } from "../../shared/components";
 import { IControleAcesso } from "../../shared/models";
 import { ControleAcessoService } from "../../shared/services/api";
 import { CustomValidators } from "../../shared/validators";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { CommonModule } from "@angular/common";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'app-primeiro-acesso',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule,  FormsModule, MatIconModule, MatFormFieldModule, MatInputModule ],
   templateUrl: './primeiro-acesso.component.html',
   styleUrls: ['./primeiro-acesso.component.scss'],
 

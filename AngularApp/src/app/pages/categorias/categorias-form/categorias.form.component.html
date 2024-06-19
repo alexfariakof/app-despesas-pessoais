@@ -9,30 +9,21 @@
   <div class="overflow-y-auto scroll-content p-2 pt-0">
     <form (ngSubmit)="onSaveClick()" [formGroup]="categoriatForm">
       <input id="id" name="id" formControlName="id" type="hidden" class="form-control" value="0" />
-      <mat-form-field appearance="outline" class="w-100 mt-2" readonly>
+      <mat-form-field appearance="outline" class="w-100 mt-2 dropdown" readonly [ngClass]="{
+        'is-invalid':
+            categoriatForm.get('idTipoCategoria')?.errors?.['required'] &&
+            categoriatForm.get('idTipoCategoria')?.touched }">
         <mat-label>Tipo de Categoria</mat-label>
-        <mat-select matInput id="idTipoCategoria" name="idTipoCategoria" formControlName="idTipoCategoria" [ngClass]="{
-          'is-invalid':
-              categoriatForm.get('idTipoCategoria')?.errors?.['required'] &&
-              categoriatForm.get('idTipoCategoria')?.touched
-        }">
+        <mat-select matInput id="idTipoCategoria" name="idTipoCategoria" formControlName="idTipoCategoria">
+          <mat-option [value]="null" disabled selected>Nenhum Tipo selecionado</mat-option>
+          <mat-option [value]="1">Despesas</mat-option>
+          <mat-option [value]="2">Receitas</mat-option>
         </mat-select>
-        <mat-icon matSuffix>
-          <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0" [ngClass]="{
-                    'error-bi-input':
-                      categoriatForm.get('idTipoCategoria')?.hasError('required') &&
-                      categoriatForm.get('idTipoCategoria')?.touched,
-                    'not-error-input':
-                      !categoriatForm.get('idTipoCategoria')?.hasError('required') ||
-                      !categoriatForm.get('idTipoCategoria')?.touched
-                  }">
-          </i>
-        </mat-icon>
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Descrição</mat-label>
-        <input id="descricao" name="descricao" formControlName="descricao" type="text" class="form-control"
-          placeholder="Entre com a descricao" mdbValidate mdbInput [ngClass]="{
+        <input matInput id="descricao" name="descricao" formControlName="descricao" type="text" class="form-control"
+          placeholder="Entre com a descricao" [ngClass]="{
             'is-invalid':
               categoriatForm.get('descricao')?.errors?.['required'] &&
               categoriatForm.get('descricao')?.touched

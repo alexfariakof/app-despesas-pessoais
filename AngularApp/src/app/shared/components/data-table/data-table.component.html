@@ -12,12 +12,12 @@
           <span style="cursor: text;">{{ row[column.data] }}</span>
       </td>
       <td >
-        <div class="bg-warning bg-opacity-25 text-center border border-2 border-black rounded-circle p-1">
+        <div class="bg-warning bg-opacity-75 text-center border border-2 border-dark-subtle rounded-circle p-1">
           <i class="bi bi-pencil-square" (click)="handleAction('edit', row['id'], row, row['tipoCategoria'])" style="cursor: pointer;"></i>
         </div>
       </td>
       <td>
-          <div class="bg-danger bg-opacity-25 text-center border border-2 border-black rounded-circle p-1">
+          <div class="bg-danger bg-opacity-75 text-center border border-2 border-dark-subtle rounded-circle p-1">
             <i class="bi bi-trash " (click)="handleAction('delete', row['id'], row, row['tipoCategoria'])" style="cursor: pointer;"></i>
         </div>
       </td>

@@ -27,8 +27,11 @@ export class LayoutComponent implements OnInit {
     this.imagemPerfilService.getImagemPerfilUsuario()
       .subscribe({
         next: (response: IImagemPerfil) => {
-          if (response && response !== undefined && response!== null) {
+          if (response && response !== undefined && response!== null && response.url !== "" && response.url !== undefined && response.url !== null) {
             this.urlPerfilImage = response.url;
+          }
+          else {
+            this.urlPerfilImage = '../../../../assets/perfil_static.png';
           }
         },
         error: () => {
