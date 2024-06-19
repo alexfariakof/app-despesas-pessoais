@@ -1,97 +1,89 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<UserSecretsId>16b59695-31ee-4aac-999b-212bfa53563f</UserSecretsId>
-		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-		<DockerfileContext>..\..</DockerfileContext>
-		<SpaRoot>..\AngularApp</SpaRoot>
-		<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
-		<SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>16b59695-31ee-4aac-999b-212bfa53563f</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <SpaRoot>..\AngularApp</SpaRoot>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="EasyCryptoSalt" Version="1.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.SpaProxy">
-			<Version>8.*-*</Version>
-		</PackageReference>
-		<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
-		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
-		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EasyCryptoSalt" Version="1.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
+      <Version>8.*-*</Version>
+    </PackageReference>
+    <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.0" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\AngularApp\AngularApp.esproj" />
-		<ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
-		<ProjectReference Include="..\Despesas.DataSeeders\Despesas.DataSeeders.csproj" />
-		<ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
-		<ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
+    <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
+    <ProjectReference Include="..\Despesas.DataSeeders\Despesas.DataSeeders.csproj" />
+    <ProjectReference Include="..\Migrations.MsSqlServer\Migrations.MsSqlServer.csproj" />
+    <ProjectReference Include="..\Migrations.MySqlServer\Migrations.MySqlServer.csproj" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\.dockerignore" Link=".dockerignore">
-			<DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\.dockerignore" Link=".dockerignore">
+      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+    </None>
+  </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig">
-			<DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="wwwroot\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <Build>
+      DebugEnsureNodeEnv;
+    </Build>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<Content Include="webapi-cert.pfx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build;Rebuild" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)\node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
 
-	<PropertyGroup>
-		<Build>
-			DebugEnsureNodeEnv;
-		</Build>
-	</PropertyGroup>
-
-	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build;Rebuild" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)\node_modules') ">
-		<!-- Ensure Node.js is installed -->
-		<Exec Command="node --version" ContinueOnError="true">
-			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-		</Exec>
-		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-		<Exec WorkingDirectory="$(SpaRoot)\" Command="npm install" />
-	</Target>
-
-	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-		<!-- As part of publishing, ensure the JS resources are freshly built in production and development mode -->
-		<Exec WorkingDirectory="$(SpaRoot)\" Command="npm install" />
-		<Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build" />
-		<!-- Include the newly-built files in the publish output -->
-		<ItemGroup>
-			<DistFiles Include="$(SpaRoot)\dist\**; $(SpaRoot)\dist-server\**" />
-			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-				<RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			</ResolvedFileToPublish>
-		</ItemGroup>
-	</Target>
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production and development mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)\" Command="npm run build:dev" Condition="'$(Configuration)' == 'Development'" />
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 </Project>

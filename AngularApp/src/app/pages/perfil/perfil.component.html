@@ -58,12 +58,14 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Telefone</mat-label>
         <input matInput mask="(00) 0000-0000" id="telefone" name="telefone" formControlName="telefone" type="tel"
-          placeholder="Entre com o seu telefone" [ngClass]="{ 'is-invalid':
+          placeholder="Entre com o seu telefone" [ngClass]="{
+            'is-invalid':
               prefilFrom.get('telefone')?.errors?.['required'] &&
               prefilFrom.get('telefone')?.touched
           }" />
         <mat-icon matSuffix>
-          <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0" [ngClass]="{'error-bi-input':
+          <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0" [ngClass]="{
+              'error-bi-input':
                 !prefilFrom.get('telefone').valid &&
                 prefilFrom.get('telefone')?.touched,
               'not-error-input':

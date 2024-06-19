@@ -54,11 +54,6 @@ jobs:
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20.14.*'
-
       - name: Build and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -66,8 +61,10 @@ jobs:
         shell: powershell
         run: |          
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app.routing.module.ts, **/__mock__/*.ts, **/*.js, **/*Dockerfile*, **/docker-compose*" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"  /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
-            #Invoke-WebRequest -Uri "https://nodejs.org/dist/v20.14.0/node-v20.14.0-x64.msi" -OutFile "nodejs.msi"
-            #Start-Process -FilePath "msiexec.exe" -ArgumentList "/i nodejs.msi /quiet" -Wait
+            Invoke-WebRequest -Uri "https://nodejs.org/dist/v20.3.0/node-v20.3.0-x64.msi" -OutFile "nodejs.msi"
+            Start-Process -FilePath "msiexec.exe" -ArgumentList "/i nodejs.msi /quiet" -Wait
+            npm install -g npm@latest
+            npm install -g @angular/cli
 
             dotnet tool install -g dotnet-reportgenerator-globaltool
             $baseDirectory = Get-Location
@@ -83,7 +80,7 @@ jobs:
             dotnet test  $projectTestPath/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
             reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
-            # Gera o Relatario de Cobertura de Codigo do Frontend 
+            # Dera o Relatario de Cobertura de Codigo do Frontend 
             $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
             $watchProcess.WaitForExit()
 
