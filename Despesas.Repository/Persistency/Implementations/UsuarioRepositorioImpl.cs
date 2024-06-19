@@ -60,7 +60,7 @@ public class UsuarioRepositorioImpl : BaseRepository<Usuario>, IRepositorio<Usua
         return false;
     }
 
-    public override bool Exists(int? id)
+    public override bool Exists(int id)
     {
         return Context.Usuario.Any(prop => prop.Id.Equals(id));
     }
