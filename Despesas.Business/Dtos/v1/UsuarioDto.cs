@@ -19,6 +19,6 @@ public class UsuarioDto : UsuarioDtoBase
     public override string? Email { get; set; }
 
     [JsonProperty(PropertyName = "perfilUsuario", NullValueHandling = NullValueHandling.Ignore)]
-    public override PerfilUsuario PerfilUsuario { get; set; }
+    public override PerfilUsuario? PerfilUsuario { get; set; }
 
 }

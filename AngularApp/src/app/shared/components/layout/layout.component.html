@@ -1,95 +1,50 @@
 <div class="d-flex flex-column h-100">
   <nav class="navbar navbar-dark bg-dark p-2 navbar-expand-md navbar-expand-lg">
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasDarkNavbar"
-      aria-controls="offcanvasDarkNavbar"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+      aria-controls="offcanvasDarkNavbar">
       <span class="navbar-toggler-icon"><i class="bi bi-list"></i></span>
     </button>
-    <h2
-      class="navbar-toggler"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#offcanvasDarkNavbar"
-      aria-controls="offcanvasDarkNavbar"
-    >
+    <h2 class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar"
+      aria-controls="offcanvasDarkNavbar">
       {{ menuService.menu }}
     </h2>
-    <a
-      class="navbar-brand offcanvas tituloHeader fs-6 fs-sm-5 fs-md-4 fs-lg-3 align-items-start"
-      href="#"
-      >DESPESA$ PESSOAI$
+    <a class="navbar-brand offcanvas tituloHeader fs-6 fs-sm-5 fs-md-4 fs-lg-3 align-items-start" href="#">DESPESA$
+      PESSOAI$
     </a>
-    <div
-      class="offcanvas offcanvas-start w-50 text-bg-dark"
-      tabindex="-1"
-      id="offcanvasDarkNavbar"
-      aria-labelledby="offcanvasDarkNavbarLabel"
-    >
+    <div class="offcanvas offcanvas-start w-50 text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+      aria-labelledby="offcanvasDarkNavbarLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"></h5>
-        <button
-          type="button"
-          class="btn-close btn-close-white"
-          data-bs-dismiss="offcanvas"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body justify-content-start w-100">
         <ul class="navbar-nav me-auto">
-          <li
-            class="nav-item list-unstyled offcanvas-header flex-row-reverse justify-content-center"
-          >
-            <a
-              class="navbar-brand fs-6 fs-sm-5 fs-md-4 fs-lg-3 align-items-center"
-              href="/"
-              >DESPESA$ PESSOAI$</a
-            >
+          <li class="nav-item list-unstyled offcanvas-header flex-row-reverse justify-content-center">
+            <a class="navbar-brand fs-6 fs-sm-5 fs-md-4 fs-lg-3 align-items-center" href="/">DESPESA$ PESSOAI$</a>
           </li>
           <li class="nav-item list-unstyled menu">
-            <button
-              class="nav-link menu-select"
-              (click)="selectMenu(1)"
-              [class.menu-select]="menuService.menuSelecionado == 1"
-            >
+            <button class="nav-link menu-select" (click)="selectMenu(1)"
+              [class.menu-select]="menuService.menuSelecionado == 1">
               <i class="bi bi-house"></i> Home
             </button>
           </li>
           <li class="nav-item list-unstyled menu">
-            <button
-              class="nav-link"
-              (click)="selectMenu(2)"
-              [class.menu-select]="menuService.menuSelecionado == 2"
-            >
+            <button class="nav-link" (click)="selectMenu(2)" [class.menu-select]="menuService.menuSelecionado == 2">
               <i class="bi bi-layout-text-window"></i> Categoria
             </button>
           </li>
           <li class="nav-item list-unstyled menu">
-            <button
-              class="nav-link"
-              (click)="selectMenu(3)"
-              [class.menu-select]="menuService.menuSelecionado == 3"
-            >
+            <button class="nav-link" (click)="selectMenu(3)" [class.menu-select]="menuService.menuSelecionado == 3">
               <i class="bi bi-layout-text-window"></i> Despesas
             </button>
           </li>
           <li class="nav-item list-unstyled menu">
-            <button
-              class="nav-link"
-              (click)="selectMenu(4)"
-              [class.menu-select]="menuService.menuSelecionado == 4"
-            >
+            <button class="nav-link" (click)="selectMenu(4)" [class.menu-select]="menuService.menuSelecionado == 4">
               <i class="bi bi-layout-text-window"></i> Receitas
             </button>
           </li>
           <li class="nav-item list-unstyled menu">
-            <button
-              class="nav-link"
-              (click)="selectMenu(5)"
-              [class.menu-select]="menuService.menuSelecionado == 5"
-            >
+            <button class="nav-link" (click)="selectMenu(5)" [class.menu-select]="menuService.menuSelecionado == 5">
               <i class="bi bi-list-columns"></i> Lançamentos
             </button>
           </li>
@@ -98,27 +53,11 @@
     </div>
     <ul class="justify-content-end align-items-center">
       <li class="nav-item dropdown list-unstyled">
-        <button
-          class="nav-link dropdown-toggle "
-          role="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="true"
-        >
-          <img
-            [src]="urlPerfilImage"
-            alt="Perfil"
-            width="32"
-            height="32"
-            style="border: none;
-            outline: none;"
-            class="rounded-circle me-2 "
-          />
+        <button class="nav-link dropdown-toggle " role="button" data-bs-toggle="dropdown" aria-expanded="true">
+          <img [src]="urlPerfilImage" alt="Perfil" width="32" height="32" style="border: none;
+            outline: none;" class="rounded-circle me-2 " />
         </button>
-        <ul
-          class="dropdown-menu dropdown-menu-dark text-small shadow"
-          style="left: -200%"
-          aria-labelledby="dropdown"
-        >
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" style="left: -200%" aria-labelledby="dropdown">
           <li>
             <button class="nav-link dropdown-item" (click)="selectMenu(6)">
               <i class="bi bi-person"></i> Perfil

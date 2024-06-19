@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CustomInterceptor } from '../../../../../interceptors/http.interceptor.service';
 import  dayjs from "dayjs";
 import { SaldoService } from './saldo.service';
@@ -10,11 +10,10 @@ describe('Unit Test SaldoService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [SaldoService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
-      ]
-    });
+    imports: [],
+    providers: [SaldoService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
   it('should be created', inject([SaldoService], (service: SaldoService) => {
     expect(service).toBeTruthy();

@@ -261,9 +261,10 @@ public sealed class ControleAcessoControllerTest
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = null, ConfirmaSenha = "!12345" };
         Usings.SetupBearerToken(1, _controleAcessoController);
+        ChangePasswordDto? nullChangePasswordDto = null;
 
         // Act
-        var result = _controleAcessoController.ChangePassword(null) as ObjectResult;
+        var result = _controleAcessoController.ChangePassword(nullChangePasswordDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -278,9 +279,10 @@ public sealed class ControleAcessoControllerTest
         // Arrange
         var changePasswordVM = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = null };
         Usings.SetupBearerToken(1, _controleAcessoController);
+        ChangePasswordDto? nullChangePasswordDto = null;
 
         // Act
-        var result = _controleAcessoController.ChangePassword(null) as ObjectResult;
+        var result = _controleAcessoController.ChangePassword(nullChangePasswordDto) as ObjectResult;
 
         // Assert
         Assert.NotNull(result);
@@ -405,7 +407,7 @@ public sealed class ControleAcessoControllerTest
         // Arrange
         var authenticationDto = new AuthenticationDto();
         _controleAcessoController.ModelState.AddModelError("Key", "Error");
-        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns((AuthenticationDto)null);
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns(() => null);
         // Act
         var result = _controleAcessoController.Refresh("fakeRefreshToken") as NoContentResult;
 
@@ -419,7 +421,7 @@ public sealed class ControleAcessoControllerTest
     {
         // Arrange
         var authenticationDto = new AuthenticationDto();
-        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns<AuthenticationDto>(null);
+        _mockControleAcessoBusiness.Setup(b => b.ValidateCredentials(It.IsAny<string>())).Returns(() => null);
 
         // Act
         var result = _controleAcessoController.Refresh("fakeRefreshToken") as NoContentResult;

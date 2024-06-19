@@ -1,9 +1,8 @@
 import { CommonModule } from "@angular/common";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, tick, flush } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { MdbFormsModule } from "mdb-angular-ui-kit/forms";
 import { from, throwError, of } from "rxjs";
 import { CategoriasFormComponent } from "./categorias-form/categorias.form.component";
 import { CategoriasComponent } from "./categorias.component";
@@ -13,7 +12,7 @@ import { ICategoria } from "../../shared/models";
 import { MenuService } from "../../shared/services";
 import { CategoriaService } from "../../shared/services/api";
 import { SharedModule } from "../../shared/shared.module";
-import { AbstractService } from "../../shared/services/api/base/AbstractService";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 
 describe('Unit Test CategoriasComponent', () => {
@@ -29,11 +28,10 @@ describe('Unit Test CategoriasComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CategoriasComponent, CategoriasFormComponent],
-      imports: [CommonModule, ReactiveFormsModule, MdbFormsModule, SharedModule, HttpClientTestingModule ],
-      providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent,  NgbActiveModal, CategoriaService
-      ]
-    });
+    declarations: [CategoriasComponent, CategoriasFormComponent],
+    imports: [CommonModule, ReactiveFormsModule, SharedModule],
+    providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, CategoriaService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(CategoriasComponent);
     component = fixture.componentInstance;
     component.dataTable = TestBed.inject(DataTableComponent);

@@ -88,7 +88,7 @@ public class ReceitaBusinessImplTest
         // Arrange
         var id = 0;
         var receita = ReceitaFaker.Instance.Receitas()[0];
-        _repositorioMock.Setup(repo => repo.Get(id)).Returns((Receita)null);
+        _repositorioMock.Setup(repo => repo.Get(id)).Returns(() => null);
 
         // Act
         var result = _receitaBusiness.FindById(id, 0);

@@ -1,9 +1,11 @@
 <app-layout>
   <div class="flex-grow-0 bg-info w-100 ">
-    <app-barra-ferramenta  [onClickNovo]="onClickNovo" [btnNovo]="true"  >
+    <app-barra-ferramenta [onClickNovo]="onClickNovo" [btnNovo]="true">
     </app-barra-ferramenta>
   </div>
-  <div class="h-100 d-flex flex-column table-responsive flex-grow-1 flex-fill m-1 p-2 border border-2 border-primary rounded-4 overflow-scroll-hidden">
-    <app-data-table  [columns]="columns" [data]="catgoriasData" [editAction]="onClickEdit" [deleteAction]="onClickDelete" ></app-data-table>
+  <div
+    class="h-100 d-flex flex-column table-responsive flex-grow-1 flex-fill m-1 p-2 border border-2 border-primary rounded-4 overflow-scroll-hidden">
+    <app-data-table [columns]="columns" [data]="catgoriasData" [editAction]="onClickEdit"
+      [deleteAction]="onClickDelete"></app-data-table>
   </div>
 </app-layout>

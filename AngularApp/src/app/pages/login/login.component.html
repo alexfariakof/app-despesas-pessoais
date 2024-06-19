@@ -1,111 +1,65 @@
 <div class="d-flex flex-column full-height">
   <div class="bg-info w-100 h-15">
-    <nav
-      id="navBrand"
-      class="bg-dark navbar navbar-dark navbar-expand-sm navbar-expand-md"
-    >
+    <nav id="navBrand" class="bg-dark navbar navbar-dark navbar-expand-sm navbar-expand-md">
       <div class="container-fluid">
         <div class="d-flex justify-content-start">
-          <a
-            class="navbar-brand tituloHeader align-text-lg-start fs-6 fs-sm-5 fs-md-4 fs-lg-3"
-            href="/"
-          >
-            DESPESA$ PESSOAI$</a
-          >
+          <a class="navbar-brand tituloHeader align-text-lg-start fs-6 fs-sm-5 fs-md-4 fs-lg-3" href="/">
+            DESPESA$ PESSOAI$</a>
         </div>
         <div class="d-flex justify-content-end">
           <ul class="navbar-nav ms-auto mt-2">
             <li class="nav-item">
-              <a
-                class="nav-link fs-6 fs-sm-5 fs-md-4 fs-lg-3 textBtnHeader"
-                href="/createAccount"
-                >Criar uma conta</a
-              >
+              <a class="nav-link fs-6 fs-sm-5 fs-md-4 fs-lg-3 textBtnHeader" href="/createAccount">Criar uma conta</a>
             </li>
           </ul>
         </div>
       </div>
     </nav>
   </div>
-  <div
-    class="d-flex align-items-center justify-content-center flex-grow-1 fs-6 fs-sm-5 fs-md-4 fs-lg-3"
-  >
+  <div class="d-flex align-items-center justify-content-center flex-grow-1 fs-6 fs-sm-5 fs-md-4 fs-lg-3">
     <div
-      class="d-flex flex-column m-2 border border-4 border-dark rounded-4 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3"
-    >
-      <div
-        class="bg-dark w-100 d-flex flex-column align-items-center justify-content-center"
-      >
-        <h1 class="text-light fw-bolder">Identifique-se</h1>
+      class="d-flex flex-column m-2 border border-4 border-dark rounded-4 align-items-center justify-content-center fs-6 fs-sm-5 fs-md-4 fs-lg-3">
+      <div class="bg-dark w-100 p-2 d-flex flex-column align-items-center justify-content-center">
+        <h2 class="text-light m-0">Identifique-se</h2>
       </div>
       <form class="p-4" (submit)="onLoginClick()" [formGroup]="loginForm">
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Email</mat-label>
-          <input
-            matInput
-            required
-            id="email"
-            name="email"
-            formControlName="email"
-            type="text"
-            placeholder="Entre com o seu email"
-            [ngClass]="{
+          <input matInput required id="email" name="email" formControlName="email" type="text"
+            placeholder="Entre com o seu email" [ngClass]="{
               'is-invalid text-danger':
                 loginForm.get('email')?.errors?.['required'] &&
                 loginForm.get('email')?.touched
-            }"
-          />
+            }" />
           <mat-icon matSuffix>
-            <i
-              class="text-danger bi bi-exclamation-circle position-absolute mx-2 top-0 end-0"
-              [ngClass]="{
+            <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 top-0 end-0" [ngClass]="{
                 'error-bi-input':
                   loginForm.get('email')?.hasError('required') &&
                   loginForm.get('email')?.touched,
                 'not-error-input':
                   !loginForm.get('email')?.hasError('required') ||
                   !loginForm.get('email')?.touched
-              }"
-            >
+              }">
             </i>
           </mat-icon>
         </mat-form-field>
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Senha</mat-label>
-          <input
-            matInput
-            required
-            id="senha"
-            name="senha"
-            formControlName="senha"
-            type="passwrod"
-            placeholder="Entre com a sua senha"
-            [type]="showPassword ? 'text' : 'password'"
-            [ngClass]="{
+          <input matInput required id="senha" name="senha" formControlName="senha" type="passwrod"
+            placeholder="Entre com a sua senha" [type]="showPassword ? 'text' : 'password'" [ngClass]="{
               'is-invalid':
                 loginForm.get('senha')?.errors?.['required'] &&
                 loginForm.get('senha')?.touched
-            }"
-          />
-          <i
-            class="position-absolute my-3 top-0 end-0"
-            (click)="onTooglePassword()"
-            [ngClass]="eyeIconClass"
+            }" />
+          <i class="position-absolute my-2 top-0 end-0" (click)="onTooglePassword()" [ngClass]="eyeIconClass"
             [class.text-danger]="
               loginForm.get('senha')?.hasError('required') &&
               loginForm.get('senha')?.touched
-            "
-          ></i>
+            "></i>
         </mat-form-field>
-        <div
-          class="input-group mt-3 d-flex flex-column align-items-center justify-content-center"
-        >
-          <button
-            type="submit"
-            class="btn btn-primary w-100"
-            [ngClass]="{ disabled: !loginForm.valid }"
-            [disabled]="!loginForm.valid"
-          >
+        <div class="input-group mt-3 d-flex flex-column align-items-center justify-content-center">
+          <button type="submit" class="btn btn-primary w-100" [ngClass]="{ disabled: !loginForm.valid }"
+            [disabled]="!loginForm.valid">
             Entrar
           </button>
         </div>
@@ -117,33 +71,18 @@
   <div class="container p-1 pb-0">
     <section class="mb-2">
       <!-- Facebook -->
-      <a
-        class="btn text-white btn-floating m-1 bg-primary"
-        target="_blank"
-        rel="noopener"
-        href="https://www.facebook.com/alex.ribeiro.noeh/"
-        role="button"
-      >
+      <a class="btn text-white btn-floating m-1 bg-primary" target="_blank" rel="noopener"
+        href="https://www.facebook.com/alex.ribeiro.noeh/" role="button">
         <i class="bi bi-facebook btnSocialMedia"></i>
       </a>
       <!-- Linkedin -->
-      <a
-        class="btn text-white btn-floating m-1"
-        target="_blank"
-        rel="noopener"
-        href="https://www.linkedin.com/in/alex-ribeiro-de-faria-b3376b26/"
-        role="button"
-      >
+      <a class="btn text-white btn-floating m-1" target="_blank" rel="noopener"
+        href="https://www.linkedin.com/in/alex-ribeiro-de-faria-b3376b26/" role="button">
         <i class="bi bi-linkedin btnSocialMedia"></i>
       </a>
       <!-- Github -->
-      <a
-        class="btn text-white btn-floating m-1 bg-black"
-        target="_blank"
-        rel="noopener"
-        href="https://github.com/alexfariakof"
-        role="button"
-      >
+      <a class="btn text-white btn-floating m-1 bg-black" target="_blank" rel="noopener"
+        href="https://github.com/alexfariakof" role="button">
         <i class="bi bi-github btnSocialMedia"></i>
       </a>
     </section>

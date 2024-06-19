@@ -5,12 +5,12 @@ using Repository.Persistency.UnitOfWork.Abstractions;
 namespace Business.Abstractions;
 public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
 {
-    protected IUnitOfWork<Entity> UnitOfWork { get;  }
+    protected IUnitOfWork<Entity>? UnitOfWork { get;  }
     protected IMapper Mapper { get; set; }
 
     protected IRepositorio<Entity> Repository { get; }
 
-    protected BusinessBase(IMapper mapper, IRepositorio<Entity> repository, IUnitOfWork<Entity> unitOfWork = null)
+    protected BusinessBase(IMapper mapper, IRepositorio<Entity> repository, IUnitOfWork<Entity>? unitOfWork = null)
     {
         Repository = repository;
         Mapper = mapper;

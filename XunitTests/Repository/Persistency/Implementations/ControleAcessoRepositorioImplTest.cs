@@ -59,7 +59,8 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         mockRepository.Setup(repo => repo.Create(It.IsAny<ControleAcesso>())).Throws(new InvalidOperationException("ControleAcessoRepositorioImpl_Create_Exception"));
 
         // Act & Assert 
-        Assert.Throws<InvalidOperationException>(() => mockRepository.Object.Create((ControleAcesso)null));
+        ControleAcesso? nullControleAceesso = null;
+        Assert.Throws<InvalidOperationException>(() => mockRepository.Object.Create(nullControleAceesso));
         //Assert.Equal("ControleAcessoRepositorioImpl_Create_Exception", exception.Message);
     }
 

@@ -1,138 +1,75 @@
 <div
-  class="h-100 d-flex flex-column table-responsive flex-grow-1 flex-fill m-1 p-0 border border-2 border-dark rounded-top-2 rounded-bottom-1 overflow-scroll-hidden"
->
-  <div
-    class="modal-header bg-dark text-light mt-0 p-2 rounded-top-2 rounded-bottom-0"
-    style="position: relative; bottom: 0.5rem"
-  >
+  class="h-100 d-flex flex-column table-responsive flex-grow-1 flex-fill m-1 p-0 border border-2 border-dark rounded-top-2 rounded-bottom-1 overflow-scroll-hidden">
+  <div class="modal-header bg-dark text-light mt-0 p-2 rounded-top-2 rounded-bottom-0"
+    style="position: relative; bottom: 0.5rem">
     <h2 class="m-0 border-0">Despesas</h2>
-    <button
-      type="button"
-      class="btn-close btn-close-white"
-      aria-label="Close"
-      (click)="activeModal.dismiss('Cross click')"
-    ></button>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"></button>
   </div>
-  <form
-    class="overflow-y-auto scroll-content p-2 pt-0"
-    (ngSubmit)="onSaveClick()"
-    [formGroup]="despesaForm"
-  >
-    <input
-      id="id"
-      name="id"
-      formControlName="id"
-      type="hidden"
-      class="form-control"
-      [value]="0"
-    />
+  <form class="overflow-y-auto scroll-content p-2 pt-0" (ngSubmit)="onSaveClick()" [formGroup]="despesaForm">
+    <input id="id" name="id" formControlName="id" type="hidden" class="form-control" [value]="0" />
     <mat-form-field appearance="outline" class="w-100 mt-2" readonly>
       <mat-label>Categorias</mat-label>
-      <mat-select
-        matInput
-        id="categoria"
-        name="categoria"
-        formControlName="categoria"
-        [ngClass]="{
+      <mat-select matInput id="categoria" name="categoria" formControlName="categoria" [ngClass]="{
           'is-invalid':
             despesaForm.get('categoria')?.errors?.['required'] &&
             despesaForm.get('categoria')?.touched
-        }"
-      >
-        <mat-option [value]="null" disabled selected
-          >Nenhuma categoria selecionada</mat-option
-        >
-        <mat-option
-          *ngFor="let categoria of categorias"
-          [value]="categoria"
-          >{{ categoria.descricao }}</mat-option
-        >
+        }">
+        <mat-option [value]="null" disabled selected>Nenhuma categoria selecionada</mat-option>
+        <mat-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria.descricao }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Data</mat-label>
-      <input
-        matInput
-        [matDatepicker]="data"
-        id="data"
-        name="data"
-        formControlName="data"
-        type="text"
-        placeholder="Entre com uma data válida"
-        [ngClass]="{
+      <input matInput [matDatepicker]="data" id="data" name="data" formControlName="data" type="text"
+        placeholder="Entre com uma data válida" [ngClass]="{
           'is-invalid':
             despesaForm.get('data')?.errors?.['required'] &&
             despesaForm.get('data')?.touched
-        }"
-      />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="data"
-        [ngClass]="{
+        }" />
+      <mat-datepicker-toggle matIconSuffix [for]="data" [ngClass]="{
           'text-danger':
             despesaForm.get('data')?.hasError('required') &&
             despesaForm.get('data')?.touched,
           '':
             !despesaForm.get('data')?.hasError('required') ||
             !despesaForm.get('data')?.touched
-        }"
-      >
+        }">
       </mat-datepicker-toggle>
       <mat-datepicker touchUi #data></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Descrição</mat-label>
-      <input
-        matInput
-        id="descricao"
-        name="descricao"
-        formControlName="descricao"
-        type="text"
-        placeholder="Entre com uma descrição"
-        [ngClass]="{
+      <input matInput id="descricao" name="descricao" formControlName="descricao" type="text"
+        placeholder="Entre com uma descrição" [ngClass]="{
           'is-invalid':
             despesaForm.get('descricao')?.errors?.['required'] &&
             despesaForm.get('descricao')?.touched
-        }"
-      />
+        }" />
       <mat-icon matSuffix>
-        <i
-          class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0"
-          [ngClass]="{
+        <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0" [ngClass]="{
             'error-bi-input':
               despesaForm.get('descricao')?.hasError('required') &&
               despesaForm.get('descricao')?.touched,
             'not-error-input':
               !despesaForm.get('descricao')?.hasError('required') ||
               !despesaForm.get('descricao')?.touched
-          }"
-        >
+          }">
         </i>
       </mat-icon>
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Valor</mat-label>
-      <input
-        matInput
-        currencyMask
-        id="valor"
-        name="valor"
-        formControlName="valor"
-        type="text"
-        placeholder="Entre com um valor > 0"
-        [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
-        class="text-start"
-        [ngClass]="{
+      <input matInput currencyMask id="valor" name="valor" formControlName="valor" type="text"
+        placeholder="Entre com um valor > 0" [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+        class="text-start" [ngClass]="{
           'is-invalid':
             (despesaForm.get('valor')?.errors?.['required'] ||
               despesaForm.get('valor')?.errors?.['greaterThanZero']) &&
             despesaForm.get('valor')?.touched
-        }"
-      />
+        }" />
       <mat-icon matSuffix>
-        <i
-          class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0"
-          [ngClass]="{
+        <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0" [ngClass]="{
             'error-bi-input':
               despesaForm.get('valor')?.hasError('required') &&
               despesaForm.get('valor')?.touched,
@@ -140,39 +77,21 @@
               (!despesaForm.get('valor')?.hasError('required') &&
                 !despesaForm.get('valor')?.hasError('greaterThanZero')) ||
               !despesaForm.get('valor')?.touched
-          }"
-        >
+          }">
         </i>
       </mat-icon>
     </mat-form-field>
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Data de Vencimento</mat-label>
-      <input
-        matInput
-        [matDatepicker]="dataVencimento"
-        disablePast="true"
-        data-mdb-toggle="datepicker"
-        id="dataVencimento"
-        name="dataVencimento"
-        formControlName="dataVencimento"
-        type="text"
-        placeholder="Data de Vencimento (opcional)"
-      />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="dataVencimento"
-      ></mat-datepicker-toggle>
+      <input matInput [matDatepicker]="dataVencimento" disablePast="true" data-mdb-toggle="datepicker"
+        id="dataVencimento" name="dataVencimento" formControlName="dataVencimento" type="text"
+        placeholder="Data de Vencimento (opcional)" />
+      <mat-datepicker-toggle matIconSuffix [for]="dataVencimento"></mat-datepicker-toggle>
       <mat-datepicker #dataVencimento></mat-datepicker>
     </mat-form-field>
-    <div
-      class="input-group mt-3 d-flex flex-column align-items-center justify-content-center"
-    >
-      <button
-        type="submit"
-        class="btn btn-primary w-responsive"
-        [ngClass]="{ disabled: !despesaForm.valid }"
-        [disabled]="!despesaForm.valid"
-      >
+    <div class="input-group mt-3 d-flex flex-column align-items-center justify-content-center">
+      <button type="submit" class="btn btn-primary w-responsive" [ngClass]="{ disabled: !despesaForm.valid }"
+        [disabled]="!despesaForm.valid">
         Salvar
       </button>
     </div>
