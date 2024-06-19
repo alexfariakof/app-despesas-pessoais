@@ -1,6 +1,6 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "compileOnSave": true,
+  "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "strict": false,
@@ -31,21 +31,5 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  },
-  "lint": [
-    {
-      "file": "src/**/*.ts",
-      "rules": {
-        "prettier": true
-      }
-    }
-  ],
-  "formatOptions": {
-    "prettierConfig": {
-      "semi": true,
-      "singleQuote": true,
-      "tabWidth": 2,
-      "useTabs": false
-    }
-  }
+  }  
 }

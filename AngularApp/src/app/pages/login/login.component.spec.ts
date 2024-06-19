@@ -1,17 +1,17 @@
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { Router } from "@angular/router";
-import { RouterTestingModule } from "@angular/router/testing";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { of } from "rxjs";
 import { AlertComponent } from "../../shared/components";
 import { ILogin, IAuth } from "../../shared/models";
 import { AuthService } from "../../shared/services";
 import { LoginComponent } from "./login.component";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -23,13 +23,12 @@ describe('LoginComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockAuthService = jasmine.createSpyObj('AuthService', ['createAccessToken', 'isAuthenticated']);
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
-      imports: [ReactiveFormsModule,  RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule,  MatFormFieldModule, MatInputModule  ],
-      providers: [AlertComponent, NgbActiveModal,
+    declarations: [LoginComponent],
+    imports: [ReactiveFormsModule, BrowserAnimationsModule, MatFormFieldModule, MatInputModule],
+    providers: [AlertComponent, NgbActiveModal,
         { provide: Router, useValue: mockRouter },
-        { provide: AuthService, useValue: mockAuthService },
-      ]
-    });
+        { provide: AuthService, useValue: mockAuthService }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting(),]
+});
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

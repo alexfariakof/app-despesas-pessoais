@@ -178,7 +178,7 @@ public class UsuarioController : AuthController
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
             else
-                throw new();
+                return Ok(new ImagemPerfilDto());
         }
         catch (Exception ex)
         {

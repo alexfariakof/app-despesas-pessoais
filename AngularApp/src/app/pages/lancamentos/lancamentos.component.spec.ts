@@ -1,11 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { MatNativeDateModule } from "@angular/material/core";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from "@angular/material/select";
-import { RouterTestingModule } from "@angular/router/testing";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import dayjs from "dayjs";
 import { from, throwError } from "rxjs";
@@ -18,6 +16,7 @@ import { SharedModule } from "../../shared/shared.module";
 import { DespesasFormComponent } from "../despesas/despesas-form/despesas.form.component";
 import { ReceitasFormComponent } from "../receitas/receitas-form/receitas.form.component";
 import { LancamentosComponent } from "./lancamentos.component";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('Unit Test LancamentosComponent', () => {
   let component: LancamentosComponent;
@@ -34,12 +33,11 @@ describe('Unit Test LancamentosComponent', () => {
   ];
 
   beforeEach(() => {
-      TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       declarations: [LancamentosComponent, DespesasFormComponent, ReceitasFormComponent],
-      imports: [CommonModule, SharedModule, RouterTestingModule, HttpClientTestingModule,
-        MatFormFieldModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+      imports: [CommonModule, SharedModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
       providers: [MenuService, AlertComponent, NgbActiveModal, ModalFormComponent, ModalConfirmComponent,
-        FilterMesAnoService, DespesasFormComponent, ReceitasFormComponent ]
+        FilterMesAnoService, DespesasFormComponent, ReceitasFormComponent, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
     });
     fixture = TestBed.createComponent(LancamentosComponent);
     component = fixture.componentInstance;

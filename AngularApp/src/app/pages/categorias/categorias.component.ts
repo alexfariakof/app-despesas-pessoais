@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoriasFormComponent } from './categorias-form/categorias.form.component';
 import { ICategoria, ITipoCategoria, IAction } from '../../shared/models';
 import { BarraFerramentaClass, DataTableComponent, AlertComponent, ModalFormComponent, ModalConfirmComponent, AlertType } from '../../shared/components';
@@ -9,8 +9,7 @@ import { CategoriaService } from '../../shared/services/api';
 @Component({
   selector: 'app-categorias',
   templateUrl: './categorias.component.html',
-  styleUrls: ['./categorias.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  styleUrls: ['./categorias.component.scss']
 })
 
 export class CategoriasComponent implements BarraFerramentaClass, OnInit {

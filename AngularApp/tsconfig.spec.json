@@ -2,23 +2,18 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "types": [ "jasmine", "node" ]
+    "types": ["jasmine", "node", "@angular/localize"]
   },
   "module": "esnext",
   "sdk": "Microsoft.VisualStudio.JavaScript.Sdk/1.0.784122",
-  "files": [
-    "src/test.ts"
-  ],
-  "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ],
+  "files": ["src/test.ts", "src/polyfills.ts"],
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"],
   "exclude": [
     "node_modules/**",
     "dist/**",
     ".angular/**",
     ".vscode/**",
     "obj/**",
-    "covergae/**"
+    "coverage/**"
   ]
 }
