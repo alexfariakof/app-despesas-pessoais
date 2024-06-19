@@ -1,13 +1,6 @@
 name: Test and Analysis Code In Sonar Cloud
 on:
   workflow_call:
-
-  push:
-    branches: 
-      - hotfix/*
-      - feature/*
-      - bugfix/*  
-
   pull_request:
     types: [opened, synchronize, reopened]
     branches:       
@@ -16,7 +9,7 @@ on:
       - hotfix/*
       - feature/*
       - bugfix/*  
- 
+
 jobs:
   test_code_in_sonar:
     name: Test and Analysis Code In Sonar Cloud
@@ -60,14 +53,30 @@ jobs:
         run: |
           New-Item -Path ./.sonar/scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
-           
+
       - name: Build and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |          
-          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app.routing.module.ts, **/__mock__/*.ts, **/*.js" /d:sonar.cs.opencover.reportsPaths="**/TestResults/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"  /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
+          .\.sonar\scanner\dotnet-sonarscanner begin /k:"alexfariakof_app-despesas-pessoais" /o:"alexfariakof" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"  /d:sonar.exclusions="**/XunitTests/**,  **/Migrations.MsSqlServer/**, **/Migrations.MySqlServer/**, **/HyperMedia/**, **/.documents/**, *.sql, **/Program.cs, **/Despesas.DataSeeders/**, **/Despesas.CrossCutting/**, **/*.spec.ts, **/main.ts, **/environment.*, **/app.routing.module.ts, **/__mock__/*.ts, **/*.js, **/*Dockerfile*, **/docker-compose*" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml" /d:sonar.cs.lcov.reportPaths="**/coveragereport/lcov.info"  /d:sonar.typescript.opencover.reportsPaths="**/coverage/clover.xml" /d:sonar.typescript.lcov.reportPaths="**/coverage/lcov.info"
             dotnet tool install -g dotnet-reportgenerator-globaltool
-            dotnet build ./XunitTests/XUnit.Tests.csproj -c Test
+            $baseDirectory = Get-Location
+            $projectTestPath = Join-Path -Path (Get-Location) -ChildPath "XunitTests"            
+            $projectAngular = Join-Path -Path ($baseDirectory) -ChildPath "AngularApp"
+            $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;"
+            $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"
+            $reportPath = Join-Path -Path ($projectTestPath) -ChildPath "TestResults"
+            $coveragePath = Join-Path -Path $reportPath -ChildPath "coveragereport"
+            $coverageAngularPath = Join-Path -Path $projectAngular -ChildPath "coverage"
+
+            # Gera o Relatario de Cobertura de Codigo Backend
+            dotnet test  $projectTestPath/XUnit.Tests.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover"
+            reportgenerator -reports:$projectTestPath\coverage.cobertura.xml  -targetdir:$coveragePath -reporttypes:"Html;lcov;" -sourcedirs:$sourceDirs -filefilters:-$filefilters
+
+            # Dera o Relatario de Cobertura de Codigo do Frontend 
+            $watchProcess = Start-Process npm -ArgumentList "run", "test:coverage" -WorkingDirectory $projectAngular -NoNewWindow -PassThru
+            $watchProcess.WaitForExit()
+
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

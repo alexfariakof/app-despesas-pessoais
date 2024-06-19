@@ -25,10 +25,10 @@ public sealed class AuthControllerTest
         Assert.Equal(mockIdUsuario, result);
     }
 
-    private T GetProtectedProperty<T>(object obj, string propertyName)
+    private T? GetProtectedProperty<T>(object obj, string propertyName)
     {
         var propertyInfo = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
 
-        return (T)propertyInfo.GetValue(obj);
+        return (T?)propertyInfo.GetValue(obj) ;
     }
 }

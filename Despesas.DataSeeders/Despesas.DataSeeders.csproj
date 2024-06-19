@@ -1,12 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<IsTestProject>false</IsTestProject>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsTestProject>false</IsTestProject>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig">
+      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+    </None>
+  </ItemGroup>
 </Project>

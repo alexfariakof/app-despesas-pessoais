@@ -78,7 +78,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         int idUsuario = usuarioNormal.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioDto)null);
+        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioDto?)null);
 
         // Act
         var result = _usuarioController.GetUsuario() as ObjectResult;

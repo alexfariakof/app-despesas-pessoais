@@ -56,8 +56,8 @@ public class CategoriaBusinessImplTest
         // Arrange
         var categoria = _categorias.First();
         var mockCategorias = _categorias.FindAll(obj => obj.UsuarioId == categoria.UsuarioId);
-        _repositorioMock.Setup(repo => repo.GetAll()).Returns(() => mockCategorias);
-        _unitOfWorkMock.Setup(repo => repo.Repository.GetAll()).Returns(async () => mockCategorias);
+        _repositorioMock.Setup(repo => repo.GetAll()).Returns(mockCategorias);
+        _unitOfWorkMock.Setup(repo => repo.Repository.GetAll()).Returns(async () => await Task.Run(() => mockCategorias));
 
         // Act
         var result = _categoriaBusiness.FindAll(categoria.UsuarioId);
@@ -76,7 +76,7 @@ public class CategoriaBusinessImplTest
         // Arrange
         var categoria = _categorias.First();
         _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Categoria, bool>>>())).Returns(_categorias.AsEnumerable());
-        _unitOfWorkMock.Setup(repo => repo.Repository.GetById(It.IsAny<int>())).Returns(async () => categoria);
+        _unitOfWorkMock.Setup(repo => repo.Repository.GetById(It.IsAny<int>())).Returns(async () => await Task.Run(() => categoria));
 
         // Act
         var result = _categoriaBusiness.FindById(categoria.Id, categoria.UsuarioId);
@@ -96,7 +96,7 @@ public class CategoriaBusinessImplTest
 
         var categoria = _categorias.First();
         _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Categoria, bool>>>())).Returns(Enumerable.Empty<Categoria>());
-        _unitOfWorkMock.Setup(repo => repo.Repository.Find(It.IsAny<Expression<Func<Categoria, bool>>>())).Returns(async () => Enumerable.Empty<Categoria>());
+        _unitOfWorkMock.Setup(repo => repo.Repository.Find(It.IsAny<Expression<Func<Categoria, bool>>>())).Returns(async () => await Task.Run(() => Enumerable.Empty<Categoria>()));
 
         // Act
         var result = _categoriaBusiness.FindById(0, categoria.UsuarioId);

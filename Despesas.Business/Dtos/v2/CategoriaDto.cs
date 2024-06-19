@@ -7,7 +7,7 @@ namespace Business.Dtos.v2;
 public class CategoriaDto : CategoriaDtoBase, ISupportHyperMedia
 {
     [Required(ErrorMessage = "O campo Descrição é obrigatório.")]
-    public override string Descricao { get; set; }
+    public override string? Descricao { get; set; }
         
     [Required(ErrorMessage = "O campo Tipo de categoria é obrigatório.")]  
     public TipoCategoriaDto IdTipoCategoria { get; set; }

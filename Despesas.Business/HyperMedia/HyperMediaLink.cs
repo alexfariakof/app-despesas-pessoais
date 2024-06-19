@@ -5,9 +5,11 @@ public class HyperMediaLink
 {
     public HyperMediaLink()  { }
 
-    public string Rel {  get; set; }
+    public string? Rel {  get; set; }
+    public string? Type { get; set; }
+    public string? Action { get; set; }
 
-    private string _href;
+    private string? _href;
 
     public string Href
     {
@@ -25,6 +27,4 @@ public class HyperMediaLink
             _href = value;
         }
     }
-    public string Type { get; set; }
-    public string Action { get; set; }
 }
