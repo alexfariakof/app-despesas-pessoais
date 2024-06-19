@@ -1,13 +1,13 @@
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { MdbFormsModule } from "mdb-angular-ui-kit/forms";
 import { from, of, throwError } from "rxjs";
 import { CategoriasFormComponent } from "./categorias.form.component";
 import { AlertComponent, AlertType } from "../../../shared/components";
 import { ICategoria, IAction } from "../../../shared/models";
 import { CategoriaService } from "../../../shared/services/api";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 
 describe('Unit Test CategoriasFormComponent', () => {
@@ -18,10 +18,10 @@ describe('Unit Test CategoriasFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CategoriasFormComponent],
-      imports: [ReactiveFormsModule, HttpClientTestingModule, MdbFormsModule],
-      providers: [FormBuilder, AlertComponent, NgbActiveModal, CategoriaService]
-    });
+    declarations: [],
+    imports: [ReactiveFormsModule],
+    providers: [FormBuilder, AlertComponent, NgbActiveModal, CategoriaService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(CategoriasFormComponent);
     component = fixture.componentInstance;
     categoriaService = TestBed.inject(CategoriaService);

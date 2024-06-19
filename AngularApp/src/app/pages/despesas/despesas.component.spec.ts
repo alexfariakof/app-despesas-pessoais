@@ -1,10 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { MatNativeDateModule } from "@angular/material/core";
-import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
-import { MatSelect, MatSelectModule } from "@angular/material/select";
-import { RouterTestingModule } from "@angular/router/testing";
+import { MatDatepickerModule } from "@angular/material/datepicker";
+import { MatSelectModule } from "@angular/material/select";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import dayjs from "dayjs";
 import { from, throwError } from "rxjs";
@@ -16,6 +15,7 @@ import { DespesaService } from "../../shared/services/api";
 import { SharedModule } from "../../shared/shared.module";
 import { DespesasFormComponent } from "./despesas-form/despesas.form.component";
 import { DespesasComponent } from "./despesas.component";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 
 describe('Unit Test DespesasComponent', () => {
@@ -37,10 +37,10 @@ describe('Unit Test DespesasComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DespesasComponent, DespesasFormComponent, MatDatepicker, MatSelect],
-      imports: [CommonModule, RouterTestingModule, SharedModule, HttpClientTestingModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
-      providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, DespesaService, DespesasFormComponent ]
-    });
+    declarations: [DespesasComponent],
+    imports: [CommonModule, SharedModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+    providers: [MenuService, AlertComponent, ModalFormComponent, ModalConfirmComponent, NgbActiveModal, DespesaService, DespesasFormComponent, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(DespesasComponent);
     component = fixture.componentInstance;
     component.dataTable = TestBed.inject(DataTableComponent);

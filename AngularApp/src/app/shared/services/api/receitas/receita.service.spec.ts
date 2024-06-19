@@ -1,7 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ReceitaService } from './receita.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CustomInterceptor } from '../../../../../interceptors/http.interceptor.service';
 import  dayjs from 'dayjs';
 import { environment } from '../../../../../environments/environment';
@@ -11,11 +11,10 @@ describe('Unit Test ReceitaService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers:[ReceitaService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
-      ]
-    });
+    imports: [],
+    providers: [ReceitaService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
 
   it('should be created', inject([ReceitaService], (service: ReceitaService) => {

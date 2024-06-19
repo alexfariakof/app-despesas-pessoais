@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { SaldoComponent } from './saldo.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { from, throwError } from 'rxjs';
 import { SaldoService } from '../../services/api';
 import dayjs from 'dayjs';
 import { ISaldo } from '../../models';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test SaldoComponent', () => {
   let component: SaldoComponent;
@@ -13,9 +14,9 @@ describe('Unit Test SaldoComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SaldoComponent, HttpClientTestingModule],
-      providers: [SaldoService]
-    });
+    imports: [SaldoComponent],
+    providers: [SaldoService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(SaldoComponent);
     component = fixture.componentInstance;
     saldoService = TestBed.inject(SaldoService);

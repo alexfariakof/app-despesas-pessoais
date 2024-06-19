@@ -2,7 +2,6 @@ import { TestBed, inject } from '@angular/core/testing';
 import { AuthProvider } from './auth.provider';
 import { AuthService } from '../services/auth/auth.service';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('Unit Test Auth Provider', () => {
   let authProvider: AuthProvider;
@@ -12,7 +11,7 @@ describe('Unit Test Auth Provider', () => {
   beforeEach(() => {
     mockAuthService = jasmine.createSpyObj('AuthService', ['isAuthenticated']);
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [],
       providers:[
         { provide: AuthService, useValue: mockAuthService }
       ]

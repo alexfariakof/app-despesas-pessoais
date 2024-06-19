@@ -1,8 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { FormsModule } from "@angular/forms";
-import { RouterTestingModule } from "@angular/router/testing";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { from, throwError, of } from "rxjs";
 import { AlertComponent, AlertType } from "../../shared/components";
@@ -10,6 +9,7 @@ import { IUsuario } from "../../shared/models";
 import { MenuService } from "../../shared/services";
 import { UsuarioService } from "../../shared/services/api";
 import { PerfilComponent } from "./perfil.component";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('Unit Test PerfilComponent', () => {
   let component: PerfilComponent;
@@ -18,9 +18,9 @@ describe('Unit Test PerfilComponent', () => {
 
   beforeEach(() => {
       TestBed.configureTestingModule({
-      imports: [ CommonModule, RouterTestingModule, FormsModule, HttpClientTestingModule],
-      providers: [MenuService, AlertComponent, NgbActiveModal, UsuarioService ]
-    });
+    imports: [CommonModule, FormsModule],
+    providers: [MenuService, AlertComponent, NgbActiveModal, UsuarioService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(PerfilComponent);
     component = fixture.componentInstance;
     usuarioService = TestBed.inject(UsuarioService);
