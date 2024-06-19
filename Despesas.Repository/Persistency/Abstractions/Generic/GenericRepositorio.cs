@@ -46,7 +46,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
     {
         try
         {
-            var existingEntity = _context.Set<T>().Find(entity.Id) ?? throw new();
+            var existingEntity = _context.Set<T>().Find(entity.Id) ?? throw new NullReferenceException();
             _context.Entry(existingEntity).CurrentValues.SetValues(entity);
             _context.SaveChanges();
         }
