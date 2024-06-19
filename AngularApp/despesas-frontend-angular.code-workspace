@@ -8,7 +8,7 @@
     "editor.formatOnSave": false,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
+      "source.fixAll.eslint": true,
     },
     "eslint.enable": true,
     "eslint.options": {
@@ -25,12 +25,7 @@
     "prettier.semi": true,
     "prettier.singleQuote": true,
     "prettier.tabWidth": 2,
-    "prettier.useTabs": true,
-    "files.encoding": "utf8",
-    "files.eol": "\n",
-    "[html]": {
-      "editor.defaultFormatter": "vscode.html-language-features"
-    }
+    "prettier.useTabs": true
   },
   "launch": {
     "version": "0.2.0",
@@ -65,7 +60,7 @@
           "webpack:///./*": "${webRoot}/*"
         },
         "userDataDir": "${workspaceFolder}/.vscode/chrome",
-        "disableNetworkCache": true
+        "disableNetworkCache": true,
       }
     ]
   }
