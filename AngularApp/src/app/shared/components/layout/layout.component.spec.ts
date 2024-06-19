@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 import { MenuService } from '../../services/utils/menu-service/menu.service';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ImagemPerfilService } from '../../services/api';
 import { from, throwError } from 'rxjs';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test LayoutComponent', () => {
   let component: LayoutComponent;
@@ -20,12 +20,11 @@ describe('Unit Test LayoutComponent', () => {
     mockAuthService = jasmine.createSpyObj('AuthService', ['clearSessionStorage']);
     mockAuthService.clearSessionStorage.and.callThrough();
     TestBed.configureTestingModule({
-      declarations: [LayoutComponent],
-      imports: [CommonModule, RouterTestingModule, HttpClientTestingModule],
-      providers: [MenuService,
-        { provide: AuthService, useValue: mockAuthService }
-      ]
-    });
+    declarations: [LayoutComponent],
+    imports: [CommonModule],
+    providers: [MenuService,
+        { provide: AuthService, useValue: mockAuthService }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(LayoutComponent);
     component = fixture.componentInstance;
     router = TestBed.inject(Router);

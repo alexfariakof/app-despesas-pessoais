@@ -1,6 +1,6 @@
 import { TestBed, inject } from "@angular/core/testing";
-import { HTTP_INTERCEPTORS } from "@angular/common/http";
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
+import { HttpTestingController, provideHttpClientTesting } from "@angular/common/http/testing";
 import { CustomInterceptor } from "../../../../../interceptors/http.interceptor.service";
 import { UsuarioService } from "./usuario.service";
 import { environment } from "../../../../../environments/environment";
@@ -10,11 +10,10 @@ describe('Unit Test UsuarioService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [UsuarioService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
-      ]
-    });
+    imports: [],
+    providers: [UsuarioService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
 
   it('should be created', inject([UsuarioService], (service: UsuarioService) => {

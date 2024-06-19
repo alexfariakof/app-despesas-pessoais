@@ -1,21 +1,20 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { ControleAcessoService } from './controle-acesso.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ILogin } from '../../../models/ILogin';
 import { environment } from '../../../../../environments/environment';
 import { IControleAcesso } from '../../../models/IControleAcesso';
 import { CustomInterceptor } from '../../../../../interceptors/http.interceptor.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Unit Test ControleAcessoService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers:[ControleAcessoService,
-        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }
-      ]
-    });
+    imports: [],
+    providers: [ControleAcessoService,
+        { provide: HTTP_INTERCEPTORS, useClass: CustomInterceptor, multi: true, }, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
   });
 
   it('should be created', inject([ControleAcessoService], (service: ControleAcessoService) => {

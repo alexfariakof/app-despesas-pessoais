@@ -50,7 +50,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     }
 
     [Fact]
-    public void Get_ImagemPerfilUsuario_Should_Returns_BadRequest_When_ImagemPerfilUsuario_NotFound()
+    public void Get_ImagemPerfilUsuario_Should_Returns_OkResult_When_ImagemPerfilUsuario_NotFound()
     {
         // Arrange
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarios();
@@ -65,9 +65,9 @@ public sealed class ImagemPerfilUsuarioControllerTest
 
         // Assert
         Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;        
-        Assert.Equal("Usuário não possui nenhuma imagem de perfil cadastrada!", message);
+        Assert.IsType<OkObjectResult>(result);
+        var imagemPerfilUsuarioDto = Assert.IsType<ImagemPerfilDto>(result.Value);
+        Assert.Equivalent(imagemPerfilUsuarioDto, new ImagemPerfilDto(), true);
         _mockImagemPerfilBusiness.Verify(b => b.FindAll(idUsuario), Times.Once);
     }
 

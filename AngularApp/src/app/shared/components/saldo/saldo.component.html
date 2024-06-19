@@ -1,24 +1,17 @@
-<div
-  class="d-flex flex-column m-0 p-0 justify-content-center align-items-center"
->
+<div class="d-flex flex-column m-0 p-0 justify-content-center align-items-center">
   <div
-    class="text-center text-light m-1 p-0 px-2 bg-dark bg-opacity-50 border border-0 border-dark rounded-top-2 rounded-bottom-1"
-  >
+    class="text-center text-light m-1 p-0 px-2 bg-dark bg-opacity-50 border border-0 border-dark rounded-top-2 rounded-bottom-1">
     <span class="header">Saldo Corrente</span>
     <div class="d-flex flex-row m-0 p-0">
       <div id="saldoAnual" class="m-0 p-0 headerSaldo">
         Anual: <span class="textSaldo" [ngClass]="saldoAnualNegativo">{{ saldoAnual }} </span>/
       </div>
       <div class="dropdown headerSaldo m-0 mx-1 p-0">
-        <div
-          type="button"
-          id="ddbSaldoMensal"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-          class="dropdown-toggle headerSaldo" >
-          <span class="headerSaldo" >
+        <div type="button" id="ddbSaldoMensal" data-bs-toggle="dropdown" aria-expanded="false"
+          class="dropdown-toggle headerSaldo">
+          <span class="headerSaldo">
             Mês de {{ filterMesService.selectMonthExt }}</span>
-          <span class="textSaldo" [ngClass]="saldoMensalNegativo" >: {{ saldoMensal }}</span>
+          <span class="textSaldo" [ngClass]="saldoMensalNegativo">: {{ saldoMensal }}</span>
         </div>
         <ul class="dropdown-menu" aria-labelledby="ddbSaldoMensal">
           <li class="dropdown-item" (click)="handleSelectMes('01')">Janeiro</li>

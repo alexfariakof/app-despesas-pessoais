@@ -1,11 +1,11 @@
-import { HttpClientTestingModule } from "@angular/common/http/testing";
+import { provideHttpClientTesting } from "@angular/common/http/testing";
 import { ComponentFixture, TestBed, fakeAsync, flush } from "@angular/core/testing";
 import { ReactiveFormsModule, FormBuilder } from "@angular/forms";
 import { MatNativeDateModule } from "@angular/material/core";
-import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
-import { MatSelect, MatSelectModule } from "@angular/material/select";
+import { MatSelectModule } from "@angular/material/select";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import dayjs from "dayjs";
@@ -15,6 +15,7 @@ import { AlertComponent, AlertType } from "../../../shared/components";
 import { IReceita, ICategoria, IAction } from "../../../shared/models";
 import { ReceitaService } from "../../../shared/services/api";
 import { ReceitasFormComponent } from "./receitas.form.component";
+import { provideHttpClient, withInterceptorsFromDi } from "@angular/common/http";
 
 describe('Unit Test ReceitasFormComponent', () => {
   let component: ReceitasFormComponent;
@@ -32,10 +33,10 @@ describe('Unit Test ReceitasFormComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ReceitasFormComponent, MatDatepicker, MatSelect],
-      imports: [ReactiveFormsModule, HttpClientTestingModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, CurrencyMaskModule],
-      providers: [FormBuilder, AlertComponent, NgbActiveModal, ReceitaService ]
-    });
+    declarations: [],
+    imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, BrowserAnimationsModule, CurrencyMaskModule],
+    providers: [FormBuilder, AlertComponent, NgbActiveModal, ReceitaService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()]
+});
     fixture = TestBed.createComponent(ReceitasFormComponent);
     component = fixture.componentInstance;
     receitaService = TestBed.inject(ReceitaService);

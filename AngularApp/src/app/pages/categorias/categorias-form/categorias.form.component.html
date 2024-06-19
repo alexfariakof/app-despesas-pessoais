@@ -1,104 +1,46 @@
 <div
-  class="h-100 d-flex flex-column table-responsive flex-grow-1 flex-fill m-1 p-0 border border-2 border-dark rounded-top-2 rounded-bottom-1 overflow-scroll-hidden"
->
-  <div
-    class="modal-header bg-dark text-light mt-0 p-2 rounded-top-2 rounded-bottom-0"
-    style="position: relative; bottom: 0.5rem"
-  >
+  class="h-100 d-flex flex-column table-responsive flex-grow-1 flex-fill m-1 p-0 border border-2 border-dark rounded-top-2 rounded-bottom-1 overflow-scroll-hidden">
+  <div class="modal-header bg-dark text-light mt-0 p-2 rounded-top-2 rounded-bottom-0"
+    style="position: relative; bottom: 0.5rem">
     <h2 class="m-0 border-0">Categorias</h2>
-    <button
-      type="button"
-      class="btn-close btn-close-white"
-      aria-label="Close"
-      (click)="activeModal.dismiss('Cross click')"
-    ></button>
+    <button type="button" class="btn-close btn-close-white" aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"></button>
   </div>
   <div class="overflow-y-auto scroll-content p-2 pt-0">
     <form (ngSubmit)="onSaveClick()" [formGroup]="categoriatForm">
-      <input
-        id="id"
-        name="id"
-        formControlName="id"
-        type="hidden"
-        class="form-control"
-        value="0"
-      />
-      <mdb-form-control class="mt-3 position-relative">
-        <select
-          id="idTipoCategoria"
-          name="idTipoCategoria"
-          class="form-control"
-          formControlName="idTipoCategoria"
-          mdbValidate
-          mdbInput
-          [ngClass]="{
-            'is-invalid':
-              categoriatForm.get('idTipoCategoria')?.errors?.['required'] &&
-              categoriatForm.get('idTipoCategoria')?.touched
-          }"
-          mdbValidate
-          mdbSelect
-          readonly
-        >
-          <option disabled [selected]="true">Nenhum Tipo selecionado</option>
-          <option value="1">Despesas</option>
-          <option value="2">Receitas</option>
-        </select>
-        <label mdbLabel class="form-label" for="idTipoCategoria"
-          >Tipo de Categoria</label
-        >
-        <i
-          class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0"
-          [ngClass]="{
-            'error-bi-input':
-              categoriatForm.get('idTipoCategoria')?.hasError('required') &&
-              categoriatForm.get('idTipoCategoria')?.touched,
-            'not-error-input':
-              !categoriatForm.get('idTipoCategoria')?.hasError('required') ||
-              !categoriatForm.get('idTipoCategoria')?.touched
-          }"
-        >
-        </i>
-      </mdb-form-control>
-      <mdb-form-control class="mt-3 position-relative">
-        <input
-          id="descricao"
-          name="descricao"
-          formControlName="descricao"
-          type="text"
-          class="form-control"
-          placeholder="Entre com a descricao"
-          mdbValidate
-          mdbInput
-          [ngClass]="{
+      <input id="id" name="id" formControlName="id" type="hidden" class="form-control" value="0" />
+      <mat-form-field appearance="outline" class="w-100 mt-2 dropdown" readonly [ngClass]="{
+        'is-invalid':
+            categoriatForm.get('idTipoCategoria')?.errors?.['required'] &&
+            categoriatForm.get('idTipoCategoria')?.touched }">
+        <mat-label>Tipo de Categoria</mat-label>
+        <mat-select matInput id="idTipoCategoria" name="idTipoCategoria" formControlName="idTipoCategoria">
+          <mat-option [value]="null" disabled selected>Nenhum Tipo selecionado</mat-option>
+          <mat-option [value]="1">Despesas</mat-option>
+          <mat-option [value]="2">Receitas</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Descrição</mat-label>
+        <input matInput id="descricao" name="descricao" formControlName="descricao" type="text" class="form-control"
+          placeholder="Entre com a descricao" [ngClass]="{
             'is-invalid':
               categoriatForm.get('descricao')?.errors?.['required'] &&
               categoriatForm.get('descricao')?.touched
-          }"
-        />
-        <label mdbLabel class="form-label" for="descricao">Descrição</label>
-        <i
-          class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0"
-          [ngClass]="{
+          }" />
+        <i class="text-danger bi bi-exclamation-circle position-absolute mx-2 my-1 top-0 end-0" [ngClass]="{
             'error-bi-input':
               categoriatForm.get('descricao')?.hasError('required') &&
               categoriatForm.get('descricao')?.touched,
             'not-error-input':
               !categoriatForm.get('descricao')?.hasError('required') ||
               !categoriatForm.get('descricao')?.touched
-          }"
-        >
+          }">
         </i>
-      </mdb-form-control>
-      <div
-        class="input-group mt-3 d-flex flex-column align-items-center justify-content-center"
-      >
-        <button
-          type="submit"
-          class="btn btn-primary w-responsive"
-          [ngClass]="{ disabled: !categoriatForm.valid }"
-          [disabled]="!categoriatForm.valid"
-        >
+      </mat-form-field>
+      <div class="input-group mt-3 d-flex flex-column align-items-center justify-content-center">
+        <button type="submit" class="btn btn-primary w-responsive" [ngClass]="{ disabled: !categoriatForm.valid }"
+          [disabled]="!categoriatForm.valid">
           Salvar
         </button>
       </div>
