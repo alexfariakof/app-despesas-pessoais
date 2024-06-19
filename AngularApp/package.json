@@ -42,7 +42,7 @@
     "datatables.net-select-dt": "^1.7.0",
     "dayjs": "^1.11.10",
     "jquery": "^3.7.1",
-    "mdb-angular-ui-kit": "^5.2.0",
+    "mdb-angular-ui-kit": "^6.1.0",
     "mdb-ui-kit": "^6.4.0",
     "ng": "^0.0.0",
     "ng2-charts": "^4.1.1",
