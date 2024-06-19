@@ -37,7 +37,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
         }
     }
 
-    public virtual T? Get(int id)
+    public virtual T Get(int id)
     {
         return this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(id));
     }
@@ -46,7 +46,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
     {
         try
         {
-            var existingEntity = _context.Set<T>().Find(entity.Id);
+            var existingEntity = _context.Set<T>().Find(entity.Id) ?? throw new NullReferenceException();
             _context.Entry(existingEntity).CurrentValues.SetValues(entity);
             _context.SaveChanges();
         }
@@ -88,7 +88,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
         }
     }
 
-    public virtual bool Exists(int? id)
+    public virtual bool Exists(int id)
     {
         return this._context.Set<T>().Any(prop => prop.Id.Equals(id));
     }

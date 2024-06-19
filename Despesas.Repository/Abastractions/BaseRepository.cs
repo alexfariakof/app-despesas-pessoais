@@ -20,9 +20,9 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
 
     public virtual void Update(ref T entity)
     {
-        var existingEntity = this.Context.Set<T>().Find(entity.Id);
-        this.Context?.Entry(existingEntity).CurrentValues.SetValues(entity);
-        this.Context?.SaveChanges();
+        var existingEntity = this.Context.Set<T>().Find(entity.Id) ?? throw new ArgumentException("Entity not found.");
+        this.Context.Entry(existingEntity).CurrentValues.SetValues(entity);
+        this.Context.SaveChanges();
     }
 
     public virtual bool Delete(T entity)
@@ -52,9 +52,9 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
         return Context.Set<T>().ToList();
     }
 
-    public virtual T? Get(int id)
+    public virtual T Get(int id)
     {
-        return Context.Set<T>().Find(id) ?? new();
+        return Context.Set<T>().Find(id);
     }
 
     public virtual IEnumerable<T> Find(Expression<Func<T, bool>> expression)
@@ -62,9 +62,9 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
         return Context.Set<T>().Where(expression);
     }
 
-    public virtual bool Exists(int? id)
+    public virtual bool Exists(int id)
     {
-        return id == null ? false : this.Get(id.Value) != null;
+        return this.Get(id) != null;
     }
 
     public virtual bool Exists(Expression<Func<T, bool>> expression)

@@ -44,7 +44,7 @@ public sealed class ReceitaControllerTest
         var receitaDto = _receitaDtos.First();
         var idUsuario = receitaDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _receitaController);
-        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Returns((ReceitaDto?)null);
+        _mockReceitaBusiness.Setup(business => business.FindById(receitaDto.Id, idUsuario)).Returns(() => null);
 
         // Act
         var result = _receitaController.GetById(receitaDto.Id) as ObjectResult;
@@ -180,7 +180,7 @@ public sealed class ReceitaControllerTest
         var receitaDto = _receitaDtos[3];
         int idUsuario = receitaDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _receitaController);
-        _mockReceitaBusiness.Setup(business => business.Update(receitaDto)).Returns((ReceitaDto?)null);
+        _mockReceitaBusiness.Setup(business => business.Update(receitaDto)).Returns(() => null);
 
         // Act
         var result = _receitaController.Put(receitaDto) as ObjectResult;

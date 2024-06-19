@@ -78,7 +78,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         int idUsuario = usuarioNormal.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns((UsuarioDto?)null);
+        _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(() => null);
 
         // Act
         var result = _usuarioController.GetUsuario() as ObjectResult;
@@ -393,7 +393,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = _usuarioDtos.First();
         int idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns<UsuarioDto>(null);
+        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(() => null);
 
         // Act
         var result = _usuarioController.Put(usuarioDto) as ObjectResult;
@@ -590,7 +590,7 @@ public sealed class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
-        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Returns<UsuarioDto>(null);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Returns(() => null);
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioDto) as ObjectResult;
@@ -614,7 +614,7 @@ public sealed class UsuarioControllerTest
         int idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
-        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns<UsuarioDto>(null);
+        _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(() => null);
 
         // Act
         var result = _usuarioController.PutAdministrador(usuarioDto) as ObjectResult;

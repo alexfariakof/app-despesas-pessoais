@@ -26,7 +26,7 @@ public class DespesaDto : DespesaDtoBase, ISupportHyperMedia
         }
         set
         {
-            if (value != null)
+            if (value != null && this.Categoria != null)
             {
                 this.Categoria.Id = value.Value; 
             }

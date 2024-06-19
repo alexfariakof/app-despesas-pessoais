@@ -126,7 +126,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     {
         // Arrange
         var usuario = new Usuario { Id = 0 };
-        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(null);
+        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(() => null);
 
         // Act
         var result = _imagemPerfilUsuarioBusiness.FindByIdUsuario(usuario.Id);
@@ -160,7 +160,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
         // Arrange
         var imagemPerfil = _imagensPerfil.First();
         var imagemPerfilVM = _mapper.Map<ImagemPerfilDto>(imagemPerfil);
-        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(null);
+        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(() =>null);
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM));
