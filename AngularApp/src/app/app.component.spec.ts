@@ -24,8 +24,8 @@ describe('AppComponent', () => {
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);
     mockAuthService = jasmine.createSpyObj('AuthService', [ 'isAuthenticated']);
     TestBed.configureTestingModule({
-    declarations: [AppComponent, LoginComponent, PrimeiroAcessoComponent],
-    imports: [BrowserModule, AppRoutingModule, CommonModule, ReactiveFormsModule, FormsModule],
+    declarations: [AppComponent, LoginComponent],
+    imports: [BrowserModule, AppRoutingModule, CommonModule, ReactiveFormsModule, FormsModule, PrimeiroAcessoComponent],
     providers: [AuthService, AuthProvider,
         { provide: Router, useValue: mockRouter },
         { provide: AuthService, useValue: mockAuthService },
