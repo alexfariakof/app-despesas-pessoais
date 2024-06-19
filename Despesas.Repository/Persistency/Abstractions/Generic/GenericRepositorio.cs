@@ -37,7 +37,7 @@ public class GenericRepositorio<T> : IRepositorio<T> where T : BaseModel, new()
         }
     }
 
-    public virtual T? Get(int id)
+    public virtual T Get(int id)
     {
         return this._context.Set<T>().SingleOrDefault(prop => prop.Id.Equals(id));
     }
