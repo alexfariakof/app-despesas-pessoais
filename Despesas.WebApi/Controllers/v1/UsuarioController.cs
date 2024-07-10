@@ -75,7 +75,6 @@ public class UsuarioController : AuthController
         return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
     }
 
-
     [HttpPut]
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
@@ -179,34 +178,7 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
         }
     }
-
-    [HttpGet]
-    [Authorize("Bearer", Roles = "Admin")]
-    public IActionResult GetAllUsuarios()
-    {
-        var adminUser = _usuarioBusiness.FindById(UserIdentity);
-        if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
-            return BadRequest(new { message = "Usuário não permitido para realizar essa operação!" });
-
-        var usuarios = _usuarioBusiness.FindAll(UserIdentity);
-        return Ok(usuarios);
-    }
-
-    [HttpPost]
-    [Authorize("Bearer", Roles = "Admin")]
-    public IActionResult CreateUsuario([FromBody] UsuarioDto usuarioDto)
-    {
-        if (!ValidateUsuarioDto(usuarioDto, out IActionResult validationError))
-            return validationError;
-
-        var adminUser = _usuarioBusiness.FindById(UserIdentity);
-        if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
-            return BadRequest(new { message = "Usuário não permitido para realizar essa operação!" });
-
-        var createdUsuario = _usuarioBusiness.Create(usuarioDto);
-        return Ok(createdUsuario);
-    }
-
+    
     [HttpPut("UpdateUsuarioAdmin")]
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult UpdateUsuarioAdmin([FromBody] UsuarioDto usuarioDto)
