@@ -404,3 +404,4 @@ despesas-backend-api-net-core/appsettings.json
 Despesas.WebApi/gencert.sh
 *.pem
 *.pfx
+!webapi-cert.pfx
