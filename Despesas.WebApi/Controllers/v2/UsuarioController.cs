@@ -63,7 +63,7 @@ public class UsuarioController : AuthController
             if (ex is ArgumentException argEx)
                 return BadRequest(argEx.Message);
 
-            return BadRequest("Erro ao atualizar Usuário!");
+            return BadRequest("Erro ao atualizar dados pessoais do usuário!");
         }
     }
 
@@ -285,7 +285,6 @@ public class UsuarioController : AuthController
 
                 ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto
                 {
-
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,

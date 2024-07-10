@@ -31,25 +31,19 @@ public class UsuarioController : AuthController
 
         return Ok(_usuario);
     }
-    
+
     [HttpPut("UpdateUsuario")]
-    [Authorize("Bearer", Roles = "User")]
+    [Authorize("Bearer", Roles = "User, Admin")]
     public IActionResult Put([FromBody] UsuarioDto usuarioDto)
     {
-        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
-
-        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
-
-        if (!IsValidEmail(usuarioDto.Email))
-            return BadRequest(new { message = "Email inválido!" });
+        if (!ValidateUsuarioDto(usuarioDto, out IActionResult validationError))
+            return validationError;
 
         var updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
-        return new OkObjectResult(updateUsuario);
+        return Ok(updateUsuario);
     }
 
     [HttpGet]
@@ -75,17 +69,12 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
 
-        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
-
-        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
-
-        if (!IsValidEmail(usuarioDto.Email))
-            return BadRequest(new { message = "Email inválido!" });
+        if (!ValidateUsuarioDto(usuarioDto, out IActionResult validationError))
+            return validationError;
 
         return new OkObjectResult(_usuarioBusiness.Create(usuarioDto));
     }
+
 
     [HttpPut]
     [Authorize("Bearer", Roles = "Admin")]
@@ -97,14 +86,8 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
 
-        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
-            return BadRequest(new { message = "Campo Telefone não pode ser em branco" });
-
-        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
-            return BadRequest(new { message = "Campo Login não pode ser em branco" });
-
-        if (!IsValidEmail(usuarioDto.Email))
-            return BadRequest(new { message = "Email inválido!" });
+        if (!ValidateUsuarioDto(usuarioDto, out IActionResult validationError))
+            return validationError;
 
         var updateUsuario = _usuarioBusiness.Update(usuarioDto);
         if (updateUsuario == null)
@@ -196,13 +179,91 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
         }
     }
+
+    [HttpGet]
+    [Authorize("Bearer", Roles = "Admin")]
+    public IActionResult GetAllUsuarios()
+    {
+        var adminUser = _usuarioBusiness.FindById(UserIdentity);
+        if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
+            return BadRequest(new { message = "Usuário não permitido para realizar essa operação!" });
+
+        var usuarios = _usuarioBusiness.FindAll(UserIdentity);
+        return Ok(usuarios);
+    }
+
+    [HttpPost]
+    [Authorize("Bearer", Roles = "Admin")]
+    public IActionResult CreateUsuario([FromBody] UsuarioDto usuarioDto)
+    {
+        if (!ValidateUsuarioDto(usuarioDto, out IActionResult validationError))
+            return validationError;
+
+        var adminUser = _usuarioBusiness.FindById(UserIdentity);
+        if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
+            return BadRequest(new { message = "Usuário não permitido para realizar essa operação!" });
+
+        var createdUsuario = _usuarioBusiness.Create(usuarioDto);
+        return Ok(createdUsuario);
+    }
+
+    [HttpPut("UpdateUsuarioAdmin")]
+    [Authorize("Bearer", Roles = "Admin")]
+    public IActionResult UpdateUsuarioAdmin([FromBody] UsuarioDto usuarioDto)
+    {
+        if (!ValidateUsuarioDto(usuarioDto, out IActionResult validationError))
+            return validationError;
+
+        var updateUsuario = _usuarioBusiness.Update(usuarioDto);
+        if (updateUsuario == null)
+            return BadRequest(new { message = "Usuário não encontrado!" });
+
+        return Ok(updateUsuario);
+    }
+
+    [HttpDelete]
+    [Authorize("Bearer", Roles = "Admin")]
+    public IActionResult DeleteUsuario([FromBody] UsuarioDto usuarioDto)
+    {
+        var adminUser = _usuarioBusiness.FindById(UserIdentity);
+        if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
+            return BadRequest(new { message = "Usuário não permitido para realizar essa operação!" });
+
+        var deleted = _usuarioBusiness.Delete(usuarioDto);
+        if (deleted)
+            return Ok(new { message = "Usuário excluído com sucesso!" });
+        else
+            return BadRequest(new { message = "Erro ao excluir Usuário!" });
+    }
+
+    private bool ValidateUsuarioDto(UsuarioDto usuarioDto, out IActionResult errorResponse)
+    {
+        if (String.IsNullOrEmpty(usuarioDto.Telefone) || String.IsNullOrWhiteSpace(usuarioDto.Telefone))
+        {
+            errorResponse = BadRequest(new { message = "Campo Telefone não pode ser em branco" });
+            return false;
+        }
+
+        if (String.IsNullOrEmpty(usuarioDto.Email) || String.IsNullOrWhiteSpace(usuarioDto.Email))
+        {
+            errorResponse = BadRequest(new { message = "Campo Login não pode ser em branco" });
+            return false;
+        }
+
+        if (!IsValidEmail(usuarioDto.Email))
+        {
+            errorResponse = BadRequest(new { message = "Email inválido!" });
+            return false;
+        }
+
+        errorResponse = BadRequest();
+        return true;
+    }
+
     private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioDtoAsync(IFormFile file, int idUsuario)
     {
-        string fileName = idUsuario + "-imagem-perfil-usuario-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-        string typeFile = "";
-        int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
-        if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
-            typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
+        string fileName = $"{idUsuario}-imagem-perfil-usuario-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
+        string? typeFile = Path.GetExtension(file.FileName)?.TrimStart('.');
 
         if (typeFile == "jpg" || typeFile == "png" || typeFile == "jpeg")
         {
@@ -210,26 +271,25 @@ public class UsuarioController : AuthController
             {
                 await file.CopyToAsync(memoryStream);
 
-                ImagemPerfilDto imagemPerfilUsuario = new ImagemPerfilDto
+                return new ImagemPerfilDto
                 {
-
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
                     UsuarioId = UserIdentity,
-                    Arquivo = memoryStream.GetBuffer()
+                    Arquivo = memoryStream.ToArray()
                 };
-                return imagemPerfilUsuario;
             }
         }
         else
+        {
             throw new Exception("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.");
+        }
     }
 
     private bool IsValidEmail(string email)
     {
-        string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-        Regex regex = new Regex(pattern);
-        return regex.IsMatch(email);
+        const string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        return Regex.IsMatch(email, pattern);
     }
 }
