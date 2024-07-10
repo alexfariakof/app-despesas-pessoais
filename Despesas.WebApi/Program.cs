@@ -9,7 +9,7 @@ using Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add Cors Configuration 
+// Add Cors Configurations 
 builder.Services.AddCors(c =>
 {
     c.AddDefaultPolicy(builder =>
@@ -27,11 +27,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
 
-if (builder.Environment.IsProduction() || builder.Environment.EnvironmentName.Equals("MySqlServer"))
+if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
 }
-else if (builder.Environment.IsDevelopment())
+else if (builder.Environment.IsProduction() || builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
 {
     builder.Services.CreateDataBaseInMemory();
 }
@@ -42,10 +42,15 @@ else
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
 
+//Add SigningConfigurations
+builder.Services.AddSigningConfigurations(builder.Configuration);
+
+// Add AutoAuthConfigurations
+builder.Services.AddAutoAuthenticationConfigurations();
+
 // Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
-builder.Services.AddAuthConfigurations(builder.Configuration);
 builder.Services.AddAmazonS3BucketConfigurations(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
@@ -55,26 +60,32 @@ builder.Services.AddHyperMediaHATEOAS();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
+app.UseHsts();
+if (app.Environment.IsProduction())
+    app.UseHttpsRedirection();
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.AddSupporteCulturesPtBr();
 app.UseCors();
-//app.UseHttpsRedirection();
+
 app.MapControllers();
 app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 
 if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
-
+ 
+app.UseAuthentication();
 app.UseRouting()
     .UseAuthorization()
+    .UseCertificateForwarding()
     .UseEndpoints(endpoints =>
     {
         endpoints.MapControllers();
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction())
+//if (!app.Environment.IsProduction())
     app.RunDataSeeders();
 
 app.Run();

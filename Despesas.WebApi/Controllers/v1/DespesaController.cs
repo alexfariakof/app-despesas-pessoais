@@ -22,7 +22,7 @@ public class DespesaController : AuthController
     [Authorize("Bearer", Roles = "User")]
     public IActionResult Get()
     {
-        return Ok(_despesaBusiness.FindAll(IdUsuario));
+        return Ok(_despesaBusiness.FindAll(UserIdentity));
     }
 
     [HttpGet("GetById/{id}")]
@@ -31,7 +31,7 @@ public class DespesaController : AuthController
     {
         try
         {
-            var _despesa = _despesaBusiness.FindById(id, IdUsuario);
+            var _despesa = _despesaBusiness.FindById(id, UserIdentity);
 
             if (_despesa == null)
                 return BadRequest(new { message = "Nenhuma despesa foi encontrada." });
@@ -50,7 +50,7 @@ public class DespesaController : AuthController
     {
         try
         {
-            despesa.UsuarioId = IdUsuario;
+            despesa.UsuarioId = UserIdentity;
             return new OkObjectResult(new { message = true, despesa = _despesaBusiness.Create(despesa) });
         }
         catch
@@ -63,7 +63,7 @@ public class DespesaController : AuthController
     [Authorize("Bearer", Roles = "User")]
     public IActionResult Put([FromBody] DespesaDto despesa)
     {
-        despesa.UsuarioId = IdUsuario;
+        despesa.UsuarioId = UserIdentity;
         var updateDespesa = _despesaBusiness.Update(despesa);
         if (updateDespesa == null)
             return BadRequest(new { message = "Não foi possível atualizar o cadastro da despesa." });
@@ -75,8 +75,8 @@ public class DespesaController : AuthController
     [Authorize("Bearer", Roles = "User")]
     public IActionResult Delete(int idDespesa)
     {
-        DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
-        if (despesa == null || IdUsuario != despesa.UsuarioId)
+        DespesaDto despesa = _despesaBusiness.FindById(idDespesa, UserIdentity);
+        if (despesa == null || UserIdentity != despesa.UsuarioId)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

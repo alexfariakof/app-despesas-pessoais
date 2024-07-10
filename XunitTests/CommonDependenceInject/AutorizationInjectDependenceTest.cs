@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
-using Business.Authentication;
 using Despesas.WebApi.CommonDependenceInject;
+using Business.Authentication.Abstractions;
 
 namespace CommonDependenceInject;
 public sealed class AuthorizationInjectDependenceTest
@@ -18,12 +18,13 @@ public sealed class AuthorizationInjectDependenceTest
         var services = new ServiceCollection();
 
         // Act
-        services.AddAuthConfigurations(configuration);
+        services.AddSigningConfigurations(configuration);
+        services.AddAutoAuthenticationConfigurations();
 
         // Assert
         var serviceProvider = services.BuildServiceProvider();
 
-        Assert.NotNull(serviceProvider.GetService<SigningConfigurations>());
+        Assert.NotNull(serviceProvider.GetService<ISigningConfigurations>());
 
         // Assert authentication configurations
         var authenticationOptions = serviceProvider.GetRequiredService<IOptions<AuthenticationOptions>>().Value;
@@ -32,7 +33,7 @@ public sealed class AuthorizationInjectDependenceTest
 
         // Assert JWT bearer configurations
         var jwtBearerOptions = serviceProvider.GetRequiredService<IOptionsMonitor<JwtBearerOptions>>().Get(JwtBearerDefaults.AuthenticationScheme);
-        var signingConfigurations = serviceProvider.GetRequiredService<SigningConfigurations>();
+        var signingConfigurations = serviceProvider.GetRequiredService<ISigningConfigurations>();
 
         Assert.NotNull(jwtBearerOptions);
         Assert.NotNull(jwtBearerOptions.TokenValidationParameters);

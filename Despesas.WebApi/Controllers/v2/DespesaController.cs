@@ -29,7 +29,7 @@ public class DespesaController : AuthController
     {
         try
         {
-            return Ok(_despesaBusiness.FindAll(IdUsuario));
+            return Ok(_despesaBusiness.FindAll(UserIdentity));
         }
         catch (Exception ex)
         {
@@ -51,7 +51,7 @@ public class DespesaController : AuthController
     {
         try
         {
-            var _despesa = _despesaBusiness.FindById(id, IdUsuario) ?? throw new ArgumentException("Nenhuma despesa foi encontrada.");
+            var _despesa = _despesaBusiness.FindById(id, UserIdentity) ?? throw new ArgumentException("Nenhuma despesa foi encontrada.");
             return Ok(_despesa);
         }
         catch (Exception ex)
@@ -74,7 +74,7 @@ public class DespesaController : AuthController
     {
         try
         {
-            despesa.UsuarioId = IdUsuario;
+            despesa.UsuarioId = UserIdentity;
             return Ok(_despesaBusiness.Create(despesa));
         }
         catch (Exception ex)
@@ -97,7 +97,7 @@ public class DespesaController : AuthController
     {
         try
         {
-            despesa.UsuarioId = IdUsuario;
+            despesa.UsuarioId = UserIdentity;
             var updateDespesa = _despesaBusiness.Update(despesa) ?? throw new();
             return Ok(updateDespesa);
         }
@@ -121,8 +121,8 @@ public class DespesaController : AuthController
     {
         try
         {
-            DespesaDto despesa = _despesaBusiness.FindById(idDespesa, IdUsuario);
-            if (despesa == null || IdUsuario != despesa.UsuarioId)
+            DespesaDto despesa = _despesaBusiness.FindById(idDespesa, UserIdentity);
+            if (despesa == null || UserIdentity != despesa.UsuarioId)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
             
             return _despesaBusiness.Delete(despesa) ? Ok(true) : throw new();

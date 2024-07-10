@@ -23,7 +23,7 @@ public class ControleAcessoBusinessImplTest
     public ControleAcessoBusinessImplTest()
     {
         var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
@@ -31,7 +31,7 @@ public class ControleAcessoBusinessImplTest
             DaysToExpiry = 1
         });
 
-        var signingConfigurations = new SigningConfigurations(options);
+        var signingConfigurations = new SigningConfigurations(options?.Value);
         _repositorioMock = new Mock<IControleAcessoRepositorioImpl>();
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<ControleAcessoProfile>(); }));
         _controleAcessoBusiness = new ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto>(_mapper, _repositorioMock.Object, signingConfigurations, new EmailSender());

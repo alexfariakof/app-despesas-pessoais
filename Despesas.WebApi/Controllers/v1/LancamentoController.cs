@@ -23,7 +23,7 @@ public class LancamentoController : AuthController
     {
         try
         {
-            var list = _lancamentoBusiness.FindByMesAno(anoMes, IdUsuario);
+            var list = _lancamentoBusiness.FindByMesAno(anoMes, UserIdentity);
 
             if (list == null || list.Count == 0)
                 return Ok(new { message = true, lancamentos = new List<LancamentoDto>() });

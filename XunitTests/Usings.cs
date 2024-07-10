@@ -87,17 +87,17 @@ public class Usings
 
     public static string GenerateJwtToken(int userId)
     {
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
             Seconds = 3600,
             DaysToExpiry = 1
         });
-        var signingConfigurations = new SigningConfigurations(options);
+        var signingConfigurations = new SigningConfigurations(options?.Value);
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString()));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var claims = new[] { new Claim("IdUsuario", userId.ToString()) };
+        var claims = new[] { new Claim("sub", userId.ToString()) };
         var token = new JwtSecurityToken(
             issuer: signingConfigurations.TokenConfiguration.Issuer,
             audience: signingConfigurations.TokenConfiguration.Audience,
@@ -116,7 +116,7 @@ public class Usings
         {
             new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
         };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
+        var identity = new ClaimsIdentity(claims, "sub");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };

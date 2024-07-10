@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Business.Abstractions;
-using Business.Authentication;
 using Business.Dtos.Core;
 using EasyCryptoSalt;
 using Despesas.Infrastructure.Email.Abstractions;
@@ -10,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using static Domain.Entities.ValueObjects.PerfilUsuario;
+using Business.Authentication.Abstractions;
 
 namespace Business.Implementations;
 public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : ControleAcessoDtoBase where DtoLogin : LoginDtoBase, new()
@@ -17,9 +17,9 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     private readonly IMapper _mapper;
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
-    private readonly SigningConfigurations _singingConfiguration;
+    private readonly ISigningConfigurations _singingConfiguration;
 
-    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, SigningConfigurations singingConfiguration, IEmailSender emailSender)
+    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, ISigningConfigurations singingConfiguration, IEmailSender emailSender)
     {
         _mapper = mapper;
         _repositorio = repositorio;
@@ -49,7 +49,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         bool credentialsValid = baseLogin is not null && loginDto?.Email == baseLogin.Login;
         if (credentialsValid && baseLogin is not null)
         {
-            baseLogin.RefreshToken =  _singingConfiguration.TokenConfiguration.GenerateRefreshToken();
+            baseLogin.RefreshToken =  _singingConfiguration.GenerateRefreshToken();
             baseLogin.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_singingConfiguration.TokenConfiguration.DaysToExpiry);         
             _repositorio.RefreshTokenInfo(baseLogin);
             return AuthenticationSuccess(baseLogin);
@@ -64,7 +64,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
             baseLogin is not null 
             && baseLogin.RefreshTokenExpiry >= DateTime.UtcNow
             && refreshToken.Equals(baseLogin.RefreshToken)
-            && _singingConfiguration.TokenConfiguration.ValidateRefreshToken(refreshToken);
+            && _singingConfiguration.ValidateRefreshToken(refreshToken);
 
         if (credentialsValid && baseLogin is not null)
             return AuthenticationSuccess(baseLogin);
@@ -106,12 +106,13 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
 
     private AuthenticationDto AuthenticationSuccess(ControleAcesso controleAcesso)
     {
-
         ClaimsIdentity identity = new ClaimsIdentity(new[]
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
-            new Claim("IdUsuario",  controleAcesso.UsuarioId.ToString()),
-            new Claim("role",  ((Perfil)controleAcesso.Usuario.PerfilUsuario.Id).ToString())
+            new Claim("role",  ((Perfil)controleAcesso.Usuario.PerfilUsuario.Id).ToString()),
+            new Claim(JwtRegisteredClaimNames.Sub, controleAcesso.UsuarioId.ToString()),
+            new Claim(JwtRegisteredClaimNames.AuthTime, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
+            new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString()),
         });
 
         DateTime createDate = DateTime.Now;

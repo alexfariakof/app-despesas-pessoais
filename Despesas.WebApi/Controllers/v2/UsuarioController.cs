@@ -31,7 +31,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var _usuario = _usuarioBusiness.FindById(IdUsuario);
+            var _usuario = _usuarioBusiness.FindById(UserIdentity);
             if (_usuario == null) throw new();
             return Ok(_usuario);
         }
@@ -55,7 +55,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            usuarioDto.UsuarioId = IdUsuario;            
+            usuarioDto.UsuarioId = UserIdentity;            
             return Ok(_usuarioBusiness.Update(usuarioDto));
         }
         catch (Exception ex)
@@ -78,7 +78,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var usuarios = _usuarioBusiness.FindAll(IdUsuario);
+            var usuarios = _usuarioBusiness.FindAll(UserIdentity);
             return Ok(usuarios);
         }
         catch (Exception ex)
@@ -101,7 +101,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            usuarioDto.UsuarioId = IdUsuario;
+            usuarioDto.UsuarioId = UserIdentity;
             return Ok(_usuarioBusiness.Create(usuarioDto));
         }
         catch (Exception ex)
@@ -124,7 +124,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            usuarioDto.UsuarioId = IdUsuario;
+            usuarioDto.UsuarioId = UserIdentity;
             return Ok(_usuarioBusiness.Update(usuarioDto));
         }
         catch (Exception ex)
@@ -173,7 +173,7 @@ public class UsuarioController : AuthController
         try
         {
 
-            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario).Find(prop => prop.UsuarioId.Equals(IdUsuario));
+            var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(UserIdentity).Find(prop => prop.UsuarioId.Equals(UserIdentity));
 
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -200,7 +200,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, UserIdentity);
             var _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
 
             if (_imagemPerfilUsuario != null)
@@ -228,7 +228,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, UserIdentity);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(imagemPerfilUsuario);
@@ -255,7 +255,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            if (_imagemPerfilBussiness.Delete(IdUsuario))
+            if (_imagemPerfilBussiness.Delete(UserIdentity))
                 return Ok(true);
             else
                 throw new();
@@ -289,7 +289,7 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    UsuarioId = IdUsuario,
+                    UsuarioId = UserIdentity,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;

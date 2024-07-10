@@ -25,7 +25,7 @@ public class UsuarioController : AuthController
     [Authorize("Bearer", Roles = "Admin, User")]
     public IActionResult GetUsuario()
     {
-        var _usuario = _usuarioBusiness.FindById(IdUsuario);
+        var _usuario = _usuarioBusiness.FindById(UserIdentity);
         if (_usuario == null)
             return BadRequest(new { message = "Usuário não encontrado!" });
 
@@ -56,20 +56,20 @@ public class UsuarioController : AuthController
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Get()
     {
-        var adm = _usuarioBusiness.FindById(IdUsuario);
+        var adm = _usuarioBusiness.FindById(UserIdentity);
         if (adm.PerfilUsuario != PerfilUsuario.Perfil.Admin)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }
 
-        return Ok(_usuarioBusiness.FindAll(IdUsuario));
+        return Ok(_usuarioBusiness.FindAll(UserIdentity));
     }
 
     [HttpPost]
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Post([FromBody] UsuarioDto usuarioDto)
     {
-        var usuario = _usuarioBusiness.FindById(IdUsuario);
+        var usuario = _usuarioBusiness.FindById(UserIdentity);
         if (usuario.PerfilUsuario != PerfilUsuario.Perfil.Admin)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -91,7 +91,7 @@ public class UsuarioController : AuthController
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult PutAdministrador([FromBody] UsuarioDto usuarioDto)
     {
-        var usuario = _usuarioBusiness.FindById(IdUsuario);
+        var usuario = _usuarioBusiness.FindById(UserIdentity);
         if (usuario.PerfilUsuario != PerfilUsuario.Perfil.Admin)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -117,7 +117,7 @@ public class UsuarioController : AuthController
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult Delete([FromBody] UsuarioDto usuarioDto)
     {
-        var adm = _usuarioBusiness.FindById(IdUsuario);
+        var adm = _usuarioBusiness.FindById(UserIdentity);
         if (adm.PerfilUsuario != PerfilUsuario.Perfil.Admin)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
@@ -133,8 +133,8 @@ public class UsuarioController : AuthController
     [Authorize("Bearer", Roles = "User")]
     public IActionResult GetImage()
     {
-        var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(IdUsuario)
-            .Find(prop => prop.UsuarioId.Equals(IdUsuario));
+        var imagemPerfilUsuario = _imagemPerfilBussiness.FindAll(UserIdentity)
+            .Find(prop => prop.UsuarioId.Equals(UserIdentity));
 
         if (imagemPerfilUsuario != null)
             return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -148,7 +148,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            var imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, UserIdentity);
             ImagemPerfilDto? _imagemPerfilUsuario = _imagemPerfilBussiness.Create(imagemPerfilUsuario);
             if (_imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = _imagemPerfilUsuario });
@@ -167,7 +167,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, IdUsuario);
+            ImagemPerfilDto imagemPerfilUsuario = await ConvertFileToImagemPerfilUsuarioDtoAsync(file, UserIdentity);
             imagemPerfilUsuario = _imagemPerfilBussiness.Update(imagemPerfilUsuario);
             if (imagemPerfilUsuario != null)
                 return Ok(new { message = true, imagemPerfilUsuario = imagemPerfilUsuario });
@@ -186,7 +186,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            if (_imagemPerfilBussiness.Delete(IdUsuario))
+            if (_imagemPerfilBussiness.Delete(UserIdentity))
                 return Ok(new { message = true });
             else
                 return BadRequest(new { message = false });
@@ -216,7 +216,7 @@ public class UsuarioController : AuthController
                     Name = fileName,
                     Type = typeFile,
                     ContentType = file.ContentType,
-                    UsuarioId = IdUsuario,
+                    UsuarioId = UserIdentity,
                     Arquivo = memoryStream.GetBuffer()
                 };
                 return imagemPerfilUsuario;
