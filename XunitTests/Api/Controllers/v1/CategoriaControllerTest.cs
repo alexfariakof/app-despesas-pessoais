@@ -113,7 +113,7 @@ public sealed class CategoriaControllerTest
         {
             Id = obj.Id,
             Descricao = obj.Descricao,
-            UsuarioId = 1,
+            UsuarioId = Guid.NewGuid(),
             IdTipoCategoria = (int)TipoCategoria.CategoriaType.Despesa
         };
         Usings.SetupBearerToken(categoriaDto.UsuarioId, _categoriaController);
@@ -277,14 +277,15 @@ public sealed class CategoriaControllerTest
         _mockCategoriaBusiness = new Mock<IBusiness<CategoriaDto, Categoria>>();
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().Last();
+        var idUsuario = Guid.NewGuid();
         var categoriaDto = new CategoriaDto
         {
             Id = obj.Id,
             Descricao = obj.Descricao,
-            UsuarioId = 10,
+            UsuarioId = idUsuario,
             IdTipoCategoria = (int)TipoCategoriaDto.Receita
         };
-        Usings.SetupBearerToken(10, _categoriaController);
+        Usings.SetupBearerToken(idUsuario, _categoriaController);
         _mockCategoriaBusiness.Setup(b => b.Delete(It.IsAny<CategoriaDto>())).Returns(true);
         _mockCategoriaBusiness.Setup(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId)).Returns(categoriaDto);
 
@@ -310,14 +311,15 @@ public sealed class CategoriaControllerTest
         _mockCategoriaBusiness = new Mock<IBusiness<CategoriaDto, Categoria>>();
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var obj = CategoriaFaker.Instance.CategoriasVMs().Last();
+        var idUsuario = Guid.NewGuid();
         var categoriaDto = new CategoriaDto
         {
             Id = obj.Id,
             Descricao = obj.Descricao,
-            UsuarioId = 100,
+            UsuarioId = idUsuario,
             IdTipoCategoria = (int)TipoCategoria.CategoriaType.Receita
         };
-        Usings.SetupBearerToken(100, _categoriaController);
+        Usings.SetupBearerToken(idUsuario, _categoriaController);
         _mockCategoriaBusiness.Setup(b => b.Delete(categoriaDto)).Returns(false);
         _mockCategoriaBusiness.Setup(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId)).Returns(categoriaDto);
 
@@ -343,7 +345,7 @@ public sealed class CategoriaControllerTest
         _mockCategoriaBusiness = new Mock<IBusiness<CategoriaDto, Categoria>>();
         _categoriaController = new CategoriaController(_mockCategoriaBusiness.Object);
         var categoriaDto = CategoriaFaker.Instance.CategoriasVMs().First();
-        Usings.SetupBearerToken(0, _categoriaController);
+        Usings.SetupBearerToken(Guid.Empty, _categoriaController);
         _mockCategoriaBusiness.Setup(b => b.Delete(categoriaDto)).Returns(false);
         _mockCategoriaBusiness.Setup(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId)).Returns(categoriaDto);
 

@@ -26,7 +26,7 @@ public sealed class DespesaFaker
     {
 
         var despesaFaker = new Faker<Despesa>()
-        .RuleFor(r => r.Id, f => counter++)
+        .RuleFor(r => r.Id, f => Guid.NewGuid())
         .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
         .RuleFor(
             r => r.DataVencimento,
@@ -40,15 +40,16 @@ public sealed class DespesaFaker
         .Generate();
         despesaFaker.Categoria = despesaFaker.Categoria ?? new();
         despesaFaker.CategoriaId = despesaFaker.Categoria.Id;
+        counter++;
         return despesaFaker;
 
     }
 
-    public DespesaDto GetNewFakerVM(int idUsuario, int idCategoria)
+    public DespesaDto GetNewFakerVM(Guid idUsuario, Guid idCategoria)
     {
 
         var despesaFaker = new Faker<DespesaDto>()
-        .RuleFor(r => r.Id, f => counterVM++)
+        .RuleFor(r => r.Id, f => Guid.NewGuid())
         .RuleFor(r => r.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
         .RuleFor(
             r => r.DataVencimento,
@@ -57,18 +58,19 @@ public sealed class DespesaFaker
         .RuleFor(r => r.Descricao, f => f.Commerce.ProductName())
         .RuleFor(r => r.Valor, f => f.Random.Decimal(1, 900000))
         .RuleFor(r => r.UsuarioId, idUsuario)
-        .RuleFor(r => r.IdCategoria, CategoriaFaker.Instance.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM(idUsuario), TipoCategoriaDto.Despesa, idUsuario).Id);
-
-        return despesaFaker.Generate();
+        .RuleFor(r => r.IdCategoria, CategoriaFaker.Instance.GetNewFakerVM(UsuarioFaker.Instance.GetNewFakerVM(idUsuario), TipoCategoriaDto.Despesa, idUsuario).Id)
+        .Generate();
+        counterVM++;
+        return despesaFaker;
     }
 
-    public List<DespesaDto> DespesasVMs(UsuarioDtoBase? usuarioDto = null, int? idUsuario = null)
+    public List<DespesaDto> DespesasVMs(UsuarioDtoBase? usuarioDto = null, Guid? idUsuario = null)
     {
         var listDespesaDto = new List<DespesaDto>();
         for (int i = 0; i < 10; i++)
         {
             if (idUsuario == null)
-                usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(new Random().Next(1, 10));
+                usuarioDto = UsuarioFaker.Instance.GetNewFakerVM(Guid.NewGuid());
 
             usuarioDto = usuarioDto ?? new UsuarioDto();
             var categoriaDto = CategoriaFaker.Instance.GetNewFakerVM(usuarioDto, TipoCategoriaDto.Despesa);
@@ -86,7 +88,7 @@ public sealed class DespesaFaker
         for (int i = 0; i < count; i++)
         {
             if (idUsurio == null)
-                usuario = UsuarioFaker.Instance.GetNewFaker(new Random().Next(1, 10));
+                usuario = UsuarioFaker.Instance.GetNewFaker(Guid.NewGuid());
 
             usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Despesa, usuario.Id);

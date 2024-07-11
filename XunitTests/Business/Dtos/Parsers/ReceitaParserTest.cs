@@ -9,7 +9,7 @@ public sealed class ReceitaParserTest
     {
         // Arrange
         var receitaParser = new ReceitaParser();
-        var receitaDto = ReceitaFaker.Instance.GetNewFakerVM(1, 1);
+        var receitaDto = ReceitaFaker.Instance.GetNewFakerVM(Guid.NewGuid(), Guid.NewGuid());
 
         // Act
         var receita = receitaParser.Parse(receitaDto);

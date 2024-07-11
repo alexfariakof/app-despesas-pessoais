@@ -32,7 +32,7 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
             Senha = origin?.Senha ?? "",
             Usuario = new Usuario
             {
-                Id = origin?.UsuarioId ?? 0,
+                Id = origin.UsuarioId,
                 Nome = origin?.Nome ?? "",
                 SobreNome = origin?.SobreNome ?? "",
                 Telefone = origin?.Telefone ?? "",

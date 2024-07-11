@@ -20,12 +20,12 @@ public class GenericBusiness<Dto, Entity> : IBusiness<Dto, Entity> where Dto : c
         return _mapper.Map<Dto>(entity);
     }
 
-    public List<Dto> FindAll(int idUsuario)
+    public List<Dto> FindAll(Guid idUsuario)
     {
         return _mapper.Map<List<Dto>>(_repositorio.GetAll());
     }
 
-    public virtual Dto FindById(int id, int idUsuario)
+    public virtual Dto FindById(Guid id, Guid idUsuario)
     {
         return _mapper.Map<Dto>(_repositorio.Get(id));
     }

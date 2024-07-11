@@ -15,6 +15,7 @@ public class DataSeederDespesa : IDataSeeder
     {
         if (!_context.Despesa.Any())
         {
+            var user = _context.Usuario.FirstOrDefault(u => u.Nome.Equals("Teste"));
             var despesas = new List<Despesa>
             {
                 new Despesa
@@ -24,8 +25,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Luz",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2023, 1, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -34,8 +36,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de mantimentos",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2023, 1, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -44,8 +47,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Limpeza",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2023, 1, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -54,8 +58,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2023, 1, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -64,8 +69,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 300.95m,
                     DataVencimento = new DateTime(2023, 1, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -74,8 +80,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Ônibus",
                     Valor = 10.95m,
                     DataVencimento = new DateTime(2023, 1, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -84,8 +91,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Cinema",
                     Valor = 20.508m,
                     DataVencimento = new DateTime(2023, 1, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -94,8 +102,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 15.20m,
                     DataVencimento = new DateTime(2023, 1, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -104,8 +113,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 1, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -114,8 +124,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 1, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -124,8 +135,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2023, 2, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -134,8 +146,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de roupas",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2023, 2, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -144,8 +157,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de manutenção",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2023, 2, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -154,8 +168,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 250.95m,
                     DataVencimento = new DateTime(2023, 2, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -164,8 +179,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 350.95m,
                     DataVencimento = new DateTime(2023, 2, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -174,8 +190,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Ônibus",
                     Valor = 15.95m,
                     DataVencimento = new DateTime(2023, 2, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -184,8 +201,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Cinema",
                     Valor = 25.508m,
                     DataVencimento = new DateTime(2023, 2, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -194,8 +212,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 20.20m,
                     DataVencimento = new DateTime(2023, 2, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -204,8 +223,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 2, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -214,8 +234,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 2, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -224,8 +245,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2023, 3, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -234,8 +256,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Eletrônicos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 3, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -244,8 +267,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Jardinagem",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2023, 3, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -254,8 +278,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2023, 3, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -264,8 +289,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 400.95m,
                     DataVencimento = new DateTime(2023, 3, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -274,8 +300,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Trem",
                     Valor = 25.95m,
                     DataVencimento = new DateTime(2023, 3, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -284,8 +311,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Teatro",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2023, 3, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -294,8 +322,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 18.20m,
                     DataVencimento = new DateTime(2023, 3, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -304,8 +333,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 3, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -314,8 +344,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 3, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -324,8 +355,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Refeição Ifood",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2023, 4, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -334,8 +366,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Móveis",
                     Valor = 700.95m,
                     DataVencimento = new DateTime(2023, 4, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -344,8 +377,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Encanamento",
                     Valor = 90.95m,
                     DataVencimento = new DateTime(2023, 4, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -354,8 +388,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 180.95m,
                     DataVencimento = new DateTime(2023, 4, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -364,8 +399,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2023, 4, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -374,8 +410,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Metrô",
                     Valor = 5.95m,
                     DataVencimento = new DateTime(2023, 4, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -384,8 +421,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Shows",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2023, 4, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -394,8 +432,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 22.508m,
                     DataVencimento = new DateTime(2023, 4, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -404,8 +443,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 4, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -414,8 +454,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 4, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -424,8 +465,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Almoço Restaurante",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2023, 5, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -434,8 +476,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Eletrodomésticos",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2023, 5, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -444,8 +487,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Pintura",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2023, 5, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -454,8 +498,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2023, 5, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -464,8 +509,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 400.95m,
                     DataVencimento = new DateTime(2023, 5, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -474,8 +520,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Barco",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2023, 5, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -484,8 +531,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Exposição de Arte",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 5, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -494,8 +542,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 25.80m,
                     DataVencimento = new DateTime(2023, 5, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -504,8 +553,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 5, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -514,8 +564,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 5, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -524,8 +575,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Pedido Ifood",
                     Valor = 90.95m,
                     DataVencimento = new DateTime(2023, 6, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -534,8 +586,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Livros",
                     Valor = 60.95m,
                     DataVencimento = new DateTime(2023, 6, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -544,8 +597,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Manicure",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 6, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -554,8 +608,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2023, 6, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -564,8 +619,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 300.95m,
                     DataVencimento = new DateTime(2023, 6, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -574,8 +630,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Avião",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2023, 6, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -584,8 +641,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Shows",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2023, 6, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -594,8 +652,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.508m,
                     DataVencimento = new DateTime(2023, 6, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -604,8 +663,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 6, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -614,8 +674,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 6, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -624,8 +685,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Refeição Ifood",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2023, 7, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -634,8 +696,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Roupas",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2023, 7, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -644,8 +707,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Limpeza",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2023, 7, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -654,8 +718,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2023, 7, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -664,8 +729,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 250.95m,
                     DataVencimento = new DateTime(2023, 7, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -674,8 +740,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Ônibus",
                     Valor = 10.95m,
                     DataVencimento = new DateTime(2023, 7, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -684,8 +751,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Cinema",
                     Valor = 25.508m,
                     DataVencimento = new DateTime(2023, 7, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -694,8 +762,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 20.20m,
                     DataVencimento = new DateTime(2023, 7, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -704,8 +773,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 7, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -714,8 +784,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 7, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -724,8 +795,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Almoço no Restaurante",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2023, 8, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -734,8 +806,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Eletrônicos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2023, 8, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -744,8 +817,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Jardinagem",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2023, 8, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -754,8 +828,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2023, 8, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -764,8 +839,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 350.95m,
                     DataVencimento = new DateTime(2023, 8, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -774,8 +850,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Trem",
                     Valor = 15.95m,
                     DataVencimento = new DateTime(2023, 8, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -784,8 +861,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Shows",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2023, 8, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -794,8 +872,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2023, 8, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -804,8 +883,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Telefone",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2023, 9, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -814,8 +894,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2023, 9, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -824,8 +905,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2023, 9, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -834,8 +916,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2023, 9, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -844,8 +927,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 9, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -854,8 +938,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Jornal",
                     Valor = 15.95m,
                     DataVencimento = new DateTime(2023, 9, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -864,8 +949,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Aniversário",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2023, 9, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -874,8 +960,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 25.95m,
                     DataVencimento = new DateTime(2023, 9, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -884,8 +971,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2023, 9, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -894,8 +982,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Internet",
                     Valor = 60.95m,
                     DataVencimento = new DateTime(2023, 10, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -904,8 +993,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2023, 10, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -914,8 +1004,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2023, 10, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -924,8 +1015,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 10, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -934,8 +1026,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 10, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -944,8 +1037,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Revista",
                     Valor = 20.95m,
                     DataVencimento = new DateTime(2023, 10, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -954,8 +1048,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Casamento",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2023, 10, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -964,8 +1059,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2023, 10, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -974,8 +1070,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1100.95m,
                     DataVencimento = new DateTime(2023, 10, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -984,8 +1081,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 11, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -994,8 +1092,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2023, 11, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1004,8 +1103,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2023, 11, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1014,8 +1114,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2023, 11, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1024,8 +1125,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 11, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1034,8 +1136,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Revista",
                     Valor = 20.95m,
                     DataVencimento = new DateTime(2023, 11, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1044,8 +1147,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Casamento",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2023, 11, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1054,8 +1158,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2023, 11, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1064,8 +1169,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1100.95m,
                     DataVencimento = new DateTime(2023, 11, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1074,8 +1180,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 12, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1084,8 +1191,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2023, 12, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1094,8 +1202,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2023, 12, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1104,8 +1213,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2023, 12, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1114,8 +1224,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2023, 12, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1124,8 +1235,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Revista",
                     Valor = 20.95m,
                     DataVencimento = new DateTime(2023, 12, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1134,8 +1246,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Casamento",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2023, 12, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1144,8 +1257,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2023, 12, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1154,8 +1268,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1100.95m,
                     DataVencimento = new DateTime(2023, 12, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1164,8 +1279,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 01, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1174,8 +1290,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 01, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1184,8 +1301,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 01, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1194,8 +1312,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 01, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                                 new Despesa
                 {
@@ -1204,8 +1323,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Luz",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2024, 1, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1214,8 +1334,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de mantimentos",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2024, 1, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1224,8 +1345,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Limpeza",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 1, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1234,8 +1356,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2024, 1, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1244,8 +1367,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 300.95m,
                     DataVencimento = new DateTime(2024, 1, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1254,8 +1378,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Ônibus",
                     Valor = 10.95m,
                     DataVencimento = new DateTime(2024, 1, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1264,8 +1389,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Cinema",
                     Valor = 20.508m,
                     DataVencimento = new DateTime(2024, 1, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1274,8 +1400,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 15.20m,
                     DataVencimento = new DateTime(2024, 1, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1284,8 +1411,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 1, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1294,8 +1422,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 1, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1304,8 +1433,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 2, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -1314,8 +1444,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de roupas",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2024, 2, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1324,8 +1455,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de manutenção",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2024, 2, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1334,8 +1466,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 250.95m,
                     DataVencimento = new DateTime(2024, 2, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1344,8 +1477,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 350.95m,
                     DataVencimento = new DateTime(2024, 2, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1354,8 +1488,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Ônibus",
                     Valor = 15.95m,
                     DataVencimento = new DateTime(2024, 2, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1364,8 +1499,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Cinema",
                     Valor = 25.508m,
                     DataVencimento = new DateTime(2024, 2, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1374,8 +1510,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 20.20m,
                     DataVencimento = new DateTime(2024, 2, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1384,8 +1521,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 2, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1394,8 +1532,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 2, 5),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1404,8 +1543,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2024, 3, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1414,8 +1554,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Eletrônicos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 3, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1424,8 +1565,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Jardinagem",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2024, 3, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1434,8 +1576,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2024, 3, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1444,8 +1587,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 400.95m,
                     DataVencimento = new DateTime(2024, 3, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1454,8 +1598,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Trem",
                     Valor = 25.95m,
                     DataVencimento = new DateTime(2024, 3, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1464,8 +1609,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Teatro",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 3, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1474,8 +1620,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 18.20m,
                     DataVencimento = new DateTime(2024, 3, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1484,8 +1631,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 3, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1494,8 +1642,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 3, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1504,8 +1653,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Refeição Ifood",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 4, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -1514,8 +1664,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Móveis",
                     Valor = 700.95m,
                     DataVencimento = new DateTime(2024, 4, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1524,8 +1675,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Encanamento",
                     Valor = 90.95m,
                     DataVencimento = new DateTime(2024, 4, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1534,8 +1686,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 180.95m,
                     DataVencimento = new DateTime(2024, 4, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1544,8 +1697,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2024, 4, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1554,8 +1708,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Metrô",
                     Valor = 5.95m,
                     DataVencimento = new DateTime(2024, 4, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1564,8 +1719,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Shows",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2024, 4, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1574,8 +1730,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 22.508m,
                     DataVencimento = new DateTime(2024, 4, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1584,8 +1741,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 4, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1594,8 +1752,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 4, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1604,8 +1763,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Almoço Restaurante",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2024, 5, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -1614,8 +1774,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Eletrodomésticos",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 5, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1624,8 +1785,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Pintura",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2024, 5, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1634,8 +1796,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2024, 5, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1644,8 +1807,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 400.95m,
                     DataVencimento = new DateTime(2024, 5, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1654,8 +1818,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Barco",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 5, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1664,8 +1829,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Exposição de Arte",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 5, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1674,8 +1840,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 25.80m,
                     DataVencimento = new DateTime(2024, 5, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1684,8 +1851,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 5, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1694,8 +1862,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 5, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1704,8 +1873,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Pedido Ifood",
                     Valor = 90.95m,
                     DataVencimento = new DateTime(2024, 6, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -1714,8 +1884,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Livros",
                     Valor = 60.95m,
                     DataVencimento = new DateTime(2024, 6, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1724,8 +1895,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Manicure",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 6, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1734,8 +1906,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2024, 6, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1744,8 +1917,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 300.95m,
                     DataVencimento = new DateTime(2024, 6, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1754,8 +1928,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Avião",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2024, 6, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1764,8 +1939,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Shows",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2024, 6, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1774,8 +1950,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.508m,
                     DataVencimento = new DateTime(2024, 6, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1784,8 +1961,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 6, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1794,8 +1972,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 6, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1804,8 +1983,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Refeição Ifood",
                     Valor = 150.95m,
                     DataVencimento = new DateTime(2024, 7, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -1814,8 +1994,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Roupas",
                     Valor = 200.95m,
                     DataVencimento = new DateTime(2024, 7, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1824,8 +2005,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Limpeza",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 7, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1834,8 +2016,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2024, 7, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1844,8 +2027,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 250.95m,
                     DataVencimento = new DateTime(2024, 7, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1854,8 +2038,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Ônibus",
                     Valor = 10.95m,
                     DataVencimento = new DateTime(2024, 7, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1864,8 +2049,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Cinema",
                     Valor = 25.508m,
                     DataVencimento = new DateTime(2024, 7, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1874,8 +2060,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 20.20m,
                     DataVencimento = new DateTime(2024, 7, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1884,8 +2071,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 7, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1894,8 +2082,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 7, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1904,8 +2093,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Almoço no Restaurante",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2024, 8, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 14
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Alimentação")).Id
                 },
                 new Despesa
                 {
@@ -1914,8 +2104,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Compra de Eletrônicos",
                     Valor = 500.95m,
                     DataVencimento = new DateTime(2024, 8, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1924,8 +2115,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Serviço de Jardinagem",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2024, 8, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -1934,8 +2126,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Consulta Médica",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 8, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -1944,8 +2137,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Imposto de Renda",
                     Valor = 350.95m,
                     DataVencimento = new DateTime(2024, 8, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 18
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Imposto")).Id
                 },
                 new Despesa
                 {
@@ -1954,8 +2148,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Passagem de Trem",
                     Valor = 15.95m,
                     DataVencimento = new DateTime(2024, 8, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 19
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Transporte")).Id
                 },
                 new Despesa
                 {
@@ -1964,8 +2159,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Shows",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2024, 8, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 20
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Lazer")).Id
                 },
                 new Despesa
                 {
@@ -1974,8 +2170,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 8, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -1984,8 +2181,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Telefone",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2024, 9, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -1994,8 +2192,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 9, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2004,8 +2203,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 120.95m,
                     DataVencimento = new DateTime(2024, 9, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2014,8 +2214,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 9, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2024,8 +2225,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 9, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -2034,8 +2236,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Jornal",
                     Valor = 15.95m,
                     DataVencimento = new DateTime(2024, 9, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2044,8 +2247,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Aniversário",
                     Valor = 50.95m,
                     DataVencimento = new DateTime(2024, 9, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2054,8 +2258,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 25.95m,
                     DataVencimento = new DateTime(2024, 9, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2064,8 +2269,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1000.95m,
                     DataVencimento = new DateTime(2024, 9, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2074,8 +2280,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Internet",
                     Valor = 60.95m,
                     DataVencimento = new DateTime(2024, 10, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2084,8 +2291,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 10, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2094,8 +2302,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 100.95m,
                     DataVencimento = new DateTime(2024, 10, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2104,8 +2313,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 10, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2114,8 +2324,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 10, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -2124,8 +2335,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Revista",
                     Valor = 20.95m,
                     DataVencimento = new DateTime(2024, 10, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2134,8 +2346,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Casamento",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2024, 10, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2144,8 +2357,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2024, 10, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2154,8 +2368,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1100.95m,
                     DataVencimento = new DateTime(2024, 10, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2164,8 +2379,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 11, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2174,8 +2390,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 11, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2184,8 +2401,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 11, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2194,8 +2412,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2024, 11, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2204,8 +2423,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 11, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -2214,8 +2434,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Revista",
                     Valor = 20.95m,
                     DataVencimento = new DateTime(2024, 11, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2224,8 +2445,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Casamento",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2024, 11, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2234,8 +2456,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2024, 11, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2244,8 +2467,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1100.95m,
                     DataVencimento = new DateTime(2024, 11, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2254,8 +2478,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 12, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2264,8 +2489,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 12, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2274,8 +2500,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 12, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2284,8 +2511,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 12, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2294,8 +2522,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Seguro de Vida",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 12, 05),
-                    UsuarioId = 2,
-                    CategoriaId = 17
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Saúde")).Id
                 },
                 new Despesa
                 {
@@ -2304,8 +2533,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Assinatura de Revista",
                     Valor = 20.95m,
                     DataVencimento = new DateTime(2024, 12, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2314,8 +2544,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Presente de Casamento",
                     Valor = 70.95m,
                     DataVencimento = new DateTime(2024, 12, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2324,8 +2555,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Outros gastos",
                     Valor = 35.95m,
                     DataVencimento = new DateTime(2024, 12, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2334,8 +2566,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Gastos Diversos",
                     Valor = 1100.95m,
                     DataVencimento = new DateTime(2024, 12, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 21
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Outros")).Id
                 },
                 new Despesa
                 {
@@ -2344,8 +2577,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Conta de Água",
                     Valor = 40.95m,
                     DataVencimento = new DateTime(2024, 01, 10),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2354,8 +2588,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Aluguel",
                     Valor = 800.95m,
                     DataVencimento = new DateTime(2024, 01, 15),
-                    UsuarioId = 2,
-                    CategoriaId = 15
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Casa")).Id
                 },
                 new Despesa
                 {
@@ -2364,8 +2599,9 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Manutenção do Carro",
                     Valor = 80.95m,
                     DataVencimento = new DateTime(2024, 01, 20),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 },
                 new Despesa
                 {
@@ -2374,11 +2610,12 @@ public class DataSeederDespesa : IDataSeeder
                     Descricao = "Material de Escritório",
                     Valor = 30.95m,
                     DataVencimento = new DateTime(2024, 01, 25),
-                    UsuarioId = 2,
-                    CategoriaId = 16
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Equals("Serviços")).Id
                 }
             };
-            _context.Despesa.AddRange(despesas);
+            _context.AddRange(despesas);
             _context.SaveChanges();
         }
     }

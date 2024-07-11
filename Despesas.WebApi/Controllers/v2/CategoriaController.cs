@@ -29,7 +29,7 @@ public class CategoriaController : AuthController
     {
         try
         {
-            IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(IdUsuario);
+            IList<CategoriaDto> _categoria = _categoriaBusiness.FindAll(UserIdentity);
             return Ok(_categoria);
         }
         catch
@@ -44,11 +44,11 @@ public class CategoriaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetById([FromRoute] int idCategoria)
+    public IActionResult GetById([FromRoute] Guid idCategoria)
     {
         try
         {
-            CategoriaDto _categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
+            CategoriaDto _categoria = _categoriaBusiness.FindById(idCategoria, UserIdentity);
             return Ok(_categoria);
         }
         catch
@@ -67,12 +67,12 @@ public class CategoriaController : AuthController
     {
         if (tipoCategoria == TipoCategoriaDto.Todas)
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.UsuarioId.Equals(IdUsuario)).ToList();
+            var _categoria = _categoriaBusiness.FindAll(UserIdentity).Where(prop => prop.UsuarioId.Equals(UserIdentity)).ToList();
             return Ok(_categoria);
         }
         else
         {
-            var _categoria = _categoriaBusiness.FindAll(IdUsuario).Where(prop => prop.IdTipoCategoria.Equals((TipoCategoriaDto)tipoCategoria)).ToList();
+            var _categoria = _categoriaBusiness.FindAll(UserIdentity).Where(prop => prop.IdTipoCategoria.Equals((TipoCategoriaDto)tipoCategoria)).ToList();
             return Ok(_categoria);
         }
     }
@@ -91,7 +91,7 @@ public class CategoriaController : AuthController
             if (categoria.IdTipoCategoria == (int)TipoCategoriaDto.Todas)
                 throw new ArgumentException("Nenhum tipo de Categoria foi selecionado!");
 
-            categoria.UsuarioId = IdUsuario;
+            categoria.UsuarioId = UserIdentity;
             return Ok(_categoriaBusiness.Create(categoria));
         }
         catch (Exception ex)
@@ -117,7 +117,7 @@ public class CategoriaController : AuthController
             if (categoria.IdTipoCategoria == TipoCategoriaDto.Todas)
                 throw new ArgumentException("Nenhum tipo de Categoria foi selecionado!");
 
-            categoria.UsuarioId = IdUsuario;
+            categoria.UsuarioId = UserIdentity;
             CategoriaDto updateCategoria = _categoriaBusiness.Update(categoria) ?? throw new();
             return Ok(updateCategoria);
         }
@@ -137,12 +137,12 @@ public class CategoriaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Delete(int idCategoria)
+    public IActionResult Delete(Guid idCategoria)
     {
         try
         {
-            CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, IdUsuario);
-            if (categoria == null || IdUsuario != categoria.UsuarioId)
+            CategoriaDto categoria = _categoriaBusiness.FindById(idCategoria, UserIdentity);
+            if (categoria == null || UserIdentity != categoria.UsuarioId)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             if (_categoriaBusiness.Delete(categoria))

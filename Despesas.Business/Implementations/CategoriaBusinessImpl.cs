@@ -28,13 +28,13 @@ public class CategoriaBusinessImpl<Dto>: BusinessBase<Dto, Categoria>, IBusiness
         return this.Mapper.Map<Dto>(categoria);
     }
 
-    public override List<Dto> FindAll(int idUsuario)
+    public override List<Dto> FindAll(Guid idUsuario)
     {
         var lstCategoria =  _repositorio.GetAll().Where(c => c.UsuarioId == idUsuario).ToList();
         return this.Mapper.Map<List<Dto>>(lstCategoria);
     }
 
-    public override Dto FindById(int id, int idUsuario)
+    public override Dto FindById(Guid id, Guid idUsuario)
     {
         var categoria = _repositorio?.Find(c => c.Id == id && c.Usuario.Id == idUsuario)?.FirstOrDefault();
         return this.Mapper.Map<Dto>(categoria);

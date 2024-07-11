@@ -28,13 +28,13 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
         return _mapper.Map<Dto>(receita);
     }
 
-    public override List<Dto> FindAll(int idUsuario)
+    public override List<Dto> FindAll(Guid idUsuario)
     {
         var receitas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
         return _mapper.Map<List<Dto>>(receitas);
     }      
 
-    public override Dto FindById(int id, int idUsuario)
+    public override Dto FindById(Guid id, Guid idUsuario)
     {
         var receita = _repositorio.Get(id);
         if (receita is null) return null;

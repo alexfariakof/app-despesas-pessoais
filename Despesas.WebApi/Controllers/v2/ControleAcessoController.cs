@@ -68,10 +68,7 @@ public class ControleAcessoController : AuthController
     {
         try
         {
-            if (IdUsuario.Equals(2))
-                throw new ArgumentException("A senha deste usuário não pode ser atualizada!");
-
-            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordVM.Senha ?? "");
+            _controleAcessoBusiness.ChangePassword(UserIdentity, changePasswordVM.Senha ?? "");
             return Ok(true);
         }
         catch (Exception ex)
@@ -93,9 +90,6 @@ public class ControleAcessoController : AuthController
     {
         try
         {
-            if (IdUsuario.Equals(2))
-                throw new();
-
             _controleAcessoBusiness.RecoveryPassword(email);
             return Ok(true);
         }

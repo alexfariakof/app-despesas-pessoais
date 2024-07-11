@@ -9,8 +9,10 @@ public class UsuarioMap: IEntityTypeConfiguration<Usuario>
     public void Configure(EntityTypeBuilder<Usuario> builder)
     {
         builder.ToTable(nameof(Usuario));
+        builder.Property(u => u.Id).HasColumnType("binary(16)")
+            .HasConversion(v => v.ToByteArray(), v => new Guid(v))
+            .ValueGeneratedOnAdd().ValueGeneratedOnAdd();
         builder.HasKey(u => u.Id);
-        builder.Property(u => u.Id).ValueGeneratedOnAdd();
         builder.HasIndex(u => u.Email).IsUnique(true);
         builder.Property(u => u.Email).IsRequired().HasMaxLength(50);
         builder.Property(u => u.Nome).HasMaxLength(50).IsRequired();

@@ -8,13 +8,13 @@ public sealed class UsuarioDtoTest
     public class UsuarioDtoBaseTest : UsuarioDtoBase { }
 
     [Theory]
-    [InlineData(1, "Usuario 1", "Teste Usuario 1" ,"(21) 99999-9999", "user1@user.com")]
-    [InlineData(2, "Usuario 2", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com")]
-    [InlineData(3, "Usuario 3", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com")]
-    public void UsuarioDto_Should_Set_Properties_Correctly(int id, string nome, string sobreNome, string telefone, string email)
+    [InlineData("Usuario 1", "Teste Usuario 1" ,"(21) 99999-9999", "user1@user.com")]
+    [InlineData("Usuario 2", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com")]
+    [InlineData("Usuario 3", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com")]
+    public void UsuarioDto_Should_Set_Properties_Correctly(string nome, string sobreNome, string telefone, string email)
     {
         // Arrange and Act
-
+        var id = Guid.NewGuid();
         var usuarioDto = new UsuarioDto
         {
             Id = id,
@@ -35,13 +35,13 @@ public sealed class UsuarioDtoTest
     }
 
     [Theory]
-    [InlineData(1, "Usuario 1", "Teste Usuario 1", "(21) 99999-9999", "user1@user.com")]
-    [InlineData(2, "Usuario 2", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com")]
-    [InlineData(3, "Usuario 3", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com")]
-    public void UsuarioDtoBase_Should_Set_Properties_Correctly(int id, string nome, string sobreNome, string telefone, string email)
+    [InlineData("Usuario 1", "Teste Usuario 1", "(21) 99999-9999", "user1@user.com")]
+    [InlineData("Usuario 2", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com")]
+    [InlineData("Usuario 3", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com")]
+    public void UsuarioDtoBase_Should_Set_Properties_Correctly(string nome, string sobreNome, string telefone, string email)
     {
         // Arrange and Act
-
+        var id = Guid.NewGuid();
         var usuarioDto = new UsuarioDtoBaseTest
         {
             Id = id,

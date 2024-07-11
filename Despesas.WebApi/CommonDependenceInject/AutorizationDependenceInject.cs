@@ -1,4 +1,5 @@
 ﻿using Business.Authentication;
+using Business.Authentication.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
@@ -7,25 +8,28 @@ using Microsoft.IdentityModel.Tokens;
 namespace Despesas.WebApi.CommonDependenceInject;
 public static class AutorizationDependenceInject
 {
-    public static void AddAuthConfigurations(this IServiceCollection services, IConfiguration configuration)
+    public static void AddSigningConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<TokenOptions>(configuration.GetSection("TokenConfigurations"));
-        var options = services.BuildServiceProvider().GetService<IOptions<TokenOptions>>();
-        if (options is null) throw new ArgumentNullException(nameof(options));
+        services.Configure<TokenConfiguration>(configuration.GetSection("TokenConfigurations"));
+        var options = services.BuildServiceProvider().GetService<IOptions<TokenConfiguration>>()?.Value;
         var signingConfigurations = new SigningConfigurations(options);
-        services.AddSingleton<SigningConfigurations>(signingConfigurations);
+        services.AddSingleton<ISigningConfigurations>(signingConfigurations);
+    }
+
+    public static void AddAutoAuthenticationConfigurations(this IServiceCollection services)
+    {
         services.AddAuthentication(authOptions =>
         {
             authOptions.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             authOptions.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(bearerOptions =>
         {
-            var tokenConfiguration = signingConfigurations.TokenConfiguration;
+            var configurations = services.BuildServiceProvider().GetService<ISigningConfigurations>();
             bearerOptions.TokenValidationParameters = new TokenValidationParameters
             {
-                IssuerSigningKey = signingConfigurations.Key,
-                ValidAudience = tokenConfiguration.Audience,
-                ValidIssuer = tokenConfiguration.Issuer,
+                IssuerSigningKey = configurations.Key,
+                ValidAudience = configurations.TokenConfiguration.Audience,
+                ValidIssuer = configurations.TokenConfiguration.Issuer,
                 ValidateIssuerSigningKey = true,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero

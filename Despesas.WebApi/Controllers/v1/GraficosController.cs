@@ -24,7 +24,7 @@ public class GraficosController : AuthController
     {
         try
         {
-            var dadosGrafico = _graficosBusiness.GetDadosGraficoByAnoByIdUsuario(IdUsuario, ano);
+            var dadosGrafico = _graficosBusiness.GetDadosGraficoByAnoByIdUsuario(UserIdentity, ano);
 
             datasets = new List<object> {
                 new { label = "Despesas", Data = dadosGrafico?.SomatorioDespesasPorAno?.Values.ToArray(), borderColor = "rgb(255, 99, 132)", backgroundColor = "rgba(255, 99, 132, 0.5)"  },

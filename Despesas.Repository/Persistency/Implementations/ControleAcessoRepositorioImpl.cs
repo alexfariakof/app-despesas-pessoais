@@ -49,7 +49,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         }
     }
 
-    public bool ChangePassword(int idUsuario, string password)
+    public bool ChangePassword(Guid idUsuario, string password)
     {
         var usuario = Context.Set<Usuario>().SingleOrDefault(prop => prop.Id.Equals(idUsuario));
         if (usuario is null) return false;
@@ -68,7 +68,7 @@ public class ControleAcessoRepositorioImpl : IControleAcessoRepositorioImpl
         }
     }
 
-    public void RevokeRefreshToken(int idUsuario)
+    public void RevokeRefreshToken(Guid idUsuario)
     {
         var controleAcesso = Context.ControleAcesso.SingleOrDefault(prop => prop.Id.Equals(idUsuario));
         if (controleAcesso is null) throw new ArgumentException("Token inexistente!");
