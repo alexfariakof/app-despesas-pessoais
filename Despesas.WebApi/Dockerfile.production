@@ -1,25 +1,21 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER app
 WORKDIR /app
 
 EXPOSE 80
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:80;
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM alexfariakof/dotnet-sdk-8.0-with-node:latest AS publish 
 WORKDIR /src
-COPY . .
+COPY . . 
 
 WORKDIR /src/Despesas.WebApi
-RUN apt-get update && \
-    apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs
-RUN npm install -g npm@latest >/dev/null 2>&1 && \
-    npm install -g @angular/core @angular/cli >/dev/null 2>&1
-
 RUN dotnet publish "./Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
-COPY --from=build /app/publish .
+
+COPY --from=publish /app/publish .
+COPY --from=publish /app/publish/appsettings.docker.json ./appsettings.json
 ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]

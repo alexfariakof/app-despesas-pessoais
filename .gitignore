@@ -406,6 +406,3 @@ FodyWeavers.xsd
 *.pem
 *.pfx
 !webapi-cert.pfx
-Despesas.WebApi/gencert.sh
-Despesas.WebApi/webapi-cert_cert.pem
-Despesas.WebApi/webapi-cert_chave.pem

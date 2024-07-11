@@ -12,9 +12,9 @@ public class SigningConfigurations : ISigningConfigurations
     public TokenConfiguration? TokenConfiguration { get; }
     public SigningCredentials? SigningCredentials { get; private set; }
     
-
     public SigningConfigurations(TokenConfiguration options)
     {
+        TokenConfiguration = options;
 
         if (!String.IsNullOrEmpty(options.Certificate))
         {
@@ -76,5 +76,4 @@ public class SigningConfigurations : ISigningConfigurations
         var jwtToken = tokenHandler.ReadToken(refreshToken.Replace("Bearer ", "")) as JwtSecurityToken;
         return jwtToken?.ValidTo >= DateTime.UtcNow;
     }
-}
 }

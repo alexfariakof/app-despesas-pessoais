@@ -1,4 +1,4 @@
-using Asp.Versioning;
+﻿using Asp.Versioning;
 using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -193,9 +193,9 @@ public class UsuarioController : AuthController
         return Ok(updateUsuario);
     }
 
-    [HttpDelete("DeleteUsuarioAdmin")]
+    [HttpDelete]
     [Authorize("Bearer", Roles = "Admin")]
-    public IActionResult DeleteUsuarioAdmin([FromBody] UsuarioDto usuarioDto)
+    public IActionResult DeleteUsuario([FromBody] UsuarioDto usuarioDto)
     {
         var adminUser = _usuarioBusiness.FindById(UserIdentity);
         if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)

@@ -32,5 +32,6 @@
 **/MySqlServer.Migrations
 **/.documents
 **/.gitKeep
+**.pem
 LICENSE
 README.md
