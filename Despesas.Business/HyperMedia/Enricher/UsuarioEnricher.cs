@@ -49,7 +49,7 @@ public class UsuarioEnricher : ContentResponseEnricher<UsuarioDto>
         return Task.CompletedTask;
     }
 
-    private string GetLink(int id, IUrlHelper urlHelper, string path)
+    private string GetLink(Guid id, IUrlHelper urlHelper, string path)
     {
         lock (_lock)
         {

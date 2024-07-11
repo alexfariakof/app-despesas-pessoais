@@ -14,7 +14,7 @@ public class ImagemPerfilUsuarioParser : IParser<ImagemPerfilDto, ImagemPerfilUs
             Name = origin?.Name ?? "",
             ContentType = origin?.ContentType ?? "",
             Url = origin?.Url ?? "",
-            UsuarioId = origin?.UsuarioId ?? 0,
+            UsuarioId = origin.UsuarioId,
         };
     }
 

@@ -28,14 +28,14 @@ public class DespesaBusinessImpl<Dto> : BusinessBase<Dto, Despesa>,IBusiness<Dto
         return _mapper.Map<Dto>(despesa);
     }
 
-    public override List<Dto> FindAll(int idUsuario)
+    public override List<Dto> FindAll(Guid idUsuario)
     {
         var despesas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
         var dtos = _mapper.Map<List<Dto>>(despesas);
         return dtos;
     }
 
-    public override  Dto FindById(int id, int idUsuario)
+    public override  Dto FindById(Guid id, Guid idUsuario)
     {
         var despesa = _repositorio.Get(id);
         if (despesa is null) return null;

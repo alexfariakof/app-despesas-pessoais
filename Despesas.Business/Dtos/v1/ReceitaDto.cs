@@ -14,6 +14,6 @@ public class ReceitaDto : ReceitaDtoBase
     public override decimal Valor { get; set; }
 
     [Required]
-    public override int? IdCategoria { get; set; }
+    public override Guid? IdCategoria { get; set; }
 
 }

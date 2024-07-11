@@ -24,14 +24,14 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
         var newReceita = MockReceita.Instance.GetReceita();
         newReceita.CategoriaId = _fixture.Context.Categoria.First().Id;
         newReceita.Categoria = null;
-        newReceita.Id = 0;
+        newReceita.Id = Guid.Empty;
 
         // Act
         _repository.Insert(ref newReceita);
 
         // Assert
         Assert.NotNull(newReceita);
-        Assert.NotEqual(0, newReceita.Id);
+        Assert.NotEqual(Guid.Empty, newReceita.Id);
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
     public void Update_Should_Throw_Exception_When_Receita_Not_Found()
     {
         // Arrange
-        var updatedItem = new Receita { Id = 999 };
+        var updatedItem = new Receita { Id = Guid.NewGuid() };
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => _repository.Update(ref updatedItem));
@@ -112,7 +112,7 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
     public void Get_Should_Throw_Exception_When_Receita_Not_Found()
     {
         // Act & Assert
-        var result = _repository.Get(999);
+        var result = _repository.Get(Guid.NewGuid());
         Assert.Null(result);
     }
 

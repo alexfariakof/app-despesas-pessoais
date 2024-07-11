@@ -26,12 +26,14 @@ public sealed class ControleAcessoFaker
             if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker(); 
 
             var controleAcessoFaker = new Faker<ControleAcesso>()
-                .RuleFor(ca => ca.Id, counter++)
+                .RuleFor(ca => ca.Id, Guid.NewGuid())
                 .RuleFor(ca => ca.Login, usuario.Email)
                 .RuleFor(ca => ca.Senha, f => f.Internet.Password(8, false, "", "!12345"))
                 .RuleFor(ca => ca.UsuarioId, usuario.Id)
-                .RuleFor(ca => ca.Usuario, usuario);
-            return controleAcessoFaker.Generate();
+                .RuleFor(ca => ca.Usuario, usuario)
+                .Generate();
+            counter++;
+            return controleAcessoFaker;
         }
     }
 

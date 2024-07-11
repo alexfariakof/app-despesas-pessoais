@@ -44,7 +44,7 @@ public class CategoriaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetById([FromRoute] int idCategoria)
+    public IActionResult GetById([FromRoute] Guid idCategoria)
     {
         try
         {
@@ -137,7 +137,7 @@ public class CategoriaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Delete(int idCategoria)
+    public IActionResult Delete(Guid idCategoria)
     {
         try
         {

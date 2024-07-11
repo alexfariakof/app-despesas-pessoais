@@ -49,8 +49,8 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         bool credentialsValid = baseLogin is not null && loginDto?.Email == baseLogin.Login;
         if (credentialsValid && baseLogin is not null)
         {
-            baseLogin.RefreshToken =  _singingConfiguration.GenerateRefreshToken();
-            baseLogin.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_singingConfiguration.TokenConfiguration.DaysToExpiry);         
+            baseLogin.RefreshToken = _singingConfiguration.GenerateRefreshToken();
+            baseLogin.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_singingConfiguration.TokenConfiguration.DaysToExpiry);
             _repositorio.RefreshTokenInfo(baseLogin);
             return AuthenticationSuccess(baseLogin);
         }
@@ -60,8 +60,8 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     public AuthenticationDto ValidateCredentials(string refreshToken)
     {
         var baseLogin = _repositorio.FindByRefreshToken(refreshToken);
-        var credentialsValid = 
-            baseLogin is not null 
+        var credentialsValid =
+            baseLogin is not null
             && baseLogin.RefreshTokenExpiry >= DateTime.UtcNow
             && refreshToken.Equals(baseLogin.RefreshToken)
             && _singingConfiguration.ValidateRefreshToken(refreshToken);
@@ -74,13 +74,14 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         return AuthenticationException("Refresh Token Inválido!");
     }
 
-    public void RevokeToken(int idUsuario)
+    public void RevokeToken(Guid idUsuario)
     {
         _repositorio.RevokeRefreshToken(idUsuario);
     }
 
     public void RecoveryPassword(string email)
     {
+        CheckIfUserIsTeste(_repositorio.Find(accout => accout.Login.Equals(email)).Id);
         IsValidEmail(email);
         var newPassword = Guid.NewGuid().ToString().Substring(0, 8);
         var result = _repositorio.RecoveryPassword(email, newPassword);
@@ -90,8 +91,9 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
             throw new ArgumentException("Erro ao enviar email de recuperação de senha!");
     }
 
-    public void ChangePassword(int idUsuario, string password)
+    public void ChangePassword(Guid idUsuario, string password)
     {
+        CheckIfUserIsTeste(idUsuario);
         _repositorio.ChangePassword(idUsuario, password);
     }
 
@@ -116,7 +118,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         });
 
         DateTime createDate = DateTime.Now;
-        DateTime expirationDate = createDate + TimeSpan.FromSeconds(_singingConfiguration.TokenConfiguration.Seconds);        
+        DateTime expirationDate = createDate + TimeSpan.FromSeconds(_singingConfiguration.TokenConfiguration.Seconds);
         string token = _singingConfiguration.CreateAccessToken(identity);
 
         return new AuthenticationDto
@@ -143,5 +145,12 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
 
         if (!regex.IsMatch(email))
             throw new ArgumentException("Email inválido!");
+    }
+
+    private void CheckIfUserIsTeste(Guid userIdentity)
+    {   
+        var idUsuarioTeste = _repositorio.Find(accout => accout.Usuario.Nome.Contains("Teste")).Id;
+        if (userIdentity.Equals(idUsuarioTeste))
+            throw new ArgumentException("A senha deste usuário não pode ser atualizada!");
     }
 }

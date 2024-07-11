@@ -29,7 +29,7 @@ public class CategoriaController : AuthController
 
     [HttpGet("GetById/{idCategoria}")]
     [Authorize("Bearer", Roles = "User")]
-    public IActionResult GetById([FromRoute] int idCategoria)
+    public IActionResult GetById([FromRoute] Guid idCategoria)
     {
 
         var _categoria = _categoriaBusiness.FindById(idCategoria, UserIdentity);
@@ -92,7 +92,7 @@ public class CategoriaController : AuthController
 
     [HttpDelete("{idCategoria}")]
     [Authorize("Bearer", Roles = "User")]
-    public IActionResult Delete(int idCategoria)
+    public IActionResult Delete(Guid idCategoria)
     {
         var categoria = _categoriaBusiness.FindById(idCategoria, UserIdentity);
         if (categoria == null || UserIdentity != categoria.UsuarioId)

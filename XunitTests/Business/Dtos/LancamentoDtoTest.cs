@@ -4,11 +4,16 @@ namespace Business.Dtos;
 public sealed class LancamentoDtoTest
 {
     [Theory]
-    [InlineData(1, 1, 2, 0, 200.00, "Teste Descripition Despesa ", "Despesa")]
-    [InlineData(2, 1, 0, 1, 500.55, "Teste Descripition Receita ", "Receita")]
-    public void LancamentoDto_Should_Set_Properties_Correctly(int id, int idUsuario, int idDespesa, int idReceita, decimal valor, string descricao, string tipoCategoria)
+    [InlineData(200.00, "Teste Descripition Despesa ", "Despesa")]
+    [InlineData(500.55, "Teste Descripition Receita ", "Receita")]
+    public void LancamentoDto_Should_Set_Properties_Correctly(decimal valor, string descricao, string tipoCategoria)
     {
         // Arrange and Act
+        var id = Guid.NewGuid();
+        Guid idUsuario = Guid.NewGuid();
+        Guid idDespesa = Guid.NewGuid();
+        Guid idReceita = Guid.NewGuid();
+
         var data = DateTime.Now.ToString("yyyy-MM-dd");
         var mockCategoria = Mock.Of<Categoria>();
 

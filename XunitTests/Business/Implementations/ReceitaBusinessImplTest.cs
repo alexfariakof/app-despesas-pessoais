@@ -70,7 +70,7 @@ public class ReceitaBusinessImplTest
     {
         // Arrange        
         var receita = ReceitaFaker.Instance.Receitas().First();
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(receita);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(receita);
 
         // Act
         var result = _receitaBusiness.FindById(receita.Id, receita.UsuarioId);
@@ -79,19 +79,19 @@ public class ReceitaBusinessImplTest
         Assert.NotNull(result);
         Assert.IsType<ReceitaDto>(result);
         Assert.Equal(receita.Id, result.Id);
-        _repositorioMock.Verify(repo => repo.Get(It.IsAny<int>()), Times.AtLeast(2));
+        _repositorioMock.Verify(repo => repo.Get(It.IsAny<Guid>()), Times.AtLeast(2));
     }
 
     [Fact]
     public void FindById_Should_Returns_Null_When_Parsed_ReceitaDto()
     {
         // Arrange
-        var id = 0;
+        var id = Guid.NewGuid();
         var receita = ReceitaFaker.Instance.Receitas()[0];
         _repositorioMock.Setup(repo => repo.Get(id)).Returns(() => null);
 
         // Act
-        var result = _receitaBusiness.FindById(id, 0);
+        var result = _receitaBusiness.FindById(id, Guid.Empty);
 
         // Assert
         Assert.Null(result);
@@ -106,7 +106,7 @@ public class ReceitaBusinessImplTest
         var receita = receitas.First();
         var receitaDto = _mapper.Map<ReceitaDto>(receita);            
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(receita);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(receita);
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria ?? new()).ToList());
 
         // Act
@@ -127,7 +127,7 @@ public class ReceitaBusinessImplTest
         var receita = receitas.First();
         var receitaDto = _mapper.Map<ReceitaDto>(receita);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Receita>())).Returns(true);
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(receita);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(receita);
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria ?? new()).ToList());
 
         // Act

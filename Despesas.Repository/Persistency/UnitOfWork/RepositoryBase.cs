@@ -13,7 +13,7 @@ public sealed class UnitOfWork<T>: IRepositoy<T> where T : BaseModel
         Context = context;
     }
 
-    public async Task<T?> GetById(int entityId)
+    public async Task<T?> GetById(Guid entityId)
     {
         return await Context.Set<T>().FindAsync(entityId);
     }
@@ -39,7 +39,7 @@ public sealed class UnitOfWork<T>: IRepositoy<T> where T : BaseModel
         return Context.Update(entity) as Task;
     }
 
-    public async void Delete(int entityId)
+    public async void Delete(Guid entityId)
     {
         var entity = await GetById(entityId);
         

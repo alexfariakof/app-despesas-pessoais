@@ -27,7 +27,7 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
         return _mapper.Map<Dto>(usuario);
     }
 
-    public override List<Dto> FindAll(int idUsuario)
+    public override List<Dto> FindAll(Guid idUsuario)
     {
         var usuario = _repositorio?.Find(u => u.Id == idUsuario)?.FirstOrDefault();
         IsValidPrefilAdministratdor(usuario);
@@ -42,7 +42,7 @@ public class UsuarioBusinessImpl<Dto> : BusinessBase<Dto, Usuario>, IUsuarioBusi
         return _mapper.Map<Dto>(usuario);
     }
 
-    public override Dto FindById(int id)
+    public override Dto FindById(Guid id)
     {
         var usuario = _repositorio?.Find(u => u.Id == id)?.FirstOrDefault();
         return this.Mapper.Map<Dto>(usuario);

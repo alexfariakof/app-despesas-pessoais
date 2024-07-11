@@ -10,7 +10,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         if (origin == null) return new Lancamento();
         return new Lancamento
         {
-            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+            Id = Guid.NewGuid(),
             Valor = origin.Valor,
             Data = origin.Data,
             Descricao = origin.Descricao,
@@ -18,7 +18,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             Usuario = origin.Usuario,
             DespesaId = origin.Id,
             Despesa = origin,
-            ReceitaId = 0,
+            ReceitaId = Guid.Empty,
             Receita = new Receita (),
             CategoriaId = origin.CategoriaId,
             Categoria = origin.Categoria,
@@ -30,13 +30,13 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         if (origin == null) return new Lancamento();
         return new Lancamento
         {
-            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+            Id = Guid.NewGuid(),
             Valor = origin.Valor,
             Data = origin.Data,
             Descricao = origin.Descricao,
             UsuarioId = origin.UsuarioId,
             Usuario = origin.Usuario,
-            DespesaId = 0,
+            DespesaId = Guid.Empty,
             Despesa = new Despesa(),
             ReceitaId = origin.Id,
             Receita = origin,
@@ -58,7 +58,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             DataCriacao = DateTime.Now,
             Valor = origin.Valor,
             Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin?.Descricao ?? ""},
-            Receita = new Receita { Id = origin?.IdReceita ?? 0, Descricao = origin?.Descricao ?? "" }
+            Receita = new Receita { Id = origin.IdReceita , Descricao = origin?.Descricao ?? "" }
         };
     }
     public LancamentoDto Parse(Lancamento origin)
@@ -67,13 +67,13 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
         return new LancamentoDto
         {
             Id = origin.Id,
-            IdDespesa = origin?.DespesaId.GetValueOrDefault() ?? 0,
-            IdReceita = origin?.ReceitaId.GetValueOrDefault() ?? 0,
-            UsuarioId = origin?.UsuarioId ?? 0,
+            IdDespesa = origin.DespesaId,
+            IdReceita = origin.ReceitaId,
+            UsuarioId = origin.UsuarioId,
             Data = origin?.Data.ToShortDateString(),
             Valor = origin?.Valor ?? 0,
             Descricao = origin?.Descricao,
-            TipoCategoria = origin?.DespesaId == 0 ? "Receita" : "Despesa",
+            TipoCategoria = origin.DespesaId == Guid.Empty ? "Receita" : "Despesa",
             Categoria = origin?.Categoria?.Descricao
         };
     }

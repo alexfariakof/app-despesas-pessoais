@@ -106,7 +106,7 @@ public class ControleAcessoBusinessImplTest
         var loginDto = new LoginDto { Email = "teste@teste.com", Senha = "teste", };
         var usuario = new Usuario
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Email = "teste@teste.com",
             StatusUsuario = StatusUsuario.Ativo
         };
@@ -141,7 +141,7 @@ public class ControleAcessoBusinessImplTest
 
         var usuario = new Usuario
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Email = "teste@teste.com",
             StatusUsuario = StatusUsuario.Ativo
         };
@@ -172,15 +172,16 @@ public class ControleAcessoBusinessImplTest
     public void ChangePassword_Should_Execute_And_Returns_True()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         string newPassword = "123456789";
-        _repositorioMock.Setup(repo => repo.ChangePassword(idUsuario, newPassword)).Returns(true);
+        _repositorioMock.Setup(repo => repo.ChangePassword(It.IsAny<Guid>(), newPassword)).Returns(true);
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(new ControleAcesso { UsuarioId = idUsuario});
 
         // Act
         _controleAcessoBusiness.ChangePassword(idUsuario, newPassword);
 
         // Assert        
-        _repositorioMock.Verify(repo => repo.ChangePassword(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
+        _repositorioMock.Verify(repo => repo.ChangePassword(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
     }
 
     [Fact]
@@ -197,7 +198,7 @@ public class ControleAcessoBusinessImplTest
         });
         var validToken = handler.WriteToken(securityToken);
 
-        int idUsuario = 1;        
+        var idUsuario = Guid.NewGuid();        
         var baseLogin = new ControleAcesso
         {
             Id = idUsuario,
@@ -223,7 +224,7 @@ public class ControleAcessoBusinessImplTest
     public void ValidateCredentials_Should_Revoke_Token_When_RefreshToken_Expires()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var baseLogin = new ControleAcesso
         {
             Id = idUsuario,
@@ -271,7 +272,7 @@ public class ControleAcessoBusinessImplTest
         _controleAcessoBusiness.ValidateCredentials("invalid_refresh_token");
 
         // Assert
-        _repositorioMock.Verify(repo => repo.RevokeRefreshToken(It.IsAny<int>()), Times.Once);
+        _repositorioMock.Verify(repo => repo.RevokeRefreshToken(It.IsAny<Guid>()), Times.Once);
     }
 
 }

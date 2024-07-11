@@ -2,11 +2,15 @@
 public sealed class DespesaTest
 {
     [Theory]
-    [InlineData(1, "Descrição 1", 10.0, 1, 1)]
-    [InlineData(2, "Descrição 2", 0.0, 2, 2)]
-    [InlineData(3, "Descrição 3", 9.5, 3, 3)]
-    public void Despesa_Should_Set_Properties_Correctly(int id, string descricao, Decimal valor, int usuarioId,int categoriaId)
+    [InlineData("Descrição 1", 10.0)]
+    [InlineData("Descrição 2", 0.0)]
+    [InlineData("Descrição 3", 9.5)]
+    public void Despesa_Should_Set_Properties_Correctly(string descricao, Decimal valor)
     {
+        var id = Guid.NewGuid();
+        var usuarioId = Guid.NewGuid();
+        var categoriaId = Guid.NewGuid();
+
         var mockUsuario = Mock.Of<Usuario>();
         var mockCategoria= Mock.Of<Categoria>();
         DateTime data = DateTime.Now;

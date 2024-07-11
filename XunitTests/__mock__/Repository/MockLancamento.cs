@@ -12,7 +12,7 @@ public sealed class MockLancamento
         Categoria categoria = MockCategoria.Instance.GetCategoria();
 
         var mockLancamento = new Faker<Lancamento>()
-            .RuleFor(l => l.Id, f => counter++)
+            .RuleFor(l => l.Id, f => Guid.NewGuid())
             .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
             .RuleFor(l => l.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
             .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
@@ -23,9 +23,10 @@ public sealed class MockLancamento
             .RuleFor(l => l.ReceitaId, receita.Id)
             .RuleFor(l => l.Receita, receita)
             .RuleFor(l => l.CategoriaId, categoria.Id)
-            .RuleFor(l => l.Categoria, categoria);
-
-        return mockLancamento.Generate();
+            .RuleFor(l => l.Categoria, categoria)
+            .Generate();
+        counter++;
+        return mockLancamento;
     }
         
     public static List<Lancamento> GetLancamentos(int count = 3)

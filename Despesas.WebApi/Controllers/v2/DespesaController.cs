@@ -47,7 +47,7 @@ public class DespesaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Get([FromRoute] int id)
+    public IActionResult Get([FromRoute] Guid id)
     {
         try
         {
@@ -117,7 +117,7 @@ public class DespesaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Delete(int idDespesa)
+    public IActionResult Delete(Guid idDespesa)
     {
         try
         {

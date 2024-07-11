@@ -11,7 +11,7 @@ public sealed class ControleAcessoDtoTest
     public void ControleAcessoDto_Should_Set_Properties_Correctly(string nome, string sobreNome, string telefone, string email, string senha, string confirmaSenha)
     {
         // Arrange and Act
-        var id = new Random().Next();
+        var id = Guid.NewGuid();
 
         var controleAcessoDto = new ControleAcessoDto
         {

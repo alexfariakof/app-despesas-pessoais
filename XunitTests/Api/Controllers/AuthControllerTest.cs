@@ -15,11 +15,11 @@ public sealed class AuthControllerTest
     public void UserIdentity_ShouldReturnCorrectUserId()
     {
         // Arrange
-        const int mockIdUsuario = 22;
+        Guid mockIdUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(mockIdUsuario, _authController);
 
         // Act
-        var result = GetProtectedProperty<int>(_authController, "UserIdentity");
+        var result = GetProtectedProperty<Guid>(_authController, "UserIdentity");
 
         // Assert
         Assert.Equal(mockIdUsuario, result);

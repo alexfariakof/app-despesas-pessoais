@@ -3,5 +3,5 @@
 namespace Business.Abstractions;
 public interface IGraficosBusiness
 {
-    Grafico GetDadosGraficoByAnoByIdUsuario(int idUsuario, DateTime data);
+    Grafico GetDadosGraficoByAnoByIdUsuario(Guid idUsuario, DateTime data);
 }

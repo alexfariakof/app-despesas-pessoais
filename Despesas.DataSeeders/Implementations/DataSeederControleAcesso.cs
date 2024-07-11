@@ -11,40 +11,40 @@ public class DataSeederControleAcesso : IDataSeeder
     }
     public void SeedData()
     {
-        if (!_context.ControleAcesso.Any())
+        var account = new ControleAcesso();
+        var usuario = new Usuario
         {
-            _context.ControleAcesso.AddRange(
-                new ControleAcesso
-                {
-                    Login = "alexfariakof@gmail.com",
-                    Senha = "12345T!",
-                    UsuarioId = 1 
-                },
-                new ControleAcesso
-                {
-                    Login = "teste@teste.com",
-                    Senha = "12345T!",
-                    UsuarioId = 2 
-                },
-                new ControleAcesso
-                {
-                    Login = "dns@dns.com",
-                    Senha = "12345T!",
-                    UsuarioId = 3 
-                },
-                new ControleAcesso
-                {
-                    Login = "joao.silva5@gmail.com",
-                    Senha = "12345T!",
-                    UsuarioId = 4 
-                },
-                new ControleAcesso
-                {
-                    Login = "lequinho.mumu@gmail.com",
-                    Senha = "618/OUKTTzRLXOWNpU7+QWwpM8UWJG+LlA/a7C6RKcY=",
-                    UsuarioId = 5 
-                });
-            _context.SaveChanges();
-        }
+            Nome = "Alex",
+            SobreNome = "Ribeiro de Faria",
+            Telefone = "(21) 99287-9319",
+            Email = "alexfariakof@gmail.com",
+            StatusUsuario = StatusUsuario.Ativo        
+        };
+        account.CreateAccount(usuario, "12345T!");
+        account.Usuario.PerfilUsuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(1));
+        account.Usuario.Categorias.ToList()
+            .ForEach(c => c.TipoCategoria = _context.TipoCategoria
+            .First(tc => tc.Id == c.TipoCategoria.Id));
+
+        _context.Add(account);
+        _context.SaveChanges();
+
+        account = new ControleAcesso();
+        usuario = new Usuario
+        {
+            Nome = "Teste",
+            SobreNome = "Teste",
+            Telefone = "(21) 9999-9999",
+            Email = "teste@teste.com",
+            StatusUsuario = StatusUsuario.Ativo,
+        };
+        account.CreateAccount(usuario, "12345T!");
+        account.Usuario.PerfilUsuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(2));
+        account.Usuario.Categorias.ToList()
+            .ForEach(c => c.TipoCategoria = _context.TipoCategoria
+            .First(tc => tc.Id == c.TipoCategoria.Id));
+
+        _context.Add(account);
+        _context.SaveChanges();
     }
 }

@@ -5,5 +5,5 @@ namespace Business.Dtos.v1;
 public class ControleAcessoDto : ControleAcessoDtoBase
 {
     [JsonIgnore]
-    public override int Id { get; set; }
+    public override Guid Id { get; set; }
 }
