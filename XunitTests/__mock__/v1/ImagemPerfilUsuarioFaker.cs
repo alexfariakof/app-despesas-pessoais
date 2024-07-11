@@ -24,14 +24,15 @@ public sealed class ImagemPerfilUsuarioFaker
         lock (LockObject)
         {
             var imagemFaker = new Faker<ImagemPerfilUsuario>()
-            .RuleFor(i => i.Id, f => counter++)
+            .RuleFor(i => i.Id, f => Guid.NewGuid())
             .RuleFor(i => i.Url, f => f.Internet.Url())
             .RuleFor(i => i.Name, f => f.System.FileName())
             .RuleFor(i => i.ContentType, f => f.System.CommonFileType())
             .RuleFor(i => i.UsuarioId, usuario.Id)
-            .RuleFor(i => i.Usuario, usuario);
-
-            return imagemFaker.Generate();
+            .RuleFor(i => i.Usuario, usuario)
+            .Generate();
+            counter++;
+            return imagemFaker;
         }
     }
 
@@ -40,17 +41,18 @@ public sealed class ImagemPerfilUsuarioFaker
         lock (LockObject)
         {
             var imagemFaker = new Faker<ImagemPerfilDto>()
-            .RuleFor(i => i.Id, f => counterVM++)
+            .RuleFor(i => i.Id, f => Guid.NewGuid())
             .RuleFor(i => i.Url, f => f.Internet.Url())
             .RuleFor(i => i.Name, f => f.System.FileName())
             .RuleFor(i => i.UsuarioId, usuarioDto.Id)
-            .RuleFor(i => i.ContentType, f => counter % 2 == 0 ? "image/png" : "image/jpg");
-
-            return imagemFaker.Generate();
+            .RuleFor(i => i.ContentType, f => counter % 2 == 0 ? "image/png" : "image/jpg")
+            .Generate();
+            counterVM++;
+            return imagemFaker;
         }
     }
 
-    public List<ImagemPerfilUsuario> ImagensPerfilUsuarios(Usuario? usuario = null,int? idUsuario = null)
+    public List<ImagemPerfilUsuario> ImagensPerfilUsuarios(Usuario? usuario = null, Guid? idUsuario = null)
     {
         var imagens = new List<ImagemPerfilUsuario>();
         for (var i = 0; i < 10; i++)
@@ -65,7 +67,7 @@ public sealed class ImagemPerfilUsuarioFaker
         return imagens;
     }
 
-    public List<ImagemPerfilDto> ImagensPerfilUsuarioDtos(UsuarioDto? usuarioDto = null,int? idUsuario = null)
+    public List<ImagemPerfilDto> ImagensPerfilUsuarioDtos(UsuarioDto? usuarioDto = null, Guid? idUsuario = null)
     {
         var imagensVM = new List<ImagemPerfilDto>();
         for (var i = 0; i < 10; i++)

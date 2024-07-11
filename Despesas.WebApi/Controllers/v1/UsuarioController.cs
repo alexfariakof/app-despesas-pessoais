@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -232,7 +232,7 @@ public class UsuarioController : AuthController
         return true;
     }
 
-    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioDtoAsync(IFormFile file, int idUsuario)
+    private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioDtoAsync(IFormFile file, Guid idUsuario)
     {
         string fileName = $"{idUsuario}-imagem-perfil-usuario-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
         string? typeFile = Path.GetExtension(file.FileName)?.TrimStart('.');

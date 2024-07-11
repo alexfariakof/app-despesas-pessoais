@@ -3,10 +3,10 @@ public interface IBusinessBase<Dto, Entity> where Dto : class where Entity : cla
 {
     Dto Create(Dto usuarioDto);
 
-    Dto FindById(int id, int idUsuario);
-    Dto FindById(int id);
+    Dto FindById(Guid id, Guid idUsuario);
+    Dto FindById(Guid id);
 
-    List<Dto> FindAll(int idUsuario);
+    List<Dto> FindAll(Guid idUsuario);
 
     Dto Update(Dto usuario);
 

@@ -6,11 +6,13 @@ namespace Repository.Persistency.Implementations;
 public class GraficosRepositorioImpl : IGraficosRepositorio
 {
     public RegisterContext Context { get; }
+
     public GraficosRepositorioImpl(RegisterContext context)
     {
         Context = context;
     }
-    public Grafico GetDadosGraficoByAno(int idUsuario, DateTime data)
+
+    public Grafico GetDadosGraficoByAno(Guid idUsuario, DateTime data)
     {
         Dictionary<string, decimal> defaultSumDespesa = new Dictionary<string, decimal>
         {

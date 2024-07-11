@@ -19,14 +19,14 @@ public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> wher
 
     public abstract Dto Create(Dto dto);
 
-    public virtual Dto FindById(int id)
+    public virtual Dto FindById(Guid id)
     {
         throw new NotImplementedException("Este método não foi implementado.");
     }
 
-    public virtual Dto FindById(int id, int idUsuario) { return null; }
+    public virtual Dto FindById(Guid id, Guid idUsuario) { return null; }
 
-    public abstract List<Dto> FindAll(int idUsuario);
+    public abstract List<Dto> FindAll(Guid idUsuario);
 
     public abstract  Dto Update(Dto dto);
 

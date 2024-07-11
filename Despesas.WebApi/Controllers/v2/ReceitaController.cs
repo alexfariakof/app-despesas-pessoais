@@ -47,7 +47,7 @@ public class ReceitaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetById([FromRoute] int id)
+    public IActionResult GetById([FromRoute] Guid id)
     {
         try
         {
@@ -117,7 +117,7 @@ public class ReceitaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Delete(int idReceita)
+    public IActionResult Delete(Guid idReceita)
     {
         try
         {

@@ -21,7 +21,7 @@ public sealed class GraficosControllerTest
     {
         // Arrange
         var dadosGrafico = GraficoFaker.GetNewFaker();
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         DateTime anoMes = DateTime.Today;
         Usings.SetupBearerToken(idUsuario, _GraficoController);
         _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(idUsuario, anoMes)).Returns(dadosGrafico);
@@ -41,8 +41,8 @@ public sealed class GraficosControllerTest
         // Arrange
         var dadosGrafico = GraficoFaker.GetNewFaker();
         DateTime anoMes = DateTime.Today;
-        Usings.SetupBearerToken(0, _GraficoController);
-        _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(It.IsAny<int>(), It.IsAny<DateTime>())).Throws(new Exception());
+        Usings.SetupBearerToken(Guid.Empty, _GraficoController);
+        _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(It.IsAny<Guid>(), It.IsAny<DateTime>())).Throws(new Exception());
 
         // Act
         var result = _GraficoController.GetByAnoByIdUsuario(anoMes) as ObjectResult;

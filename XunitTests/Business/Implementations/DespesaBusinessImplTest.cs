@@ -96,7 +96,7 @@ public class DespesaBusinessImplTest
         _repositorioMock.Setup(repo => repo.Get(id)).Returns(() => null);
 
         // Act
-        var result = _despesaBusiness.FindById(id, 0);
+        var result = _despesaBusiness.FindById(id, Guid.Empty);
 
         // Assert
         Assert.Null(result);
@@ -112,7 +112,7 @@ public class DespesaBusinessImplTest
         despesa.Descricao = "Teste Update Despesa";
         var despesaDto = _mapper.Map<DespesaDto>(despesa);        
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Despesa>.IsAny));
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(despesa);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(despesa);
         _repositorioCategoria.Setup(repo => repo.GetAll()).Returns(despesas.Select(d => d.Categoria ?? new()).ToList());
 
         // Act
@@ -132,7 +132,7 @@ public class DespesaBusinessImplTest
         // Arrange
         var despesa = DespesaFaker.Instance.Despesas().First();
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Despesa>())).Returns(true);
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(despesa);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(despesa);
         var despesaDto = _mapper.Map<DespesaDto>(despesa);
         
         // Act

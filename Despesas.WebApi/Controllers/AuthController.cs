@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
-using Domain;
 
 namespace Despesas.WebApi.Controllers;
 
@@ -9,15 +8,15 @@ namespace Despesas.WebApi.Controllers;
 public abstract class AuthController : ControllerBase
 {
     public AuthController() { }
-    protected int UserIdentity
+    protected Guid UserIdentity
     {
         get
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = HttpContext.Request.Headers["Authorization"].ToString();
             var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
-            var idUsuario = jwtToken?.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value.ToInteger();
-            return idUsuario.Equals(null) ? 0 : idUsuario.Value;
+            Guid.TryParse(jwtToken?.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value, out var idUsuario);
+            return idUsuario;
         }
     }
 }

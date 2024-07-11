@@ -17,7 +17,7 @@ public class ReceitaDto : ReceitaDtoBase, ISupportHyperMedia
     public override decimal Valor { get; set; }
 
     [JsonIgnore]
-    public override int? IdCategoria
+    public override Guid? IdCategoria
     {
         get
         {

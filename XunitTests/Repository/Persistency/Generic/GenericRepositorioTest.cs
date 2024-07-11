@@ -151,7 +151,7 @@ public sealed class GenericRepositorioTest
     {
         // Arrange
         var dataSet = MockCategoria.Instance.GetCategorias(2);
-        var item = new Categoria { Id = 99 };
+        var item = new Categoria { Id = Guid.NewGuid() };
         var dbSetMock = Usings.MockDbSet(dataSet);
         _dbContextMock.Setup(c => c.Set<Categoria>()).Returns(dbSetMock.Object);
         var repository = new GenericRepositorio<Categoria>(_dbContextMock.Object);

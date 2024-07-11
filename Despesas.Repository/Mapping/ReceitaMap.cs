@@ -8,11 +8,16 @@ public class ReceitaMap: IEntityTypeConfiguration<Receita>
     public void Configure(EntityTypeBuilder<Receita> builder)
     {
         builder.ToTable(nameof(Receita));
+        builder.Property(r => r.Id).HasColumnType("binary(16)")
+            .HasConversion(v => v.ToByteArray(), v => new Guid(v))
+            .ValueGeneratedOnAdd().IsRequired();
         builder.HasKey(r => r.Id);
-        builder.Property(r => r.Id).ValueGeneratedOnAdd().IsRequired();
-        builder.Property(r => r.UsuarioId).IsRequired();
+        builder.Property(r => r.UsuarioId).HasColumnType("binary(16)")
+            .HasConversion(v => v.ToByteArray(), v => new Guid(v))
+            .ValueGeneratedOnAdd().IsRequired();
         builder.Property(r => r.Descricao).IsRequired(false).HasMaxLength(100);
-        builder.Property(r => r.CategoriaId).IsRequired();
+        builder.Property(r => r.CategoriaId).HasColumnType("binary(16)")
+            .HasConversion(v => v.ToByteArray(), v => new Guid(v)).ValueGeneratedOnAdd().IsRequired();
 
         // MySqlServer
         builder.Property(m => m.Data).HasColumnType("datetime").HasDefaultValueSql<DateTime>("CURRENT_TIMESTAMP").IsRequired();

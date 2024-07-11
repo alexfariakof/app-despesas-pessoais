@@ -2,16 +2,21 @@
 public sealed class LancamentoTest
 {
     [Theory]
-    [InlineData(1, 100.6, "Descrição 1", 1, 1, 1, 1)]
-    [InlineData(2, 58.98, "Descrição 2", 2, 3, 2, 2)]
-    [InlineData(3, 5000, "Descrição 2", 3, 4, 6, 54)]
-    public void Lancamento_Should_Set_Properties_Correctly(int id, Decimal valor, string descricao, int usuarioId, int despesaId, int receitaId, int categoriaId)
+    [InlineData(100, "Descrição 1")]
+    [InlineData(58.98, "Descrição 2")]
+    [InlineData(5003, "Descrição 2")]
+    public void Lancamento_Should_Set_Properties_Correctly(decimal valor, string descricao)
     {
         // Arrange
         var mockUsuario = Mock.Of<Usuario>();
         var mockDespesa = Mock.Of<Despesa>();
         var mockReceita = Mock.Of<Receita>();
         var mockCategoria= Mock.Of<Categoria>();
+        var id = Guid.NewGuid();
+        var usuarioId = Guid.NewGuid();
+        var despesaId = valor % 2 == 0 ? Guid.NewGuid() : Guid.Empty;
+        var receitaId = valor % 2 == 0 ? Guid.NewGuid() : Guid.Empty;
+        var categoriaId = Guid.NewGuid();
         DateTime data = DateTime.Now;
         DateTime dataCriacao = DateTime.Now;
 

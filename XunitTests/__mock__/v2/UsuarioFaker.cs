@@ -23,12 +23,15 @@ public sealed class UsuarioFaker
 
     private UsuarioFaker() { }
 
-    public Usuario GetNewFaker(int? idUsuario = null)
+    public Usuario GetNewFaker(Guid? idUsuario = null)
     {
         lock (LockObject)
         {
             if (idUsuario == null)
-                idUsuario = counter++;
+            {
+                idUsuario = Guid.NewGuid();
+                counter++;
+            }                
 
             var usuarioFaker = new Faker<Usuario>()
                 .RuleFor(u => u.Id, idUsuario)
@@ -43,12 +46,15 @@ public sealed class UsuarioFaker
         }
     }
 
-    public UsuarioDto GetNewFakerVM(int? idUsuario = null)
+    public UsuarioDto GetNewFakerVM(Guid? idUsuario = null)
     {
         lock (LockObject)
         {
             if (idUsuario == null)
-                idUsuario = counterVM++;
+            {
+                idUsuario = Guid.NewGuid();
+                counterVM++;
+            }
 
             var usuarioFaker = new Faker<UsuarioDto>()
                 .RuleFor(u => u.Id, idUsuario)

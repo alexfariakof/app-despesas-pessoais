@@ -12,7 +12,7 @@ public class DespesaRepositorioImpl : BaseRepository<Despesa>, IRepositorio<Desp
         Context = context;
     }
 
-    public override Despesa Get(int id)
+    public override Despesa Get(Guid id)
     {
         return Context.Despesa.Include(d => d.Categoria).Include(d => d.Usuario).FirstOrDefault(d => d.Id.Equals(id));
     }

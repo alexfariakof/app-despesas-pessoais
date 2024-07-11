@@ -18,7 +18,7 @@ public class DespesaDto : DespesaDtoBase, ISupportHyperMedia
     public override DateTime? DataVencimento { get; set; }
 
     [JsonIgnore]
-    public override int? IdCategoria
+    public override Guid? IdCategoria
     {
         get
         {

@@ -49,7 +49,7 @@ public class CategoriaEnricher : ContentResponseEnricher<CategoriaDto>
         return Task.CompletedTask;
     }
 
-    private string GetLink(int id, IUrlHelper urlHelper, string path)
+    private string GetLink(Guid id, IUrlHelper urlHelper, string path)
     {
         lock (_lock)
         {

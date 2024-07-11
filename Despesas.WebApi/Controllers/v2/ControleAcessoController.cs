@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using Business.Abstractions;
 using Business.Dtos.Core;
 using Business.Dtos.v2;
@@ -68,9 +68,6 @@ public class ControleAcessoController : AuthController
     {
         try
         {
-            if (UserIdentity.Equals(2))
-                throw new ArgumentException("A senha deste usuário não pode ser atualizada!");
-
             _controleAcessoBusiness.ChangePassword(UserIdentity, changePasswordVM.Senha ?? "");
             return Ok(true);
         }
@@ -93,9 +90,6 @@ public class ControleAcessoController : AuthController
     {
         try
         {
-            if (UserIdentity.Equals(2))
-                throw new();
-
             _controleAcessoBusiness.RecoveryPassword(email);
             return Ok(true);
         }

@@ -27,7 +27,7 @@ public class ReceitaController : AuthController
 
     [HttpGet("GetById/{id}")]
     [Authorize("Bearer", Roles = "User")]
-    public IActionResult GetById([FromRoute] int id)
+    public IActionResult GetById([FromRoute] Guid id)
     {
         try
         {
@@ -75,7 +75,7 @@ public class ReceitaController : AuthController
 
     [HttpDelete("{idReceita}")]
     [Authorize("Bearer", Roles = "User")]
-    public IActionResult Delete(int idReceita)
+    public IActionResult Delete(Guid idReceita)
     {
         ReceitaDto receita = _receitaBusiness.FindById(idReceita, UserIdentity);
         if (receita == null || UserIdentity != receita.UsuarioId)
