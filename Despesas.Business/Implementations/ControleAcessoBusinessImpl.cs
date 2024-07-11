@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Business.Abstractions;
 using Business.Dtos.Core;
 using EasyCryptoSalt;
