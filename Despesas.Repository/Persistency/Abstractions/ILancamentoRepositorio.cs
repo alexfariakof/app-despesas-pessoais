@@ -3,5 +3,5 @@
 namespace Repository.Persistency.Abstractions;
 public interface ILancamentoRepositorio
 {
-    List<Lancamento> FindByMesAno(DateTime data, int idUsuario);
+    List<Lancamento> FindByMesAno(DateTime data, Guid idUsuario);
 }

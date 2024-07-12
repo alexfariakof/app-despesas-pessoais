@@ -23,14 +23,14 @@ public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
         var newDespesa = MockDespesa.Instance.GetDespesa();
         newDespesa.CategoriaId = _fixture.Context.Categoria.First().Id;
         newDespesa.Categoria = null;
-        newDespesa.Id = 0;
+        newDespesa.Id = Guid.Empty;
 
         // Act
         _repository.Insert(ref newDespesa);
 
         // Assert
         Assert.NotNull(newDespesa);
-        Assert.NotEqual(0, newDespesa.Id);
+        Assert.NotEqual(Guid.Empty, newDespesa.Id);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
     public void Update_Should_Throw_Exception_When_Despesa_Not_Found()
     {
         // Arrange
-        var updatedItem = new Despesa { Id = 999 };
+        var updatedItem = new Despesa { Id = Guid.NewGuid() };
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => _repository.Update(ref updatedItem));
@@ -111,7 +111,7 @@ public sealed class DespesaRepositorioImplTest : IClassFixture<DespesaFixture>
     public void Get_Should_Throw_Exception_When_Despesa_Not_Found()
     {
         // Act & Assert
-        var result = _repository.Get(999);
+        var result = _repository.Get(Guid.NewGuid());
         Assert.Null(result);
     }
 

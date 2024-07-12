@@ -14,7 +14,7 @@ public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categori
             Id = origin.Id,
             Descricao = origin.Descricao ?? "",
             TipoCategoria = origin?.IdTipoCategoria == 1 ? (int)TipoCategoria.CategoriaType.Despesa : (int)TipoCategoria.CategoriaType.Receita,
-            UsuarioId = origin?.UsuarioId ?? 0
+            UsuarioId = origin.UsuarioId
         };
     }
 
@@ -26,7 +26,7 @@ public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categori
             Id = origin.Id,
             Descricao = origin.Descricao,
             IdTipoCategoria = origin?.TipoCategoria?.Id ?? 0,
-            UsuarioId = origin?.UsuarioId ?? 0
+            UsuarioId = origin.UsuarioId
         };
     }
 

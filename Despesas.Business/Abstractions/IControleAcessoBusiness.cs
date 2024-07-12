@@ -6,7 +6,7 @@ public interface IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : class wh
     AuthenticationDto ValidateCredentials(DtoLogin loginDto);
     AuthenticationDto ValidateCredentials(string refreshToken);
     void Create(DtoCa controleAcessoDto);
-    void ChangePassword(int idUsuario, string password);
+    void ChangePassword(Guid idUsuario, string password);
     void RecoveryPassword(string email);
-    void RevokeToken(int idUsurio);
+    void RevokeToken(Guid idUsurio);
 }

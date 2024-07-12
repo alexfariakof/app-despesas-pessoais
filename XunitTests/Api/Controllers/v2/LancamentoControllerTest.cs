@@ -24,7 +24,7 @@ public sealed class LancamentoControllerTest
     {
         // Arrange
         var lancamentoDtos = _lancamentoDtos;
-        int idUsuario = _lancamentoDtos.First().UsuarioId;
+        Guid idUsuario = _lancamentoDtos.First().UsuarioId;
         DateTime anoMes = DateTime.Now;
         Usings.SetupBearerToken(idUsuario, _lancamentoController);
         _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(lancamentoDtos.FindAll(l => l.UsuarioId == idUsuario));
@@ -49,7 +49,7 @@ public sealed class LancamentoControllerTest
     {
         // Arrange
         var lancamentoDtos = _lancamentoDtos;
-        int idUsuario = _lancamentoDtos.First().UsuarioId;
+        Guid idUsuario = _lancamentoDtos.First().UsuarioId;
         DateTime anoMes = DateTime.Now;
         Usings.SetupBearerToken(idUsuario, _lancamentoController);
         _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(() => null);
@@ -71,7 +71,7 @@ public sealed class LancamentoControllerTest
     {
         // Arrange
         var lancamentoDtos = _lancamentoDtos;
-        int idUsuario = _lancamentoDtos.First().UsuarioId;
+        Guid idUsuario = _lancamentoDtos.First().UsuarioId;
         DateTime anoMes = DateTime.Now;
         Usings.SetupBearerToken(idUsuario, _lancamentoController);
         _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(new List<LancamentoDto>());
@@ -93,7 +93,7 @@ public sealed class LancamentoControllerTest
     {
         // Arrange
         var lancamentoDtos = _lancamentoDtos;
-        int idUsuario = _lancamentoDtos.First().UsuarioId;
+        Guid idUsuario = _lancamentoDtos.First().UsuarioId;
         DateTime anoMes = DateTime.Now;
         Usings.SetupBearerToken(idUsuario, _lancamentoController);
         _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Throws(new Exception());

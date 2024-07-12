@@ -3,5 +3,5 @@
 namespace Repository.Persistency.Abstractions;
 public interface IGraficosRepositorio
 {
-    Grafico GetDadosGraficoByAno(int idUsuario, DateTime data);
+    Grafico GetDadosGraficoByAno(Guid idUsuario, DateTime data);
 }

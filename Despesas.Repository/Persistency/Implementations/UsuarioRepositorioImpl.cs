@@ -28,7 +28,7 @@ public class UsuarioRepositorioImpl : BaseRepository<Usuario>, IRepositorio<Usua
         return Context.Usuario.ToList();
     }
 
-    public override Usuario Get(int id)
+    public override Usuario Get(Guid id)
     {
         return Context.Usuario.Single(prop => prop.Id.Equals(id));
     }
@@ -60,7 +60,7 @@ public class UsuarioRepositorioImpl : BaseRepository<Usuario>, IRepositorio<Usua
         return false;
     }
 
-    public override bool Exists(int id)
+    public override bool Exists(Guid id)
     {
         return Context.Usuario.Any(prop => prop.Id.Equals(id));
     }

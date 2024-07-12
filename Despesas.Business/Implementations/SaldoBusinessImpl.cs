@@ -12,17 +12,17 @@ public class SaldoBusinessImpl : ISaldoBusiness
         _repositorio = repositorio;
     }
 
-    public SaldoDto GetSaldo(int idUsuario)
+    public SaldoDto GetSaldo(Guid idUsuario)
     {
         return _repositorio.GetSaldo(idUsuario);
     }
 
-    public SaldoDto GetSaldoAnual(DateTime ano, int idUsuario)
+    public SaldoDto GetSaldoAnual(DateTime ano, Guid idUsuario)
     {
         return _repositorio.GetSaldoByAno(ano, idUsuario);
     }
 
-    public SaldoDto GetSaldoByMesAno(DateTime mesAno, int idUsuario)
+    public SaldoDto GetSaldoByMesAno(DateTime mesAno, Guid idUsuario)
     {
         return _repositorio.GetSaldoByMesAno(mesAno, idUsuario);
     }

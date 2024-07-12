@@ -10,7 +10,7 @@ public sealed class LancamentoFaker
     public static Lancamento GetNewFaker(Usuario usuario, Despesa despesa, Receita receita, Categoria categoria)
     {
         var lancamentoFaker = new Faker<Lancamento>()
-            .RuleFor(l => l.Id, f => counter++)
+            .RuleFor(l => l.Id, f => Guid.NewGuid())
             .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
             .RuleFor(l => l.Data, new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1))
             .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
@@ -23,26 +23,28 @@ public sealed class LancamentoFaker
             .RuleFor(l => l.CategoriaId, categoria.Id)
             .RuleFor(l => l.Categoria, categoria)
             .Generate();
+        counter++;
         return lancamentoFaker;
     }
 
-    public static LancamentoDto GetNewFakerVM(int idusuario, int idDespesa, int idReceita,Categoria categoria)
+    public static LancamentoDto GetNewFakerVM(Guid idUsuario, Guid idDespesa, Guid idReceita,Categoria categoria)
     {
         var lancamentoDtoFaker = new Faker<LancamentoDto>()
-            .RuleFor(l => l.Id, f => counterVM++)
+            .RuleFor(l => l.Id, f => Guid.NewGuid())
             .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
             .RuleFor(l => l.Data, f => new DateTime(DateTime.Now.Year, new Random().Next(1, 13), 1).ToString())
             .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
-            .RuleFor(l => l.UsuarioId, idusuario)
+            .RuleFor(l => l.UsuarioId, idUsuario)
             .RuleFor(l => l.IdDespesa, idDespesa)
             .RuleFor(l => l.IdReceita, idReceita)
             .RuleFor(l => l.Categoria, categoria.Descricao)
             .Generate();
         lancamentoDtoFaker.TipoCategoria = counter % 2 == 0 ? "Despesa" : "Receita";
+        counterVM++;
         return lancamentoDtoFaker;
     }
 
-    public static List<LancamentoDto> LancamentoDtos(Usuario? usuario = null, int? idUsuario = null)
+    public static List<LancamentoDto> LancamentoDtos(Usuario? usuario = null, Guid? idUsuario = null)
     {
         var listLancamentoDto = new List<LancamentoDto>();
         for (int i = 0; i < 10; i++)
@@ -62,7 +64,7 @@ public sealed class LancamentoFaker
         return listLancamentoDto;
     }
 
-    public static List<Lancamento> Lancamentos(Usuario? usuario = null, int? idUsuario = null)
+    public static List<Lancamento> Lancamentos(Usuario? usuario = null, Guid? idUsuario = null)
     {
         var listLancamento = new List<Lancamento>();
         for (int i = 0; i < 10; i++)

@@ -82,7 +82,7 @@ public class ControleAcessoController : AuthController
     public IActionResult ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
     {
 
-        if (IdUsuario.Equals(2))
+        if (UserIdentity.Equals(2))
             return BadRequest(new { message = "A senha deste usuário não pode ser atualizada!" });
 
         if (String.IsNullOrEmpty(changePasswordDto.Senha) || String.IsNullOrWhiteSpace(changePasswordDto.Senha))
@@ -92,7 +92,7 @@ public class ControleAcessoController : AuthController
             return BadRequest(new { message = "Campo Confirma Senha não pode ser em branco ou nulo!" });
         try
         {
-            _controleAcessoBusiness.ChangePassword(IdUsuario, changePasswordDto.Senha);
+            _controleAcessoBusiness.ChangePassword(UserIdentity, changePasswordDto.Senha);
             return Ok(new { message = true });
         }
         catch

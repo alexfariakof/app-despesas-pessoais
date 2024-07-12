@@ -52,7 +52,7 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
         return Context.Set<T>().ToList();
     }
 
-    public virtual T Get(int id)
+    public virtual T Get(Guid id)
     {
         return Context.Set<T>().Find(id);
     }
@@ -62,7 +62,7 @@ public abstract class BaseRepository<T> where T : BaseModel, new()
         return Context.Set<T>().Where(expression);
     }
 
-    public virtual bool Exists(int id)
+    public virtual bool Exists(Guid id)
     {
         return this.Get(id) != null;
     }

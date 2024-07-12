@@ -15,8 +15,8 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Descricao = origin?.Descricao ?? "",                
             Valor = origin?.Valor ?? 0,
             DataVencimento = origin?.DataVencimento,
-            CategoriaId = origin?.IdCategoria.GetValueOrDefault() ?? 0,
-            UsuarioId = origin?.UsuarioId ?? 0,
+            CategoriaId = origin.IdCategoria.GetValueOrDefault(),
+            UsuarioId = origin.UsuarioId,
         };
     }
 
@@ -31,7 +31,7 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
             IdCategoria = origin?.Categoria?.Id,
-            UsuarioId = origin?.UsuarioId ?? 0     
+            UsuarioId = origin.UsuarioId     
         };
     }
 

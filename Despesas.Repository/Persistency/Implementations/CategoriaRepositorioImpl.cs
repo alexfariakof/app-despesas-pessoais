@@ -14,7 +14,7 @@ public class CategoriaRepositorioImpl : BaseRepository<Categoria>, IRepositorio<
         Context = context;
     }
 
-    public override Categoria Get(int id)
+    public override Categoria Get(Guid id)
     {
         return Context.Categoria.Include(d => d.TipoCategoria).Include(d => d.Usuario).FirstOrDefault(d => d.Id.Equals(id));
     }

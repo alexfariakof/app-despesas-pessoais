@@ -55,9 +55,9 @@ public class Usings
         var _mock = new Mock<IRepositorio<T>>();
 
         _mock
-            .Setup(repo => repo.Get(It.IsAny<int>()))
+            .Setup(repo => repo.Get(It.IsAny<Guid>()))
             .Returns(
-                (int id) =>
+                (Guid id) =>
                 {
                     return _dataSet.Single(item => item.Id == id);
                 }
@@ -70,7 +70,7 @@ public class Usings
         _mock
             .Setup(repo => repo.Delete(It.IsAny<T>()))
             .Returns(
-                (int id) =>
+                (Guid id) =>
                 {
                     var itemToRemove = _dataSet.FirstOrDefault(item => item.Id == id);
                     if (itemToRemove != null)
@@ -85,19 +85,19 @@ public class Usings
         return _mock;
     }
 
-    public static string GenerateJwtToken(int userId)
+    public static string GenerateJwtToken(Guid userId)
     {
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
             Seconds = 3600,
             DaysToExpiry = 1
         });
-        var signingConfigurations = new SigningConfigurations(options);
+        var signingConfigurations = new SigningConfigurations(options?.Value);
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString()));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        var claims = new[] { new Claim("IdUsuario", userId.ToString()) };
+        var claims = new[] { new Claim("sub", userId.ToString()) };
         var token = new JwtSecurityToken(
             issuer: signingConfigurations.TokenConfiguration.Issuer,
             audience: signingConfigurations.TokenConfiguration.Audience,
@@ -110,13 +110,13 @@ public class Usings
         return tokenHandler.WriteToken(token);
     }
 
-    public static void SetupBearerToken(int idUsuario, ControllerBase controller)
+    public static void SetupBearerToken(Guid idUsuario, ControllerBase controller)
     {
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, idUsuario.ToString())
         };
-        var identity = new ClaimsIdentity(claims, "IdUsuario");
+        var identity = new ClaimsIdentity(claims, "sub");
         var claimsPrincipal = new ClaimsPrincipal(identity);
 
         var httpContext = new DefaultHttpContext { User = claimsPrincipal };

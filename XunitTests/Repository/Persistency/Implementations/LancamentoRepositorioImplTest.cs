@@ -35,7 +35,7 @@ public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepos
     {
         // Arrange
         var data = _fixture.MockAnoMes;
-        var idUsuario = 0;
+        var idUsuario = Guid.Empty;
 
         // Act
         var result = _fixture.Repository.Object.FindByMesAno(data, idUsuario);
@@ -51,7 +51,7 @@ public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepos
     {
         // Arrange
         var data = _fixture.MockAnoMes;
-        var idUsuario = 0;
+        var idUsuario = Guid.Empty;
 
         var despesaDbSetMock = new Mock<DbSet<Despesa>>();
         despesaDbSetMock.As<IQueryable<Despesa>>().Setup(d => d.Provider).Throws<Exception>();
@@ -73,7 +73,7 @@ public sealed class LancamentoRepositorioImplTest: IClassFixture<LancamentoRepos
     {
         // Arrange
         var data = _fixture.MockAnoMes;
-        var idUsuario = 20;
+        var idUsuario = Guid.NewGuid();
         var receitaDbSetMock = new Mock<DbSet<Receita>>();
         receitaDbSetMock.As<IQueryable<Receita>>().Setup(d => d.Provider).Throws<Exception>();
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "FindByMesAno Throws Exception When Receita Execute Where").Options;

@@ -43,7 +43,7 @@ public class LancamentoBusinessImplTest
     public void GetSaldo_Should_Return_Saldo_As_Decimal()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var saldo = 100.50m;
         _repositorioMock.Setup(r => r.GetSaldo(idUsuario)).Returns(saldo);
 
@@ -59,7 +59,7 @@ public class LancamentoBusinessImplTest
     public void GetDadosGraficoByAnoByIdUsuario_Should_Return_Grafico()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var data = new DateTime(2023, 10, 1);
         var graficoData = GraficoFaker.GetNewFaker();
         _repositorioMock.Setup(r => r.GetDadosGraficoByAno(idUsuario, data)).Returns(graficoData);

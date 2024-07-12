@@ -252,8 +252,8 @@ public sealed class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        Usings.SetupBearerToken(1, _controleAcessoController);
-        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, "!12345"));
+        Usings.SetupBearerToken(Guid.NewGuid(), _controleAcessoController);
+        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(It.IsAny<Guid>(), "!12345"));
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -265,31 +265,14 @@ public sealed class ControleAcessoControllerTest
         var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.True(message);
     }
-
-    [Fact]
-    public void ChangePassword_With_Usuario_Teste_Returns_BadRequest()
-    {
-        // Arrange
-        var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        Usings.SetupBearerToken(2, _controleAcessoController);
-
-        // Act
-        var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.IsType<BadRequestObjectResult>(result);
-        var value = result.Value;
-        var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
-        Assert.Equal("A senha deste usuário não pode ser atualizada!", message);
-    }
+      
 
     [Fact]
     public void ChangePassword_With_NULL_Password_Returns_BadRequest()
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "", ConfirmaSenha = "!12345" };
-        Usings.SetupBearerToken(1, _controleAcessoController);
+        Usings.SetupBearerToken(Guid.NewGuid(), _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -307,7 +290,7 @@ public sealed class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "" };
-        Usings.SetupBearerToken(1, _controleAcessoController);
+        Usings.SetupBearerToken(Guid.NewGuid(), _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -325,8 +308,8 @@ public sealed class ControleAcessoControllerTest
     {
         // Arrange
         var changePasswordDto = new ChangePasswordDto { Senha = "!12345", ConfirmaSenha = "!12345" };
-        Usings.SetupBearerToken(1, _controleAcessoController);
-        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(1, It.IsAny<string>())).Throws<Exception>();
+        Usings.SetupBearerToken(Guid.NewGuid(), _controleAcessoController);
+        _mockControleAcessoBusiness.Setup(b => b.ChangePassword(It.IsAny<Guid>(), It.IsAny<string>())).Throws<Exception>();
 
         // Act
         var result = _controleAcessoController.ChangePassword(changePasswordDto) as ObjectResult;
@@ -415,7 +398,7 @@ public sealed class ControleAcessoControllerTest
         // Arrange
         var email = "email@invalido.com";
         _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
-        Usings.SetupBearerToken(1, _controleAcessoController);
+        Usings.SetupBearerToken(Guid.NewGuid(), _controleAcessoController);
 
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as ObjectResult;

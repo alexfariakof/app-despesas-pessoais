@@ -75,7 +75,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
     public void Update_Should_Throws_Exception_When_User_Not_Found()
     {
         // Arrange
-        var updatedItem = new Usuario { Id = 999 };
+        var updatedItem = new Usuario { Id = Guid.NewGuid() };
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => _repository.Update(ref updatedItem));
@@ -101,7 +101,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
     public void Delete_With_Non_Existing_Item_Should_Return_False()
     {
         // Arrange
-        var entity = new Usuario { Id = 999 };
+        var entity = new Usuario { Id = Guid.NewGuid() };
 
         // Act
         var result = _repository.Delete(entity);
@@ -139,7 +139,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
     public void Get_Should_Throws_Exception_When_User_Not_Found()
     {
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => _repository.Get(999));
+        Assert.Throws<InvalidOperationException>(() => _repository.Get(Guid.NewGuid()));
     }
 
     [Fact]
@@ -159,7 +159,7 @@ public sealed class UsuarioRepositorioImplTest : IClassFixture<DatabaseFixture>
     public void Exists_Should_Return_False_When_User_Not_Exists()
     {
         // Act
-        var result = _repository.Exists(999);
+        var result = _repository.Exists(Guid.NewGuid());
 
         // Assert
         Assert.False(result);
