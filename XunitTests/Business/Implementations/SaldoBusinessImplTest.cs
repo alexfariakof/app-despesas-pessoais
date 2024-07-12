@@ -17,7 +17,7 @@ public class SaldoBusinessImplTest
     public void GetSaldo_Should_Return_Saldo_As_Decimal()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var saldo = 100.50m;
         _repositorioMock.Setup(r => r.GetSaldo(idUsuario)).Returns(saldo);
 
@@ -33,7 +33,7 @@ public class SaldoBusinessImplTest
     public void GetSaldoByAno_Should_Return_Saldo_As_Decimal()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var saldo = 300.33m;
         _repositorioMock.Setup(r => r.GetSaldoByAno(DateTime.Today, idUsuario)).Returns(saldo);
 
@@ -49,7 +49,7 @@ public class SaldoBusinessImplTest
     public void GetSaldoByMesAno_Should_Return_Saldo_As_Decimal()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var saldo = 222.22m;
         _repositorioMock.Setup(r => r.GetSaldoByMesAno(DateTime.Today, idUsuario)).Returns(saldo);
 

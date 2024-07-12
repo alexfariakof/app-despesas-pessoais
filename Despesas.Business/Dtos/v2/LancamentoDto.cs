@@ -3,8 +3,8 @@
 namespace Business.Dtos.v2;
 public class LancamentoDto : LancamentoDtoBase
 {
-    public override int IdDespesa { get; set; }
-    public override int IdReceita { get; set; }
+    public override Guid IdDespesa { get; set; }
+    public override Guid IdReceita { get; set; }
     public override decimal Valor { get; set; }
     public override string? Data { get; set; }
     public override string? Descricao { get; set; }

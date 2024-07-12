@@ -11,7 +11,7 @@ public sealed class ControleAcessoParserTest
         var controleAcessoParser = new ControleAcessoParser();
         var controleAcessoDto = new ControleAcessoDto
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Email = "test@example.com",
             Senha = "password",
             Nome = "Test",
@@ -38,9 +38,10 @@ public sealed class ControleAcessoParserTest
     {
         // Arrange
         var controleAcessoParser = new ControleAcessoParser();
+        var idUsuario = Guid.NewGuid();
         var usuario = new Usuario
         {
-            Id = 1,
+            Id = idUsuario,
             Nome = "Test",
             PerfilUsuario = new PerfilUsuario(PerfilUsuario.Perfil.Admin),
             Telefone = "123456789",
@@ -49,9 +50,9 @@ public sealed class ControleAcessoParserTest
         };
         var controleAcesso = new ControleAcesso
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Login = "test@example.com",
-            UsuarioId = 1,
+            UsuarioId = idUsuario,
             Senha = "password",
             RefreshToken = "fakeRefreshToken",
             Usuario = usuario

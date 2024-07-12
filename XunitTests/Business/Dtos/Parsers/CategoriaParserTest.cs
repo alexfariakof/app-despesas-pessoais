@@ -11,10 +11,10 @@ public sealed class CategoriaParserTest
         var categoriaParser = new CategoriaParser();
         var categoriaDto = new CategoriaDto
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Descricao = "Categoria Teste",
             IdTipoCategoria = 1,
-            UsuarioId = 1
+            UsuarioId = Guid.NewGuid()
         };
 
         // Act
@@ -34,10 +34,10 @@ public sealed class CategoriaParserTest
         var categoriaParser = new CategoriaParser();
         var categoria = new Categoria
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Descricao = "Categoria Teste",
             TipoCategoria = (int)TipoCategoria.CategoriaType.Receita,
-            UsuarioId = 1
+            UsuarioId = Guid.NewGuid()
         };
 
         // Act
@@ -59,24 +59,24 @@ public sealed class CategoriaParserTest
         {
             new CategoriaDto
             {
-                Id = 1,
+                Id = Guid.NewGuid(),
                 Descricao = "Categoria 1",
                 IdTipoCategoria = 1,
-                UsuarioId = 1
+                UsuarioId = Guid.NewGuid()
             },
             new CategoriaDto
             {
-                Id = 2,
+                Id = Guid.NewGuid(),
                 Descricao = "Categoria 2",
                 IdTipoCategoria = 2,
-                UsuarioId = 2
+                UsuarioId = Guid.NewGuid()
             },
             new CategoriaDto
             {
-                Id = 3,
+                Id = Guid.NewGuid(),
                 Descricao = "Categoria 3",
                 IdTipoCategoria = 1,
-                UsuarioId = 1
+                UsuarioId = Guid.NewGuid()
             }
         };
 
@@ -108,24 +108,24 @@ public sealed class CategoriaParserTest
         {
             new Categoria
             {
-                Id = 1,
+                Id = Guid.NewGuid(),
                 Descricao = "Categoria 1",
                 TipoCategoria = (int)(int)TipoCategoria.CategoriaType.Despesa,
-                UsuarioId = 1
+                UsuarioId = Guid.NewGuid()
             },
             new Categoria
             {
-                Id = 2,
+                Id = Guid.NewGuid(),
                 Descricao = "Categoria 2",
                 TipoCategoria = (int)TipoCategoria.CategoriaType.Receita,
-                UsuarioId = 2
+                UsuarioId = Guid.NewGuid()
             },
             new Categoria
             {
-                Id = 3,
+                Id = Guid.NewGuid(),
                 Descricao = "Categoria 3",
                 TipoCategoria = (int)TipoCategoria.CategoriaType.Despesa,
-                UsuarioId = 1
+                UsuarioId = Guid.NewGuid()
             }
         };
 

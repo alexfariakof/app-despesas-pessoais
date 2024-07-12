@@ -36,9 +36,9 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usauriosDtos = _mapper.Map<List<UsuarioDto>>(usaurios);
-        int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last().Id;
+        Guid idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last().Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockUsuarioBusiness.Setup(business => business.FindById(It.IsAny<int>())).Returns(usauriosDtos.Find(u => u.Id == idUsuario) ?? new());
+        _mockUsuarioBusiness.Setup(business => business.FindById(It.IsAny<Guid>())).Returns(usauriosDtos.Find(u => u.Id == idUsuario) ?? new());
 
                 // Act
         var result = _usuarioController.GetUsuarioById() as ObjectResult;
@@ -48,7 +48,7 @@ public sealed class UsuarioControllerTest
         Assert.IsType<OkObjectResult>(result);
         var usuarioDto = Assert.IsType<UsuarioDto>(result.Value);
         Assert.Equal(idUsuario, usuarioDto.Id);
-        _mockUsuarioBusiness.Verify(bussines => bussines.FindById(It.IsAny<int>()), Times.Once);
+        _mockUsuarioBusiness.Verify(bussines => bussines.FindById(It.IsAny<Guid>()), Times.Once);
     }
         
     [Fact]
@@ -56,7 +56,7 @@ public sealed class UsuarioControllerTest
     {
         // Arrange
         var usuarioDto = _usuarioDtos[4];
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Returns(usuarioDto);
 
@@ -77,7 +77,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = _mapper.Map<UsuarioDto>(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).First());
         usuarioDto.Telefone = null;
         var usauriosDtos = _mapper.Map<List<UsuarioDto>>(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         //_mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
 
         // Act
@@ -97,7 +97,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usuarioDto = _usuarioDtos.First();
         usuarioDto.Email = string.Empty;
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
@@ -118,7 +118,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usuarioDto = _usuarioDtos.First();
         usuarioDto.Email = " ";
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Login não pode ser em branco"));
 
@@ -139,7 +139,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usuarioDto = _usuarioDtos.First();
         usuarioDto.Email = "invalidEmail.com";
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Email inválido!"));
 
@@ -159,7 +159,7 @@ public sealed class UsuarioControllerTest
     {
         // Arrange
         var usuarioDto = usuarioNormal;
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Usuário não encontrado!"));
 

@@ -7,19 +7,16 @@ public sealed class TokenConfigurationTest
     public void Properties_Should_Be_Set_Correctly()
     {
         // Arrange
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "TesteIssuer",
             Audience = "TesteAudience",
             Seconds = 3600
         });
 
-        // Act
-        var tokenConfiguration = new TokenConfiguration(options);
-
-        // Assert
-        Assert.Equal("TesteAudience", tokenConfiguration.Audience);
-        Assert.Equal("TesteIssuer", tokenConfiguration.Issuer);
-        Assert.Equal(3600, tokenConfiguration.Seconds);
+        // Act & Assert
+        Assert.Equal("TesteAudience", options.Value.Audience);
+        Assert.Equal("TesteIssuer", options.Value.Issuer);
+        Assert.Equal(3600, options.Value.Seconds);
     }
 }

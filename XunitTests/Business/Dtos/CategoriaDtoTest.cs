@@ -6,13 +6,15 @@ public sealed class CategoriaDtoTest
 {
 
     [Theory]
-    [InlineData(1, "Test Categoria Description 1", 1, TipoCategoriaDto.Todas)]
-    [InlineData(2, "Test Categoria Description 2", 2, TipoCategoriaDto.Despesa)]
-    [InlineData(3, "Test Categoria Description 3", 3, TipoCategoriaDto.Receita)]
-    public void CategoriaDto_Should_Set_Properties_Correctly(int id, string descricao, int idUsuario, TipoCategoriaDto tipoCategoria)
+    [InlineData("Test Categoria Description 1", TipoCategoriaDto.Todas)]
+    [InlineData("Test Categoria Description 2", TipoCategoriaDto.Despesa)]
+    [InlineData("Test Categoria Description 3", TipoCategoriaDto.Receita)]
+    public void CategoriaDto_Should_Set_Properties_Correctly(string descricao, TipoCategoriaDto tipoCategoria)
     {
         // Arrange
         var categoriaDto = new CategoriaDto();
+        var id = Guid.NewGuid();
+        var idUsuario = Guid.NewGuid();
 
         // Act
         categoriaDto.Id = id;

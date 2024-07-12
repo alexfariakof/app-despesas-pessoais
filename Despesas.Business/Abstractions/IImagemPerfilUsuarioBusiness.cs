@@ -2,9 +2,9 @@
 public interface IImagemPerfilUsuarioBusiness<Dto, DtoUsuario> where Dto : class where DtoUsuario: class, new()
 {
     Dto Create(Dto obj);
-    Dto FindById(int id, int idUsuario);
-    List<Dto> FindAll(int idUsuario);
+    Dto FindById(Guid id, Guid idUsuario);
+    List<Dto> FindAll(Guid idUsuario);
     Dto Update(Dto obj);
-    bool Delete(int idUsuario);
-    DtoUsuario FindByIdUsuario(int idUsuario);
+    bool Delete(Guid idUsuario);
+    DtoUsuario FindByIdUsuario(Guid idUsuario);
 }

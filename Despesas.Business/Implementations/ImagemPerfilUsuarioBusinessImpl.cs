@@ -37,13 +37,13 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
         }
     }
 
-    public List<Dto> FindAll(int idUsuario)
+    public List<Dto> FindAll(Guid idUsuario)
     {
         var lstPerfilFile = _repositorio.GetAll();
         return _mapper.Map<List<Dto>>(lstPerfilFile);
     }
 
-    public Dto FindById(int id, int idUsuario)
+    public Dto FindById(Guid id, Guid idUsuario)
     {
         var imagemPerfilUsuario = _mapper.Map<Dto>(_repositorio.Get(id));
         if (imagemPerfilUsuario.UsuarioId != idUsuario)
@@ -52,7 +52,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
         return imagemPerfilUsuario;
     }
 
-    public DtoUsuario FindByIdUsuario(int idUsuario)
+    public DtoUsuario FindByIdUsuario(Guid idUsuario)
     {
         try
         {
@@ -84,7 +84,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
         }
     }
 
-    public bool Delete(int idUsuario)
+    public bool Delete(Guid idUsuario)
     {
         var imagemPerfilUsuario = _repositorio.GetAll().Find(prop => prop.UsuarioId.Equals(idUsuario));
         if (imagemPerfilUsuario != null)

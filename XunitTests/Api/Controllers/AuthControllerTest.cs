@@ -1,4 +1,4 @@
-﻿using Despesas.WebApi.Controllers;
+using Despesas.WebApi.Controllers;
 using System.Reflection;
 
 namespace Api.Controllers;
@@ -12,14 +12,14 @@ public sealed class AuthControllerTest
     }
 
     [Fact]
-    public void IdUsuario_ShouldReturnCorrectUserId()
+    public void UserIdentity_ShouldReturnCorrectUserId()
     {
         // Arrange
-        const int mockIdUsuario = 22;
+        Guid mockIdUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(mockIdUsuario, _authController);
 
         // Act
-        var result = GetProtectedProperty<int>(_authController, "IdUsuario");
+        var result = GetProtectedProperty<Guid>(_authController, "UserIdentity");
 
         // Assert
         Assert.Equal(mockIdUsuario, result);

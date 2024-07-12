@@ -1,5 +1,11 @@
 $baseDirectory = ($PWD)
 $projectTestPath = Join-Path -Path ($baseDirectory) -ChildPath "XunitTests"
+
+if (-Not (Test-Path -Path $projectTestPath)) {
+    $baseDirectory = (Resolve-Path -Path ..).Path    
+    $projectTestPath = Join-Path -Path ($baseDirectory) -ChildPath "LiteStreaming.XUnitTest"
+}
+
 $projectAngular = (Resolve-Path -Path "$baseDirectory\AngularApp");
 $sourceDirs = "$baseDirectory\Despesas.Business;$baseDirectory\Despesas.Domain;$baseDirectory\Despesas.Repository;$baseDirectory\Despesas.WebApi;$baseDirectory\AngularApp;"
 $filefilters = "$baseDirectory\Despesas.DataSeeders\**;-$baseDirectory\Migrations.MySqlServer\**;-$baseDirectory\Migrations.MsSqlServer\**;-$baseDirectory\Despesas.CrossCutting\**;-$baseDirectory\Despesas.Business\HyperMedia\**"

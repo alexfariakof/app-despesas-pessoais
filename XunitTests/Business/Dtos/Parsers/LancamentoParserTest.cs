@@ -12,10 +12,10 @@ public sealed class LancamentoParserTest
         var lancamentoParser = new LancamentoParser();
         var lancamentoDto = new LancamentoDto
         {
-            Id = 1,
-            UsuarioId = 1,
-            IdDespesa = 1,
-            IdReceita = 0,
+            Id = Guid.NewGuid(),
+            UsuarioId = Guid.NewGuid(),
+            IdDespesa = Guid.NewGuid(),
+            IdReceita = Guid.Empty,
             Valor = 2000,
             Data = DateTime.Now.ToShortDateString(),
             Descricao = "LancamentoDto Teste",
@@ -42,10 +42,10 @@ public sealed class LancamentoParserTest
         var lancamentoParser = new LancamentoParser();
         var lancamento = new Lancamento
         {
-            Id = 1,
-            UsuarioId = 1,
-            DespesaId = 1,
-            ReceitaId = 0,
+            Id = Guid.NewGuid(),
+            UsuarioId = Guid.NewGuid(),
+            DespesaId = Guid.NewGuid(),
+            ReceitaId = Guid.Empty,
             Valor = 2000,
             Data = DateTime.Now,
             Descricao = "Lancamento Teste",
@@ -77,10 +77,10 @@ public sealed class LancamentoParserTest
         {
             new LancamentoDto
             {
-                Id = 1,
-                UsuarioId = 1,
-                IdDespesa = 1,
-                IdReceita = 0,
+                Id = Guid.NewGuid(),
+                UsuarioId = Guid.NewGuid(),
+                IdDespesa = Guid.NewGuid(),
+                IdReceita = Guid.Empty,
                 Valor = 2000,
                 Data = DateTime.Now.ToLocalTime().ToShortDateString(),
                 Descricao = "LancamentoDto Teste",
@@ -89,10 +89,10 @@ public sealed class LancamentoParserTest
             },
             new LancamentoDto
             {
-                Id = 2,
-                UsuarioId = 3,
-                IdDespesa = 0,
-                IdReceita = 1,
+                Id = Guid.NewGuid(),
+                UsuarioId = Guid.NewGuid(),
+                IdDespesa = Guid.Empty,
+                IdReceita = Guid.NewGuid(),
                 Valor = 500,
                 Data = DateTime.Now.ToLocalTime().ToShortDateString(),
                 Descricao = "LancamentoDto Teste",
@@ -101,10 +101,10 @@ public sealed class LancamentoParserTest
             },
             new LancamentoDto
             {
-                Id = 3,
-                UsuarioId = 2,
-                IdDespesa = 1,
-                IdReceita = 0,
+                Id = Guid.NewGuid(),
+                UsuarioId = Guid.NewGuid(),
+                IdDespesa = Guid.NewGuid(),
+                IdReceita = Guid.Empty,
                 Valor = 70000,
                 Data = DateTime.Now.ToLocalTime().ToShortDateString(),
                 Descricao = "LancamentoDto Teste",
@@ -135,10 +135,10 @@ public sealed class LancamentoParserTest
         {
             new Lancamento
             {
-                Id = 1,
-                UsuarioId = 1,
-                DespesaId = 1,
-                ReceitaId = 0,
+                Id = Guid.NewGuid(),
+                UsuarioId = Guid.NewGuid(),
+                DespesaId = Guid.NewGuid(),
+                ReceitaId = Guid.Empty,
                 Valor = 2000,
                 Data = DateTime.Now,
                 Descricao = "Lancamento Teste 1",
@@ -147,10 +147,10 @@ public sealed class LancamentoParserTest
             },
             new Lancamento
             {
-                Id = 3,
-                UsuarioId = 3,
-                DespesaId = 0,
-                ReceitaId = 1,
+                Id = Guid.NewGuid(),
+                UsuarioId = Guid.NewGuid(),
+                DespesaId = Guid.Empty,
+                ReceitaId = Guid.NewGuid(),
                 Valor = 20,
                 Data = DateTime.Now,
                 Descricao = "Lancamento Teste 2",
@@ -159,10 +159,10 @@ public sealed class LancamentoParserTest
             },
             new Lancamento
             {
-                Id = 3,
-                UsuarioId = 2,
-                DespesaId = 1,
-                ReceitaId = 0,
+                Id = Guid.NewGuid(),
+                UsuarioId = Guid.NewGuid(),
+                DespesaId = Guid.NewGuid(),
+                ReceitaId = Guid.Empty,
                 Valor = 0,
                 Data = DateTime.Now,
                 Descricao = "Lancamento Teste 3",
@@ -205,7 +205,7 @@ public sealed class LancamentoParserTest
         Assert.Equal(origin.Usuario, result.Usuario);
         Assert.Equal(origin.Id, result.DespesaId);
         Assert.Equal(origin, result.Despesa);
-        Assert.Equal(0, result.ReceitaId);
+        Assert.Equal(Guid.Empty, result.ReceitaId);
         Assert.NotNull(result.Receita);
         Assert.IsType<Receita>(result.Receita);
         Assert.Equal(origin.CategoriaId, result.CategoriaId);
@@ -231,7 +231,7 @@ public sealed class LancamentoParserTest
         Assert.Equal(origin.Descricao, result.Descricao);
         Assert.Equal(origin.UsuarioId, result.UsuarioId);
         Assert.Equal(origin.Usuario, result.Usuario);
-        Assert.Equal(0, result.DespesaId);
+        Assert.Equal(Guid.Empty, result.DespesaId);
         Assert.NotNull(result.Despesa);
         Assert.IsType<Despesa>(result.Despesa);
         Assert.Equal(origin.Id, result.ReceitaId);
@@ -262,7 +262,7 @@ public sealed class LancamentoParserTest
             Assert.Equal(origin[i].Usuario, result[i].Usuario);
             Assert.Equal(origin[i].Id, result[i].DespesaId);
             Assert.Equal(origin[i], result[i].Despesa);
-            Assert.Equal(0, result[i].ReceitaId);
+            Assert.Equal(Guid.Empty, result[i].ReceitaId);
             Assert.NotNull(result[i].Receita);
             Assert.IsType<Receita>(result[i].Receita);
             Assert.Equal(origin[i].CategoriaId, result[i].CategoriaId);
@@ -289,7 +289,7 @@ public sealed class LancamentoParserTest
             Assert.Equal(origin[i].Descricao, result[i].Descricao);
             Assert.Equal(origin[i].UsuarioId, result[i].UsuarioId);
             Assert.Equal(origin[i].Usuario, result[i].Usuario);
-            Assert.Equal(0, result[i].DespesaId);
+            Assert.Equal(Guid.Empty, result[i].DespesaId);
             Assert.NotNull(result[i].Despesa);
             Assert.IsType<Despesa>(result[i].Despesa);
             Assert.Equal(origin[i].Id, result[i].ReceitaId);

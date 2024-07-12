@@ -9,7 +9,7 @@ public sealed class DespesaParserTest
     {
         // Arrange
         var despesaParser = new DespesaParser();
-        var despesaDto = DespesaFaker.Instance.GetNewFakerVM(1, 1);
+        var despesaDto = DespesaFaker.Instance.GetNewFakerVM(Guid.NewGuid(), Guid.NewGuid());
 
         // Act
         var despesa = despesaParser.Parse(despesaDto);
