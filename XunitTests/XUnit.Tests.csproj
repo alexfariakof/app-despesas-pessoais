@@ -8,12 +8,10 @@
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig">
-      <DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
-    </None>
-  </ItemGroup>
-  
+	<ItemGroup>
+		<None Remove="appsettings.json" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<Content Include="appsettings.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -23,15 +21,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Bogus" Version="35.5.0" />
+		<None Include="..\.editorconfig" Link=".editorconfig">
+			<DependentUpon>$(MSBuildProjectDirectory)</DependentUpon>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Bogus" Version="35.5.1" />
 		<PackageReference Include="coverlet.msbuild" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
 		<PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
-		<PackageReference Include="xunit" Version="2.7.0" />
-		<PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
+		<PackageReference Include="xunit" Version="2.8.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.1">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
@@ -42,11 +46,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-    <ProjectReference Include="..\AngularApp\AngularApp.esproj" />
-    <ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
-	  <ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
-	  <ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
-	  <ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
-	  <ProjectReference Include="..\Despesas.WebApi\Despesas.WebApi.csproj" />
-	</ItemGroup>  
+		<ProjectReference Include="..\AngularApp\AngularApp.esproj" />
+		<ProjectReference Include="..\Despesas.Business\Despesas.Business.csproj" />
+		<ProjectReference Include="..\Despesas.Domain\Despesas.Domain.csproj" />
+		<ProjectReference Include="..\Despesas.Infrastructure\Despesas.Infrastructure.csproj" />
+		<ProjectReference Include="..\Despesas.Repository\Despesas.Repository.csproj" />
+		<ProjectReference Include="..\Despesas.WebApi\Despesas.WebApi.csproj" />
+	</ItemGroup>
 </Project>
