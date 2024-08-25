@@ -22,6 +22,16 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:42535;http://localhost:42536"
     },
+    "Swagger": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:42535;http://localhost:42536"
+    },
     "MySqlServer": {
       "commandName": "Project",
       "launchBrowser": true,

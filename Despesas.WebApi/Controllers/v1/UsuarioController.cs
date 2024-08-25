@@ -193,9 +193,9 @@ public class UsuarioController : AuthController
         return Ok(updateUsuario);
     }
 
-    [HttpDelete]
+    [HttpDelete("DeleteUsuarioAdmin")]
     [Authorize("Bearer", Roles = "Admin")]
-    public IActionResult DeleteUsuario([FromBody] UsuarioDto usuarioDto)
+    public IActionResult DeleteUsuarioAdmin([FromBody] UsuarioDto usuarioDto)
     {
         var adminUser = _usuarioBusiness.FindById(UserIdentity);
         if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
