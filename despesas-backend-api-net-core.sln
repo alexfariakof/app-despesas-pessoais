@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despesas.WebApi", "Despesas
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "AngularApp", "AngularApp\AngularApp.esproj", "{C6990D80-3FAD-4AAF-9C4D-CE6AFF2433B3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations.MsSqlServer", "Migrations.MsSqlServer\Migrations.MsSqlServer.csproj", "{A5FD5610-DFFF-4313-8096-499F09152CC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{C6990D80-3FAD-4AAF-9C4D-CE6AFF2433B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6990D80-3FAD-4AAF-9C4D-CE6AFF2433B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C6990D80-3FAD-4AAF-9C4D-CE6AFF2433B3}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A5FD5610-DFFF-4313-8096-499F09152CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5FD5610-DFFF-4313-8096-499F09152CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5FD5610-DFFF-4313-8096-499F09152CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5FD5610-DFFF-4313-8096-499F09152CC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
