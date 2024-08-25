@@ -5,16 +5,18 @@ namespace Domain.Entities;
 public sealed class CategoriaTest
 {
     [Theory]
-    [InlineData(1, "Test Description 1", 1, TipoCategoria.CategoriaType.Despesa)]
-    [InlineData(2, "Test Description 2", 2, TipoCategoria.CategoriaType.Despesa)]
-    [InlineData(3, "Test Description 3", 3, TipoCategoria.CategoriaType.Receita)]
-    public void Categoria_Should_Set_Properties_Correctly(int idCatgeoria, string descricao, int idUsuario, TipoCategoria.CategoriaType tipoCategoria)
+    [InlineData("Test Description 1", TipoCategoria.CategoriaType.Despesa)]
+    [InlineData("Test Description 2", TipoCategoria.CategoriaType.Despesa)]
+    [InlineData("Test Description 3", TipoCategoria.CategoriaType.Receita)]
+    public void Categoria_Should_Set_Properties_Correctly(string descricao, TipoCategoria.CategoriaType tipoCategoria)
     {
         // Arrange
+        var idCategoria = Guid.NewGuid();
+        var idUsuario = Guid.NewGuid();
         var categoria = new Categoria();
 
         // Act
-        categoria.Id = idCatgeoria;
+        categoria.Id = idCategoria;
         categoria.Descricao = descricao;
         categoria.UsuarioId = idUsuario;
         var usuario = new Usuario { Id = idUsuario };
@@ -22,7 +24,7 @@ public sealed class CategoriaTest
         categoria.TipoCategoria = new TipoCategoria(tipoCategoria);
 
         // Assert
-        Assert.Equal(idCatgeoria, categoria.Id);
+        Assert.Equal(idCategoria, categoria.Id);
         Assert.Equal(descricao, categoria.Descricao);
         Assert.Equal(idUsuario, categoria.UsuarioId);
         Assert.Equal(usuario, categoria.Usuario);
@@ -34,7 +36,7 @@ public sealed class CategoriaTest
     {
         // Arrange
         string descricao = "Test Description";
-        int usuarioId = 1;
+        var usuarioId = Guid.NewGuid();
         Usuario usuario = UsuarioFaker.Instance.GetNewFaker();
         TipoCategoria tipoCategoria = (int)TipoCategoria.CategoriaType.Despesa;
 
@@ -52,9 +54,9 @@ public sealed class CategoriaTest
     public void Categoria_Second_Constructor_Should_Set_Properties_Correctly()
     {
         // Arrange
-        int id = 1;
+        var id = Guid.NewGuid();
         string descricao = "Test Description";
-        int usuarioId = 1;
+        var usuarioId = Guid.NewGuid();
         Usuario usuario = UsuarioFaker.Instance.GetNewFaker();
         TipoCategoria tipoCategoria = (int)TipoCategoria.CategoriaType.Despesa;
 

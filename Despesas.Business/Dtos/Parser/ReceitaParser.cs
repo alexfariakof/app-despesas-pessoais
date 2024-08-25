@@ -14,8 +14,8 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
             Data = origin.Data.GetValueOrDefault(),
             Descricao = origin?.Descricao ?? "",                
             Valor = origin?.Valor ?? 0,
-            CategoriaId = origin?.IdCategoria.GetValueOrDefault() ?? 0,
-            UsuarioId = origin?.UsuarioId ?? 0
+            CategoriaId = origin.IdCategoria.GetValueOrDefault(),
+            UsuarioId = origin.UsuarioId
         };
     }
 
@@ -29,7 +29,7 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
             Descricao = origin.Descricao,
             Valor = origin.Valor,                
             IdCategoria =origin?.Categoria?.Id,
-            UsuarioId = origin?.UsuarioId ?? 0
+            UsuarioId = origin.UsuarioId
         };
     }
 

@@ -15,6 +15,6 @@ public class DespesaDto : DespesaDtoBase
     public override DateTime? DataVencimento { get; set; }
 
     [Required]
-    public override int? IdCategoria { get; set; }
+    public override Guid? IdCategoria { get; set; }
     
 }

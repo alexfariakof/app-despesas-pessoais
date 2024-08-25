@@ -29,7 +29,7 @@ public class ReceitaController : AuthController
     {
         try
         {
-            return Ok(_receitaBusiness.FindAll(IdUsuario));
+            return Ok(_receitaBusiness.FindAll(UserIdentity));
         }
         catch (Exception ex)
         {
@@ -47,11 +47,11 @@ public class ReceitaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult GetById([FromRoute] int id)
+    public IActionResult GetById([FromRoute] Guid id)
     {
         try
         {
-            var _receita = _receitaBusiness.FindById(id, IdUsuario) ?? throw new ArgumentException("Nenhuma receita foi encontrada.");
+            var _receita = _receitaBusiness.FindById(id, UserIdentity) ?? throw new ArgumentException("Nenhuma receita foi encontrada.");
             return Ok(_receita);
         }
         catch (Exception ex)
@@ -74,7 +74,7 @@ public class ReceitaController : AuthController
     {
         try
         {
-            receita.UsuarioId = IdUsuario;
+            receita.UsuarioId = UserIdentity;
             return Ok(_receitaBusiness.Create(receita));
         }
         catch (Exception ex)
@@ -97,7 +97,7 @@ public class ReceitaController : AuthController
     {
         try
         {
-            receita.UsuarioId = IdUsuario;
+            receita.UsuarioId = UserIdentity;
             var updateReceita = _receitaBusiness.Update(receita) ?? throw new();
             return Ok(updateReceita);
         }
@@ -117,12 +117,12 @@ public class ReceitaController : AuthController
     [ProducesResponseType(401)]
     [ProducesResponseType(403)]
     [TypeFilter(typeof(HyperMediaFilter))]
-    public IActionResult Delete(int idReceita)
+    public IActionResult Delete(Guid idReceita)
     {
         try
         {
-            ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
-            if (receita == null || IdUsuario != receita.UsuarioId)
+            ReceitaDto receita = _receitaBusiness.FindById(idReceita, UserIdentity);
+            if (receita == null || UserIdentity != receita.UsuarioId)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
 
             return _receitaBusiness.Delete(receita) ? Ok(true) : throw new();

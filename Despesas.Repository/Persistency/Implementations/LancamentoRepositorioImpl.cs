@@ -12,7 +12,7 @@ public class LancamentoRepositorioImpl : ILancamentoRepositorio
         Context = context;
     }
 
-    public List<Lancamento> FindByMesAno(DateTime data, int idUsuario)
+    public List<Lancamento> FindByMesAno(DateTime data, Guid idUsuario)
     {
         int mes = data.Month;
         int ano = data.Year;
@@ -34,7 +34,7 @@ public class LancamentoRepositorioImpl : ILancamentoRepositorio
                     Valor = d.Valor,
                     Despesa = new Despesa { Id = d.Id, Descricao = d.Descricao },
                     Receita = null,
-                    ReceitaId = 0
+                    ReceitaId = Guid.Empty
                 })
                 .ToList();
 
@@ -54,7 +54,7 @@ public class LancamentoRepositorioImpl : ILancamentoRepositorio
                     Valor = r.Valor,
                     Despesa = null, 
                     Receita = new Receita { Id = r.Id, Descricao = r.Descricao },
-                    DespesaId = 0
+                    DespesaId = Guid.Empty
                 })
                 .ToList();
 

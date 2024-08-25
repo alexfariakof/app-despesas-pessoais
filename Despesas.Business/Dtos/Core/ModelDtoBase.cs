@@ -5,5 +5,5 @@ namespace Business.Dtos.Core;
 public abstract class ModelDtoBase : BaseModel
 {
     [JsonIgnore]
-    public int UsuarioId { get; set; }
+    public Guid UsuarioId { get; set; }
 }

@@ -128,7 +128,7 @@ public sealed class SaldoRepositorioImplTest : IClassFixture<SaldoRepositorioFix
     public void GetSaldoByAno_Throws_Exception_When_Despesa_Execute_Where()
     {
         // Arrange
-        var idUsuario = 0;
+        var idUsuario = Guid.Empty;
         var despesaDbSetMock = new Mock<DbSet<Despesa>>();
         despesaDbSetMock.As<IQueryable<Despesa>>().Setup(d => d.Provider).Throws<Exception>();
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "GetSaldoByAno_Throws_Exception_When_Despesa_Execute_Where").Options;
@@ -149,7 +149,7 @@ public sealed class SaldoRepositorioImplTest : IClassFixture<SaldoRepositorioFix
     public void GetSaldoByAno_Throws_Exception_When_Receita_Execute_Where()
     {
         // Arrange            
-        var idUsuario = 0;
+        var idUsuario = Guid.Empty;
         var receitaDbSetMock = new Mock<DbSet<Receita>>();
         receitaDbSetMock.As<IQueryable<Receita>>().Setup(d => d.Provider).Throws<Exception>();
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "GetSaldoByAno_Throws_Exception_When_Receita_Execute_Where").Options;
@@ -204,7 +204,7 @@ public sealed class SaldoRepositorioImplTest : IClassFixture<SaldoRepositorioFix
     public void GetSaldoByMesAno_Throws_Exception_When_Despesa_Execute_Where()
     {
         // Arrange
-        var idUsuario = 0;
+        var idUsuario = Guid.Empty;
         var despesaDbSetMock = new Mock<DbSet<Despesa>>();
         despesaDbSetMock.As<IQueryable<Despesa>>().Setup(d => d.Provider).Throws<Exception>();
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "GetSaldoByMesAno_Throws_Exception_When_Despesa_Execute_Where").Options;
@@ -225,7 +225,7 @@ public sealed class SaldoRepositorioImplTest : IClassFixture<SaldoRepositorioFix
     public void GetSaldoByMesAno_Throws_Exception_When_Receita_Execute_Where()
     {
         // Arrange            
-        var idUsuario = 0;
+        var idUsuario = Guid.Empty;
         var receitaDbSetMock = new Mock<DbSet<Receita>>();
         receitaDbSetMock.As<IQueryable<Receita>>().Setup(d => d.Provider).Throws<Exception>();
         var options = new DbContextOptionsBuilder<RegisterContext>().UseInMemoryDatabase(databaseName: "GetSaldoByMesAno_Throws_Exception_When_Receita_Execute_Where").Options;

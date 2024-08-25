@@ -167,10 +167,10 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
         var controleAcesso = context.ControleAcesso.ToList().First();
         mockRepository.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(controleAcesso);
-        mockRepository.Setup(repo => repo.ChangePassword(0, "!12345")).Returns(true);
+        mockRepository.Setup(repo => repo.ChangePassword(Guid.Empty, "!12345")).Returns(true);
 
         // Act
-        var result = mockRepository.Object.ChangePassword(0, "!12345");
+        var result = mockRepository.Object.ChangePassword(Guid.Empty, "!12345");
 
         //Assert
         Assert.IsType<bool>(result);
@@ -279,7 +279,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         // Arrange
         var context = _fixture.Context;
         var mockRepository = Mock.Get<IControleAcessoRepositorioImpl>(_fixture.MockRepository.Object);
-        var nonExistingId = -1;
+        var nonExistingId = Guid.Empty;
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => mockRepository.Object.RevokeRefreshToken(nonExistingId));

@@ -18,7 +18,7 @@ public sealed class SaldoControllerTest
     public void GetSaldo_Should_Return_Saldo()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _SaldoController);
         decimal saldo = 1000.99m;
         _mockSaldoBusiness.Setup(business => business.GetSaldo(idUsuario)).Returns(saldo);
@@ -41,8 +41,8 @@ public sealed class SaldoControllerTest
     public void GetSaldo_Returns_BadRequest_When_Throws_Error()
     {
         // Arrange
-        int idUsuario = 1;
-        Usings.SetupBearerToken(1, _SaldoController);
+        var idUsuario = Guid.Empty;
+        Usings.SetupBearerToken(idUsuario, _SaldoController);
         _mockSaldoBusiness.Setup(business => business.GetSaldo(idUsuario)).Throws(new Exception());
 
         // Act
@@ -61,7 +61,7 @@ public sealed class SaldoControllerTest
     public void GetSaldoByAno_Should_Return_Saldo()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _SaldoController);
         decimal saldo = 897.99m;
         _mockSaldoBusiness.Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario)).Returns(saldo);
@@ -84,8 +84,8 @@ public sealed class SaldoControllerTest
     public void GetSaldoByAno_Returns_BadRequest_When_Throws_Error()
     {
         // Arrange
-        int idUsuario = 1;
-        Usings.SetupBearerToken(1, _SaldoController);
+        var idUsuario = Guid.Empty;
+        Usings.SetupBearerToken(idUsuario, _SaldoController);
         _mockSaldoBusiness.Setup(business => business.GetSaldoAnual(DateTime.Today, idUsuario)).Throws(new Exception());
 
         // Act
@@ -104,7 +104,7 @@ public sealed class SaldoControllerTest
     public void GetSaldoByMesAno_Should_Return_Saldo()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _SaldoController);
         decimal saldo = 178740.99m;
         _mockSaldoBusiness.Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario)).Returns(saldo);
@@ -127,8 +127,8 @@ public sealed class SaldoControllerTest
     public void GetSaldoByMesAno_Returns_BadRequest_When_Throws_Error()
     {
         // Arrange
-        int idUsuario = 1;
-        Usings.SetupBearerToken(1, _SaldoController);
+        var idUsuario = Guid.Empty;
+        Usings.SetupBearerToken(idUsuario, _SaldoController);
         _mockSaldoBusiness.Setup(business => business.GetSaldoByMesAno(DateTime.Today, idUsuario)).Throws(new Exception());
 
         // Act

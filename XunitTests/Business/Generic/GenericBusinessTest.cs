@@ -42,14 +42,14 @@ public class GenericBusinessTests
     public void FindAll_Should_Return_All_Objects()
     {
         // Arrange
-        var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();
+        var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();        
         var repositoryMock = new Mock<IRepositorio<Usuario>>();
         repositoryMock.Setup(repo => repo.GetAll()).Returns(objects);
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<UsuarioProfile>(); }));
         var business = new GenericBusiness<UsuarioDto, Usuario>(_mapper, repositoryMock.Object);
 
         // Act
-        var result = business.FindAll(1);
+        var result = business.FindAll(objects.First().Id);
 
         // Assert
         Assert.NotNull(result);
@@ -62,15 +62,16 @@ public class GenericBusinessTests
     public void FindById_Should_Return_Object_With_MatchingId()
     {
         // Arrange
-        var id = 1;
+        
         var obj = DespesaFaker.Instance.Despesas().First();
+        var id = obj.Id;
         var repositoryMock = new Mock<IRepositorio<Despesa>>();
         repositoryMock.Setup(repo => repo.Get(id)).Returns(obj);
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<DespesaProfile>(); }));
         var business = new GenericBusiness<DespesaDto, Despesa>(_mapper, repositoryMock.Object);
 
         // Act
-        var result = business.FindById(id, 1);
+        var result = business.FindById(id, obj.UsuarioId);
 
         // Assert
         Assert.NotNull(result);

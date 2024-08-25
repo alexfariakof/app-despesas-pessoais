@@ -17,7 +17,7 @@ public class ControleAcesso : BaseModel
         get => _senha;
         set => _senha = Crypto.Instance.Encrypt(value);
     }
-    public int UsuarioId { get; set; }
+    public Guid UsuarioId { get; set; }
 
     public string RefreshToken { get; set; } = String.Empty;
 
@@ -28,6 +28,6 @@ public class ControleAcesso : BaseModel
     {
         this.Login = usuario.Email;
         this.Senha = senha;
-        this.Usuario = usuario;        
+        this.Usuario = usuario.CreateUsuario(usuario);        
     }
 }

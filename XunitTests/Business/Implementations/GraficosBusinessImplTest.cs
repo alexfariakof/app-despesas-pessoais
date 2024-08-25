@@ -18,7 +18,7 @@ public class GraficosBusinessImplTest
     public void GetDadosGraficoByAnoByIdUsuario_Should_Return_Grafico()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         var data = new DateTime(2023, 10, 1);
         var graficoData = GraficoFaker.GetNewFaker();
         _repositorioMock.Setup(r => r.GetDadosGraficoByAno(idUsuario, data)).Returns(graficoData);

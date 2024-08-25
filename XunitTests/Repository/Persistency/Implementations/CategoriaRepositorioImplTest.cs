@@ -72,7 +72,7 @@ public sealed class CategoriaRepositorioImplTest : IClassFixture<DatabaseFixture
     public void Update_Should_Throws_Exception_When_Categoria_Not_Found()
     {
         // Arrange
-        var updatedItem = new Categoria { Id = 999 };
+        var updatedItem = new Categoria { Id = Guid.NewGuid() };
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => _repository.Update(ref updatedItem));
@@ -107,7 +107,7 @@ public sealed class CategoriaRepositorioImplTest : IClassFixture<DatabaseFixture
     public void Get_Should_Throws_Exception_When_Categoria_Not_Found()
     {
         // Act & Assert
-        var result = _repository.Get(999);
+        var result = _repository.Get(Guid.NewGuid());
         Assert.Null(result);
     }
 

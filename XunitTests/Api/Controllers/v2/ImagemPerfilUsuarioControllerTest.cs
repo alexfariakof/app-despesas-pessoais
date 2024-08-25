@@ -34,7 +34,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarios();
         var _imagemPerfilUsuarioDtos = _mapperImagemPerfil.Map<List<ImagemPerfilDto>>(_imagemPerfilUsuarios);
         var usuarioDto = _mapperUsuario.Map<UsuarioDto>(_imagemPerfilUsuarios.First().Usuario);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
@@ -56,7 +56,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarios();
         var _imagemPerfilUsuarioDtos = _mapperImagemPerfil.Map<List<ImagemPerfilDto>>(_imagemPerfilUsuarios);
         var usuarioDto = _mapperUsuario.Map<UsuarioDto>(_imagemPerfilUsuarios.First().Usuario);
-        int idUsuario = 987654;
+        Guid idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
@@ -78,7 +78,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var _imagemPerfilUsuarios = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarios();
         var _imagemPerfilUsuarioDtos = _mapperImagemPerfil.Map<List<ImagemPerfilDto>>(_imagemPerfilUsuarios);
         var imagemPerfilUsuarioDto = _imagemPerfilUsuarioDtos.First();
-        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
+        Guid idUsuario = imagemPerfilUsuarioDto.UsuarioId;
 
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
@@ -133,7 +133,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
+        Guid idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
@@ -156,7 +156,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
+        Guid idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(() => null);
 
@@ -178,7 +178,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     public async Task Post_Throws_Erro_And_Returns_BadRequest()
     {
         // Arrange
-        var idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Create(It.IsAny<ImagemPerfilDto>())).Returns(() => null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
@@ -200,7 +200,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
+        Guid idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
 
@@ -253,7 +253,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     public async Task Put_Throws_Erro_And_Returns_BadRequest()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(() => null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
@@ -276,7 +276,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
+        Guid idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(imagemPerfilUsuarioDto);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file not Image type content")), 0, Encoding.UTF8.GetBytes("Test file not Image type content").Length, "DATA File Erro", "test.txt");
@@ -298,7 +298,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
     {
         // Arrange
         var imagemPerfilUsuarioDto = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarioDtos().First();
-        int idUsuario = imagemPerfilUsuarioDto.UsuarioId;
+        Guid idUsuario = imagemPerfilUsuarioDto.UsuarioId;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockImagemPerfilBusiness.Setup(business => business.Update(It.IsAny<ImagemPerfilDto>())).Returns(() => null);
         var formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content")), 0, Encoding.UTF8.GetBytes("Test file content").Length, "test", "test.jpg");
@@ -319,9 +319,9 @@ public sealed class ImagemPerfilUsuarioControllerTest
     public void Delete_Should_Returns_OkResults()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<int>())).Returns(true);
+        _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<Guid>())).Returns(true);
 
         // Act
         var result = _usuarioController.DeleteImagemPerfil() as ObjectResult;
@@ -332,16 +332,16 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var message  = (bool?)result.Value;
         Assert.IsType<bool>(message);
         Assert.True((bool)message);
-        _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);
+        _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<Guid>()), Times.Once);
     }
 
     [Fact]
     public void Delete_Should_Returns_BadRequest_When_Try_To_Delete()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<int>())).Returns(false);
+        _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<Guid>())).Returns(false);
 
         // Act
         var result = _usuarioController.DeleteImagemPerfil() as ObjectResult;
@@ -351,16 +351,16 @@ public sealed class ImagemPerfilUsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
         Assert.Equal("Erro ao excluir imagem do perfil!", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);
+        _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<Guid>()), Times.Once);
     }
 
     [Fact]
     public void Delete_Throws_Erro_And_Retuns_BadRequestResult()
     {
         // Arrange
-        int idUsuario = 1;
+        var idUsuario = Guid.NewGuid();
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<int>())).Throws<Exception>();
+        _mockImagemPerfilBusiness.Setup(business => business.Delete(It.IsAny<Guid>())).Throws<Exception>();
 
         // Act
         var result = _usuarioController.DeleteImagemPerfil() as ObjectResult;
@@ -370,6 +370,6 @@ public sealed class ImagemPerfilUsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;               
         Assert.Equal("Erro ao excluir imagem do perfil!", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<int>()), Times.Once);
+        _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<Guid>()), Times.Once);
     }
 }

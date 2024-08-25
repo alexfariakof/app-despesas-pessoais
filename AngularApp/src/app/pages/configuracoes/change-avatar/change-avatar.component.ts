@@ -33,15 +33,14 @@ export class ChangeAvatarComponent implements OnInit {
     this.imagemPerfilService.getImagemPerfilUsuario()
       .subscribe({
         next: (response: IImagemPerfil) => {
-          if (response && response !== undefined && response!== null) {
+          if (response && response !== undefined && response!== null && response.url !== "" && response.url !== undefined && response.url !== null) {
             this.imagemPerfilUsuario = response;
           }
         },
         error: (errorMessage: string) => {
           this.modalAlert.open(AlertComponent, errorMessage, AlertType.Warning);
         }
-      });;
-  }
+      });  }
 
   handleAvatarUpload = (event: any): void => {
     const uploadedFile = event.target.files?.[0];

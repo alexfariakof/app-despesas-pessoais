@@ -29,7 +29,7 @@ public class UsuarioBusinessImplTest
         var usuario = _usuarios.First();
         usuario.PerfilUsuario = new PerfilUsuario(PerfilUsuario.Perfil.Admin);
         _repositorioMock.Setup(repo => repo.Insert(ref It.Ref<Usuario>.IsAny));
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);
 
         // Act
         var result = _usuarioBusiness.Create(_mapper.Map<UsuarioDto>(usuario));
@@ -50,7 +50,7 @@ public class UsuarioBusinessImplTest
         var idUsuario = usuario.Id;
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_usuarios);
         _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Usuario, bool>>>())).Returns(usuarios.AsEnumerable());
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);
 
         // Act
         var result = _usuarioBusiness.FindAll(idUsuario);
@@ -72,7 +72,7 @@ public class UsuarioBusinessImplTest
         var idUsuario = usuario.Id;
         _repositorioMock.Setup(repo => repo.GetAll()).Returns(_usuarios);
         _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<Usuario, bool>>>())).Returns(usuarios.AsEnumerable());
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);
 
         // Act & Assert 
         Assert.Throws<ArgumentException>(() => _usuarioBusiness.FindAll(idUsuario));
@@ -127,7 +127,7 @@ public class UsuarioBusinessImplTest
         var usuario= _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin);
         var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(true);
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);       
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);       
 
         // Act
         var result = _usuarioBusiness.Delete(usuarioDto);
@@ -146,7 +146,7 @@ public class UsuarioBusinessImplTest
         var usuario = _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.Perfil.User);
         var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(false);
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<int>())).Returns(usuario);
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);
 
         // Act & Assert 
         Assert.Throws<ArgumentException>((() => _usuarioBusiness.Delete(usuarioDto)));

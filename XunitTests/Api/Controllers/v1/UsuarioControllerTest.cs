@@ -35,7 +35,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last().Id;
+        Guid idUsuario = usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last().Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(usauriosVMs.FindAll(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
@@ -56,7 +56,7 @@ public sealed class UsuarioControllerTest
     public void Get_Should_Returns_OkResult_With_Usuarios()
     {
         // Arrange
-        int idUsuario = administrador.Id;
+        Guid idUsuario = administrador.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_usuarioDtos.FindAll(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(administrador);
@@ -76,7 +76,7 @@ public sealed class UsuarioControllerTest
     public void GetUsuario_Should_Returns_BadRequest()
     {
         // Arrange
-        int idUsuario = usuarioNormal.Id;
+        Guid idUsuario = usuarioNormal.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(() => null);
 
@@ -96,7 +96,7 @@ public sealed class UsuarioControllerTest
     public void GetUsuario_Should_Returns_OkResult_When_Usuario_Normal()
     {
         // Arrange
-        int idUsuario = usuarioNormal.Id;
+        Guid idUsuario = usuarioNormal.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usuarioNormal);
 
@@ -117,7 +117,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
@@ -142,7 +142,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
@@ -162,7 +162,7 @@ public sealed class UsuarioControllerTest
     {
         // Arrange
         var usuarioDto = _usuarioDtos[1];
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
 
@@ -181,7 +181,7 @@ public sealed class UsuarioControllerTest
     {
         // Arrange
         var usuarioDto = usuarioNormal;
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(administrador.Id, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Delete(usuarioDto)).Returns(true);
         _mockUsuarioBusiness.Setup(business => business.FindById(administrador.Id)).Returns(administrador);
@@ -206,7 +206,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
@@ -231,7 +231,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Email = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
@@ -256,7 +256,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Email = "  ";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
@@ -281,7 +281,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Email = "TestINvalidemail";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Create(usuarioDto)).Returns(usuarioDto);
@@ -305,7 +305,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).First());
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
 
         // Act
@@ -326,7 +326,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usuarioDto = _usuarioDtos.First();
         usuarioDto.Email = string.Empty;
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
 
@@ -348,7 +348,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usuarioDto = _usuarioDtos.First();
         usuarioDto.Email = " ";
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
 
@@ -370,7 +370,7 @@ public sealed class UsuarioControllerTest
         // Arrange
         var usuarioDto = _usuarioDtos.First();
         usuarioDto.Email = "invalidEmail.com";
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
 
@@ -391,7 +391,7 @@ public sealed class UsuarioControllerTest
     {
         // Arrange
         var usuarioDto = _usuarioDtos.First();
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(() => null);
 
@@ -414,7 +414,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Delete(usuarioNormal)).Returns(false);
@@ -439,7 +439,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Delete(usuarioNormal)).Returns(false);
@@ -465,7 +465,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
@@ -488,7 +488,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Email = "TestINvalidemail";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
@@ -513,7 +513,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Telefone = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
@@ -538,7 +538,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Email = null;
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
@@ -563,7 +563,7 @@ public sealed class UsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         usuarioDto.Email = " ";
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(usuarioDto);
@@ -587,7 +587,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).Last());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Returns(() => null);
@@ -611,7 +611,7 @@ public sealed class UsuarioControllerTest
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
         var usuarioDto = new UsuarioParser().Parse(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).First());
         var usauriosVMs = new UsuarioParser().ParseList(usaurios);
-        int idUsuario = usuarioDto.Id;
+        Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(idUsuario)).Returns(usauriosVMs.First(u => u.Id == idUsuario));
         _mockUsuarioBusiness.Setup(business => business.Update(usuarioDto)).Returns(() => null);

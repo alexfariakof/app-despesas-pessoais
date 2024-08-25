@@ -44,10 +44,10 @@ public sealed class LancamentoParserTest
 
             Assert.True(idProperty.IsPrimaryKey());
             Assert.False(usuarioIdProperty.IsNullable);
-            Assert.True(despesaIdProperty.IsNullable);
-            Assert.Null(despesaIdProperty.GetDefaultValue());
-            Assert.True(receitaIdProperty.IsNullable);
-            Assert.Null(receitaIdProperty.GetDefaultValue());
+            Assert.False(despesaIdProperty.IsNullable);
+            Assert.Equal(despesaIdProperty.GetDefaultValue(), Guid.Empty);
+            Assert.False(receitaIdProperty.IsNullable);
+            Assert.Equal(receitaIdProperty.GetDefaultValue(), Guid.Empty);
             //Assert.True(dataProperty.GetColumnType() == "datetime");
             Assert.False(dataProperty.IsNullable);
             //Assert.True(dataCriacaoProperty.GetColumnType() == "datetime");

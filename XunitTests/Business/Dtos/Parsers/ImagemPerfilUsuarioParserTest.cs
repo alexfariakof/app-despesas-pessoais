@@ -11,11 +11,11 @@ public sealed class ImagemPerfilUsuarioParserTest
         var parser = new ImagemPerfilUsuarioParser();
         var origin = new ImagemPerfilDto
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Name = "example.jpg",
             ContentType = "image/jpg",
             Url = "https://example.com/image.jpg",
-            UsuarioId = 42
+            UsuarioId = Guid.NewGuid()
         };
 
         // Act
@@ -36,11 +36,11 @@ public sealed class ImagemPerfilUsuarioParserTest
         var parser = new ImagemPerfilUsuarioParser();
         var origin = new ImagemPerfilUsuario
         {
-            Id = 1,
+            Id = Guid.NewGuid(),
             Name = "example.jpg",
             ContentType = "image/jpg",
             Url = "https://example.com/image.jpg",
-            UsuarioId = 42
+            UsuarioId = Guid.NewGuid()
         };
 
         // Act

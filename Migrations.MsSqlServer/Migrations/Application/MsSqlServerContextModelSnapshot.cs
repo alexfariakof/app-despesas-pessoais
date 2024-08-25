@@ -24,21 +24,20 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Categoria", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("TipoCategoriaId")
+                    b.Property<int?>("TipoCategoriaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.HasKey("Id");
 
@@ -51,11 +50,9 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.ControleAcesso", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -72,8 +69,9 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.HasKey("Id");
 
@@ -87,14 +85,13 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Despesa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("CategoriaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
@@ -108,8 +105,9 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -127,11 +125,9 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.ImagemPerfilUsuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -147,8 +143,9 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.HasKey("Id");
 
@@ -166,14 +163,13 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Lancamento", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("CategoriaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime");
@@ -187,14 +183,17 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("DespesaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("DespesaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int?>("ReceitaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("ReceitaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(10, 2)");
@@ -214,14 +213,14 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Receita", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("CategoriaId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("binary(16)");
 
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
@@ -232,8 +231,10 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("binary(16)");
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -251,11 +252,9 @@ namespace Migrations.MsSqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -267,7 +266,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("PerfilUsuarioId")
+                    b.Property<int?>("PerfilUsuarioId")
                         .HasColumnType("int");
 
                     b.Property<string>("SobreNome")
@@ -354,9 +353,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                 {
                     b.HasOne("Domain.Entities.ValueObjects.TipoCategoria", "TipoCategoria")
                         .WithMany()
-                        .HasForeignKey("TipoCategoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TipoCategoriaId");
 
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany("Categorias")
@@ -421,12 +418,14 @@ namespace Migrations.MsSqlServer.Migrations.Application
                     b.HasOne("Domain.Entities.Despesa", "Despesa")
                         .WithMany()
                         .HasForeignKey("DespesaId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Receita", "Receita")
                         .WithMany()
                         .HasForeignKey("ReceitaId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
@@ -466,9 +465,7 @@ namespace Migrations.MsSqlServer.Migrations.Application
                 {
                     b.HasOne("Domain.Entities.ValueObjects.PerfilUsuario", "PerfilUsuario")
                         .WithMany()
-                        .HasForeignKey("PerfilUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PerfilUsuarioId");
 
                     b.Navigation("PerfilUsuario");
                 });

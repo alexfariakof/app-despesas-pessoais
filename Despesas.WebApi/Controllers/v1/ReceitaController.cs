@@ -22,16 +22,16 @@ public class ReceitaController : AuthController
     [Authorize("Bearer", Roles = "User")]
     public IActionResult Get()
     {
-        return Ok(_receitaBusiness.FindAll(IdUsuario));
+        return Ok(_receitaBusiness.FindAll(UserIdentity));
     }
 
     [HttpGet("GetById/{id}")]
     [Authorize("Bearer", Roles = "User")]
-    public IActionResult GetById([FromRoute] int id)
+    public IActionResult GetById([FromRoute] Guid id)
     {
         try
         {
-            var _receita = _receitaBusiness.FindById(id, IdUsuario);
+            var _receita = _receitaBusiness.FindById(id, UserIdentity);
 
             if (_receita == null)
                 return BadRequest(new { message = "Nenhuma receita foi encontrada." });
@@ -50,7 +50,7 @@ public class ReceitaController : AuthController
     {
         try
         {
-            receita.UsuarioId = IdUsuario;
+            receita.UsuarioId = UserIdentity;
             return new OkObjectResult(new { message = true, receita = _receitaBusiness.Create(receita) });
         }
         catch
@@ -64,7 +64,7 @@ public class ReceitaController : AuthController
     public IActionResult Put([FromBody] ReceitaDto receita)
     {
 
-        receita.UsuarioId = IdUsuario;
+        receita.UsuarioId = UserIdentity;
         var updateReceita = _receitaBusiness.Update(receita);
 
         if (updateReceita == null)
@@ -75,10 +75,10 @@ public class ReceitaController : AuthController
 
     [HttpDelete("{idReceita}")]
     [Authorize("Bearer", Roles = "User")]
-    public IActionResult Delete(int idReceita)
+    public IActionResult Delete(Guid idReceita)
     {
-        ReceitaDto receita = _receitaBusiness.FindById(idReceita, IdUsuario);
-        if (receita == null || IdUsuario != receita.UsuarioId)
+        ReceitaDto receita = _receitaBusiness.FindById(idReceita, UserIdentity);
+        if (receita == null || UserIdentity != receita.UsuarioId)
         {
             return BadRequest(new { message = "Usuário não permitido a realizar operação!" });
         }

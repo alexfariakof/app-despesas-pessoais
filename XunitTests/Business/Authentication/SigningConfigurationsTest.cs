@@ -8,7 +8,7 @@ public sealed class SigningConfigurationsTest
     public void SigningConfigurations_Should_Initialize_Correctly()
     {
         // Arrange & Act
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
@@ -16,7 +16,7 @@ public sealed class SigningConfigurationsTest
             DaysToExpiry = 1
         });
 
-        var signingConfigurations = new SigningConfigurations(options);
+        var signingConfigurations = new SigningConfigurations(options?.Value);
 
         // Assert
         Assert.NotNull(signingConfigurations.Key);
@@ -27,7 +27,7 @@ public sealed class SigningConfigurationsTest
     public void Key_Should_Be_RSA_SecurityKey()
     {
         // Arrange
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
@@ -35,7 +35,7 @@ public sealed class SigningConfigurationsTest
             DaysToExpiry = 1
         });
 
-        var signingConfigurations = new SigningConfigurations(options);
+        var signingConfigurations = new SigningConfigurations(options?.Value);
 
         // Assert
         Assert.IsType<RsaSecurityKey>(signingConfigurations.Key);
@@ -45,7 +45,7 @@ public sealed class SigningConfigurationsTest
     public void SigningCredentials_Should_Be_Correct_Algorithm()
     {
         // Arrange
-        var options = Options.Create(new TokenOptions
+        var options = Options.Create(new TokenConfiguration
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
@@ -53,7 +53,7 @@ public sealed class SigningConfigurationsTest
             DaysToExpiry = 1 
         });
 
-        var signingConfigurations = new SigningConfigurations(options);
+        var signingConfigurations = new SigningConfigurations(options?.Value);
 
         // Assert
         Assert.NotNull(signingConfigurations.SigningCredentials.Algorithm);

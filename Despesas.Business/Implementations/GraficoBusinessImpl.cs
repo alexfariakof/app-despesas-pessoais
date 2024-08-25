@@ -12,7 +12,7 @@ public class GraficosBusinessImpl : IGraficosBusiness
         _repositorio = repositorio;
     }
 
-    public Grafico GetDadosGraficoByAnoByIdUsuario(int idUsuario, DateTime data)
+    public Grafico GetDadosGraficoByAnoByIdUsuario(Guid idUsuario, DateTime data)
     {
         return _repositorio.GetDadosGraficoByAno(idUsuario, data);
     }
