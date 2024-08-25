@@ -10,17 +10,22 @@ using Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add Cors Configurations 
-builder.Services.AddCors(c =>
+builder.Services.AddCors(options =>
 {
-    c.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(policy =>
     {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-
+        policy.WithOrigins(
+                "https://alexfariakof.com",
+                "http://alexfariakof.com",
+                "http://alexfariakof.com:3000",
+                "http://localhost", 
+                "https://localhost",
+                "http://127.0.0.1", 
+                "https://127.0.0.1")
+              .AllowAnyMethod()   
+              .AllowAnyHeader();  
     });
 });
-
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -36,8 +41,7 @@ else if (builder.Environment.IsProduction() || builder.Environment.IsDevelopment
     builder.Services.CreateDataBaseInMemory();
 }
 else 
-{
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
+{    
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
@@ -61,31 +65,31 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.UseHsts();
-if (app.Environment.IsProduction())
-    app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.AddSupporteCulturesPtBr();
 app.UseCors();
 
-app.MapControllers();
-app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
-
 if (!app.Environment.IsProduction())
     app.AddSwaggerUIApiVersioning();
  
 app.UseAuthentication();
-app.UseRouting()
-    .UseAuthorization()
-    .UseCertificateForwarding()
-    .UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-        endpoints.MapFallbackToFile("index.html");
-    });
+app.UseRouting();
+app.UseAuthorization();
+app.UseCertificateForwarding();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapFallbackToFile("index.html");
+});
+app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
 
 //if (!app.Environment.IsProduction())
+//{    
     app.RunDataSeeders();
+//}
 
 app.Run();
