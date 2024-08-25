@@ -21,9 +21,9 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Categoria", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
@@ -32,8 +32,9 @@ namespace Migrations.MySqlServer.Migrations.Application
                     b.Property<int?>("TipoCategoriaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.HasKey("Id");
 
@@ -46,9 +47,9 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.ControleAcesso", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("Login")
                         .IsRequired()
@@ -65,8 +66,9 @@ namespace Migrations.MySqlServer.Migrations.Application
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.HasKey("Id");
 
@@ -80,27 +82,29 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Despesa", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("CategoriaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<DateTime?>("DataVencimento")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -118,9 +122,9 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.ImagemPerfilUsuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("ContentType")
                         .IsRequired()
@@ -136,8 +140,9 @@ namespace Migrations.MySqlServer.Migrations.Application
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.HasKey("Id");
 
@@ -155,33 +160,37 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Lancamento", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("CategoriaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<DateTime>("Data")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime>("DataCriacao")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("DespesaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("DespesaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int?>("ReceitaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("ReceitaId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<decimal>("Valor")
                         .HasColumnType("decimal(10, 2)");
@@ -201,24 +210,28 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Receita", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
-                    b.Property<int>("CategoriaId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("CategoriaId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("binary(16)");
 
                     b.Property<DateTime>("Data")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("datetime")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Descricao")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("UsuarioId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("binary(16)");
 
                     b.Property<decimal>("Valor")
                         .ValueGeneratedOnAdd()
@@ -236,9 +249,9 @@ namespace Migrations.MySqlServer.Migrations.Application
 
             modelBuilder.Entity("Domain.Entities.Usuario", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<byte[]>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -398,12 +411,14 @@ namespace Migrations.MySqlServer.Migrations.Application
                     b.HasOne("Domain.Entities.Despesa", "Despesa")
                         .WithMany()
                         .HasForeignKey("DespesaId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Receita", "Receita")
                         .WithMany()
                         .HasForeignKey("ReceitaId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Usuario", "Usuario")
                         .WithMany()
