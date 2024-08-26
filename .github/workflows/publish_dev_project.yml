@@ -50,7 +50,7 @@ jobs:
           port: 22
           script: |            
             ./scripts/dp-api.dev.sh
-          continue-on-error: false
+    continue-on-error: false
 
 #  trigger_e2e_tests:
 #    needs: deploy_dev
