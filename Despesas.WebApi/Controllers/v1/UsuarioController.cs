@@ -193,7 +193,7 @@ public class UsuarioController : AuthController
         return Ok(updateUsuario);
     }
 
-    [HttpDelete]
+    [HttpDelete("DeleteUsuarioAdmin")]
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult DeleteUsuario([FromBody] UsuarioDto usuarioDto)
     {
