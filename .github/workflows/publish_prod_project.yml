@@ -49,4 +49,4 @@ jobs:
           port: 22
           script: |            
             ./scripts/dp-api.prod.sh
-          continue-on-error: false
+    continue-on-error: false
