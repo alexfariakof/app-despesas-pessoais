@@ -398,6 +398,7 @@ FodyWeavers.xsd
 
 # Script gerador de Certificado SSL
 */gencert.sh
+*gencert.sh
 
 .vscode/
 */appsettings.Development.json

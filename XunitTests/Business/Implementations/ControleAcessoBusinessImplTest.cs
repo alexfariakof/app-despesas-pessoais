@@ -175,7 +175,7 @@ public class ControleAcessoBusinessImplTest
         var idUsuario = Guid.NewGuid();
         string newPassword = "123456789";
         _repositorioMock.Setup(repo => repo.ChangePassword(It.IsAny<Guid>(), newPassword)).Returns(true);
-        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(new ControleAcesso { UsuarioId = idUsuario});
+        _repositorioMock.Setup(repo => repo.Find(It.IsAny<Expression<Func<ControleAcesso, bool>>>())).Returns(new ControleAcesso { UsuarioId = Guid.NewGuid()});
 
         // Act
         _controleAcessoBusiness.ChangePassword(idUsuario, newPassword);
