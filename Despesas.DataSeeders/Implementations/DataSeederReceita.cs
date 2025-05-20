@@ -1218,6 +1218,596 @@ public class DataSeederReceita : IDataSeeder
                     Usuario = user,
                     UsuarioId = user.Id,
                     CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },                
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 05, 31, 01, 45, 04),
+                    Descricao = "Teste Alteração Receita",
+                    Valor = 500.50m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 01, 20),
+                    Descricao = "Investimento bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 01, 25),
+                    Descricao = "Benefício casa alugada",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 01, 30),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 02, 05),
+                    Descricao = "Salário mês de Fevereiro",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 02, 15),
+                    Descricao = "Prêmio recebido raspadinha",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 02, 20),
+                    Descricao = "Investimento na poupança",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 02, 25),
+                    Descricao = "Restituiação do Imposto de Renda",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 02, 28),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 03, 05),
+                    Descricao = "Salário mês de Março",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 03, 15),
+                    Descricao = "Prêmio Loteria Esportiva",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 03, 20),
+                    Descricao = "Investimento Bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 03, 25),
+                    Descricao = "Benefício recebido do INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 03, 31),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 04, 05),
+                    Descricao = "Salário mês de Abril",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 04, 15),
+                    Descricao = "Prêmio Jogo do Bicho",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 04, 20),
+                    Descricao = "Investimento Bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 04, 25),
+                    Descricao = "Benefício recebido em Abril INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 04, 30),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 05, 05),
+                    Descricao = "Salário mês de Maio",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 05, 15),
+                    Descricao = "Prêmio Loteria",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 05, 20),
+                    Descricao = "Investimento na poupança",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 05, 25),
+                    Descricao = "Benefício recebido Cashback Nubank",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 05, 31),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 06, 05),
+                    Descricao = "Salário mês de Junho",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 06, 15),
+                    Descricao = "Prêmio loteria Esportiva",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 06, 20),
+                    Descricao = "Investimento em Bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 06, 25),
+                    Descricao = "Benefício recebido Junho INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 06, 30),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 07, 05),
+                    Descricao = "Salário mês de Julho",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 07, 15),
+                    Descricao = "Prêmio Jogo do Bicho",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 07, 20),
+                    Descricao = "Investimento em Bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 07, 25),
+                    Descricao = "Benefício recebido Julho INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 07, 31),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 08, 05),
+                    Descricao = "Salário mês de Agosto",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 08, 15),
+                    Descricao = "Prêmio Loteria",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 08, 20),
+                    Descricao = "Investimento na Poupança",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 08, 25),
+                    Descricao = "Benefício recebido em Agosto INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 08, 31),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 09, 05),
+                    Descricao = "Salário mês de Setembro",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 09, 15),
+                    Descricao = "Prêmio Loteria Esportiva",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 09, 20),
+                    Descricao = "Investimento em BitCoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 09, 25),
+                    Descricao = "Benefício",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 09, 30),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 10, 05),
+                    Descricao = "Salário mês de Outubro",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 10, 15),
+                    Descricao = "Prêmio Loteria ",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 10, 20),
+                    Descricao = "Investimento na Poupança",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 10, 25),
+                    Descricao = "Benefício recebido Outubro INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 10, 31),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 11, 05),
+                    Descricao = "Salário mês de Novembro",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 11, 15),
+                    Descricao = "Prêmio Raspadinha",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 11, 20),
+                    Descricao = "Investimento em Bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 11, 25),
+                    Descricao = "Benefício recebido Novembro INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 11, 30),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 12, 05),
+                    Descricao = "Salário mês de Dezembro",
+                    Valor = 2000.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 12, 15),
+                    Descricao = "Prêmio Mega Senna",
+                    Valor = 500.36m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Prêmio")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 12, 20),
+                    Descricao = "Investimento em Bitcoin",
+                    Valor = 1000.99m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 12, 25),
+                    Descricao = "Benefício recebido Dezembro INSS",
+                    Valor = 300.35m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Benefício")).Id
+                },
+                new Receita
+                {
+
+                    Data = new DateTime(2025, 12, 31),
+                    Descricao = "Outros ganhos",
+                    Valor = 120.25m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
                 }
             };
             _context.AddRange(receitas);
