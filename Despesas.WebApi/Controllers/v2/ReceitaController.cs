@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Despesas.WebApi.Controllers.v2;
 
 [ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("{version}/[controller]")]
 public class ReceitaController : AuthController
 {
     private readonly IBusinessBase<ReceitaDto, Receita> _receitaBusiness;

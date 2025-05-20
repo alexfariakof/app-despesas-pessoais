@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Despesas.WebApi.Controllers.v2;
 
 [ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("{version}/[controller]")]
 public class UsuarioController : AuthController
 {
     private readonly IUsuarioBusiness<UsuarioDto> _usuarioBusiness;

@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 namespace Despesas.WebApi.Controllers;
 
 [ApiController]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("{version}/[controller]")]
 public abstract class AuthController : ControllerBase
 {
     public AuthController() { }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Despesas.WebApi.Controllers.v2;
 
 [ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
+[Route("{version}/[controller]")]
 public class LancamentoController : AuthController
 {
     private ILancamentoBusiness<LancamentoDto> _lancamentoBusiness;
