@@ -22,7 +22,7 @@ jobs:
         env:
           DOCKER_CLI_AGGREGATE: 1  
         run: |          
-            docker compose -f ./docker-compose.prod.yml build
+            docker-compose -f docker-compose.prod.yml build
         continue-on-error: false
 
       - name: Push Docker image to Docker Hub
@@ -48,5 +48,5 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |            
-            ./scripts/dp-api.prod.sh
-    continue-on-error: false
+            ./webapi/run.prod.docker.sh
+          continue-on-error: false

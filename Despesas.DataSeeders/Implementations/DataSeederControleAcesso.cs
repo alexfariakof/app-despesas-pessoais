@@ -1,13 +1,17 @@
 ﻿using Domain.Entities;
+using EasyCryptoSalt;
 using Repository;
 
 namespace DataSeeders.Implementations;
 public class DataSeederControleAcesso : IDataSeeder
 {
+    private readonly ICrypto _crypto;
+
     private readonly RegisterContext _context;
-    public DataSeederControleAcesso(RegisterContext context)
+    public DataSeederControleAcesso(RegisterContext context, ICrypto crypto )
     {
         _context = context;
+        _crypto = crypto;
     }
     public void SeedData()
     {
@@ -20,7 +24,8 @@ public class DataSeederControleAcesso : IDataSeeder
             Email = "alexfariakof@gmail.com",
             StatusUsuario = StatusUsuario.Ativo        
         };
-        account.CreateAccount(usuario, "12345T!");
+        var teste = _crypto.Encrypt("toor");
+        account.CreateAccount(usuario, teste);
         account.Usuario.PerfilUsuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(1));
         account.Usuario.Categorias.ToList()
             .ForEach(c => c.TipoCategoria = _context.TipoCategoria
@@ -38,7 +43,7 @@ public class DataSeederControleAcesso : IDataSeeder
             Email = "teste@teste.com",
             StatusUsuario = StatusUsuario.Ativo,
         };
-        account.CreateAccount(usuario, "12345T!");
+        account.CreateAccount(usuario, _crypto.Encrypt("toor"));
         account.Usuario.PerfilUsuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(2));
         account.Usuario.Categorias.ToList()
             .ForEach(c => c.TipoCategoria = _context.TipoCategoria

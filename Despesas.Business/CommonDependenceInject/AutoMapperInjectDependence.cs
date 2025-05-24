@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.CommonDependenceInject;
+
 public static class AutoMapperInjectDependence
 {
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)

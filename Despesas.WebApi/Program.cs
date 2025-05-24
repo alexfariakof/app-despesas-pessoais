@@ -18,32 +18,30 @@ builder.Services.AddCors(options =>
                 "https://alexfariakof.com",
                 "http://alexfariakof.com",
                 "http://alexfariakof.com:3000",
-                "http://localhost", 
+                "http://localhost",
                 "https://localhost",
-                "http://127.0.0.1", 
+                "https://localhost:4200",
+                "http://127.0.0.1",
                 "https://127.0.0.1")
-              .AllowAnyMethod()   
-              .AllowAnyHeader();  
+              .AllowAnyMethod()
+              .AllowAnyOrigin()
+              .AllowAnyHeader();
     });
 });
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
 
-if (builder.Environment.EnvironmentName.Equals("MySqlServer"))
+if (builder.Environment.EnvironmentName.Equals("Migrations"))
 {
-    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
-}
-else if (builder.Environment.IsProduction() || builder.Environment.IsDevelopment() || builder.Environment.IsStaging())
-{
-    builder.Services.CreateDataBaseInMemory();
-}
-else 
-{    
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MsSqlConnectionString")));
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
+}
+else
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
 }
 
 //Add SigningConfigurations
@@ -51,6 +49,9 @@ builder.Services.AddSigningConfigurations(builder.Configuration);
 
 // Add AutoAuthConfigurations
 builder.Services.AddAutoAuthenticationConfigurations();
+
+// Add Cryptography Configurations
+builder.Services.AddServicesCryptography(builder.Configuration);
 
 // Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
@@ -65,31 +66,27 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.UseHsts();
-//app.UseHttpsRedirection();
-
+app.UseHttpsRedirection();
+app.AddSupporteCulturesPtBr();
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.AddSupporteCulturesPtBr();
 app.UseCors();
 
-if (!app.Environment.IsProduction())
-    app.AddSwaggerUIApiVersioning();
- 
-app.UseAuthentication();
-app.UseRouting();
-app.UseAuthorization();
-app.UseCertificateForwarding();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapFallbackToFile("index.html");
-});
-app.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
-
 //if (!app.Environment.IsProduction())
-//{    
+    app.AddSwaggerUIApiVersioning();
+
+app.UseAuthentication();
+app.UseRouting()
+    .UseAuthorization()
+    .UseCertificateForwarding()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapControllerRoute(name: "DefaultApi", pattern: "v{version=apiVersion}/{controller=values}/{id?}");
+        endpoints.MapFallbackToFile("index.html");
+    });
+
+if (!app.Environment.IsProduction()) // Revisão de Contorle de Ambientes 
     app.RunDataSeeders();
-//}
 
 app.Run();

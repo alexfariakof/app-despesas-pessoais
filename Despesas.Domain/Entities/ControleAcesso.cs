@@ -1,5 +1,4 @@
-﻿using EasyCryptoSalt;
-using Domain.Core;
+﻿using Domain.Core;
 
 namespace Domain.Entities;
 public class ControleAcesso : BaseModel
@@ -10,13 +9,8 @@ public class ControleAcesso : BaseModel
         get => _login;
         set => _login = value;
     }
-
-    private string _senha = string.Empty;
-    public string Senha
-    {
-        get => _senha;
-        set => _senha = Crypto.Instance.Encrypt(value);
-    }
+    
+    public string Senha { get; set; } = string.Empty;
     public Guid UsuarioId { get; set; }
 
     public string RefreshToken { get; set; } = String.Empty;

@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Business.Abstractions;
+﻿using Business.Abstractions;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Microsoft.AspNetCore.Authorization;
@@ -7,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
 
-[ApiVersion("2")]
-[Route("{version}/[controller]")]
 public class UsuarioController : AuthController
 {
     private readonly IUsuarioBusiness<UsuarioDto> _usuarioBusiness;

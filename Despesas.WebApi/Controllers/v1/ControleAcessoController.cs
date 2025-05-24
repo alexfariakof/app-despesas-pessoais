@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Business.Abstractions;
+﻿using Business.Abstractions;
 using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +6,6 @@ using System.Text.RegularExpressions;
 
 namespace Despesas.WebApi.Controllers.v1;
 
-[ApiVersion("1")]
-[Route("v1/[controller]")]
-[ApiController]
 public class ControleAcessoController : AuthController
 {
     private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;

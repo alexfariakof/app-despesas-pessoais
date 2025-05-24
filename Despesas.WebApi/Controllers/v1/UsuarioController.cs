@@ -1,5 +1,4 @@
-using Asp.Versioning;
-using Business.Dtos.v1;
+﻿using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
@@ -8,9 +7,6 @@ using Domain.Entities.ValueObjects;
 
 namespace Despesas.WebApi.Controllers.v1;
 
-[ApiVersion("1")]
-[Route("v1/[controller]")]
-[ApiController]
 public class UsuarioController : AuthController
 {
     private IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
@@ -193,9 +189,9 @@ public class UsuarioController : AuthController
         return Ok(updateUsuario);
     }
 
-    [HttpDelete("DeleteUsuarioAdmin")]
+    [HttpDelete]
     [Authorize("Bearer", Roles = "Admin")]
-    public IActionResult DeleteUsuarioAdmin([FromBody] UsuarioDto usuarioDto)
+    public IActionResult DeleteUsuario([FromBody] UsuarioDto usuarioDto)
     {
         var adminUser = _usuarioBusiness.FindById(UserIdentity);
         if (adminUser.PerfilUsuario != PerfilUsuario.Perfil.Admin)
