@@ -1,12 +1,11 @@
 ﻿using Asp.Versioning;
 using Business.Abstractions;
+using Despesas.WebApi.Controllers.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
 
-[ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
 public class GraficosController : AuthController
 {
     private IGraficosBusiness _graficosBusiness;

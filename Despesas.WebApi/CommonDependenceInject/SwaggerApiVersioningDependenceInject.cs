@@ -12,6 +12,20 @@ public static class SwaggerApiVersioningDependenceInject
     {
         services.AddSwaggerGen(c =>
         {
+
+
+            c.SwaggerDoc(currentVersion, new OpenApiInfo
+            {
+                Title = $" {appName} com HATEOAS",
+                Version = currentVersion,
+                Description = appDescription,
+                Contact = new OpenApiContact
+                {
+                    Name = "Projeto Web API Despesas Pessoais - Alex Ribeiro de Faria",
+                    Url = new Uri("https://github.com/alexfariakof/despesas-backend-api-net-core")
+                }
+            });
+
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = appName,
@@ -24,15 +38,6 @@ public static class SwaggerApiVersioningDependenceInject
                 },
             });
 
-            c.SwaggerDoc(currentVersion, new OpenApiInfo                {
-                Title = $" { appName} com HATEOAS",
-                Version = currentVersion,
-                Description = appDescription,
-                Contact = new OpenApiContact                    {
-                    Name = "Projeto Web API Despesas Pessoais - Alex Ribeiro de Faria",
-                    Url = new Uri("https://github.com/alexfariakof/despesas-backend-api-net-core")
-                }
-            });
             
             // Filtrar os endpoints com base nos namespaces
             c.DocInclusionPredicate((docName, apiDesc) =>

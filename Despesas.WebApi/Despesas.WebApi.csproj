@@ -18,8 +18,8 @@
 			<Version>8.*-*</Version>
 		</PackageReference>
 		<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.5" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.4.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />

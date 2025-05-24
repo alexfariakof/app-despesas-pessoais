@@ -2,13 +2,12 @@
 using Business.Abstractions;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
+using Despesas.WebApi.Controllers.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
 
-[ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
 public class SaldoController : AuthController
 {
     private ISaldoBusiness _saldoBusiness;

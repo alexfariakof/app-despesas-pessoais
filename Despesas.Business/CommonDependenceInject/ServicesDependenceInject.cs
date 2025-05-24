@@ -4,6 +4,8 @@ using Business.Implementations;
 using Despesas.Infrastructure.Email;
 using Despesas.Infrastructure.Email.Abstractions;
 using Domain.Entities;
+using EasyCryptoSalt;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Repository.Persistency.UnitOfWork;
 using Repository.Persistency.UnitOfWork.Abstractions;
@@ -11,6 +13,13 @@ using Repository.Persistency.UnitOfWork.Abstractions;
 namespace Business.CommonDependenceInject;
 public static class ServicesDependenceInject
 {
+    public static IServiceCollection AddServicesCryptography(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<CryptoOptions>(configuration.GetSection("CryptoConfigurations"));
+        services.AddSingleton<ICrypto, Crypto>();
+        return services;
+    }
+
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped(typeof(IBusiness<Business.Dtos.v1.CategoriaDto, Categoria>), typeof(CategoriaBusinessImpl<Business.Dtos.v1.CategoriaDto>));

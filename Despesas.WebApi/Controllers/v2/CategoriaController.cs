@@ -3,14 +3,13 @@ using Business.Abstractions;
 using Business.Dtos.Core;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
+using Despesas.WebApi.Controllers.v1;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
 
-[ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
 public class CategoriaController : AuthController
 {
     private readonly IBusinessBase<CategoriaDto, Categoria> _categoriaBusiness;

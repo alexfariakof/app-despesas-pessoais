@@ -12,29 +12,24 @@ using AutoMapper;
 using Business.Dtos.Core.Profile;
 using Microsoft.Extensions.Options;
 using Business.Implementations;
+using EasyCryptoSalt;
 
 namespace Business;
 public class ControleAcessoBusinessImplTest
 {
     private readonly Mock<IControleAcessoRepositorioImpl> _repositorioMock;
     private readonly ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
+    private readonly SigningConfigurations _singingConfiguration;
+
     private Mapper _mapper;
 
-    public ControleAcessoBusinessImplTest()
+    public ControleAcessoBusinessImplTest(SigningConfigurations singingConfiguration, Crypto crypto)
     {
         var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
-        var options = Options.Create(new TokenConfiguration
-        {
-            Issuer = "XUnit-Issuer",
-            Audience = "XUnit-Audience",
-            Seconds = 3600,
-            DaysToExpiry = 1
-        });
-
-        var signingConfigurations = new SigningConfigurations(options?.Value);
+        _singingConfiguration = singingConfiguration;
         _repositorioMock = new Mock<IControleAcessoRepositorioImpl>();
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<ControleAcessoProfile>(); }));
-        _controleAcessoBusiness = new ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto>(_mapper, _repositorioMock.Object, signingConfigurations, new EmailSender());
+        _controleAcessoBusiness = new ControleAcessoBusinessImpl<ControleAcessoDto, LoginDto>(_mapper, _repositorioMock.Object, _singingConfiguration, new EmailSender(), crypto);
     }
 
     [Fact]

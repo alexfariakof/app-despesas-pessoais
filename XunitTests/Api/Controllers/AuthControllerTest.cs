@@ -1,4 +1,4 @@
-﻿using Despesas.WebApi.Controllers;
+﻿using Despesas.WebApi.Controllers.v1;
 using System.Reflection;
 
 namespace Api.Controllers;

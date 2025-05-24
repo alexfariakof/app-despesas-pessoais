@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Despesas.WebApi.Controllers;
+namespace Despesas.WebApi.Controllers.v2;
 
 [ApiController]
+[ApiVersion("2")]
 [Route("v{version:apiVersion}/[controller]")]
 public abstract class AuthController : ControllerBase
 {
