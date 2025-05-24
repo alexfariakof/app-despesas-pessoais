@@ -1,20 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
+﻿using Asp.Versioning;
+using Despesas.WebApi.Controllers.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v1;
 
 [ApiController]
-public abstract class AuthController : ControllerBase
+[ApiVersion("1")]
+[Route("v1/[controller]")]
+
+public class AuthController : BaseAuthController 
 {
-    protected Guid UserIdentity
-    {
-        get
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = HttpContext.Request.Headers["Authorization"].ToString();
-            var jwtToken = tokenHandler.ReadToken(token.Replace("Bearer ", "")) as JwtSecurityToken;
-            Guid.TryParse(jwtToken?.Claims?.FirstOrDefault(c => c.Type == "sub")?.Value, out var idUsuario);
-            return idUsuario;
-        }
-    }
+    public AuthController(): base() { }
 }

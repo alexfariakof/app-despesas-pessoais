@@ -12,3 +12,6 @@ services:
     ports:
       - 42535:42535
       - 42536:42536
+    volumes:
+      - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.development.json
+      - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.json

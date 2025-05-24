@@ -1,9 +1,7 @@
-﻿using Asp.Versioning;
-using Business.Abstractions;
+﻿using Business.Abstractions;
 using Business.Dtos.Core;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
-using Despesas.WebApi.Controllers.v1;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

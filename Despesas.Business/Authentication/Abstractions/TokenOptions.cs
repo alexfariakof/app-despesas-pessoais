@@ -1,4 +1,4 @@
-﻿namespace Business.Authentication;
+﻿namespace Despesas.Business.Authentication.Abstractions;
 
 public class TokenOptions
 {

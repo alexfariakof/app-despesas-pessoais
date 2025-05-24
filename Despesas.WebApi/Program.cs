@@ -31,8 +31,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddApiVersioning();
 builder.Services.AddSwaggerApiVersioning();
 
 if (builder.Environment.EnvironmentName.Equals("Migrations"))
@@ -69,12 +67,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
 app.UseHsts();
 app.UseHttpsRedirection();
-
+app.AddSupporteCulturesPtBr();
 app.UseDefaultFiles();
 app.UseStaticFiles();
-app.AddSwaggerUIApiVersioning();
 app.UseCors();
-app.MapControllerRoute(name: "default", pattern: "{version=apiVersion}/{controller=values}/{id?}");
+
+//if (!app.Environment.IsProduction())
+    app.AddSwaggerUIApiVersioning();
 
 app.UseAuthentication();
 app.UseRouting()
@@ -83,11 +82,11 @@ app.UseRouting()
     .UseEndpoints(endpoints =>
     {
         endpoints.MapControllers();
-        endpoints.MapControllerRoute("DefaultApi", "{version=apiVersion}/{controller=values}/{id?}");
+        endpoints.MapControllerRoute(name: "DefaultApi", pattern: "v{version=apiVersion}/{controller=values}/{id?}");
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction())
+if (!app.Environment.IsProduction()) // Revisão de Contorle de Ambientes 
     app.RunDataSeeders();
 
 app.Run();

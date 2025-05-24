@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Despesas.Business.Authentication.Abstractions;
+using Microsoft.Extensions.Options;
 
 namespace Business.Authentication;
+
 public class TokenConfiguration
 {
     public string? Audience { get; set; }

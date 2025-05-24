@@ -24,7 +24,7 @@ public class DataSeederControleAcesso : IDataSeeder
             Email = "alexfariakof@gmail.com",
             StatusUsuario = StatusUsuario.Ativo        
         };
-        var teste = _crypto.Encrypt("master@$");
+        var teste = _crypto.Encrypt("toor");
         account.CreateAccount(usuario, teste);
         account.Usuario.PerfilUsuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(1));
         account.Usuario.Categorias.ToList()
@@ -43,7 +43,7 @@ public class DataSeederControleAcesso : IDataSeeder
             Email = "teste@teste.com",
             StatusUsuario = StatusUsuario.Ativo,
         };
-        account.CreateAccount(usuario, _crypto.Encrypt("12345T!"));
+        account.CreateAccount(usuario, _crypto.Encrypt("toor"));
         account.Usuario.PerfilUsuario = _context.PerfilUsuario.First(pu => pu.Id.Equals(2));
         account.Usuario.Categorias.ToList()
             .ForEach(c => c.TipoCategoria = _context.TipoCategoria

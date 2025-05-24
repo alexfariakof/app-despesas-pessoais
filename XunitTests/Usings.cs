@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Repository.Persistency.Generic;
+using Despesas.Business.Authentication.Abstractions;
 
 public class Usings
 {

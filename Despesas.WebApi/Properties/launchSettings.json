@@ -6,7 +6,6 @@
             "launchUrl": "swagger",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
             },
             "dotnetRunMessages": true,
             "applicationUrl": "https://localhost:42535;http://localhost:42536"

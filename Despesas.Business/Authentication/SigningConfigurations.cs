@@ -1,5 +1,5 @@
 ﻿using Business.Authentication.Abstractions;
-using Microsoft.AspNetCore.Identity;
+using Despesas.Business.Authentication.Abstractions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,12 +8,13 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Business.Authentication;
+
 public class SigningConfigurations : ISigningConfigurations
 {
     public SecurityKey? Key { get; }
     public TokenConfiguration? TokenConfiguration { get; }
     public SigningCredentials? SigningCredentials { get; private set; }
-    
+
     public SigningConfigurations(IOptions<TokenOptions> options )
     {
         TokenConfiguration = new TokenConfiguration(options);

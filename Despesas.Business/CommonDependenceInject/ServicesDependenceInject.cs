@@ -11,6 +11,7 @@ using Repository.Persistency.UnitOfWork;
 using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.CommonDependenceInject;
+
 public static class ServicesDependenceInject
 {
     public static IServiceCollection AddServicesCryptography(this IServiceCollection services, IConfiguration configuration)

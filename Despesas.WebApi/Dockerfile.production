@@ -17,5 +17,4 @@ FROM base AS final
 WORKDIR /app
 
 COPY --from=publish /app/publish .
-COPY --from=publish /app/publish/appsettings.docker.json ./appsettings.json
 ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]

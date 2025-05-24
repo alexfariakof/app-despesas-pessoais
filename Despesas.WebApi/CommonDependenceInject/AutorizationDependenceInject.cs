@@ -1,5 +1,5 @@
 ﻿using Business.Authentication;
-using Business.Authentication.Abstractions;
+using Despesas.Business.Authentication.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;

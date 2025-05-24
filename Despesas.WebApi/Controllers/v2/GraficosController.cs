@@ -1,6 +1,4 @@
-﻿using Asp.Versioning;
-using Business.Abstractions;
-using Despesas.WebApi.Controllers.v1;
+﻿using Business.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

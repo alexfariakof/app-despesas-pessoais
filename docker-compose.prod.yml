@@ -11,4 +11,10 @@ services:
             ASPNETCORE_ENVIRONMENT: Production
         ports:
            - 80:80
-           - 443:443
+           - 443:443  
+        volumes:
+           - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.json
+           - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.develpment.json
+        deploy:
+           update_config:
+             order: start-first 

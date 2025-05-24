@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Business.CommonDependenceInject;
+
 public static class HyperMediaDependenceInject
 {
     public static void AddHyperMediaHATEOAS(this IServiceCollection services)
