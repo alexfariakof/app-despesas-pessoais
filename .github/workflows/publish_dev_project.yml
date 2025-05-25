@@ -1,12 +1,11 @@
-name: Deploy Production Project in AWS
+name: Deploy Development AWS EC2 Server
 on:
   push:
-    tags:
-      - v*.*.*
-
+     branches: 
+       - staging 
 jobs:
   trigger_build_and_test:
-    name: Triggered Deploy Prod
+    name: Triggered Deploy Dev
     uses: alexfariakof/app-despesas-pessoais/.github/workflows/build_and_test.yml@main
     secrets: inherit     
         
@@ -22,7 +21,7 @@ jobs:
         env:
           DOCKER_CLI_AGGREGATE: 1  
         run: |          
-            docker compose -f ./docker-compose.prod.yml build
+            docker compose -f ./docker-compose.dev.yml build
         continue-on-error: false
 
       - name: Push Docker image to Docker Hub
@@ -48,4 +47,4 @@ jobs:
           key: ${{ secrets.AWS_SSH_KEY }}
           port: 22
           script: |            
-            ./webapi/run.prod.docker.sh
+            ./webapi/run.dev.docker.sh
