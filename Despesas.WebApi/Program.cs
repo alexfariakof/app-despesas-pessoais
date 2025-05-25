@@ -18,6 +18,8 @@ builder.Services.AddCors(options =>
                 "https://alexfariakof.com",
                 "http://alexfariakof.com",
                 "http://alexfariakof.com:3000",
+                "https://alexfariakof.com:42535",
+                "http://alexfariakof.com:42536",
                 "http://localhost",
                 "https://localhost",
                 "https://localhost:4200",
