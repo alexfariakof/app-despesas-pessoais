@@ -39,6 +39,10 @@ if (builder.Environment.EnvironmentName.Equals("Migrations"))
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
+else if (builder.Environment.EnvironmentName.Equals("Staging"))
+{
+    builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Dev.MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
+}
 else
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
@@ -86,7 +90,7 @@ app.UseRouting()
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction())
+if (!app.Environment.IsProduction() && ! app.Environment.EnvironmentName.Equals("Staging"))
     app.RunDataSeeders();
 
 app.Run();
