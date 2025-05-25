@@ -11,7 +11,7 @@ public sealed class GraficoRepositorioImplTest : IClassFixture<GraficoRepositori
     public GraficoRepositorioImplTest(GraficoRepositorioFixture fixture)
     {
         _fixture = fixture;
-    }   
+    }
 
     [Fact]
     public void GetDadosGraficoByAno_Should_Return_Grafico()

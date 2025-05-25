@@ -32,7 +32,7 @@ public sealed class MockReceita
     {
         var listReceita = new List<Receita>();
         for (int i = 0; i < count; i++)
-        {            
+        {
             listReceita.Add(GetReceita());
         }
         return listReceita;

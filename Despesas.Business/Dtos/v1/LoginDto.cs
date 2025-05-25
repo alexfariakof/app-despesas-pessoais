@@ -1,8 +1,8 @@
-using Business.Dtos.Core;
+﻿using Business.Dtos.Core;
 using System.ComponentModel.DataAnnotations;
 
 namespace Business.Dtos.v1;
-public class LoginDto: LoginDtoBase
+public class LoginDto : LoginDtoBase
 {
     [EmailAddress]
     [Required]

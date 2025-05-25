@@ -30,5 +30,5 @@ public class GraficosBusinessImplTest
         Assert.NotNull(result);
         Assert.IsType<Grafico>(result);
         _repositorioMock.Verify(r => r.GetDadosGraficoByAno(idUsuario, data), Times.Once);
-    } 
+    }
 }

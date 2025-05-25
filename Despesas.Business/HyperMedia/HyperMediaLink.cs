@@ -3,9 +3,9 @@
 namespace Business.HyperMedia;
 public class HyperMediaLink
 {
-    public HyperMediaLink()  { }
+    public HyperMediaLink() { }
 
-    public string? Rel {  get; set; }
+    public string? Rel { get; set; }
     public string? Type { get; set; }
     public string? Action { get; set; }
 

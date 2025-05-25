@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 
@@ -11,13 +11,13 @@ FROM alexfariakof/dotnet-sdk-8.0-with-node AS build
 WORKDIR /src
 COPY . . 
 
-#WORKDIR /src/XunitTests
-#RUN dotnet test "./XUnit.Tests.csproj" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
+WORKDIR /src/XunitTests
+RUN dotnet test "./XUnit.Tests.csproj" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
 
-#RUN baseDirectory=$(realpath ..) \
-#    sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi:$baseDirectory/AngularApp" \ 
-#    filefilters="$baseDirectory/Despesas.DataSeeders/**;- $baseDirectory/Migrations.MySqlServer/**;- $baseDirectory/Migrations.MsSqlServer/**;- $baseDirectory/Despesas.CrossCutting/**;- $baseDirectory/Despesas.Business/HyperMedia/**" \
-#    /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -sourcedirs:$sourceDirs -filefilters:-$filefilters
+RUN baseDirectory=$(realpath ..) \
+    sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi:$baseDirectory/AngularApp" \ 
+    filefilters="$baseDirectory/Despesas.DataSeeders/**;- $baseDirectory/Migrations.MySqlServer/**;- $baseDirectory/Migrations.MsSqlServer/**;- $baseDirectory/Despesas.CrossCutting/**;- $baseDirectory/Despesas.Business/HyperMedia/**" \
+    /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
 WORKDIR /src/Despesas.WebApi
 RUN dotnet publish "./Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
@@ -26,5 +26,5 @@ FROM base AS final
 WORKDIR /app
 
 COPY --from=build /app/publish .
-#COPY --from=build /app/test ./wwwroot/coveragereport
+COPY --from=build /app/test ./wwwroot/coveragereport
 ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]

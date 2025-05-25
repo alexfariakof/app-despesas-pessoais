@@ -220,7 +220,7 @@ public sealed class DespesaControllerTest
         var value = result.Value;
         var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.True(message);
-        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
+        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario), Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);
     }
 
@@ -243,7 +243,7 @@ public sealed class DespesaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
-        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Never);
+        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario), Times.Never);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Never);
     }
 
@@ -267,7 +267,7 @@ public sealed class DespesaControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Erro ao excluir Despesa!", message);
-        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
+        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario), Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);
     }
 }

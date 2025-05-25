@@ -62,7 +62,7 @@ public sealed class ImagemPerfilUsuarioFaker
             UsuarioId = imagemPerfil.UsuarioId,
             ContentType = imagemPerfil.ContentType
         };
-        return imagemFaker;        
+        return imagemFaker;
     }
 
 

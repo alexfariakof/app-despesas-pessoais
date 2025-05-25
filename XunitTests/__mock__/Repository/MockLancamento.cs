@@ -8,7 +8,7 @@ public sealed class MockLancamento
     {
         Usuario usuario = MockUsuario.Instance.GetUsuario();
         Despesa despesa = MockDespesa.Instance.GetDespesa();
-        Receita receita  = MockReceita.Instance.GetReceita();
+        Receita receita = MockReceita.Instance.GetReceita();
         Categoria categoria = MockCategoria.Instance.GetCategoria();
 
         var mockLancamento = new Faker<Lancamento>()
@@ -28,7 +28,7 @@ public sealed class MockLancamento
         counter++;
         return mockLancamento;
     }
-        
+
     public static List<Lancamento> GetLancamentos(int count = 3)
     {
         var listLancamento = new List<Lancamento>();

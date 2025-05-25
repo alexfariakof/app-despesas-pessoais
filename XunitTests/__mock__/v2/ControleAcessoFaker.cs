@@ -23,7 +23,7 @@ public sealed class ControleAcessoFaker
     {
         lock (LockObject)
         {
-            if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker(); 
+            if (usuario == null) usuario = UsuarioFaker.Instance.GetNewFaker();
 
             var controleAcessoFaker = new Faker<ControleAcesso>()
                 .RuleFor(ca => ca.Id, Guid.NewGuid())
@@ -56,13 +56,13 @@ public sealed class ControleAcessoFaker
     }
 
     public List<ControleAcessoDto> ControleAcessoDtos(int count = 3)
-    {           
-        var listControleAcessoDto = new List<ControleAcessoDto>();                        
+    {
+        var listControleAcessoDto = new List<ControleAcessoDto>();
         for (int i = 0; i < count; i++)
         {
             var usuario = UsuarioFaker.Instance.GetNewFaker();
             var controleAcessoDto = GetNewFakerVM(usuario);
-            listControleAcessoDto.Add(controleAcessoDto);                
+            listControleAcessoDto.Add(controleAcessoDto);
         }
 
         return listControleAcessoDto;

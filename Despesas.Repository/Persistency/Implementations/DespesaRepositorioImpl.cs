@@ -36,7 +36,7 @@ public class DespesaRepositorioImpl : BaseRepository<Despesa>, IRepositorio<Desp
         var categoriaId = entity.CategoriaId;
         entity.Categoria = Context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
         var existingEntity = Context.Despesa.Single(d => d.Id.Equals(despesaId));
-        Context?.Entry(existingEntity).CurrentValues.SetValues(entity);        
+        Context?.Entry(existingEntity).CurrentValues.SetValues(entity);
         Context?.SaveChanges();
         entity = existingEntity;
     }

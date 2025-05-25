@@ -3,5 +3,5 @@
 namespace Business.Authentication;
 public sealed class TokenConfigurationTest
 {
-   
+
 }

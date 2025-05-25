@@ -31,7 +31,7 @@ public sealed class UsuarioFaker
             {
                 idUsuario = Guid.NewGuid();
                 counter++;
-            }                
+            }
 
             var usuarioFaker = new Faker<Usuario>()
                 .RuleFor(u => u.Id, idUsuario)
@@ -54,7 +54,7 @@ public sealed class UsuarioFaker
             {
                 idUsuario = Guid.NewGuid();
                 counterVM++;
-            }                
+            }
 
             var usuarioFaker = new Faker<UsuarioDto>()
                 .RuleFor(u => u.Id, idUsuario)
@@ -77,7 +77,7 @@ public sealed class UsuarioFaker
                 var usuarioDto = GetNewFakerVM();
                 listUsuarioDto.Add(usuarioDto);
             }
-            return listUsuarioDto;            
+            return listUsuarioDto;
         }
     }
 

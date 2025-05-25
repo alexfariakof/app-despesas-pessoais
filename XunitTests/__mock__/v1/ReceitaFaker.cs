@@ -33,7 +33,7 @@ public sealed class ReceitaFaker
             .RuleFor(r => r.UsuarioId, usuario.Id)
             .RuleFor(r => r.Usuario, usuario)
             .RuleFor(r => r.Categoria, CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Receita, usuario.Id))
-            .Generate();        
+            .Generate();
         receitaFaker.Categoria = receitaFaker.Categoria ?? new();
         receitaFaker.CategoriaId = receitaFaker.Categoria.Id;
         counter++;
@@ -79,7 +79,7 @@ public sealed class ReceitaFaker
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(Guid.NewGuid());
-            
+
             usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Receita, usuario.Id);
 

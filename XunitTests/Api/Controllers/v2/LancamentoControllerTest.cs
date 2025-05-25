@@ -36,11 +36,11 @@ public sealed class LancamentoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var lancamentos = result.Value  as List<LancamentoDto>;
+        var lancamentos = result.Value as List<LancamentoDto>;
         Assert.NotNull(lancamentos);
         Assert.NotEmpty(lancamentos);
         var returnedLancamentoDtos = Assert.IsType<List<LancamentoDto>>(lancamentos);
-        Assert.Equal(lancamentoDtos.FindAll(l => l.UsuarioId == idUsuario),returnedLancamentoDtos);
+        Assert.Equal(lancamentoDtos.FindAll(l => l.UsuarioId == idUsuario), returnedLancamentoDtos);
         _mockLancamentoBusiness.Verify(b => b.FindByMesAno(anoMes, idUsuario), Times.Once);
     }
 
@@ -75,8 +75,8 @@ public sealed class LancamentoControllerTest
         DateTime anoMes = DateTime.Now;
         Usings.SetupBearerToken(idUsuario, _lancamentoController);
         _mockLancamentoBusiness.Setup(business => business.FindByMesAno(anoMes, idUsuario)).Returns(new List<LancamentoDto>());
-        
-       // Act
+
+        // Act
         var result = _lancamentoController.Get(anoMes) as ObjectResult;
 
         // Assert

@@ -152,7 +152,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     }
 
     private void CheckIfUserIsTeste(Guid userIdentity)
-    {   
+    {
         var idUsuarioTeste = _repositorio.Find(accout => accout.Usuario.Nome.Contains("Teste")).Id;
         if (userIdentity.Equals(idUsuarioTeste))
             throw new ArgumentException("A senha deste usuário não pode ser atualizada!");

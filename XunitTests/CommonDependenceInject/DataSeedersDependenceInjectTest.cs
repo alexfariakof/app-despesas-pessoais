@@ -1,4 +1,5 @@
-﻿using DataSeeders;
+﻿using Business.CommonDependenceInject;
+using DataSeeders;
 using Despesas.WebApi.CommonDependenceInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ public sealed class DataSeedersDependenceInjectTest
         // Arrange
         var builder = WebApplication.CreateBuilder();
         var services = builder.Services;
+        services.AddServicesCryptography(builder.Configuration);
         services.CreateDataBaseInMemory();
         services.AddDataSeeders();
         var app = builder.Build();

@@ -3,6 +3,6 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Authentication;
 public sealed class SigningConfigurationsTest
-{ 
+{
 
 }

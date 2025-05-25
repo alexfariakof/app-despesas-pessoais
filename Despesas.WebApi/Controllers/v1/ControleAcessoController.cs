@@ -63,7 +63,7 @@ public class ControleAcessoController : AuthController
             if (String.IsNullOrEmpty(login.Senha) || String.IsNullOrWhiteSpace(login.Senha))
                 return BadRequest(new { message = "Campo Senha não pode ser em branco ou nulo!" });
 
-            var result = _controleAcessoBusiness.ValidateCredentials(login);            
+            var result = _controleAcessoBusiness.ValidateCredentials(login);
             if (result == null) throw new NullReferenceException();
             return new OkObjectResult(result);
         }

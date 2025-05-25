@@ -8,7 +8,7 @@ public class DataSeederControleAcesso : IDataSeeder
     private readonly ICrypto _crypto;
 
     private readonly RegisterContext _context;
-    public DataSeederControleAcesso(RegisterContext context, ICrypto crypto )
+    public DataSeederControleAcesso(RegisterContext context, ICrypto crypto)
     {
         _context = context;
         _crypto = crypto;
@@ -22,7 +22,7 @@ public class DataSeederControleAcesso : IDataSeeder
             SobreNome = "Ribeiro de Faria",
             Telefone = "(21) 99287-9319",
             Email = "alexfariakof@gmail.com",
-            StatusUsuario = StatusUsuario.Ativo        
+            StatusUsuario = StatusUsuario.Ativo
         };
         var teste = _crypto.Encrypt("toor");
         account.CreateAccount(usuario, teste);

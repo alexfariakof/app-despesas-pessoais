@@ -140,6 +140,6 @@ public sealed class SaldoControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Erro ao gerar saldo!", message);
-        _mockSaldoBusiness.Verify(b => b.GetSaldoByMesAno(DateTime.Today, idUsuario),Times.Once);
+        _mockSaldoBusiness.Verify(b => b.GetSaldoByMesAno(DateTime.Today, idUsuario), Times.Once);
     }
 }

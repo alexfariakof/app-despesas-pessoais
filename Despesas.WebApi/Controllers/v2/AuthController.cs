@@ -9,5 +9,5 @@ namespace Despesas.WebApi.Controllers.v2;
 [ApiController]
 public class AuthController : BaseAuthController
 {
-    public AuthController(): base() { }    
+    public AuthController() : base() { }
 }

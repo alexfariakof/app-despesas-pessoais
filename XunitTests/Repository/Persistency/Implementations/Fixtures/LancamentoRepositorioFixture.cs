@@ -5,7 +5,7 @@ namespace Repository.Persistency.Implementations.Fixtures;
 public sealed class LancamentoRepositorioFixture : IDisposable
 {
     public RegisterContext Context { get; private set; }
-    public LancamentoRepositorioImpl MockRepository;    
+    public LancamentoRepositorioImpl MockRepository;
     public DateTime MockAnoMes { get; private set; } = DateTime.Today;
     public LancamentoRepositorioFixture()
     {

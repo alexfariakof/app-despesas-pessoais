@@ -3,16 +3,16 @@ using Business.Dtos.v1;
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
-public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, ReceitaDto>
-{    
+public class ReceitaParser : IParser<ReceitaDto, Receita>, IParser<Receita, ReceitaDto>
+{
     public Receita Parse(ReceitaDto origin)
     {
         if (origin == null) return new();
         return new Receita
         {
-            Id  = origin.Id,
+            Id = origin.Id,
             Data = origin.Data.GetValueOrDefault(),
-            Descricao = origin?.Descricao ?? "",                
+            Descricao = origin?.Descricao ?? "",
             Valor = origin?.Valor ?? 0,
             CategoriaId = origin.IdCategoria.GetValueOrDefault(),
             UsuarioId = origin.UsuarioId
@@ -27,8 +27,8 @@ public class ReceitaParser: IParser<ReceitaDto, Receita>, IParser<Receita, Recei
             Id = origin.Id,
             Data = origin.Data,
             Descricao = origin.Descricao,
-            Valor = origin.Valor,                
-            IdCategoria =origin?.Categoria?.Id,
+            Valor = origin.Valor,
+            IdCategoria = origin?.Categoria?.Id,
             UsuarioId = origin.UsuarioId
         };
     }

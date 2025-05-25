@@ -14,15 +14,15 @@ public sealed class ImagemPerfilUsuarioTest
 
         // Act
         var imagemPerfilUsuario = new ImagemPerfilUsuario
-        { 
+        {
             Id = id,
             Url = url,
             Name = name,
             ContentType = type,
-            UsuarioId = usuarioId,                
-            Usuario  = mockUsuario                
+            UsuarioId = usuarioId,
+            Usuario = mockUsuario
         };
-        
+
         // Assert
         Assert.Equal(id, imagemPerfilUsuario.Id);
         Assert.Equal(url, imagemPerfilUsuario.Url);

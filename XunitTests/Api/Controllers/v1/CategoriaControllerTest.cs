@@ -300,7 +300,7 @@ public sealed class CategoriaControllerTest
         var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.True(message);
-        _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId),Times.Once);
+        _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId), Times.Once);
         _mockCategoriaBusiness.Verify(b => b.Delete(categoriaDto), Times.Once);
     }
 
@@ -334,7 +334,7 @@ public sealed class CategoriaControllerTest
         var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
 
         Assert.False(message);
-        _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId),Times.Once);
+        _mockCategoriaBusiness.Verify(b => b.FindById(categoriaDto.Id, categoriaDto.UsuarioId), Times.Once);
         _mockCategoriaBusiness.Verify(b => b.Delete(categoriaDto), Times.Once);
     }
 

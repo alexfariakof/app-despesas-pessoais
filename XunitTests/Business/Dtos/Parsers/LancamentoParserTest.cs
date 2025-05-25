@@ -55,8 +55,8 @@ public sealed class LancamentoParserTest
 
         // Act
         var lancamentoDto = lancamentoParser.Parse(lancamento);
-        
-        
+
+
         // Assert
         Assert.Equal(lancamentoDto.Id, lancamento.Id);
         Assert.Equal(lancamentoDto.UsuarioId, lancamento.UsuarioId);

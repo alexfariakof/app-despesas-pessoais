@@ -39,5 +39,5 @@ public sealed class MockImagemPerfilUsuario
             imagens.Add(imagem);
         }
         return imagens;
-    } 
+    }
 }

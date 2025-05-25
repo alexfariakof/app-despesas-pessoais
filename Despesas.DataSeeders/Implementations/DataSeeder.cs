@@ -24,6 +24,6 @@ public class DataSeeder : IDataSeeder
             new DataSeederDespesa(_context).SeedData();
             new DataSeederReceita(_context).SeedData();
         }
-        catch { throw; } 
+        catch { throw; }
     }
 }

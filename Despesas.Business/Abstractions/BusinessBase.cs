@@ -3,9 +3,9 @@ using Repository.Persistency.Generic;
 using Repository.Persistency.UnitOfWork.Abstractions;
 
 namespace Business.Abstractions;
-public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
+public abstract class BusinessBase<Dto, Entity> : IBusinessBase<Dto, Entity> where Dto : class where Entity : class, new()
 {
-    protected IUnitOfWork<Entity>? UnitOfWork { get;  }
+    protected IUnitOfWork<Entity>? UnitOfWork { get; }
     protected IMapper Mapper { get; set; }
 
     protected IRepositorio<Entity> Repository { get; }
@@ -28,7 +28,7 @@ public abstract class BusinessBase<Dto, Entity>: IBusinessBase<Dto, Entity> wher
 
     public abstract List<Dto> FindAll(Guid idUsuario);
 
-    public abstract  Dto Update(Dto dto);
+    public abstract Dto Update(Dto dto);
 
-    public abstract  bool Delete(Dto dto);
+    public abstract bool Delete(Dto dto);
 }

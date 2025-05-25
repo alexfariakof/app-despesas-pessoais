@@ -1,6 +1,4 @@
-﻿using EasyCryptoSalt;
-
-namespace DataSeeders;
+﻿namespace DataSeeders;
 public interface IDataSeeder
 {
     public void SeedData();

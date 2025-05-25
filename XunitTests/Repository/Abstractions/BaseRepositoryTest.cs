@@ -5,7 +5,7 @@ namespace Repository.Abstractions;
 
 public sealed class BaseRepositoryTest : IClassFixture<BaseRepositoryFixture>
 {
-    public class BaseRepositoryClassTest : BaseRepository<Receita> 
+    public class BaseRepositoryClassTest : BaseRepository<Receita>
     {
         public RegisterContext Context { get; }
         public BaseRepositoryClassTest(RegisterContext context) : base(context)

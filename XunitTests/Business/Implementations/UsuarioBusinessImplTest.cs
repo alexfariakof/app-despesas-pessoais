@@ -56,7 +56,7 @@ public class UsuarioBusinessImplTest
         var result = _usuarioBusiness.FindAll(idUsuario);
 
         // Assert
-        Assert.NotNull(result);            
+        Assert.NotNull(result);
         Assert.IsType<List<UsuarioDto>>(result);
         Assert.Equal(_usuarios.Count, result.Count);
         _repositorioMock.Verify(repo => repo.GetAll(), Times.Once);
@@ -106,7 +106,7 @@ public class UsuarioBusinessImplTest
         // Arrange            
         var usuario = _usuarios.First();
         var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
-        usuario.Nome = "Teste Usuario Update";                       
+        usuario.Nome = "Teste Usuario Update";
 
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Usuario>.IsAny));
 
@@ -124,10 +124,10 @@ public class UsuarioBusinessImplTest
     public void Delete_Should_Returns_True_when_Usuario_is_Administrador()
     {
         // Arrange
-        var usuario= _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin);
+        var usuario = _usuarios.First(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin);
         var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Usuario>())).Returns(true);
-        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);       
+        _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(usuario);
 
         // Act
         var result = _usuarioBusiness.Delete(usuarioDto);

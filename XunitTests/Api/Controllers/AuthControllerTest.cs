@@ -29,6 +29,6 @@ public sealed class AuthControllerTest
     {
         var propertyInfo = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
 
-        return (T?)propertyInfo.GetValue(obj) ;
+        return (T?)propertyInfo.GetValue(obj);
     }
 }

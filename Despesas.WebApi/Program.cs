@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using Despesas.WebApi.CommonDependenceInject;
 using Business.CommonDependenceInject;
 using Repository.CommonDependenceInject;
@@ -73,7 +73,7 @@ app.UseStaticFiles();
 app.UseCors();
 
 //if (!app.Environment.IsProduction())
-    app.AddSwaggerUIApiVersioning();
+app.AddSwaggerUIApiVersioning();
 
 app.UseAuthentication();
 app.UseRouting()
@@ -86,7 +86,7 @@ app.UseRouting()
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction()) // Revisão de Contorle de Ambientes 
+if (!app.Environment.IsProduction())
     app.RunDataSeeders();
 
 app.Run();

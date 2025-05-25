@@ -8,7 +8,7 @@ namespace Api.Controllers.v2;
 public sealed class GraficosControllerTest
 {
     private Mock<IGraficosBusiness> _mockGraficoBusiness;
-    private GraficosController _GraficoController;  
+    private GraficosController _GraficoController;
 
     public GraficosControllerTest()
     {

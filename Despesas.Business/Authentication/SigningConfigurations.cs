@@ -15,7 +15,7 @@ public class SigningConfigurations : ISigningConfigurations
     public TokenConfiguration? TokenConfiguration { get; }
     public SigningCredentials? SigningCredentials { get; private set; }
 
-    public SigningConfigurations(IOptions<TokenOptions> options )
+    public SigningConfigurations(IOptions<TokenOptions> options)
     {
         TokenConfiguration = new TokenConfiguration(options);
 

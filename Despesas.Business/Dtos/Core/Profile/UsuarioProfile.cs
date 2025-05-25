@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 
 namespace Business.Dtos.Core.Profile;
-public class UsuarioProfile: AutoMapper.Profile
+public class UsuarioProfile : AutoMapper.Profile
 {
     public UsuarioProfile()
     {

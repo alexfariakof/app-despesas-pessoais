@@ -18,7 +18,7 @@ public sealed class MockCategoria
     }
 
     public Categoria GetCategoria()
-    {        
+    {
         var mockCategoria = new Faker<Categoria>()
             .RuleFor(c => c.Descricao, f => f.Commerce.Categories(10)[1])
             .Generate();

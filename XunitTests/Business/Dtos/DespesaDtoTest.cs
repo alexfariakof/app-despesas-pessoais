@@ -20,5 +20,5 @@ public sealed class DespesaDtoTest
         Assert.Equal(despesa.UsuarioId, despesaDto.UsuarioId);
         Assert.Equal(despesa?.Categoria?.Id, despesaDto.IdCategoria);
     }
-    
+
 }

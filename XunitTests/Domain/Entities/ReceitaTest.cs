@@ -8,7 +8,7 @@ public sealed class ReceitaTest
     public void Receita_Should_Set_Properties_Correctly(string descricao, Decimal valor)
     {
         var mockUsuario = Mock.Of<Usuario>();
-        var mockCategoria= Mock.Of<Categoria>();
+        var mockCategoria = Mock.Of<Categoria>();
         DateTime data = DateTime.Now;
         var id = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
@@ -16,18 +16,18 @@ public sealed class ReceitaTest
 
         // Arrange and Act
         var receita = new Receita
-        { 
+        {
             Id = id,
             Data = data,
             Descricao = descricao,
-            Valor = valor,            
-            UsuarioId = usuarioId,                
-            Usuario  = mockUsuario,
+            Valor = valor,
+            UsuarioId = usuarioId,
+            Usuario = mockUsuario,
             CategoriaId = categoriaId,
             Categoria = mockCategoria,
-            
+
         };
-        
+
         // Assert
         Assert.Equal(id, receita.Id);
         Assert.Equal(data, receita.Data);

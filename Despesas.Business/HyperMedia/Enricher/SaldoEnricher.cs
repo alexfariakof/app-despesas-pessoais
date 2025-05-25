@@ -13,8 +13,8 @@ public class SaldoEnricher : ContentResponseEnricher<SaldoDto>
         var path = "saldo";
         string link = GetLink(0, urlHelper, path);
 
-        content.Links.Add(new HyperMediaLink() 
-        { 
+        content.Links.Add(new HyperMediaLink()
+        {
             Action = HttpActionVerb.GET,
             Href = link,
             Rel = RelationType.self,

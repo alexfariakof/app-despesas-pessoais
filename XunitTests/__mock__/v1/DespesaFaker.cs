@@ -38,8 +38,8 @@ public sealed class DespesaFaker
         .RuleFor(r => r.Categoria, CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Despesa, usuario.Id))
         .Generate();
         counter++;
-        despesaFaker.Categoria  = despesaFaker.Categoria ?? new();
-        despesaFaker.CategoriaId = despesaFaker.Categoria.Id ;
+        despesaFaker.Categoria = despesaFaker.Categoria ?? new();
+        despesaFaker.CategoriaId = despesaFaker.Categoria.Id;
         return despesaFaker;
 
     }

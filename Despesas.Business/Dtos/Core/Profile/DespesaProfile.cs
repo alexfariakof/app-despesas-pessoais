@@ -2,7 +2,7 @@
 using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos.Core.Profile;
-public class DespesaProfile: AutoMapper.Profile
+public class DespesaProfile : AutoMapper.Profile
 {
     public DespesaProfile()
     {

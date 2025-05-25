@@ -17,7 +17,7 @@ public abstract class ControleAcessoDtoBase : ModelDtoBase
 
     [Required]
     public virtual string? Senha { get; set; }
-    
+
     [Required]
     public virtual string? ConfirmaSenha { get; set; }
 }

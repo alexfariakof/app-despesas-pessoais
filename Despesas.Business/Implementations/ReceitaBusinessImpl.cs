@@ -12,8 +12,8 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
 {
     private readonly IRepositorio<Receita> _repositorio;
     private readonly IRepositorio<Categoria> _repoCategoria;
-    private readonly IMapper _mapper;    
-    public ReceitaBusinessImpl(IMapper mapper, IUnitOfWork<Receita> unitOfWork, IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria): base (mapper, repositorio, unitOfWork)
+    private readonly IMapper _mapper;
+    public ReceitaBusinessImpl(IMapper mapper, IUnitOfWork<Receita> unitOfWork, IRepositorio<Receita> repositorio, IRepositorio<Categoria> repoCategoria) : base(mapper, repositorio, unitOfWork)
     {
         _mapper = mapper;
         _repositorio = repositorio;
@@ -32,7 +32,7 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
     {
         var receitas = _repositorio.GetAll().FindAll(d => d.UsuarioId == idUsuario);
         return _mapper.Map<List<Dto>>(receitas);
-    }      
+    }
 
     public override Dto FindById(Guid id, Guid idUsuario)
     {
@@ -57,7 +57,7 @@ public class ReceitaBusinessImpl<Dto> : BusinessBase<Dto, Receita>, IBusiness<Dt
     {
         Receita receita = _mapper.Map<Receita>(dto);
         IsValidReceita(receita);
-        return  _repositorio.Delete(receita);
+        return _repositorio.Delete(receita);
     }
 
     private void IsValidCategoria(Receita dto)

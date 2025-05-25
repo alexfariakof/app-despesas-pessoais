@@ -38,7 +38,7 @@ public class SaldoBusinessImplTest
         _repositorioMock.Setup(r => r.GetSaldoByAno(DateTime.Today, idUsuario)).Returns(saldo);
 
         // Act
-        var result = _saldoBusiness.GetSaldoAnual(DateTime.Today,  idUsuario);
+        var result = _saldoBusiness.GetSaldoAnual(DateTime.Today, idUsuario);
 
         // Assert
         Assert.Equal(saldo, result.saldo);

@@ -25,7 +25,7 @@ public sealed class ControleAcessoMapTest
 
             var loginProperty = entityType?.FindProperty("Login");
             var usuarioIdProperty = entityType?.FindProperty("UsuarioId");
-            var index = new[] { loginProperty  };
+            var index = new[] { loginProperty };
             var loginIndex = entityType?.FindIndex(index);
 
             // Assert

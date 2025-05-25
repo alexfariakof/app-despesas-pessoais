@@ -5,7 +5,7 @@ public sealed class ControleAcessoDtoTest
 {
 
     [Theory]
-    [InlineData("Usuario 1 ", "Teste Usuario 1" , "(21) 99999-9999", "user1@user.com", "senhaUser1", "senhaUser1")]
+    [InlineData("Usuario 1 ", "Teste Usuario 1", "(21) 99999-9999", "user1@user.com", "senhaUser1", "senhaUser1")]
     [InlineData("Usuario 2 ", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com", "senhaUser2", "senhaUser2")]
     [InlineData("Usuario 3 ", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com", "senhaUser3", "senhaUser3")]
     public void ControleAcessoDto_Should_Set_Properties_Correctly(string nome, string sobreNome, string telefone, string email, string senha, string confirmaSenha)

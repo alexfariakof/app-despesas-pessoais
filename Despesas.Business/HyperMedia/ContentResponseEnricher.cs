@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 namespace Business.HyperMedia;
 public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : ISupportHyperMedia
 {
-    public ContentResponseEnricher()  { }
+    public ContentResponseEnricher() { }
 
     public bool CanEnrich(Type contentType)
     {
@@ -18,7 +18,7 @@ public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : I
 
     bool IResponseEnricher.CanEnrich(ResultExecutingContext response)
     {
-        if(response.Result is OkObjectResult okObjectResult)
+        if (response.Result is OkObjectResult okObjectResult)
         {
             return CanEnrich(okObjectResult.Value.GetType());
         }
@@ -48,7 +48,7 @@ public abstract class ContentResponseEnricher<T> : IResponseEnricher where T : I
             }
             await Task.FromResult<object?>(null);
         }
-        catch 
+        catch
         {
             await Task.FromResult<object?>(null);
         }

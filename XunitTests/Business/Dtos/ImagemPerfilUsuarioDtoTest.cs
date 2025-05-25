@@ -7,7 +7,7 @@ public sealed class ImagemPerfilUsuarioDtoTest
     [InlineData("http://localhost:user1", "User 1 ", "jpg", "image/jpg")]
     [InlineData("http://localhost:user2", "User 2 ", "jpeg", "image/jpeg")]
     [InlineData("http://localhost:user3", "User 3 ", "png", "image/png")]
-    public void ImagemPerfil_UsuarioDto_Should_Set_Properties_Correctly(string url, string name, string type,string contentType)
+    public void ImagemPerfil_UsuarioDto_Should_Set_Properties_Correctly(string url, string name, string type, string contentType)
     {
         // Arrange and Act
         var id = Guid.NewGuid();
@@ -22,10 +22,10 @@ public sealed class ImagemPerfilUsuarioDtoTest
             Name = name,
             Type = type,
             ContentType = contentType,
-            UsuarioId = idUsuario,                
+            UsuarioId = idUsuario,
             Arquivo = arquivoData
         };
-        
+
         // Assert
         Assert.Equal(id, imagemPerfilUsuarioDto.Id);
         Assert.Equal(url, imagemPerfilUsuarioDto.Url);

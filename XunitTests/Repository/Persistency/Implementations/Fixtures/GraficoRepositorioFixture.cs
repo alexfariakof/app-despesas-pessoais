@@ -31,7 +31,7 @@ public sealed class GraficoRepositorioFixture : IDisposable
                 .FirstOrDefault(c => c.Usuario.Id == UsuarioMock.Id && c.TipoCategoria == 1);
         }
         Context.AddRange(despesas);
-        
+
         var receitas = MockReceita.Instance.GetReceitas();
         foreach (var receita in receitas)
         {

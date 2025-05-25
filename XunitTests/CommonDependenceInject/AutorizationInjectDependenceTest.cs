@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Despesas.WebApi.CommonDependenceInject;
 using Business.Authentication.Abstractions;
+using Business.Authentication;
 
 namespace CommonDependenceInject;
 public sealed class AuthorizationInjectDependenceTest
@@ -24,7 +25,7 @@ public sealed class AuthorizationInjectDependenceTest
         // Assert
         var serviceProvider = services.BuildServiceProvider();
 
-        Assert.NotNull(serviceProvider.GetService<ISigningConfigurations>());
+        Assert.NotNull(serviceProvider.GetService<SigningConfigurations>());
 
         // Assert authentication configurations
         var authenticationOptions = serviceProvider.GetRequiredService<IOptions<AuthenticationOptions>>().Value;
@@ -33,7 +34,7 @@ public sealed class AuthorizationInjectDependenceTest
 
         // Assert JWT bearer configurations
         var jwtBearerOptions = serviceProvider.GetRequiredService<IOptionsMonitor<JwtBearerOptions>>().Get(JwtBearerDefaults.AuthenticationScheme);
-        var signingConfigurations = serviceProvider.GetRequiredService<ISigningConfigurations>();
+        var signingConfigurations = serviceProvider.GetRequiredService<SigningConfigurations>();
 
         Assert.NotNull(jwtBearerOptions);
         Assert.NotNull(jwtBearerOptions.TokenValidationParameters);
@@ -41,7 +42,7 @@ public sealed class AuthorizationInjectDependenceTest
         Assert.True(jwtBearerOptions.TokenValidationParameters.ValidateIssuerSigningKey);
         Assert.True(jwtBearerOptions.TokenValidationParameters.ValidateLifetime);
         Assert.Equal(TimeSpan.Zero, jwtBearerOptions.TokenValidationParameters.ClockSkew);
-        
+
         // Assert authorization policy
         var authorizationPolicy = serviceProvider.GetRequiredService<IAuthorizationPolicyProvider>().GetPolicyAsync("Bearer")?.Result;
         Assert.NotNull(authorizationPolicy);

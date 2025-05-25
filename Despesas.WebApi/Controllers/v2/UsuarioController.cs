@@ -10,13 +10,13 @@ public class UsuarioController : AuthController
 {
     private readonly IUsuarioBusiness<UsuarioDto> _usuarioBusiness;
     private readonly IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> _imagemPerfilBussiness;
-    
+
     public UsuarioController(IUsuarioBusiness<UsuarioDto> usuarioBusiness, IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto> imagemPerfilBussiness)
     {
         _usuarioBusiness = usuarioBusiness;
         _imagemPerfilBussiness = imagemPerfilBussiness;
     }
-    
+
     [HttpGet("GetUsuario")]
     [Authorize("Bearer", Roles = "User")]
     [ProducesResponseType(200, Type = typeof(UsuarioDto))]
@@ -32,7 +32,7 @@ public class UsuarioController : AuthController
             if (_usuario == null) throw new();
             return Ok(_usuario);
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             if (ex is ArgumentException argEx)
                 return BadRequest(argEx.Message);
@@ -52,7 +52,7 @@ public class UsuarioController : AuthController
     {
         try
         {
-            usuarioDto.UsuarioId = UserIdentity;            
+            usuarioDto.UsuarioId = UserIdentity;
             return Ok(_usuarioBusiness.Update(usuarioDto));
         }
         catch (Exception ex)
@@ -84,7 +84,7 @@ public class UsuarioController : AuthController
                 return BadRequest(argEx.Message);
 
             return BadRequest("Não foi possível realizar a consulta de usuários.");
-        }       
+        }
     }
 
     [HttpPost]
@@ -145,7 +145,7 @@ public class UsuarioController : AuthController
         try
         {
             if (_usuarioBusiness.Delete(usuarioDto))
-                return  Ok(true);
+                return Ok(true);
 
             throw new ArgumentException("Não foi possivél excluir este usuário.");
         }

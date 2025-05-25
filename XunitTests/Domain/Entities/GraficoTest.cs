@@ -6,7 +6,7 @@ public sealed class GraficoTest
     {
         var somatorioDespesasPorAno = new Mock<Dictionary<String, decimal>>().Object;
 
-        var somatorioReceitasPorAno =  new Mock<Dictionary<String, decimal>>().Object;
+        var somatorioReceitasPorAno = new Mock<Dictionary<String, decimal>>().Object;
 
         var grafico = new Grafico
         {
@@ -15,6 +15,6 @@ public sealed class GraficoTest
         };
 
         Assert.Equal(grafico.SomatorioDespesasPorAno, somatorioDespesasPorAno);
-        Assert.Equal(grafico.SomatorioReceitasPorAno, somatorioReceitasPorAno);            
+        Assert.Equal(grafico.SomatorioReceitasPorAno, somatorioReceitasPorAno);
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repository.Abstractions;
 
-public sealed class BaseRepositoryFixture: IDisposable
+public sealed class BaseRepositoryFixture : IDisposable
 {
     public RegisterContext Context { get; private set; }
 

@@ -129,5 +129,5 @@ public sealed class ReceitaRepositorioImplTest : IClassFixture<ReceitaFixture>
         // Assert
         Assert.NotNull(result);
         Assert.True(result.Count() > 0);
-    }    
+    }
 }

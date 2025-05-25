@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Mapping;
-public class TipoCategoriaMap: IEntityTypeConfiguration<TipoCategoria>
+public class TipoCategoriaMap : IEntityTypeConfiguration<TipoCategoria>
 {
     public void Configure(EntityTypeBuilder<TipoCategoria> builder)
     {

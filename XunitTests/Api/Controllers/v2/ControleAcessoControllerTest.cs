@@ -57,7 +57,7 @@ public sealed class ControleAcessoControllerTest
     public void Post_With_Null_Telefone_Returns_BadRequest()
     {
         // Arrange
-        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();        
+        var controleAcessoDto = ControleAcessoFaker.Instance.GetNewFakerVM();
         controleAcessoDto.Telefone = string.Empty;
         _mockControleAcessoBusiness.Setup(b => b.Create(It.IsAny<ControleAcessoDto>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
 
@@ -333,7 +333,7 @@ public sealed class ControleAcessoControllerTest
         // Arrange
         var email = new string('A', 257);
         _mockControleAcessoBusiness.Setup(b => b.RecoveryPassword(It.IsAny<string>())).Throws<Exception>();
-        
+
         // Act
         var result = _controleAcessoController.RecoveryPassword(email) as NoContentResult;
 

@@ -1,9 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Domain.Entities;
 
 namespace Repository.Mapping;
-public class LancamentoMap: IEntityTypeConfiguration<Lancamento>
+public class LancamentoMap : IEntityTypeConfiguration<Lancamento>
 {
     public void Configure(EntityTypeBuilder<Lancamento> builder)
     {

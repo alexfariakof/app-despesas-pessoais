@@ -24,7 +24,7 @@ public sealed class UsuarioControllerTest
         _mockImagemPerfilBusiness = new Mock<IImagemPerfilUsuarioBusiness<ImagemPerfilDto, UsuarioDto>>();
         _usuarioController = new UsuarioController(_mockUsuarioBusiness.Object, _mockImagemPerfilBusiness.Object);
         var usuarios = UsuarioFaker.Instance.GetNewFakersUsuarios(20);
-        _mapper = new Mapper(new MapperConfiguration(cfg => {  cfg.AddProfile<UsuarioProfile>(); }));
+        _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<UsuarioProfile>(); }));
         administrador = _mapper.Map<UsuarioDto>(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).First());
         usuarioNormal = _mapper.Map<UsuarioDto>(usuarios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.User).First());
         _usuarioDtos = _mapper.Map<List<UsuarioDto>>(usuarios);
@@ -40,7 +40,7 @@ public sealed class UsuarioControllerTest
         Usings.SetupBearerToken(idUsuario, _usuarioController);
         _mockUsuarioBusiness.Setup(business => business.FindById(It.IsAny<Guid>())).Returns(usauriosDtos.Find(u => u.Id == idUsuario) ?? new());
 
-                // Act
+        // Act
         var result = _usuarioController.GetUsuarioById() as ObjectResult;
 
         // Assert
@@ -50,7 +50,7 @@ public sealed class UsuarioControllerTest
         Assert.Equal(idUsuario, usuarioDto.Id);
         _mockUsuarioBusiness.Verify(bussines => bussines.FindById(It.IsAny<Guid>()), Times.Once);
     }
-        
+
     [Fact]
     public void Put_Should_Update_UsuarioDto()
     {
@@ -74,11 +74,13 @@ public sealed class UsuarioControllerTest
     public void Put_Should_Returns_BadRequest_When_Telefone_IsNull()
     {
         var usaurios = UsuarioFaker.Instance.GetNewFakersUsuarios(10);
+        
         var usuarioDto = _mapper.Map<UsuarioDto>(usaurios.FindAll(u => u.PerfilUsuario == PerfilUsuario.Perfil.Admin).First());
         usuarioDto.Telefone = null;
         var usauriosDtos = _mapper.Map<List<UsuarioDto>>(usaurios);
         Guid idUsuario = usuarioDto.Id;
-        //_mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Campo Telefone não pode ser em branco"));
+        Usings.SetupBearerToken(idUsuario, _usuarioController);
+        _mockUsuarioBusiness.Setup(business => business.Update(It.IsAny<UsuarioDto>())).Throws(new ArgumentException("Erro ao atualizar Usuário!"));
 
         // Act
         var result = _usuarioController.Put(usuarioDto) as ObjectResult;
@@ -88,7 +90,7 @@ public sealed class UsuarioControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
         Assert.Equal("Erro ao atualizar Usuário!", message);
-        _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioDto>()), Times.Never);
+        _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioDto>()), Times.AtLeastOnce);
     }
 
     [Fact]
@@ -172,5 +174,5 @@ public sealed class UsuarioControllerTest
         var message = result.Value;
         Assert.Equal("Usuário não encontrado!", message);
         _mockUsuarioBusiness.Verify(b => b.Update(It.IsAny<UsuarioDto>()), Times.Once);
-    }    
+    }
 }

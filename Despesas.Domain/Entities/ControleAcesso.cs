@@ -9,7 +9,7 @@ public class ControleAcesso : BaseModel
         get => _login;
         set => _login = value;
     }
-    
+
     public string Senha { get; set; } = string.Empty;
     public Guid UsuarioId { get; set; }
 
@@ -22,6 +22,6 @@ public class ControleAcesso : BaseModel
     {
         this.Login = usuario.Email;
         this.Senha = senha;
-        this.Usuario = usuario.CreateUsuario(usuario);        
+        this.Usuario = usuario.CreateUsuario(usuario);
     }
 }

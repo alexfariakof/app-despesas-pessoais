@@ -120,7 +120,7 @@ public class DespesaController : AuthController
             DespesaDto despesa = _despesaBusiness.FindById(idDespesa, UserIdentity);
             if (despesa == null || UserIdentity != despesa.UsuarioId)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
-            
+
             return _despesaBusiness.Delete(despesa) ? Ok(true) : throw new();
         }
         catch (Exception ex)

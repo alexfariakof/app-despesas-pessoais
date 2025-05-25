@@ -40,7 +40,7 @@ public sealed class LancamentoFaker
     )
     {
         var lancamentoDtoFaker = new Faker<LancamentoDto>()
-            .RuleFor(l => l.Id, f => Guid.NewGuid() )
+            .RuleFor(l => l.Id, f => Guid.NewGuid())
             .RuleFor(l => l.Valor, f => f.Random.Decimal(1, 90000))
             .RuleFor(
                 l => l.Data,
@@ -49,9 +49,9 @@ public sealed class LancamentoFaker
             .RuleFor(l => l.Descricao, f => f.Commerce.ProductName())
             .RuleFor(l => l.UsuarioId, idUsuario)
             .RuleFor(l => l.IdDespesa, idDespesa)
-            .RuleFor(l => l.IdReceita, idReceita)            
+            .RuleFor(l => l.IdReceita, idReceita)
             .RuleFor(l => l.Categoria, categoria.Descricao)
-            .Generate();        
+            .Generate();
         lancamentoDtoFaker.TipoCategoria = counter % 2 == 0 ? "Despesa" : "Receita";
         counterVM++;
         return lancamentoDtoFaker;

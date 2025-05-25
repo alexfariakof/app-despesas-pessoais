@@ -33,7 +33,7 @@ public static class SwaggerApiVersioningDependenceInject
         services.AddApiVersioning();
 
         services.AddSwaggerGen(c =>
-        {            
+        {
             c.SwaggerDoc(currentVersion, new OpenApiInfo
             {
                 Title = appName,

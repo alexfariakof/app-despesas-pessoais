@@ -174,7 +174,7 @@ public class UsuarioController : AuthController
             return BadRequest(new { message = "Erro ao excluir imagem do perfil!" });
         }
     }
-    
+
     [HttpPut("UpdateUsuarioAdmin")]
     [Authorize("Bearer", Roles = "Admin")]
     public IActionResult UpdateUsuarioAdmin([FromBody] UsuarioDto usuarioDto)
