@@ -90,7 +90,7 @@ app.UseRouting()
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction() && ! app.Environment.EnvironmentName.Equals("Staging"))
+if (!app.Environment.IsProduction() || !app.Environment.EnvironmentName.Equals("Staging"))
     app.RunDataSeeders();
 
 app.Run();
