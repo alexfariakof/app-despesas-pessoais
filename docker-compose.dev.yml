@@ -13,7 +13,7 @@ services:
       - 42535:42535
       - 42536:42536
     volumes:
-      - ./Despesas.WebApi/appsettings.development.docker.json:/app/appsettings.development.json
-      - ./Despesas.WebApi/appsettings.development.docker.json:/app/appsettings.json
+      - ./Despesas.WebApi/appsettings.docker.development.json:/app/appsettings.development.json
+      - ./Despesas.WebApi/appsettings.docker.development.json:/app/appsettings.json
       - ./Despesas.WebApi/certificate/webapi-cert.pfx:/app/certificate/webapi-cert.pfx
  
