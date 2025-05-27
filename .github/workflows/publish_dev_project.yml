@@ -11,7 +11,7 @@ jobs:
         
   deploy:
     needs: trigger_build_and_test
-    name: Docker Build and Publish in Development
+    name: Build and Publish Docker Development
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
