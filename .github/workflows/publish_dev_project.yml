@@ -30,7 +30,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_CLI_AGGREGATE: 1
         run: |
-          docker login -u "${DOCKER_LOGIN}" --password-stdin
+          docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}    
           docker push alexfariakof/api-despesas-backend-netcore-dev-img
         
       - name: Execute SSH Commands into EC2 
