@@ -20,6 +20,7 @@ jobs:
       - name: Build Docker image
         env:
           DOCKER_CLI_AGGREGATE: 1       
+        run: |
             docker-compose -f docker-compose.dev.yml build
         continue-on-error: false
 
