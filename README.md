@@ -8,10 +8,17 @@ In summary, this project involves an update of the Restful API application creat
 This project can be access [Postman Documentation](https://bold-eclipse-872793.postman.co/workspace/local-api-despesas-pessoais~bb08206c-ff0d-44c9-b49e-55339a554a3b/overview)
 
 ## Application in Production 
-This project can be access at [Production API Restful Despesas Pessoais](http://alexfariakof.com:42535).
+This project can be access at [Production API Restful Despesas Pessoais](https://alexfariakof.com).
 
 ## Application in Development 
-This project can be access at [Development API Restful Despesas Pessoais](http://alexfariakof.com/swagger).
+This project can be access at [Development API Restful Despesas Pessoais](https://alexfariakof.com:42535).
+
+## Swagger Documentation in Production 
+This project can be access at [Production API Restful Despesas Pessoais](https://alexfariakof.com/swagger).
+
+## Swagger Documentation in Development 
+This project can be access at [Development API Restful Despesas Pessoais](https://alexfariakof.com:42535/swagger).
+
 
 ![image](https://github.com/alexfariakof/despesas-backend-api-net-core/assets/42475620/c0abe2f5-da31-4907-90dc-bbb06a95d2f3)
 
