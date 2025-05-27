@@ -17,7 +17,7 @@ public sealed class UsuarioControllerTest
     private List<UsuarioDto> _usuarioDtos;
     private UsuarioDto administrador;
     private UsuarioDto usuarioNormal;
-       
+
     public UsuarioControllerTest()
     {
         _mockUsuarioBusiness = new Mock<IUsuarioBusiness<UsuarioDto>>();

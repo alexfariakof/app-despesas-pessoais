@@ -1,11 +1,9 @@
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 
-EXPOSE 42535
-EXPOSE 42536
 ENV ASPNETCORE_ENVIRONMENT=Staging
-ENV ASPNETCORE_URLS=http://+:42536;https://+:42535
+ENV ASPNETCORE_URLS=https://+:42535;http://+:42536;
 
 FROM alexfariakof/dotnet-sdk-8.0-with-node AS build
 WORKDIR /src
@@ -25,8 +23,8 @@ RUN dotnet publish "./Despesas.WebApi.csproj" -c Release -o /app/publish /p:UseA
 FROM base AS final
 WORKDIR /app
 
+EXPOSE 42535
+EXPOSE 42536
 COPY --from=build /app/publish .
-COPY --from=build /app/publish/appsettings.develpment.docker.json ./appsettings.json
-COPY --from=build /app/publish/appsettings.develpment.docker.json ./appsettings.develpment.json
 COPY --from=build /app/test ./wwwroot/coveragereport
 ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]

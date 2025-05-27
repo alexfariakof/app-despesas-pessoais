@@ -1,4 +1,4 @@
-global using Xunit;
+﻿global using Xunit;
 global using Moq;
 global using Domain.Entities;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Repository.Persistency.Generic;
+using Despesas.Business.Authentication.Abstractions;
 
 public class Usings
 {
@@ -87,14 +88,14 @@ public class Usings
 
     public static string GenerateJwtToken(Guid userId)
     {
-        var options = Options.Create(new TokenConfiguration
+        var options = Options.Create(new TokenOptions
         {
             Issuer = "XUnit-Issuer",
             Audience = "XUnit-Audience",
             Seconds = 3600,
             DaysToExpiry = 1
         });
-        var signingConfigurations = new SigningConfigurations(options?.Value);
+        var signingConfigurations = new SigningConfigurations(options);
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingConfigurations.Key.ToString()));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
         var claims = new[] { new Claim("sub", userId.ToString()) };

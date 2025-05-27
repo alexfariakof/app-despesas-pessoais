@@ -52,7 +52,7 @@ public class LancamentoRepositorioImpl : ILancamentoRepositorio
                     Data = r.Data,
                     DataCriacao = DateTime.Now,
                     Valor = r.Valor,
-                    Despesa = null, 
+                    Despesa = null,
                     Receita = new Receita { Id = r.Id, Descricao = r.Descricao },
                     DespesaId = Guid.Empty
                 })

@@ -10,5 +10,5 @@ public static class MigrationsMsSqlServerInjectDependence
         var name = typeof(MsSqlServerContext).Assembly.FullName;
         services.AddDbContext<MsSqlServerContext>(options => options.UseSqlServer(configuration.GetConnectionString("Migrations.MsSqlConnectionString"), builder => builder.MigrationsAssembly(name)));
         return services;
-    }    
+    }
 }

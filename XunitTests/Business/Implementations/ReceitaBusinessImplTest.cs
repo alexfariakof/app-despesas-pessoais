@@ -12,7 +12,7 @@ public class ReceitaBusinessImplTest
 {
     private readonly Mock<IRepositorio<Receita>> _repositorioMock;
     private readonly Mock<IRepositorio<Categoria>> _repositorioMockCategoria;
-    private readonly ReceitaBusinessImpl<ReceitaDto> _receitaBusiness;    
+    private readonly ReceitaBusinessImpl<ReceitaDto> _receitaBusiness;
     private readonly IUnitOfWork<Receita> _UnitOfWork;
     private Mapper _mapper;
 
@@ -104,7 +104,7 @@ public class ReceitaBusinessImplTest
         // Arrange
         var receitas = ReceitaFaker.Instance.Receitas();
         var receita = receitas.First();
-        var receitaDto = _mapper.Map<ReceitaDto>(receita);            
+        var receitaDto = _mapper.Map<ReceitaDto>(receita);
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(receita);
         _repositorioMockCategoria.Setup(repo => repo.GetAll()).Returns(receitas.Select(r => r.Categoria ?? new()).ToList());

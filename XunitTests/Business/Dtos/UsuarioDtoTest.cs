@@ -8,7 +8,7 @@ public sealed class UsuarioDtoTest
     public class UsuarioDtoBaseTest : UsuarioDtoBase { }
 
     [Theory]
-    [InlineData("Usuario 1", "Teste Usuario 1" ,"(21) 99999-9999", "user1@user.com")]
+    [InlineData("Usuario 1", "Teste Usuario 1", "(21) 99999-9999", "user1@user.com")]
     [InlineData("Usuario 2", "Teste Usuario 2", "(21) 99999-9999", "user2@user.com")]
     [InlineData("Usuario 3", "Teste Usuario 3", "(21) 99999-9999", "user3@user.com")]
     public void UsuarioDto_Should_Set_Properties_Correctly(string nome, string sobreNome, string telefone, string email)

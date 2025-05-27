@@ -16,5 +16,5 @@ public class DespesaDto : DespesaDtoBase
 
     [Required]
     public override Guid? IdCategoria { get; set; }
-    
+
 }

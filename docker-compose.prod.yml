@@ -1,4 +1,4 @@
-version: '3.9'
+﻿version: '3.9'
 services:
     app-despesas-pessoais-prod:
         container_name: app-despesas-pessoais-prod
@@ -11,4 +11,11 @@ services:
             ASPNETCORE_ENVIRONMENT: Production
         ports:
            - 80:80
-           - 443:443
+           - 443:443  
+        volumes:
+           - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.json
+           - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.develpment.json
+           - ./Despesas.WebApi/certificate/webapi-cert.pfx:/app/certificate/webapi-cert.pfx
+        deploy:
+           update_config:
+             order: start-first 

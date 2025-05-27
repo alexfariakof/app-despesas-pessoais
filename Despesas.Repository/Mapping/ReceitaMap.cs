@@ -1,9 +1,9 @@
-using Domain.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Mapping;
-public class ReceitaMap: IEntityTypeConfiguration<Receita>
+public class ReceitaMap : IEntityTypeConfiguration<Receita>
 {
     public void Configure(EntityTypeBuilder<Receita> builder)
     {

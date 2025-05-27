@@ -32,7 +32,7 @@ public class SaldoRepositorioImpl : ISaldoRepositorio
         try
         {
             decimal sumDespesa = Context.Despesa.Where(d => d.UsuarioId == idUsuario && d.Data.Year == ano).AsEnumerable().Sum(d => d.Valor);
-            decimal sumReceita = Context.Receita.Where(r => r.UsuarioId == idUsuario && r.Data.Year ==  ano).AsEnumerable().Sum(r => r.Valor);
+            decimal sumReceita = Context.Receita.Where(r => r.UsuarioId == idUsuario && r.Data.Year == ano).AsEnumerable().Sum(r => r.Valor);
 
             return (sumReceita - sumDespesa);
         }

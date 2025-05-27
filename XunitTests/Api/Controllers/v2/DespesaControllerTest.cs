@@ -233,7 +233,7 @@ public sealed class DespesaControllerTest
         Assert.IsType<OkObjectResult>(result);
         var message = (bool?)result.Value;
         Assert.True(message);
-        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
+        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario), Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);
     }
 
@@ -247,7 +247,7 @@ public sealed class DespesaControllerTest
         Usings.SetupBearerToken(Guid.Empty, _despesaController);
         _mockDespesaBusiness.Setup(business => business.Delete(despesaDto)).Returns(true);
         _mockDespesaBusiness.Setup(business => business.FindById(despesaDto.Id, idUsuario)).Returns(despesaDto);
-        
+
         // Act
         var result = _despesaController.Delete(despesaDto.Id) as ObjectResult;
 
@@ -256,7 +256,7 @@ public sealed class DespesaControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
         Assert.Equal("Usuário não permitido a realizar operação!", message);
-        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Never);
+        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario), Times.Never);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Never);
     }
 
@@ -279,7 +279,7 @@ public sealed class DespesaControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
         Assert.Equal("Erro ao excluir Despesa!", message);
-        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario),Times.Once);
+        _mockDespesaBusiness.Verify(business => business.FindById(despesaDto.Id, idUsuario), Times.Once);
         _mockDespesaBusiness.Verify(b => b.Delete(despesaDto), Times.Once);
     }
 }

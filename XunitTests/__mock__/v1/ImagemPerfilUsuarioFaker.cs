@@ -74,7 +74,7 @@ public sealed class ImagemPerfilUsuarioFaker
         {
             if (idUsuario == null)
                 usuarioDto = UsuarioFaker.Instance.GetNewFakerVM();
-            
+
             usuarioDto = usuarioDto ?? new();
             var imagemVM = ImagemPerfilUsuarioFaker.Instance.GetNewFakerVM(usuarioDto);
 

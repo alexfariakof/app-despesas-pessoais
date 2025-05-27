@@ -33,7 +33,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var usuarioDto = new UsuarioParser().Parse(_imagemPerfilUsuarios.First().Usuario);
         Guid idUsuario = usuarioDto.Id;
         Usings.SetupBearerToken(idUsuario, _usuarioController);
-        
+
         _mockImagemPerfilBusiness.Setup(business => business.FindAll(idUsuario)).Returns(_imagemPerfilUsuarioDtos);
 
         // Act
@@ -191,7 +191,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()),Times.Never);
+        _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
 
     [Fact]
@@ -252,7 +252,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         value = result.Value;
         //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         //Assert.Equal("Erro ao incluir nova imagem de peefil!", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()),Times.Never);
+        _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
 
     [Fact]
@@ -313,7 +313,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
-        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Exactly(2));
+        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Exactly(2));
 
         // Arrage file type JPEG
         formFile = new FormFile(
@@ -339,7 +339,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         imagemPerfilUsuario = value?.GetType()?.GetProperty("imagemPerfilUsuario")?.GetValue(value, null) as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
-        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Exactly(3));
+        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Exactly(3));
     }
 
     [Fact]
@@ -367,7 +367,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         value = result.Value;
         //var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         //Assert.Equal("Erro ao Atualizar imagem do perfil!", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Never);
+        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
 
     [Fact]
@@ -398,7 +398,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         var value = result.Value;
         var message = value?.GetType()?.GetProperty("message")?.GetValue(value, null) as string;
         Assert.Equal("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Never);
+        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
 
     [Fact]

@@ -1,13 +1,9 @@
-﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Business.Abstractions;
 
 namespace Despesas.WebApi.Controllers.v1;
 
-[ApiVersion("1")]
-[Route("v1/[controller]")]
-[ApiController]
 public class SaldoController : AuthController
 {
     private ISaldoBusiness _saldoBusiness;

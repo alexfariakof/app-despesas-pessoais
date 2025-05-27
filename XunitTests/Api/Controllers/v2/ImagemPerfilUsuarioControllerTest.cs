@@ -98,7 +98,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Once);
 
         // Arrage file type PNG
-        formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content png")), 0, Encoding.UTF8.GetBytes("Test file content png").Length, "Test File PNG", "test.png" );
+        formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file content png")), 0, Encoding.UTF8.GetBytes("Test file content png").Length, "Test File PNG", "test.png");
         formFile.Headers = new HeaderDictionary { { "Content-Type", "image/png" } };
 
         // Act file type PNG
@@ -110,7 +110,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
-        _mockImagemPerfilBusiness.Verify( b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Exactly(2));
+        _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Exactly(2));
 
         // Arrage file type JPEG
         formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file contentjpeg")), 0, Encoding.UTF8.GetBytes("Test file content jpeg").Length, "Test File JPEG", "test.jpeg");
@@ -146,7 +146,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;        
+        var message = result.Value;
         Assert.Equal("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.", message);
         _mockImagemPerfilBusiness.Verify(b => b.Create(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
@@ -231,7 +231,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         imagemPerfilUsuario = result.Value as ImagemPerfilDto;
         Assert.NotNull(imagemPerfilUsuario);
         Assert.IsType<ImagemPerfilDto>(imagemPerfilUsuario);
-        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Exactly(2));
+        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Exactly(2));
 
         // Arrage file type JPEG
         formFile = new FormFile(new MemoryStream(Encoding.UTF8.GetBytes("Test file contentjpeg")), 0, Encoding.UTF8.GetBytes("Test file content jpeg").Length, "Test File JPEG", "test.jpeg");
@@ -288,9 +288,9 @@ public sealed class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;        
+        var message = result.Value;
         Assert.Equal("Apenas arquivos do tipo jpg, jpeg ou png são aceitos.", message);
-        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()),Times.Never);
+        _mockImagemPerfilBusiness.Verify(b => b.Update(It.IsAny<ImagemPerfilDto>()), Times.Never);
     }
 
     [Fact]
@@ -329,7 +329,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<OkObjectResult>(result);
-        var message  = (bool?)result.Value;
+        var message = (bool?)result.Value;
         Assert.IsType<bool>(message);
         Assert.True((bool)message);
         _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<Guid>()), Times.Once);
@@ -368,7 +368,7 @@ public sealed class ImagemPerfilUsuarioControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message = result.Value;               
+        var message = result.Value;
         Assert.Equal("Erro ao excluir imagem do perfil!", message);
         _mockImagemPerfilBusiness.Verify(b => b.Delete(It.IsAny<Guid>()), Times.Once);
     }

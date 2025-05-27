@@ -24,7 +24,7 @@ public class CategoriaBusinessImplTest
         var usuario = UsuarioFaker.Instance.GetNewFaker();
         _categorias = CategoriaFaker.Instance.Categorias(usuario);
         _repositorioMock = Usings.MockRepositorio(_categorias);
-        _unitOfWorkMock  = new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default);
+        _unitOfWorkMock = new Mock<IUnitOfWork<Categoria>>(MockBehavior.Default);
         _mediator = new Mock<IMediator>(MockBehavior.Default);
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<CategoriaProfile>(); }));
         _categoriaBusiness = new CategoriaBusinessImpl<CategoriaDto>(_mediator.Object, _mapper, _unitOfWorkMock.Object, _repositorioMock.Object);
@@ -113,11 +113,11 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
         var categoria = CategoriaFaker.Instance.GetNewFaker(UsuarioFaker.Instance.GetNewFaker());
-        var categoriaDto = _mapper.Map<CategoriaDto>(categoria);        
+        var categoriaDto = _mapper.Map<CategoriaDto>(categoria);
         _repositorioMock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(categoria);
         _repositorioMock.Setup(repo => repo.Update(ref It.Ref<Categoria>.IsAny));
-        _unitOfWorkMock.Setup(repo => repo.Repository.Update(It.IsAny<Categoria>()));        
-        
+        _unitOfWorkMock.Setup(repo => repo.Repository.Update(It.IsAny<Categoria>()));
+
         // Act
         var result = _categoriaBusiness.Update(categoriaDto) as CategoriaDto;
 
@@ -135,7 +135,7 @@ public class CategoriaBusinessImplTest
     {
         // Arrange
         var categoria = _categorias.First();
-        var objToDelete =  _mapper.Map<CategoriaDto>(categoria);
+        var objToDelete = _mapper.Map<CategoriaDto>(categoria);
         _repositorioMock.Setup(repo => repo.Delete(It.IsAny<Categoria>()));
         _unitOfWorkMock.Setup(repo => repo.Repository.Delete(It.IsAny<Guid>()));
 

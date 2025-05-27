@@ -26,7 +26,7 @@ public sealed class ControleAcessoParserTest
         Assert.NotNull(controleAcesso);
         Assert.Equal(controleAcessoDto.Id, controleAcesso.Id);
         Assert.Equal(controleAcessoDto.Email, controleAcesso.Login);
-        Assert.NotEqual(controleAcessoDto.Senha, controleAcesso.Senha);
+        Assert.Equal(controleAcessoDto.Senha, controleAcesso.Senha);
         Assert.NotNull(controleAcesso.Usuario);
         Assert.Equal(controleAcessoDto.Nome, controleAcesso.Usuario.Nome);
         Assert.Equal(controleAcessoDto.Telefone, controleAcesso.Usuario.Telefone);
@@ -71,6 +71,6 @@ public sealed class ControleAcessoParserTest
         Assert.Equal(usuario.Nome, controleAcessoDto.Nome);
         Assert.Equal(usuario.Telefone, controleAcessoDto.Telefone);
         Assert.Equal(usuario.SobreNome, controleAcessoDto.SobreNome);
-    }  
+    }
 
 }

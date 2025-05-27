@@ -1218,7 +1218,152 @@ public class DataSeederReceita : IDataSeeder
                     Usuario = user,
                     UsuarioId = user.Id,
                     CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Outros") && c.TipoCategoria.Id == (int)TipoCategoria.CategoriaType.Receita).Id
+                },
+                                new Receita
+                {
+                    Data = new DateTime(2025, 01, 05),
+                    Descricao = "Salário mês de Janeiro",
+                    Valor = 10654.12m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 01, 20),
+                    Descricao = "Investimento bitcoin",
+                    Valor = 13782.45m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 02, 05),
+                    Descricao = "Salário mês de Fevereiro",
+                    Valor = 11829.33m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 02, 20),
+                    Descricao = "Investimento na poupança",
+                    Valor = 12478.67m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 03, 05),
+                    Descricao = "Salário mês de Março",
+                    Valor = 13001.21m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 03, 20),
+                    Descricao = "Investimento Bitcoin",
+                    Valor = 17129.53m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 04, 05),
+                    Descricao = "Salário mês de Abril",
+                    Valor = 14256.90m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 04, 20),
+                    Descricao = "Investimento Bitcoin",
+                    Valor = 15673.88m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 05, 05),
+                    Descricao = "Salário mês de Maio",
+                    Valor = 19384.44m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 05, 20),
+                    Descricao = "Investimento na poupança",
+                    Valor = 17385.76m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 06, 05),
+                    Descricao = "Salário mês de Junho",
+                    Valor = 18123.93m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 06, 20),
+                    Descricao = "Investimento em Bitcoin",
+                    Valor = 19762.33m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },                new Receita
+                {
+                    Data = new DateTime(2025, 07, 05),
+                    Descricao = "Salário mês de Julho",
+                    Valor = 20457.18m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 07, 20),
+                    Descricao = "Investimento em ações",
+                    Valor = 18632.71m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 08, 05),
+                    Descricao = "Salário mês de Agosto",
+                    Valor = 21983.64m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Salário")).Id
+                },
+                new Receita
+                {
+                    Data = new DateTime(2025, 08, 20),
+                    Descricao = "Investimento renda fixa",
+                    Valor = 19476.12m,
+                    Usuario = user,
+                    UsuarioId = user.Id,
+                    CategoriaId = _context.Categoria.FirstOrDefault(c => c.UsuarioId == user.Id && c.Descricao.Contains("Investimento")).Id
                 }
+
+
             };
             _context.AddRange(receitas);
             _context.SaveChanges();

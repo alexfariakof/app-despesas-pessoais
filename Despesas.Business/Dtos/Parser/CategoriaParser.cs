@@ -4,7 +4,7 @@ using Domain.Entities;
 using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos.Parser;
-public class CategoriaParser: IParser<CategoriaDto, Categoria>, IParser<Categoria, CategoriaDto>
+public class CategoriaParser : IParser<CategoriaDto, Categoria>, IParser<Categoria, CategoriaDto>
 {
     public Categoria Parse(CategoriaDto origin)
     {

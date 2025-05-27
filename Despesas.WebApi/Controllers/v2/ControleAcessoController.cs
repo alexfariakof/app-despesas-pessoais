@@ -1,5 +1,4 @@
-using Asp.Versioning;
-using Business.Abstractions;
+﻿using Business.Abstractions;
 using Business.Dtos.Core;
 using Business.Dtos.v2;
 using Microsoft.AspNetCore.Authorization;
@@ -7,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
 
-[ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
 public class ControleAcessoController : AuthController
 {
     private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;

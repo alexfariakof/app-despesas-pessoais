@@ -96,7 +96,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         var mockControleAcesso = new ControleAcesso { Login = lstControleAcesso.Last().Login };
         context.AddRange(lstControleAcesso);
         context.SaveChanges();
-        var repository = new Mock<ControleAcessoRepositorioImpl>(context);        
+        var repository = new Mock<ControleAcessoRepositorioImpl>(context);
 
         // Act
         var result = repository.Object.RecoveryPassword(mockControleAcesso.Login, newPassword);
@@ -192,7 +192,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         context.SaveChanges();
         var repository = new ControleAcessoRepositorioImpl(context);
         var controleAcesso = context.ControleAcesso.Last();
-        
+
         // Act
         var result = repository.ChangePassword(controleAcesso.UsuarioId, "!12345");
 
@@ -227,7 +227,7 @@ public sealed class ControleAcessoRepositorioImplTest : IClassFixture<ControleAc
         Assert.Equal("ChangePassword_Erro", exception.Message);
         Assert.True(true);
     }
-     
+
     [Fact]
     public void Create_Should_Throw_Exception_When_User_Already_Exists()
     {

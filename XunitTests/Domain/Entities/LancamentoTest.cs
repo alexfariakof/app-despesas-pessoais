@@ -11,7 +11,7 @@ public sealed class LancamentoTest
         var mockUsuario = Mock.Of<Usuario>();
         var mockDespesa = Mock.Of<Despesa>();
         var mockReceita = Mock.Of<Receita>();
-        var mockCategoria= Mock.Of<Categoria>();
+        var mockCategoria = Mock.Of<Categoria>();
         var id = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
         var despesaId = valor % 2 == 0 ? Guid.NewGuid() : Guid.Empty;
@@ -22,27 +22,27 @@ public sealed class LancamentoTest
 
         //Act
         var lancamento = new Lancamento
-        { 
+        {
             Id = id,
             Valor = valor,
             Data = data,
-            Descricao = descricao,                
-            UsuarioId = usuarioId,                
-            Usuario  = mockUsuario,
+            Descricao = descricao,
+            UsuarioId = usuarioId,
+            Usuario = mockUsuario,
             DespesaId = despesaId,
             Despesa = mockDespesa,
-            ReceitaId   = receitaId,
+            ReceitaId = receitaId,
             Receita = mockReceita,
             CategoriaId = categoriaId,
             Categoria = mockCategoria,
-            DataCriacao = dataCriacao                
+            DataCriacao = dataCriacao
         };
 
         // Assert
         Assert.Equal(id, lancamento.Id);
         Assert.Equal(valor, lancamento.Valor);
         Assert.Equal(data, lancamento.Data);
-        Assert.Equal(descricao, lancamento.Descricao);            
+        Assert.Equal(descricao, lancamento.Descricao);
         Assert.Equal(usuarioId, lancamento.UsuarioId);
         Assert.Equal(mockUsuario, lancamento.Usuario);
         Assert.Equal(despesaId, lancamento.DespesaId);

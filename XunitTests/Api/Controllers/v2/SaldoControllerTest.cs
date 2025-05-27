@@ -7,7 +7,7 @@ namespace Api.Controllers.v2;
 
 public sealed class SaldoControllerTest
 {
-    private  Mock<ISaldoBusiness> _mockSaldoBusiness;
+    private Mock<ISaldoBusiness> _mockSaldoBusiness;
     private SaldoController _SaldoController;
     public SaldoControllerTest()
     {
@@ -88,7 +88,7 @@ public sealed class SaldoControllerTest
         // Assert
         Assert.NotNull(result);
         Assert.IsType<BadRequestObjectResult>(result);
-        var message  = result.Value;
+        var message = result.Value;
         Assert.Equal("Erro ao gerar saldo!", message);
         _mockSaldoBusiness.Verify(b => b.GetSaldoAnual(DateTime.Today, idUsuario), Times.Once);
     }
@@ -129,6 +129,6 @@ public sealed class SaldoControllerTest
         Assert.IsType<BadRequestObjectResult>(result);
         var message = result.Value;
         Assert.Equal("Erro ao gerar saldo!", message);
-        _mockSaldoBusiness.Verify(b => b.GetSaldoByMesAno(DateTime.Today, idUsuario),Times.Once);
+        _mockSaldoBusiness.Verify(b => b.GetSaldoByMesAno(DateTime.Today, idUsuario), Times.Once);
     }
 }

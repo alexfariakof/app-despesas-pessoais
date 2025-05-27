@@ -265,7 +265,7 @@ public sealed class ControleAcessoControllerTest
         var message = (bool?)value?.GetType()?.GetProperty("message")?.GetValue(value, null);
         Assert.True(message);
     }
-      
+
 
     [Fact]
     public void ChangePassword_With_NULL_Password_Returns_BadRequest()

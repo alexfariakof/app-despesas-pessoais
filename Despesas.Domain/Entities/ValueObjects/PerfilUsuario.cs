@@ -14,7 +14,7 @@ public sealed record PerfilUsuario
 
     public int Id { get; set; }
     public string Name { get; set; } = String.Empty;
-    
+
     public PerfilUsuario() { }
 
     public PerfilUsuario(Perfil itipoPerfil)

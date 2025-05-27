@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Mapping;
 
-public class PerfilUsuarioMap: IEntityTypeConfiguration<PerfilUsuario>
+public class PerfilUsuarioMap : IEntityTypeConfiguration<PerfilUsuario>
 {
     public void Configure(EntityTypeBuilder<PerfilUsuario> builder)
     {

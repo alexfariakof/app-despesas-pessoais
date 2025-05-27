@@ -9,19 +9,19 @@ public sealed class ControleAcessoTest
     {
         var mockUsuario = Mock.Of<Usuario>();
         var id = Guid.NewGuid();
-        var usuarioId = Guid.NewGuid(); 
+        var usuarioId = Guid.NewGuid();
 
         // Arrange and Act
         var controleAcesso = new ControleAcesso
-        { 
+        {
             Id = id,
-            Login = login, 
+            Login = login,
             Senha = senha,
             UsuarioId = usuarioId,
-            Usuario  = mockUsuario              
-            
+            Usuario = mockUsuario
+
         };
-        
+
         // Assert
         Assert.Equal(id, controleAcesso.Id);
         Assert.Equal(login, controleAcesso.Login);

@@ -1,4 +1,4 @@
-using Despesas.WebApi.Controllers;
+﻿using Despesas.WebApi.Controllers.v1;
 using System.Reflection;
 
 namespace Api.Controllers;
@@ -29,6 +29,6 @@ public sealed class AuthControllerTest
     {
         var propertyInfo = obj.GetType().GetProperty(propertyName, BindingFlags.Instance | BindingFlags.NonPublic);
 
-        return (T?)propertyInfo.GetValue(obj) ;
+        return (T?)propertyInfo.GetValue(obj);
     }
 }

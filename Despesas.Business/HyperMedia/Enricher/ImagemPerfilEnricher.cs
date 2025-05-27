@@ -13,8 +13,8 @@ public class ImagemPerfilEnricher : ContentResponseEnricher<ImagemPerfilDto>
         var path = "usuario/imagemperfil";
         string link = GetLink(content.Id, urlHelper, path);
 
-        content.Links.Add(new HyperMediaLink() 
-        { 
+        content.Links.Add(new HyperMediaLink()
+        {
             Action = HttpActionVerb.GET,
             Href = link,
             Rel = RelationType.self,

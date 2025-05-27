@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Business.Abstractions;
+﻿using Business.Abstractions;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
@@ -7,9 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
-
-[ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
 public class DespesaController : AuthController
 {
     private readonly IBusinessBase<DespesaDto, Despesa> _despesaBusiness;
@@ -124,7 +120,7 @@ public class DespesaController : AuthController
             DespesaDto despesa = _despesaBusiness.FindById(idDespesa, UserIdentity);
             if (despesa == null || UserIdentity != despesa.UsuarioId)
                 throw new ArgumentException("Usuário não permitido a realizar operação!");
-            
+
             return _despesaBusiness.Delete(despesa) ? Ok(true) : throw new();
         }
         catch (Exception ex)

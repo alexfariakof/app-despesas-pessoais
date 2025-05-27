@@ -65,12 +65,12 @@ public sealed class ServicesDependenceInjectTest
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<>) && descriptor.ImplementationType == typeof(GenericRepositorio<>)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Categoria>) && descriptor.ImplementationType == typeof(CategoriaRepositorioImpl)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Despesa>) && descriptor.ImplementationType == typeof(DespesaRepositorioImpl)));
-        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Receita>) && descriptor.ImplementationType == typeof(ReceitaRepositorioImpl)));        
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Receita>) && descriptor.ImplementationType == typeof(ReceitaRepositorioImpl)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IRepositorio<Usuario>) && descriptor.ImplementationType == typeof(UsuarioRepositorioImpl)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IControleAcessoRepositorioImpl) && descriptor.ImplementationType == typeof(ControleAcessoRepositorioImpl)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(ILancamentoRepositorio) && descriptor.ImplementationType == typeof(SaldoRepositorioImpl)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(ISaldoRepositorio) && descriptor.ImplementationType == typeof(ControleAcessoRepositorioImpl)));
-        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IGraficosRepositorio) && descriptor.ImplementationType == typeof(GraficosRepositorioImpl)));        
+        Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IGraficosRepositorio) && descriptor.ImplementationType == typeof(GraficosRepositorioImpl)));
         Assert.NotNull(services?.Any(descriptor => descriptor.ServiceType == typeof(IEmailSender) && descriptor.ImplementationType == typeof(EmailSender)));
     }
 

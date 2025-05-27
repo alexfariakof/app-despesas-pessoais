@@ -8,10 +8,10 @@ namespace Api.Controllers.v1;
 public sealed class GraficosControllerTest
 {
     private Mock<IGraficosBusiness> _mockGraficoBusiness;
-    private  GraficosController _GraficoController;
-    
+    private GraficosController _GraficoController;
+
     public GraficosControllerTest()
-    {            
+    {
         _mockGraficoBusiness = new Mock<IGraficosBusiness>();
         _GraficoController = new GraficosController(_mockGraficoBusiness.Object);
     }
@@ -40,7 +40,7 @@ public sealed class GraficosControllerTest
     {
         // Arrange
         var dadosGrafico = GraficoFaker.GetNewFaker();
-        DateTime anoMes = DateTime.Today;        Usings.SetupBearerToken(Guid.Empty, _GraficoController);
+        DateTime anoMes = DateTime.Today; Usings.SetupBearerToken(Guid.Empty, _GraficoController);
 
         _mockGraficoBusiness.Setup(business => business.GetDadosGraficoByAnoByIdUsuario(It.IsAny<Guid>(), It.IsAny<DateTime>())).Throws(new Exception());
 

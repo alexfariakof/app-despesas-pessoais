@@ -27,7 +27,7 @@ public class GenericBusinessTests
         var obj = _categorias.Last();
         var categoria = CategoriaFaker.Instance.CategoriasVMs().First();
         _mockRepositorio.Setup(repo => repo.Insert(ref It.Ref<Categoria>.IsAny));
-        
+
         // Act
         var result = _genericBusiness.Create(categoria);
 
@@ -42,7 +42,7 @@ public class GenericBusinessTests
     public void FindAll_Should_Return_All_Objects()
     {
         // Arrange
-        var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();        
+        var objects = UsuarioFaker.Instance.GetNewFakersUsuarios();
         var repositoryMock = new Mock<IRepositorio<Usuario>>();
         repositoryMock.Setup(repo => repo.GetAll()).Returns(objects);
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<UsuarioProfile>(); }));
@@ -55,14 +55,14 @@ public class GenericBusinessTests
         Assert.NotNull(result);
         Assert.Equal(objects.Count, result.Count);
         Assert.IsType<List<UsuarioDto>>(result);
-        repositoryMock.Verify(repo => repo.GetAll(), Times.Once);            
+        repositoryMock.Verify(repo => repo.GetAll(), Times.Once);
     }
 
     [Fact]
     public void FindById_Should_Return_Object_With_MatchingId()
     {
         // Arrange
-        
+
         var obj = DespesaFaker.Instance.Despesas().First();
         var id = obj.Id;
         var repositoryMock = new Mock<IRepositorio<Despesa>>();
@@ -77,14 +77,14 @@ public class GenericBusinessTests
         Assert.NotNull(result);
         Assert.Equal(obj.Id, result.Id);
         Assert.IsType<DespesaDto>(result);
-        repositoryMock.Verify(repo => repo.Get(id), Times.Once);            
+        repositoryMock.Verify(repo => repo.Get(id), Times.Once);
     }
 
     [Fact]
     public void Update_Should_Return_Updated_Object()
     {
         // Arrange
-        var obj = ReceitaFaker.Instance.ReceitasVMs().First() ;
+        var obj = ReceitaFaker.Instance.ReceitasVMs().First();
         var repositoryMock = new Mock<IRepositorio<Receita>>();
         repositoryMock.Setup(repo => repo.Update(ref It.Ref<Receita>.IsAny));
         _mapper = new Mapper(new MapperConfiguration(cfg => { cfg.AddProfile<ReceitaProfile>(); }));
@@ -117,6 +117,6 @@ public class GenericBusinessTests
         // Assert
         Assert.IsType<bool>(result);
         Assert.True(result);
-        repositoryMock.Verify(repo => repo.Delete(It.IsAny<Usuario>()), Times.Once);            
+        repositoryMock.Verify(repo => repo.Delete(It.IsAny<Usuario>()), Times.Once);
     }
 }

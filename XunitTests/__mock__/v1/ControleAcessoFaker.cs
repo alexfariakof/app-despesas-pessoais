@@ -57,13 +57,13 @@ public sealed class ControleAcessoFaker
     }
 
     public List<ControleAcessoDto> ControleAcessoDtos(int count = 3)
-    {           
-        var listControleAcessoDto = new List<ControleAcessoDto>();                        
+    {
+        var listControleAcessoDto = new List<ControleAcessoDto>();
         for (int i = 0; i < count; i++)
         {
             var usuario = UsuarioFaker.Instance.GetNewFaker();
             var controleAcessoDto = GetNewFakerVM(usuario);
-            listControleAcessoDto.Add(controleAcessoDto);                
+            listControleAcessoDto.Add(controleAcessoDto);
         }
 
         return listControleAcessoDto;

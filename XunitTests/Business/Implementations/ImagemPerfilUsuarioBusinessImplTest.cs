@@ -19,7 +19,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
     public ImagemPerfilUsuarioBusinessImplTests()
     {
         _imagensPerfil = ImagemPerfilUsuarioFaker.Instance.ImagensPerfilUsuarios();
-        
+
         _repositorioMock = Usings.MockRepositorio(_imagensPerfil);
         _repositorioUsuarioMock = new Mock<IRepositorio<Usuario>>(MockBehavior.Default);
         _mockAmazonS3Bucket = new Mock<IAmazonS3Bucket>();
@@ -160,7 +160,7 @@ public class ImagemPerfilUsuarioBusinessImplTests
         // Arrange
         var imagemPerfil = _imagensPerfil.First();
         var imagemPerfilVM = _mapper.Map<ImagemPerfilDto>(imagemPerfil);
-        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(() =>null);
+        _repositorioMock.Setup(repo => repo.GetAll()).Throws<Exception>(() => null);
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => _imagemPerfilUsuarioBusiness.Update(imagemPerfilVM));

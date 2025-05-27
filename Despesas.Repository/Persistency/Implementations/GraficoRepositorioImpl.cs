@@ -46,7 +46,7 @@ public class GraficosRepositorioImpl : IGraficosRepositorio
             { "Dezembro", 1 }
         };
 
-        try 
+        try
         {
             int ano = data.Year;
 
@@ -82,7 +82,7 @@ public class GraficosRepositorioImpl : IGraficosRepositorio
                     { "Novembro", Context.Receita.Where(r => r.Data.Month == 11 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) },
                     { "Dezembro", Context.Receita.Where(r => r.Data.Month == 12 && r.Data.Year == ano && r.UsuarioId == idUsuario).AsEnumerable().Sum(r => r.Valor) }
                 }
-            };                
+            };
 
             return grafico;
         }
@@ -92,8 +92,8 @@ public class GraficosRepositorioImpl : IGraficosRepositorio
             {
                 SomatorioDespesasPorAno = defaultSumDespesa,
                 SomatorioReceitasPorAno = defaultSumReceita
-            };                
-        }            
+            };
+        }
     }
 }
 

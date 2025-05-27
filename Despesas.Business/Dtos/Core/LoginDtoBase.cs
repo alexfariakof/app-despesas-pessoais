@@ -1,4 +1,4 @@
-namespace Business.Dtos.Core;
+﻿namespace Business.Dtos.Core;
 public abstract class LoginDtoBase
 {
     public virtual string? Email { get; set; }

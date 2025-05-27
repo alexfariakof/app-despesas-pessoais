@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Business.Abstractions;
 using Business.Dtos.Core;
 using EasyCryptoSalt;
@@ -10,21 +10,24 @@ using System.Security.Claims;
 using System.Text.RegularExpressions;
 using static Domain.Entities.ValueObjects.PerfilUsuario;
 using Business.Authentication.Abstractions;
+using Business.Authentication;
 
 namespace Business.Implementations;
 public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusiness<DtoCa, DtoLogin> where DtoCa : ControleAcessoDtoBase where DtoLogin : LoginDtoBase, new()
 {
+    private readonly ICrypto _crypto;
     private readonly IMapper _mapper;
     private readonly IControleAcessoRepositorioImpl _repositorio;
     private readonly IEmailSender _emailSender;
     private readonly ISigningConfigurations _singingConfiguration;
 
-    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, ISigningConfigurations singingConfiguration, IEmailSender emailSender)
+    public ControleAcessoBusinessImpl(IMapper mapper, IControleAcessoRepositorioImpl repositorio, SigningConfigurations singingConfiguration, IEmailSender emailSender, ICrypto crypto)
     {
         _mapper = mapper;
         _repositorio = repositorio;
         _singingConfiguration = singingConfiguration;
         _emailSender = emailSender;
+        _crypto = crypto;
     }
 
     public void Create(DtoCa controleAcessoDto)
@@ -32,7 +35,8 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         var usuario = _mapper.Map<Usuario>(controleAcessoDto);
         usuario = new Usuario().CreateUsuario(usuario);
         ControleAcesso controleAcesso = new ControleAcesso();
-        controleAcesso.CreateAccount(usuario, controleAcessoDto.Senha ?? "");
+
+        controleAcesso.CreateAccount(usuario, _crypto.Encrypt(controleAcessoDto.Senha));
         _repositorio.Create(controleAcesso);
     }
 
@@ -43,7 +47,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
         if (baseLogin?.Usuario?.StatusUsuario == StatusUsuario.Inativo)
             return AuthenticationException("Usuário Inativo!");
 
-        if (!Crypto.Instance.Verify(loginDto?.Senha ?? "", baseLogin?.Senha ?? ""))
+        if (!_crypto.Verify(loginDto?.Senha ?? "", baseLogin?.Senha ?? ""))
             return AuthenticationException("Senha inválida!");
 
         bool credentialsValid = baseLogin is not null && loginDto?.Email == baseLogin.Login;
@@ -148,7 +152,7 @@ public class ControleAcessoBusinessImpl<DtoCa, DtoLogin> : IControleAcessoBusine
     }
 
     private void CheckIfUserIsTeste(Guid userIdentity)
-    {   
+    {
         var idUsuarioTeste = _repositorio.Find(accout => accout.Usuario.Nome.Contains("Teste")).Id;
         if (userIdentity.Equals(idUsuarioTeste))
             throw new ArgumentException("A senha deste usuário não pode ser atualizada!");

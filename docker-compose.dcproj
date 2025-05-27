@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
-  <PropertyGroup Label="Globals">
-    <ProjectVersion>2.1</ProjectVersion>
-    <DockerTargetOS>Linux</DockerTargetOS>
-    <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>7900f85a-9b75-409e-96b7-6fb47f630975</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>app-despesas-pessoais</DockerServiceName>
-    <SpaRoot>AngularApp</SpaRoot>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="docker-compose.dev.yml" />
-    <None Include="docker-compose.override.yml">
-      <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
-    <None Include="docker-compose.prod.yml" />
-    <None Include="docker-compose.yml" />
-    <None Include=".dockerignore" />
-  </ItemGroup>
+	<PropertyGroup Label="Globals">
+		<ProjectVersion>2.1</ProjectVersion>
+		<DockerTargetOS>Linux</DockerTargetOS>
+		<DockerPublishLocally>False</DockerPublishLocally>
+		<ProjectGuid>7900f85a-9b75-409e-96b7-6fb47f630975</ProjectGuid>
+		<DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+		<DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
+		<DockerServiceName>app-despesas-pessoais</DockerServiceName>
+		<SpaRoot>AngularApp</SpaRoot>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="docker-compose.dev.yml" />
+		<None Include="docker-compose.override.yml">
+			<DependentUpon>docker-compose.yml</DependentUpon>
+		</None>
+		<None Include="docker-compose.prod.yml" />
+		<None Include="docker-compose.yml" />
+		<None Include=".dockerignore" />
+	</ItemGroup>
 
-  <PropertyGroup>
-    <Build>
-      DebugEnsureNodeEnv;
-      DockerDebuggeProgram;
-    </Build>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Build>
+			DebugEnsureNodeEnv;
+			DockerDebuggeProgram;
+		</Build>
+	</PropertyGroup>
 
-  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build;Rebuild" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)\node_modules') ">
-    <!-- Ensure Node.js is installed -->
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-  </Target>
+	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build;Rebuild" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)\node_modules') ">
+		<!-- Ensure Node.js is installed -->
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+	</Target>
 
-  <Target Name="DockerDebuggeeProgram" BeforeTargets="Build;Rebuild" Condition="Exists('$(SpaRoot)\node_modules')">
-    <!-- Ensure angular project compilation -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
-  </Target>
+	<Target Name="DockerDebuggeeProgram" BeforeTargets="Build;Rebuild" Condition="Exists('$(SpaRoot)\node_modules')">
+		<!-- Ensure angular project compilation -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build" />
+	</Target>
 
 </Project>

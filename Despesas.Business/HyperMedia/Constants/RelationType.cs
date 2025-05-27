@@ -6,7 +6,7 @@ public sealed class RelationType
     public const string post = "post";
     public const string put = "put";
     public const string delete = "delete";
-    public const string pacth= "pacth";
+    public const string pacth = "pacth";
     public const string next = "next";
     public const string previous = "previous";
     public const string first = "first";

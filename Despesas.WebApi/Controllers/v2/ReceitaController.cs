@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Business.Abstractions;
+﻿using Business.Abstractions;
 using Business.Dtos.v2;
 using Business.HyperMedia.Filters;
 using Domain.Entities;
@@ -8,8 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Despesas.WebApi.Controllers.v2;
 
-[ApiVersion("2")]
-[Route("v{version:apiVersion}/[controller]")]
 public class ReceitaController : AuthController
 {
     private readonly IBusinessBase<ReceitaDto, Receita> _receitaBusiness;

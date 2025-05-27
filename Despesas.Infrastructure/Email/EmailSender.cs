@@ -22,9 +22,9 @@ public class EmailSender : IEmailSender
             var login = config["EmailConfigurations"]?["login"]?.ToString();
             var senha = config["EmailConfigurations"]?["senha"]?.ToString();
             _Credentials = new NetworkCredential(login, senha);
-        }        
+        }
     }
-    private  void SendEmail(MailMessage message)
+    private void SendEmail(MailMessage message)
     {
         using (SmtpClient client = new SmtpClient(_hostSmpt, 587))
         {
@@ -66,5 +66,5 @@ public class EmailSender : IEmailSender
         {
             throw new ArgumentException("Erro ao Enviar Email!");
         }
-    }    
+    }
 }

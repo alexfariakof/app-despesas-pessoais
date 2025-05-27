@@ -1,4 +1,4 @@
-version: '3.9'
+﻿version: '3.9'
 services:
   app-despesas-pessoais:
     environment:
@@ -10,8 +10,8 @@ services:
       - "80"
       - "443"
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${LOCALAPPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${LOCALAPPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ./AngularApp/dist:/app/wwwroot
       - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.json
       - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.develpment.json

@@ -12,25 +12,25 @@ public sealed class DespesaTest
         var categoriaId = Guid.NewGuid();
 
         var mockUsuario = Mock.Of<Usuario>();
-        var mockCategoria= Mock.Of<Categoria>();
+        var mockCategoria = Mock.Of<Categoria>();
         DateTime data = DateTime.Now;
         DateTime? dataVencimento = DateTime.Now;
 
         // Arrange and Act
         var despesa = new Despesa
-        { 
+        {
             Id = id,
             Data = data,
             Descricao = descricao,
-            Valor = valor,            
+            Valor = valor,
             DataVencimento = dataVencimento,
-            UsuarioId = usuarioId,                
-            Usuario  = mockUsuario,
+            UsuarioId = usuarioId,
+            Usuario = mockUsuario,
             CategoriaId = categoriaId,
             Categoria = mockCategoria,
-            
+
         };
-        
+
         // Assert
         Assert.Equal(id, despesa.Id);
         Assert.Equal(data, despesa.Data);

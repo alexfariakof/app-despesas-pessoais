@@ -1,4 +1,6 @@
 ﻿using Business.Authentication.Abstractions;
+using Despesas.Business.Authentication.Abstractions;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -6,20 +8,21 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Business.Authentication;
+
 public class SigningConfigurations : ISigningConfigurations
 {
     public SecurityKey? Key { get; }
     public TokenConfiguration? TokenConfiguration { get; }
     public SigningCredentials? SigningCredentials { get; private set; }
-    
-    public SigningConfigurations(TokenConfiguration options)
-    {
-        TokenConfiguration = options;
 
-        if (!String.IsNullOrEmpty(options.Certificate))
+    public SigningConfigurations(IOptions<TokenOptions> options)
+    {
+        TokenConfiguration = new TokenConfiguration(options);
+
+        if (!String.IsNullOrEmpty(options.Value.Certificate))
         {
-            string certificatePath = Path.Combine(AppContext.BaseDirectory, options.Certificate);
-            X509Certificate2 certificate = new X509Certificate2(certificatePath, options.Password, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
+            string certificatePath = Path.Combine(AppContext.BaseDirectory, options.Value.Certificate);
+            X509Certificate2 certificate = new X509Certificate2(certificatePath, options.Value.Password, X509KeyStorageFlags.Exportable | X509KeyStorageFlags.MachineKeySet);
             RSA? rsa = null;
             rsa = certificate.GetRSAPrivateKey();
             RsaSecurityKey rsaSecurityKey = new RsaSecurityKey(rsa);
@@ -64,7 +67,8 @@ public class SigningConfigurations : ISigningConfigurations
             Audience = TokenConfiguration.Audience,
             Issuer = TokenConfiguration.Issuer,
             Claims = new Dictionary<string, object> { { "KEY", Guid.NewGuid() } },
-            Expires = DateTime.UtcNow.AddDays(TokenConfiguration.DaysToExpiry)
+            NotBefore = DateTime.UtcNow,
+            Expires = DateTime.UtcNow.AddSeconds(TokenConfiguration.Seconds),
         });
 
         return handler.WriteToken(securityToken);

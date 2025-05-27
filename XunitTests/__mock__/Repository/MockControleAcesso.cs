@@ -21,7 +21,7 @@ public sealed class MockControleAcesso
     {
         lock (LockObject)
         {
-            if (usuario == null) usuario = MockUsuario.Instance.GetUsuario(); 
+            if (usuario == null) usuario = MockUsuario.Instance.GetUsuario();
 
             var mockControleAcesso = new Faker<ControleAcesso>()
             .RuleFor(ca => ca.Login, usuario.Email)

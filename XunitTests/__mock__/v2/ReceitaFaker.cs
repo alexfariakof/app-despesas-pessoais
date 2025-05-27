@@ -80,7 +80,7 @@ public sealed class ReceitaFaker
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker(Guid.NewGuid());
-            
+
             usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario, (int)TipoCategoria.CategoriaType.Receita, usuario.Id);
 

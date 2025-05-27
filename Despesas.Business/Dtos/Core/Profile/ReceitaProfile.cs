@@ -2,7 +2,7 @@
 using Domain.Entities.ValueObjects;
 
 namespace Business.Dtos.Core.Profile;
-public class ReceitaProfile: AutoMapper.Profile
+public class ReceitaProfile : AutoMapper.Profile
 {
     public ReceitaProfile()
     {
@@ -11,7 +11,7 @@ public class ReceitaProfile: AutoMapper.Profile
             .ForMember(dest => dest.IdCategoria, opt => opt.MapFrom(src => src.CategoriaId))
             .ForMember(dest => dest.IdCategoria, opt => opt.MapFrom(src => src.Categoria.Id))
             .ReverseMap();
-        
+
         CreateMap<Business.Dtos.v2.ReceitaDto, Receita>().ReverseMap();
         CreateMap<Receita, Business.Dtos.v2.ReceitaDto>()
             .ForMember(dest => dest.IdCategoria, opt => opt.MapFrom(src => src.CategoriaId))

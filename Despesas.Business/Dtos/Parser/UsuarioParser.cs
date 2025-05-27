@@ -10,12 +10,12 @@ public class UsuarioParser : IParser<UsuarioDto, Usuario>, IParser<Usuario, Usua
         if (origin == null) return new();
         return new Usuario
         {
-            Id  = origin.Id,
+            Id = origin.Id,
             Email = origin?.Email ?? "",
             Nome = origin?.Nome ?? "",
             SobreNome = origin?.SobreNome ?? "",
             Telefone = origin?.Telefone ?? "",
-            PerfilUsuario = origin?.PerfilUsuario                
+            PerfilUsuario = origin?.PerfilUsuario
         };
     }
 

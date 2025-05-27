@@ -8,5 +8,5 @@ public class CategoriaDto : CategoriaDtoBase
     public override string? Descricao { get; set; }
 
     [Required]
-    public int IdTipoCategoria { get; set; }    
+    public int IdTipoCategoria { get; set; }
 }

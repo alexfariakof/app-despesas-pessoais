@@ -32,7 +32,7 @@ public class DespesaFixture : IDisposable
             despesa.CategoriaId = despesa.Categoria.Id;
         }
         Context.AddRange(despesas);
-        Context.SaveChanges();       
+        Context.SaveChanges();
     }
 
     public void Dispose()

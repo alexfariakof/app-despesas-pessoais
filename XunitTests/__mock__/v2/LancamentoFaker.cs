@@ -27,7 +27,7 @@ public sealed class LancamentoFaker
         return lancamentoFaker;
     }
 
-    public static LancamentoDto GetNewFakerVM(Guid idUsuario, Guid idDespesa, Guid idReceita,Categoria categoria)
+    public static LancamentoDto GetNewFakerVM(Guid idUsuario, Guid idDespesa, Guid idReceita, Categoria categoria)
     {
         var lancamentoDtoFaker = new Faker<LancamentoDto>()
             .RuleFor(l => l.Id, f => Guid.NewGuid())
@@ -51,7 +51,7 @@ public sealed class LancamentoFaker
         {
             if (idUsuario == null)
                 usuario = UsuarioFaker.Instance.GetNewFaker();
-            
+
             usuario = usuario ?? new();
             var categoria = CategoriaFaker.Instance.GetNewFaker(usuario);
 

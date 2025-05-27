@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Business.Dtos.Parser;
 public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, IParser<ControleAcesso, ControleAcessoDto>
-{  
+{
 
     public ControleAcessoDto Parse(ControleAcesso origin)
     {
@@ -14,7 +14,7 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
             Id = origin.Id,
             Email = origin.Login,
             Senha = origin.Senha,
-            UsuarioId   = origin.UsuarioId,
+            UsuarioId = origin.UsuarioId,
             Nome = origin?.Usuario?.Nome,
             Telefone = origin?.Usuario?.Telefone,
             SobreNome = origin?.Usuario?.SobreNome,
@@ -28,7 +28,7 @@ public class ControleAcessoParser : IParser<ControleAcessoDto, ControleAcesso>, 
         {
             Id = origin.Id,
             Login = origin?.Email ?? "",
-            UsuarioId = origin.UsuarioId,            
+            UsuarioId = origin.UsuarioId,
             Senha = origin?.Senha ?? "",
             Usuario = new Usuario
             {

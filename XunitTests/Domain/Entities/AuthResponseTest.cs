@@ -12,15 +12,15 @@ public sealed class AuthResponseTest
         var mockUsuario = Mock.Of<Usuario>();
 
         // Arrange and ACt
-        var authResponse = new AuthenticationDto 
-        { 
-             Authenticated = authenticated,
-             Created = created,
-             Expiration = expiration,
-             AccessToken = accessToken,
-             Message = message
+        var authResponse = new AuthenticationDto
+        {
+            Authenticated = authenticated,
+            Created = created,
+            Expiration = expiration,
+            AccessToken = accessToken,
+            Message = message
         };
-        
+
         // Assert
         Assert.Equal(authenticated, authResponse.Authenticated);
         Assert.Equal(created, authResponse.Created);

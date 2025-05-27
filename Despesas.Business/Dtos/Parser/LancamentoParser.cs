@@ -4,7 +4,7 @@ using Business.Dtos.v1;
 
 namespace Business.Dtos.Parser;
 public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lancamento, LancamentoDto>
-{    
+{
     public Lancamento Parse(Despesa origin)
     {
         if (origin == null) return new Lancamento();
@@ -19,7 +19,7 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             DespesaId = origin.Id,
             Despesa = origin,
             ReceitaId = Guid.Empty,
-            Receita = new Receita (),
+            Receita = new Receita(),
             CategoriaId = origin.CategoriaId,
             Categoria = origin.Categoria,
             DataCriacao = DateTime.Now
@@ -57,8 +57,8 @@ public class LancamentoParser : IParser<LancamentoDto, Lancamento>, IParser<Lanc
             Data = DateTime.Parse(origin?.Data ?? DateTime.Now.ToString()),
             DataCriacao = DateTime.Now,
             Valor = origin.Valor,
-            Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin?.Descricao ?? ""},
-            Receita = new Receita { Id = origin.IdReceita , Descricao = origin?.Descricao ?? "" }
+            Despesa = new Despesa { Id = origin.IdDespesa, Descricao = origin?.Descricao ?? "" },
+            Receita = new Receita { Id = origin.IdReceita, Descricao = origin?.Descricao ?? "" }
         };
     }
     public LancamentoDto Parse(Lancamento origin)

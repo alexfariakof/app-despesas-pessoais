@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Business.Dtos.v1;
+﻿using Business.Dtos.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Entities;
@@ -7,9 +6,6 @@ using Business.Abstractions.Generic;
 
 namespace Despesas.WebApi.Controllers.v1;
 
-[ApiVersion("1")]
-[Route("v1/[controller]")]
-[ApiController]
 public class ReceitaController : AuthController
 {
     private IBusiness<ReceitaDto, Receita> _receitaBusiness;

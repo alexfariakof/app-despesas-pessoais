@@ -3,16 +3,16 @@ using Business.Dtos.v1;
 using Domain.Entities;
 
 namespace Business.Dtos.Parser;
-public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, DespesaDto>
-{    
+public class DespesaParser : IParser<DespesaDto, Despesa>, IParser<Despesa, DespesaDto>
+{
     public Despesa Parse(DespesaDto origin)
     {
         if (origin == null) return new Despesa();
         return new Despesa
         {
-            Id  = origin.Id,
+            Id = origin.Id,
             Data = origin.Data.GetValueOrDefault(),
-            Descricao = origin?.Descricao ?? "",                
+            Descricao = origin?.Descricao ?? "",
             Valor = origin?.Valor ?? 0,
             DataVencimento = origin?.DataVencimento,
             CategoriaId = origin.IdCategoria.GetValueOrDefault(),
@@ -31,7 +31,7 @@ public class DespesaParser: IParser<DespesaDto, Despesa>, IParser<Despesa, Despe
             Valor = origin.Valor,
             DataVencimento = origin.DataVencimento,
             IdCategoria = origin?.Categoria?.Id,
-            UsuarioId = origin.UsuarioId     
+            UsuarioId = origin.UsuarioId
         };
     }
 

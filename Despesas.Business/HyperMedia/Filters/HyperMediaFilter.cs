@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Business.HyperMedia.Filters;
 
-public class HyperMediaFilter: ResultFilterAttribute
+public class HyperMediaFilter : ResultFilterAttribute
 {
     private readonly HyperMediaFilterOptions _hyperMediaFilterOptions;
 
@@ -20,7 +20,7 @@ public class HyperMediaFilter: ResultFilterAttribute
 
     private void TryEnrichResult(ResultExecutingContext context)
     {
-        if (context.Result is OkObjectResult) 
+        if (context.Result is OkObjectResult)
         {
             var enricher = _hyperMediaFilterOptions.ContentResponseEnricherList.FirstOrDefault(x => x.CanEnrich(context));
             if (enricher != null)

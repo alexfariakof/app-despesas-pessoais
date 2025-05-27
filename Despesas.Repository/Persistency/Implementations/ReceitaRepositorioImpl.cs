@@ -25,7 +25,7 @@ public class ReceitaRepositorioImpl : BaseRepository<Receita>, IRepositorio<Rece
     public override void Insert(ref Receita entity)
     {
         var categoriaId = entity.CategoriaId;
-        entity.Categoria =  Context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
+        entity.Categoria = Context.Set<Categoria>().First(c => c.Id.Equals(categoriaId));
         Context.Add(entity);
         Context.SaveChanges();
     }
