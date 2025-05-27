@@ -15,6 +15,7 @@ services:
         volumes:
            - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.json
            - ./Despesas.WebApi/appsettings.docker.json:/app/appsettings.develpment.json
+           - ./Despesas.WebApi/certificate/webapi-cert.pfx:/app/certificate/webapi-cert.pfx
         deploy:
            update_config:
              order: start-first 

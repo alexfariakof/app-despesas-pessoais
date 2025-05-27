@@ -53,15 +53,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="certificate\" />
 		<Folder Include="wwwroot\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="webapi-cert.pfx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
 	</ItemGroup>
 
 	<PropertyGroup>

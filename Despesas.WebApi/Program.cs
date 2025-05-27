@@ -6,6 +6,7 @@ using CrossCutting.CommonDependenceInject;
 using Migrations.MsSqlServer.CommonInjectDependence;
 using Migrations.MySqlServer.CommonInjectDependence;
 using Repository;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +23,13 @@ builder.Services.AddCors(options =>
                 "http://alexfariakof.com:42536",
                 "http://localhost",
                 "https://localhost",
+                "http://localhost:42536",
+                "https://localhost:42535",
                 "https://localhost:4200",
                 "http://127.0.0.1",
-                "https://127.0.0.1")
+                "https://127.0.0.1",
+                "http://127.0.0.1:42536",
+                "https://127.0.0.1:42535")
               .AllowAnyMethod()
               .AllowAnyOrigin()
               .AllowAnyHeader();
@@ -41,7 +46,7 @@ if (builder.Environment.EnvironmentName.Equals("Migrations"))
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
-else if (builder.Environment.EnvironmentName.Equals("Staging"))
+else if (builder.Environment.IsStaging())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Dev.MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
 }
@@ -68,11 +73,17 @@ builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();
 builder.Services.AddHyperMediaHATEOAS();
 
+if (builder.Environment.IsStaging())
+{
+    builder.WebHost.UseUrls("https://0.0.0.0:42535", "http://0.0.0.0:42536");
+}
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
 app.UseHsts();
 app.UseHttpsRedirection();
+
 app.AddSupporteCulturesPtBr();
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -92,7 +103,14 @@ app.UseRouting()
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction() || !app.Environment.EnvironmentName.Equals("Staging"))
+if (!app.Environment.IsProduction() && !app.Environment.IsStaging())
     app.RunDataSeeders();
+
+if (app.Environment.IsStaging())
+{
+    app.Urls.Add("https://0.0.0.0:42535");
+    app.Urls.Add("http://0.0.0.0:42536");
+}
+
 
 app.Run();
