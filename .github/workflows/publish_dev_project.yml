@@ -1,4 +1,4 @@
-name: Deploy Development AWS EC2 Server
+﻿name: Deploy Development AWS EC2 Server
 on:
   push:
      branches: 
@@ -11,7 +11,7 @@ jobs:
         
   deploy:
     needs: trigger_build_and_test
-    name: Docker Build and Publish in Production
+    name: Docker Build and Publish in Development
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -30,8 +30,8 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
           DOCKER_CLI_AGGREGATE: 1
         run: |
-          echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_LOGIN}" --password-stdin
-          docker push ${{ secrets.DOCKER_DEV_IMAGE }}
+          docker login -u "${DOCKER_LOGIN}" --password-stdin
+          docker push alexfariakof/api-despesas-backend-netcore-dev-img
         
       - name: Execute SSH Commands into EC2 
         env:
