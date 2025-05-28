@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
 namespace Despesas.WebApi.Controllers.v1;
-[Route("v1/[controller]")]
 
+[Route("v1/[controller]")]
 public class ControleAcessoController : BaseAuthController
 {
     private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
