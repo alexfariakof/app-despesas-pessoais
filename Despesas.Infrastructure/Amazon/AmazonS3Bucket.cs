@@ -62,8 +62,14 @@ public class AmazonS3Bucket : IAmazonS3Bucket
         try
         {
             string? fileContentType = perfilFile.ContentType;
-            AmazonS3Config config = new AmazonS3Config();
-            config.ServiceURL = _s3ServiceUrl;
+
+            var config = new AmazonS3Config
+            {
+                ServiceURL = _s3ServiceUrl, 
+                UseHttp = false,            
+                ForcePathStyle = true,      
+                RegionEndpoint = RegionEndpoint.USEast1
+            }; config.ServiceURL = _s3ServiceUrl;
 
             _client = new AmazonS3Client(_accessKey, _secretAccessKey, config);
 
@@ -76,12 +82,13 @@ public class AmazonS3Bucket : IAmazonS3Bucket
                 InputStream = new MemoryStream(file ?? throw new ArgumentException("Erro no arquivo!"))
             };
             PutObjectResponse response = await _client.PutObjectAsync(putRquest);
-            var url = $"https://{_bucketName}.s3.amazonaws.com/{perfilFile.Name}";
+            var url = $"{_s3ServiceUrl}/{_bucketName}/{perfilFile.Name}";
             return url;
 
         }
-        catch
+        catch (Exception ex)
         {
+            throw new ArgumentException(ex.Message);
             throw new ArgumentException("AmazonS3Bucket_WritingAnObjectAsync_Errro");
         }
     }

@@ -57,6 +57,9 @@ else
 //Add SigningConfigurations
 builder.AddSigningConfigurations();
 
+// Add S3 Amazom Configurations
+builder.AddAmazonS3BucketConfigurations();
+
 // Add AutoAuthConfigurations
 builder.Services.AddAutoAuthenticationConfigurations();
 
@@ -66,7 +69,7 @@ builder.Services.AddServicesCryptography(builder.Configuration);
 // Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
-builder.Services.AddAmazonS3BucketConfigurations(builder.Configuration);
+
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();

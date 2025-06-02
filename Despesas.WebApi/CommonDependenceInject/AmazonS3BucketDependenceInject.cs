@@ -4,9 +4,10 @@ using Despesas.Infrastructure.Amazon.Abstractions;
 namespace Despesas.WebApi.CommonDependenceInject;
 public static class AmazonS3BucketDependenceInject
 {
-    public static void AddAmazonS3BucketConfigurations(this IServiceCollection services, IConfiguration configuration)
+
+    public static void AddAmazonS3BucketConfigurations(this WebApplicationBuilder builder)
     {
-        services.Configure<AmazonS3Options>(configuration.GetSection("AmazonS3Configurations"));
-        services.AddSingleton<IAmazonS3Bucket, AmazonS3Bucket>();
+        builder.Services.Configure<AmazonS3Options>(builder.Configuration.GetSection("AmazonS3Configurations"));
+        builder.Services.AddSingleton<IAmazonS3Bucket, AmazonS3Bucket>();
     }
 }
