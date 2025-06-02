@@ -88,7 +88,6 @@ public class AmazonS3Bucket : IAmazonS3Bucket
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
             throw new ArgumentException("AmazonS3Bucket_WritingAnObjectAsync_Errro");
         }
     }
