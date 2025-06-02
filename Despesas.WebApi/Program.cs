@@ -69,7 +69,6 @@ builder.Services.AddServicesCryptography(builder.Configuration);
 // Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
-
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();
