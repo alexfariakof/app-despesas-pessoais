@@ -269,7 +269,7 @@ public class UsuarioController : AuthController
     private async Task<ImagemPerfilDto> ConvertFileToImagemPerfilUsuarioDtoAsync(IFormFile file, Guid idUsuario)
     {
         string fileName = idUsuario.ToString().Replace("-", "") + "-img-perfil-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-        string typeFile = "";
+        string? typeFile = Path.GetExtension(file.FileName)?.TrimStart('.');
         int posicaoUltimoPontoNoArquivo = file.FileName.LastIndexOf('.');
         if (posicaoUltimoPontoNoArquivo >= 0 && posicaoUltimoPontoNoArquivo < file.FileName.Length - 1)
             typeFile = file.FileName.Substring(posicaoUltimoPontoNoArquivo + 1);
