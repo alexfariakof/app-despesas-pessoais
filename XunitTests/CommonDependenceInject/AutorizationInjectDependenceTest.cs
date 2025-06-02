@@ -18,8 +18,7 @@ public sealed class AuthorizationInjectDependenceTest
         var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
         var services = new ServiceCollection();
 
-        // Act
-        services.AddSigningConfigurations(configuration);
+        // Act        
         services.AddAutoAuthenticationConfigurations();
 
         // Assert

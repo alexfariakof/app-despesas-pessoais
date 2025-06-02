@@ -5,7 +5,7 @@ services:
     image: alexfariakof/api-despesas-backend-netcore-dev-img
     build:
       context: .
-      dockerfile: Despesas.WebApi/Dockerfile.development
+      dockerfile: Despesas.WebApi/Dockerfile.Development
     environment:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: Staging
