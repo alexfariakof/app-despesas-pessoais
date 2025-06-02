@@ -1,12 +1,14 @@
 ﻿using Business.Abstractions;
 using Business.Dtos.v1;
+using Despesas.WebApi.Controllers.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
 namespace Despesas.WebApi.Controllers.v1;
 
-public class ControleAcessoController : AuthController
+[Route("v1/[controller]")]
+public class ControleAcessoController : BaseAuthController
 {
     private IControleAcessoBusiness<ControleAcessoDto, LoginDto> _controleAcessoBusiness;
     public ControleAcessoController(IControleAcessoBusiness<ControleAcessoDto, LoginDto> controleAcessoBusiness)

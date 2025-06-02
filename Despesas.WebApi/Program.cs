@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Despesas.WebApi.CommonDependenceInject;
-using Business.CommonDependenceInject;
-using Repository.CommonDependenceInject;
+﻿using Business.CommonDependenceInject;
 using CrossCutting.CommonDependenceInject;
+using Despesas.WebApi.CommonDependenceInject;
+using Microsoft.EntityFrameworkCore;
 using Migrations.MsSqlServer.CommonInjectDependence;
 using Migrations.MySqlServer.CommonInjectDependence;
 using Repository;
-using Microsoft.AspNetCore.Rewrite;
+using Repository.CommonDependenceInject;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +45,7 @@ if (builder.Environment.EnvironmentName.Equals("Migrations"))
     builder.Services.ConfigureMsSqlServerMigrationsContext(builder.Configuration);
     builder.Services.ConfigureMySqlServerMigrationsContext(builder.Configuration);
 }
-else if (builder.Environment.IsStaging())
+else if (builder.Environment.IsStaging() || builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<RegisterContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("Dev.MySqlConnectionString") ?? throw new NullReferenceException("MySqlConnectionString not defined.")));
 }
@@ -56,7 +55,10 @@ else
 }
 
 //Add SigningConfigurations
-builder.Services.AddSigningConfigurations(builder.Configuration);
+builder.AddSigningConfigurations();
+
+// Add S3 Amazom Configurations
+builder.AddAmazonS3BucketConfigurations();
 
 // Add AutoAuthConfigurations
 builder.Services.AddAutoAuthenticationConfigurations();
@@ -67,7 +69,6 @@ builder.Services.AddServicesCryptography(builder.Configuration);
 // Add CommonDependencesInject 
 builder.Services.AddAutoMapper();
 builder.Services.AddDataSeeders();
-builder.Services.AddAmazonS3BucketConfigurations(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddCrossCuttingConfiguration();
@@ -103,7 +104,7 @@ app.UseRouting()
         endpoints.MapFallbackToFile("index.html");
     });
 
-if (!app.Environment.IsProduction() && !app.Environment.IsStaging())
+if (!app.Environment.IsProduction() && !app.Environment.IsStaging() && !app.Environment.IsDevelopment())
     app.RunDataSeeders();
 
 if (app.Environment.IsStaging())
@@ -111,6 +112,5 @@ if (app.Environment.IsStaging())
     app.Urls.Add("https://0.0.0.0:42535");
     app.Urls.Add("http://0.0.0.0:42536");
 }
-
 
 app.Run();

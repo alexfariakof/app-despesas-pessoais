@@ -11,8 +11,8 @@ public class AmazonS3Bucket : IAmazonS3Bucket
 {
     private static IAmazonS3Bucket? _amazonS3Bucket;
     private AmazonS3Client? _client;
-    private readonly S3CannedACL _fileCannedACL = S3CannedACL.PublicRead;
-    private readonly RegionEndpoint _bucketRegion = RegionEndpoint.SAEast1;
+    private readonly S3CannedACL _fileCannedACL = S3CannedACL.PublicReadWrite;
+    private readonly RegionEndpoint _bucketRegion = RegionEndpoint.USEast1;
     private readonly string? _accessKey;
     private readonly string? _secretAccessKey;
     private readonly string? _s3ServiceUrl;
@@ -20,7 +20,11 @@ public class AmazonS3Bucket : IAmazonS3Bucket
 
     private AmazonS3Bucket()
     {
-        var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+
+        var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var appsettings = environment == "Development" ? "appsettings.development.json" : "appsettings.json";
+
+        var jsonFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appsettings);
 
         if (File.Exists(jsonFilePath))
         {
@@ -58,8 +62,14 @@ public class AmazonS3Bucket : IAmazonS3Bucket
         try
         {
             string? fileContentType = perfilFile.ContentType;
-            AmazonS3Config config = new AmazonS3Config();
-            config.ServiceURL = _s3ServiceUrl;
+
+            var config = new AmazonS3Config
+            {
+                ServiceURL = _s3ServiceUrl, 
+                UseHttp = false,            
+                ForcePathStyle = true,      
+                RegionEndpoint = RegionEndpoint.USEast1
+            }; config.ServiceURL = _s3ServiceUrl;
 
             _client = new AmazonS3Client(_accessKey, _secretAccessKey, config);
 
@@ -72,11 +82,11 @@ public class AmazonS3Bucket : IAmazonS3Bucket
                 InputStream = new MemoryStream(file ?? throw new ArgumentException("Erro no arquivo!"))
             };
             PutObjectResponse response = await _client.PutObjectAsync(putRquest);
-            var url = $"https://{_bucketName}.s3.amazonaws.com/{perfilFile.Name}";
+            var url = $"{_s3ServiceUrl}/{_bucketName}/{perfilFile.Name}";
             return url;
 
         }
-        catch
+        catch (Exception ex)
         {
             throw new ArgumentException("AmazonS3Bucket_WritingAnObjectAsync_Errro");
         }

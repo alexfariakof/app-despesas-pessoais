@@ -42,7 +42,7 @@ public sealed class ImagemPerfilUsuarioMapTest
             Assert.NotNull(usuarioIdIndex);
             Assert.True(idProperty.IsPrimaryKey());
             Assert.False(nameProperty.IsNullable);
-            Assert.Equal(50, nameProperty.GetMaxLength());
+            Assert.Equal(255, nameProperty.GetMaxLength());
             Assert.True(nameIndex.IsUnique);
             Assert.False(urlProperty.IsNullable);
             Assert.False(typeProperty.IsNullable);
