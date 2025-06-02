@@ -10,13 +10,13 @@ WORKDIR /src
 COPY . . 
 
 
-#WORKDIR /src/XunitTests
-#RUN dotnet test "./XUnit.Tests.csproj" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
+WORKDIR /src/XunitTests
+RUN dotnet test "./XUnit.Tests.csproj" -p:CollectCoverage=true -p:CoverletOutputFormat=cobertura --collect:"XPlat Code Coverage;Format=opencover" 
 
-#RUN baseDirectory=$(realpath ..) \
-#    sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi:$baseDirectory/AngularApp" \ 
-#    filefilters="$baseDirectory/Despesas.DataSeeders/**;- $baseDirectory/Migrations.MySqlServer/**;- $baseDirectory/Migrations.MsSqlServer/**;- $baseDirectory/Despesas.CrossCutting/**;- $baseDirectory/Despesas.Business/HyperMedia/**" \
-#    /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -sourcedirs:$sourceDirs -filefilters:-$filefilters
+RUN baseDirectory=$(realpath ..) \
+    sourceDirs="$baseDirectory/Despesas.Business:$baseDirectory/Despesas.Domain:$baseDirectory/Despesas.Repository:$baseDirectory/Despesas.WebApi:$baseDirectory/AngularApp" \ 
+    filefilters="$baseDirectory/Despesas.DataSeeders/**;- $baseDirectory/Migrations.MySqlServer/**;- $baseDirectory/Migrations.MsSqlServer/**;- $baseDirectory/Despesas.CrossCutting/**;- $baseDirectory/Despesas.Business/HyperMedia/**" \
+    /tools/reportgenerator -reports:**/coverage.cobertura.xml -targetdir:/app/test -reporttypes:Html -sourcedirs:$sourceDirs -filefilters:-$filefilters
 
 WORKDIR /src/AngularApp
 RUN npm install
@@ -30,5 +30,5 @@ WORKDIR /app
 EXPOSE 42535
 EXPOSE 42536
 COPY --from=build /app/publish .
-#COPY --from=build /app/test ./wwwroot/coveragereport
+COPY --from=build /app/test ./wwwroot/coveragereport
 ENTRYPOINT ["dotnet", "Despesas.WebApi.dll"]
