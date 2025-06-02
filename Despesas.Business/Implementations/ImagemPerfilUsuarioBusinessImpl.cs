@@ -22,7 +22,7 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
 
     public Dto Create(Dto dto)
     {
-        ImagemPerfilUsuario? perfilFile = _mapper.Map<ImagemPerfilUsuario>(dto);
+        ImagemPerfilUsuario? perfilFile = _mapper.Map<ImagemPerfilUsuario>(dto);        
         try
         {
             perfilFile.Url = _amazonS3Bucket.WritingAnObjectAsync(perfilFile, dto.Arquivo).GetAwaiter().GetResult();
@@ -30,10 +30,11 @@ public class ImagemPerfilUsuarioBusinessImpl<Dto, DtoUsuario> : IImagemPerfilUsu
             _repositorio.Insert(ref perfilFile);
             return _mapper.Map<Dto>(perfilFile);
         }
-        catch
+        catch (Exception ex) 
         {
             _amazonS3Bucket.DeleteObjectNonVersionedBucketAsync(perfilFile).GetAwaiter();
-            throw new ArgumentException("Erro ao criar imagem de perfil.");
+            throw new ArgumentException(ex.Message);
+           //throw new ArgumentException("Erro ao criar imagem de perfil.");
         }
     }
 

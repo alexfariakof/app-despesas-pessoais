@@ -32,7 +32,7 @@ public class ControleAcessoBusinessImplTest
         var configuration = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile("appsettings.json").Build();
         var builder = WebApplication.CreateBuilder();
         var services = builder.Services;
-        services.AddSigningConfigurations(builder.Configuration);
+        builder.AddSigningConfigurations();
         services.AddServicesCryptography(builder.Configuration);
 
         _singingConfiguration = services.BuildServiceProvider().GetService<SigningConfigurations>();
